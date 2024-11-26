@@ -1,0 +1,798 @@
+@import './base.css';
+
+body {
+  min-width: 100vw;
+  min-height: 100vh;
+  background: var(--BGColor);
+  font-family: 'MFontR';
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+/* #region ScrollBar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  width: 10px;
+}
+
+::-webkit-scrollbar:hover * {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track:hover {
+  width: 10px;
+}
+
+/* #endregion */
+
+/* #region Component */
+.ComponentWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  padding: 85px 0 10px 0;
+  color: var(--TextColor);
+}
+.ComponentButtons {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+/* #endregion */
+
+/* #region MButton */
+.MButton {
+  display: flex;
+  background-color: var(--PrimaryColor);
+  padding: 10px 30px;
+  border-radius: 5px;
+  font-family: 'MFontB';
+  cursor: pointer;
+  transition-duration: 0.3s;
+  color: #fff;
+  text-decoration: none;
+  margin: 5px;
+}
+
+.MButton:hover {
+  background-color: var(--MButtonBG);
+  color: var(--PrimaryColor);
+  fill: var(--PrimaryColor);
+}
+
+/* #endregion */
+
+/* #region MGroup */
+.MGroup {
+  display: flex;
+  background-color: var(--MGroupBG);
+  border-radius: 5px;
+  padding: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  width: 100%;
+  box-shadow: 0 2px 5px 1px #0000001a;
+}
+
+.MGroupTitle {
+  display: flex;
+  width: 100%;
+  font-family: 'MFontB';
+  font-size: 16px;
+  justify-content: center;
+  color: var(--TextColor);
+  margin-bottom: 15px;
+}
+
+.MGroupButtons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 5px;
+}
+
+/* #endregion */
+
+/* #region MField */
+.MField {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  transition-duration: 0.3s;
+  z-index: 1;
+  align-items: center;
+  font-size: 16px;
+  font-family: 'MFontR';
+  margin: 15px 5px;
+  min-height: 35px;
+  flex: 1;
+  min-width: 150px;
+}
+
+.MField label {
+  display: flex;
+  width: min-content;
+  position: absolute;
+  pointer-events: none;
+  top: 7px;
+  right: 5px;
+  font-family: 'MFontR';
+  font-size: 14px;
+  color: var(--MFieldLabelColor);
+  transition-duration: 0.3s;
+  padding: 0 3px;
+  z-index: 5;
+  white-space: nowrap;
+}
+
+.MField label::before {
+  content: '';
+  position: absolute;
+  height: 3px;
+  width: 100%;
+  bottom: 3px;
+  right: 0;
+  background-color: var(--MFieldBG);
+  z-index: -1;
+  transition-duration: 0.3s;
+}
+
+.MField input,
+.MField textarea {
+  margin: 6px 8px;
+  display: flex;
+  width: 100%;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0);
+  border: 0;
+  outline: 0;
+  font-family: 'MFontR';
+  font-size: 15px;
+  color: var(--TextColor);
+}
+
+.MFieldBG {
+  display: flex;
+  width: calc(100% - 4px);
+  height: 100%;
+  border-radius: 5px;
+  background-color: var(--MFieldBG);
+  border: 1px solid var(--MFieldBorder);
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  transition-duration: 0.3s;
+}
+
+.MDateSeperator {
+  display: none;
+  color: var(--TextColor);
+}
+
+.MField input:focus~.MFieldBG,
+.MField textarea:focus~.MFieldBG {
+  border: 1px solid var(--PrimaryColor);
+}
+
+.MField input:valid:not(:focus)~.MFieldBG,
+.MField textarea:valid:not(:focus)~.MFieldBG {
+  border: 1px solid var(--TextColor);
+}
+
+.MField input:focus~label,
+.MField textarea:focus~label {
+  color: var(--PrimaryColor);
+  top: -13px;
+  font-size: 13px;
+  font-family: 'MFontR';
+}
+
+.MField input:valid:not(:focus)~label,
+.MField textarea:valid:not(:focus)~label {
+  color: var(--TextColor);
+  top: -13px;
+  font-size: 13px;
+  font-family: 'MFontR';
+}
+
+.MField input:read-only,
+.MField textarea:read-only {
+  color: var(--MFieldDisabled);
+  cursor: default;
+  line-height: 0.5;
+
+}
+
+.MField input:read-only~.MFieldBG,
+.MField textarea:read-only~.MFieldBG {
+  border: 1px dashed var(--MFieldDisabled);
+}
+
+.MField input:read-only~label,
+.MField textarea:read-only~label {
+  color: var(--MFieldDisabled);
+  top: -13px;
+  font-size: 13px;
+  font-family: 'MFontR';
+}
+
+.MField input[DateType="Day"],
+.MField input[DateType="Month"] {
+  width: 20%;
+  max-width: 30px;
+  margin: 5px;
+  text-align: center;
+}
+
+.MField input[DateType="Year"] {
+  flex: 1;
+  margin: 5px;
+  text-align: right;
+}
+/* #endregion */
+
+/* #region Attachments */
+.Attachments {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.Attachment {
+  display: flex;
+  width: 120px;
+  border-radius: 5px;
+  border: 1px solid var(--AttachmentBorder);
+  background-color: var(--AttachmentBG);
+  margin: 5px;
+}
+
+.AttachmentContainer {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.AttachmentImage {
+  display: flex;
+  width: 100%;
+  height: 100px;
+  border-radius: 5px;
+  margin: 5px 5px 0 5px;
+  justify-content: center;
+  align-items: center;
+  font-family: 'MFontB';
+}
+
+.AttachmentImage img {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.AttachmentButtons {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+}
+
+.AttachmentButtons .MButton {
+  min-width: 0;
+  width: 20px;
+  height: 20px;
+  margin: 5px 2.5px;
+  padding: 5px;
+}
+
+.AttachmentButtons svg {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  fill: #fff;
+}
+
+.AttachmentButtons .MButton:hover svg {
+  fill: var(--PrimaryColor);
+}
+
+.AttachmentName {
+  display: flex;
+  width: 100%;
+  margin: 0 5px 5px 5px;
+  border-top: 1px solid var(--AttachmentBorder);
+}
+
+.AttachmentName input {
+  display: flex;
+  width: 100%;
+  border: 0;
+  outline: none;
+  background-color: transparent;
+  text-align: center;
+  margin-top: 5px;
+  font-family: 'MFontR';
+  font-size: 14px;
+  color: var(--TextColor);
+}
+
+input[type="file"] {
+  display: none;
+}
+/* #endregion */
+
+/* #region MComboBox */
+/*rtl:begin:ignore*/
+.MComboBox {
+  display: flex;
+  position: relative;
+  max-height: 40px;
+  height: 35px;
+  margin: 10px 5px;
+}
+
+.MComboBox::-webkit-scrollbar-track {
+  border-radius: 2.5px 0 0 2.5px;
+}
+
+.MComboBox::-webkit-scrollbar-thumb {
+  border-radius: 2.5px 0 0 2.5px;
+}
+
+.MComboBox .MCBValueContainer {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  transition-duration: 0.3s;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.MComboBox label {
+  display: flex;
+  width: min-content;
+  position: absolute;
+  pointer-events: none;
+  top: calc(50% - 0.7em);
+  right: 5px;
+  font-family: 'MFontR';
+  font-size: 14px;
+  color: var(--MComboBoxLabelColor);
+  transition-duration: 0.3s;
+  padding: 0 3px;
+  z-index: 5;
+  white-space: nowrap;
+}
+
+.MComboBox label::before {
+  content: '';
+  position: absolute;
+  height: 3px;
+  width: 100%;
+  bottom: 5px;
+  right: 0;
+  background-color: var(--MComboBoxBG);
+  z-index: -1;
+  transition-duration: 0.3s;
+}
+
+.MComboBox input {
+  margin: 6px 8px;
+  display: flex;
+  width: calc(100% - 47px);
+  height: calc(100% - 12px);
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0);
+  border: 0;
+  outline: 0;
+  font-family: 'MFontR';
+  font-size: 15px;
+  color: var(--TextColor);
+}
+
+.MComboBox .MComboBoxChevron {
+  width: 15px;
+  display: flex;
+  margin: 0 5px 0 10px;
+  transform: rotate(0);
+  transition-duration: 0.3s;
+}
+
+.MComboBox .MComboBoxBG {
+  display: flex;
+  width: calc(100% - 4px);
+  height: 100%;
+  border-radius: 5px;
+  background-color: var(--MComboBoxBG);
+  border: 1px solid var(--MComboBoxBorder);
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  transition-duration: 0.3s;
+}
+
+.MComboBox .MComboBoxChevron svg {
+  fill: var(--MComboBoxSVG);
+  width: 100%;
+}
+
+.MComboBox .MComboBoxItems {
+  position: absolute;
+  display: none;
+  background-color: var(--MComboBoxItemsBG);
+  border: 1px solid var(--MComboBoxItemsBorder);
+  border-radius: 5px;
+  width: calc(100% - 4px);
+  max-height: 150px;
+  overflow-y: auto;
+  top: calc(100% + 5px);
+  z-index: 100;
+  transition-duration: 0.3s;
+  flex-wrap: wrap;
+}
+
+.MComboBox .MComboBoxItem {
+  font-family: 'MFontR';
+  font-size: 15px;
+  color: var(--TextColor);
+  width: 100%;
+  padding: 5px;
+  outline: none;
+  user-select: none;
+  cursor: pointer;
+  min-height: 30px;
+  transition-duration: 0.3s;
+  align-items: center;
+}
+
+.MComboBox .MComboBoxItem:nth-child(even) {
+  background-color: var(--MComboBoxItemEven);
+}
+
+.MComboBox .MComboBoxItem:hover {
+  color: var(--PrimaryColor);
+}
+
+.MComboBox .MComboBoxItemHighlight {
+  color: var(--PrimaryColor) !important;
+}
+
+.MComboBox input:focus~.MComboBoxBG {
+  border: 1px solid var(--PrimaryColor);
+}
+
+.MComboBox input:valid:not(:focus)~.MComboBoxBG {
+  border: 1px solid var(--MComboBoxFilled);
+}
+
+.MComboBox input:focus~label {
+  color: var(--PrimaryColor);
+  top: -11.5px;
+  font-size: 13px;
+  font-family: 'MFontR';
+}
+
+.MComboBox input:valid:not(:focus)~label {
+  color: var(--MComboBoxFilled);
+  top: -11.5px;
+  font-size: 13px;
+  font-family: 'MFontR';
+}
+
+.MComboBox input:focus~.MComboBoxChevron svg {
+  fill: var(--PrimaryColor);
+}
+.MComboBox input:valid:not(:focus)~.MComboBoxChevron svg {
+  fill: var(--MComboBoxFilled);
+}
+
+.MComboBox input:read-only:not(:focus)~label {
+  color: var(--TextColor);
+  top: -11.5px;
+  font-size: 13px;
+  font-family: 'MFontR';
+}
+
+.MComboBox input:read-only:not(:focus)~.MComboBoxBG {
+  border: 2px solid var(--TextColor);
+}
+
+.MComboBox[MCBDisabled='true'] {
+  pointer-events: none;
+}
+
+.MComboBox[MCBDisabled='true'] input {
+  color: var(--MComboBoxDisabled) !important;
+}
+
+.MComboBox[MCBDisabled='true'] label {
+  color: var(--MComboBoxDisabled) !important;
+}
+
+.MComboBox[MCBDisabled='true'] .MComboBoxChevron svg {
+  display: none;
+}
+
+.MComboBox[MCBDisabled='true'] .MComboBoxBG {
+  border: 1px dashed var(--MComboBoxDisabled) !important;
+}
+/*rtl:end:ignore*/
+/* #endregion */
+
+/* #region Modals */
+/* ========== Modals ========== */
+.ActiveModal {
+  overflow: hidden;
+}
+
+.ModalContainer {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  transform: scale(0);
+  z-index: 101;
+  display: none;
+  animation: unfoldIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.ModalContainer.out {
+  transform: scale(1);
+  animation: unfoldOut 0.5s 0.2s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.ModalContainer.out .ModalBackground .Modal {
+  animation: zoomOut 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.ModalContainer .ModalBackground {
+  display: table-cell;
+  background: rgba(0, 0, 0, 0.8);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.ModalContainer .ModalBackground .Modal {
+  background-color: var(--BGColor);
+  display: inline-block;
+  border-radius: 4px;
+  font-weight: 300;
+  position: relative;
+  width: 90vw;
+  min-width: 250px;
+  max-width: max-content;
+  vertical-align: middle;
+  overflow: auto;
+  max-height: 95vh;
+  padding: 0;
+  margin-top: 10px;
+  transform: scale(0);
+  animation: zoomIn 0.3s 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.ModalHeaderRow {
+  width: 100%;
+  background-color: var(--Color2);
+  border-bottom: 2px solid var(--TextColor);
+  border-radius: 4px 4px 0 0;
+}
+
+.ModalHeaderTitle {
+  font-family: MFontB;
+  font-size: 16px;
+  color: var(--TextColor);
+  padding: 7px 0 10px 0;
+}
+
+.ModalHeaderCloseBTN {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.ModalHeaderCloseBTN svg {
+  width: 20px;
+  fill: var(--TextColor);
+}
+
+.ModalHeaderCloseBTN:active svg {
+  fill: var(--PrimeryColor);
+}
+
+.ModalContent {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow-y: auto;
+  max-height: calc(90vh - 65px);
+  padding: 10px 0;
+
+}
+
+.ModalContentGroup {
+  width: calc(100% - 10px);
+  display: flex;
+  flex-wrap: wrap;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin: 10px 0;
+  border-radius: 4px;
+  justify-content: center;
+  position: relative;
+}
+
+.ModalContentGroupTitle {
+  width: 100%;
+  display: flex;
+  font-family: MFontB;
+  font-size: 16px;
+  color: #fff;
+  border-bottom: 1px solid #fff;
+  border-radius: 4px 4px 0 0;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 7px 0;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.ModalContentGroupFields {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ModalContentGroup input::placeholder {
+  color: #666;
+  opacity: 1;
+}
+
+.ModalContentGroup .MFieldInput,
+.ModalContentGroup .MFieldValue {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid #666;
+}
+
+.ModalContentGroupButtons {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  margin: 5px 0;
+  justify-content: center;
+}
+
+.ModalContentGroupButtons .MButton {
+  flex: 1;
+  max-width: 300px;
+}
+
+.ModalButtons {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@keyframes unfoldIn {
+  0% {
+      transform: scaleY(0.005) scaleX(0);
+  }
+
+  50% {
+      transform: scaleY(0.005) scaleX(1);
+  }
+
+  100% {
+      transform: scaleY(1) scaleX(1);
+  }
+}
+
+@keyframes unfoldOut {
+  0% {
+      transform: scaleY(1) scaleX(1);
+  }
+
+  50% {
+      transform: scaleY(0.005) scaleX(1);
+  }
+
+  100% {
+      transform: scaleY(0.005) scaleX(0);
+  }
+}
+
+@keyframes zoomIn {
+  0% {
+      transform: scale(0);
+  }
+
+  100% {
+      transform: scale(1);
+  }
+}
+
+@keyframes zoomOut {
+  0% {
+      transform: scale(1);
+  }
+
+  100% {
+      transform: scale(0);
+  }
+}
+
+/* ============= Essential Modals Style ============== */
+#MessageModal {
+  z-index: 300;
+}
+
+#MessageModal .TheMessage {
+  font-family: MFontB;
+  font-size: 16px;
+  color: var(--TextColor);
+  display: flex;
+  margin: 20px 5px;
+  width: 100%;
+  justify-content: center;
+  text-justify: inter-word;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+#ChooseModal {
+  z-index: 200;
+}
+
+#ChooseModal .ChooseModalQuestion {
+  font-family: MFontB;
+  font-size: 16px;
+  color: var(--TextColor);
+  display: flex;
+  margin: 20px 10px;
+  width: fit-content;
+  justify-content: center;
+  text-justify: inter-word;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+#LoadingModal {
+  z-index: 400;
+}
+
+#LoadingModal .LoadingText {
+  font-family: MFontB;
+  font-size: 16px;
+  color: var(--TextColor);
+  margin: 10px 5px;
+  width: 100%;
+}
+/* #endregion */

@@ -1,0 +1,112 @@
+@font-face {
+  font-family: "MFontR";
+  src: url('../assets/fonts/Tajawal-Regular.ttf') format('truetype');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "MFontB";
+  src: url('../assets/fonts/Tajawal-Bold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  /* #region Global */
+  --PrimaryColor: #1976d2;
+  --BGColor: #f8f7fa;
+  --TextColor: #000;
+  /* #endregion */
+
+  /* #region MSidebar */
+  --MSideBarBGColor: #fff;
+  --MSideBarItemHover: rgba(0, 0, 0, 0.05);
+  --MSidebarItemsGroupHeader: rgba(0, 0, 0, 0.05);
+  --MSidebarItemsGroupHeaderActive: rgba(0, 0, 0, 0.1);
+  /* #endregion */
+
+  /* #region MHeader */
+  --MHeaderBGColor: rgba(255, 255, 255, 0.7);
+  --MHeaderBTNHover: rgba(0, 0, 0, 0.05);
+  /* #endregion */
+
+  /* #region MButton */
+  --MButtonBG: rgba(0, 0, 0, 0.1);
+  /* #endregion */
+
+  /* #region MGroup */
+  --MGroupBG: rgba(255, 255, 255, 0.7);
+  /* #endregion */
+
+  /* #region MField */
+  --MFieldBG: #fff;
+  --MFieldLabelColor: rgba(0, 0, 0, 0.6);
+  --MFieldBorder: rgba(0, 0, 0, 0.6);
+  --MFieldDisabled: #777;
+  /* #endregion */
+
+  /* #region MComboBox */
+  --MComboBoxBG: #fff;
+  --MComboBoxLabelColor: rgba(0, 0, 0, 0.6);
+  --MComboBoxBorder: rgba(0, 0, 0, 0.6);
+  --MComboBoxSVG: rgba(0, 0, 0, 0.6);
+  --MComboBoxItemsBG: #fff;
+  --MComboBoxItemsBorder: rgba(0, 0, 0, 0.6);
+  --MComboBoxItemEven: rgba(0, 0, 0, 0.05);
+  --MComboBoxFilled: rgba(0, 0, 0, 1);
+  --MComboBoxDisabled: #777;
+  /* #endregion */
+}
+
+.DarkMode {
+  /* #region Global */
+  --PrimaryColor: #1976d2;
+  --BGColor: #25293c;
+  --TextColor: #fff;
+  /* #endregion */
+
+  /* #region MSidebar */
+  --MSideBarBGColor: #2f3349;
+  --MSideBarItemHover: rgba(255, 255, 255, 0.05);
+  --MSidebarItemsGroupHeader: rgba(255, 255, 255, 0.05);
+  --MSidebarItemsGroupHeaderActive: rgba(255, 255, 255, 0.1);
+  /* #endregion */
+
+  /* #region MHeader */
+  --MHeaderBGColor: rgba(47, 51, 73, 0.7);
+  --MHeaderBTNHover: rgba(255, 255, 255, 0.05);
+  /* #endregion */
+
+  /* #region MButton */
+  --MButtonBG: rgba(255, 255, 255, 0.1);
+  /* #endregion */
+
+  /* #region MGroup */
+  --MGroupBG: rgba(47, 51, 73, 0.7);
+  /* #endregion */
+
+  /* #region MField */
+  --MFieldBG: #2f3349;
+  --MFieldLabelColor: rgba(255, 255, 255, 0.6);
+  --MFieldBorder: rgba(255, 255, 255, 0.6);
+  --MFieldDisabled: #aaa;
+  /* #endregion */
+
+  /* #region MComboBox */
+  --MComboBoxBG: #2f3349;
+  --MComboBoxLabelColor: rgba(255, 255, 255, 0.6);
+  --MComboBoxBorder: rgba(255, 255, 255, 0.6);
+  --MComboBoxSVG: rgba(255, 255, 255, 0.6);
+  --MComboBoxItemsBG: #2f3349;
+  --MComboBoxItemsBorder: rgba(255, 255, 255, 0.6);
+  --MComboBoxItemEven: rgba(255, 255, 255, 0.05);
+  --MComboBoxFilled: rgba(255, 255, 255, 1);
+  --MComboBoxDisabled: #aaa;
+  /* #endregion */
+
+  /* #region MComboBox */
+  --AttachmentBG: #25293c;
+  --AttachmentBorder: #666;
+  /* #endregion */
+
+}
