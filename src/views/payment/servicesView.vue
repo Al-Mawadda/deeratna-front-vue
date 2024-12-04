@@ -1,30 +1,30 @@
 <template>
   <div class="ComponentWrapper">
-    <div class="MButton" id="GetSuccessInstallmentsTransactionsBTN">
+    <div class="MButton" id="GetSuccessServicesTransactionsBTN">
       عرض البيانات
     </div>
     <div class="MGroup">
       <MDate
-        ref="InstallmentsFromDate"
-        :Name="'InstallmentsFromDate'"
+        ref="ServicesFromDate"
+        :Name="'ServicesFromDate'"
         :Label="'تاريخ من'"
       ></MDate>
       <MDate
-        ref="InstallmentsToDate"
-        :Name="'InstallmentsToDate'"
+        ref="ServicesToDate"
+        :Name="'ServicesToDate'"
         :Label="'تاريخ الى'"
       ></MDate>
     </div>
 
     <MTable
-      ref="InstallmentsTB"
-      :MTableName="'InstallmentsTB'"
-      :DataArray="InstallmentsTBData"
-      :HeadersArray="InstallmentsTBHeaders"
-      :TotalsArray="InstallmentsTBTotals"
-      :DisplayColumnsArray="InstallmentsTBDisplayColumns"
-      :GetDataFunction="GetInstallmentsData"
-      :RowsCount="InstallmentsTBRowsCount"
+      ref="ServicesTB"
+      :MTableName="'ServicesTB'"
+      :DataArray="ServicesTBData"
+      :HeadersArray="ServicesTBHeaders"
+      :TotalsArray="ServicesTBTotals"
+      :DisplayColumnsArray="ServicesTBDisplayColumns"
+      :GetDataFunction="GetServicesData"
+      :RowsCount="ServicesTBRowsCount"
       :RowsPerPage="10"
     >
       <template v-slot:options>
@@ -51,7 +51,7 @@
 
     <div class="MGroup">
       <div class="MlabelText">مجموع المبالغ =</div>
-      <div class="MlabelNumber" id="InstallmentsTotal"></div>
+      <div class="MlabelNumber" id="ServicesTotal"></div>
     </div>
   </div>
 </template>
@@ -74,9 +74,9 @@ export default {
 
     return {
       hasPermission,
-      InstallmentsTB: ref(null),
-      InstallmentsTBData: ref([]),
-      InstallmentsTBHeaders: ref([
+      ServicesTB: ref(null),
+      ServicesTBData: ref([]),
+      ServicesTBHeaders: ref([
         '#',
         'المجمع',
         'اسم الساكن',
@@ -88,7 +88,7 @@ export default {
         'التاريخ',
         'معرف المعاملة',
       ]),
-      InstallmentsTBDisplayColumns: ref([
+      ServicesTBDisplayColumns: ref([
         'id',
         'compound',
         'person_name',
@@ -100,39 +100,39 @@ export default {
         'created_at',
         'transaction_id',
       ]),
-      InstallmentsTBTotals: ref(['Count', '', '', '', '', '', '']),
-      InstallmentsTBRowsCount: ref(0),
-      InstallmentsFromDate: ref(null),
-      InstallmentsToDate: ref(null),
+      ServicesTBTotals: ref(['Count', '', '', '', '', '', '']),
+      ServicesTBRowsCount: ref(0),
+      ServicesFromDate: ref(null),
+      ServicesToDate: ref(null),
     }
   },
   mounted() {
-    this.InstallmentsTB.LoadMTable()
+    this.ServicesTB.LoadMTable()
     document
-      .getElementById('GetSuccessInstallmentsTransactionsBTN')
+      .getElementById('GetSuccessServicesTransactionsBTN')
       .addEventListener(
         'click',
         function () {
-          this.InstallmentsTB.LoadMTable()
+          this.ServicesTB.LoadMTable()
         }.bind(this),
       )
   },
   methods: {
-    GetInstallmentsData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetServicesData(PageNo = 1, FilterArray = {}, SortArray = {}) {
       api
-        .get('GetInstallmentsTransactions', {
+        .get('GetServicesTransactions', {
           params: {
             PageNo: PageNo,
             FilterArray: FilterArray,
             SortArray: SortArray,
-            installmentFrom: this.InstallmentsFromDate.Get(),
-            installmentTo: this.InstallmentsToDate.Get(),
+            serviceFrom: this.ServicesFromDate.Get(),
+            serviceTo: this.ServicesToDate.Get(),
           },
         })
         .then(response => {
-          this.InstallmentsTBRowsCount = response.data.paginated_data.total
-          this.InstallmentsTBData = response.data.paginated_data.data
-          document.getElementById('InstallmentsTotal').innerHTML =
+          this.ServicesTBRowsCount = response.data.paginated_data.total
+          this.ServicesTBData = response.data.paginated_data.data
+          document.getElementById('ServicesTotal').innerHTML =
             new Intl.NumberFormat('en-US').format(
               response.data.total_payment_amount,
             )
@@ -146,8 +146,8 @@ export default {
 </script>
 
 <style scoped>
-#InstallmentsFromDate,
-#InstallmentsToDate {
+#ServicesFromDate,
+#ServicesToDate {
   max-width: 300px;
 }
 </style>

@@ -1,30 +1,30 @@
 <template>
   <div class="ComponentWrapper">
-    <div class="MButton" id="GetSuccessInstallmentsTransactionsBTN">
+    <div class="MButton" id="GetSuccessElectricitysTransactionsBTN">
       عرض البيانات
     </div>
     <div class="MGroup">
       <MDate
-        ref="InstallmentsFromDate"
-        :Name="'InstallmentsFromDate'"
+        ref="ElectricitysFromDate"
+        :Name="'ElectricitysFromDate'"
         :Label="'تاريخ من'"
       ></MDate>
       <MDate
-        ref="InstallmentsToDate"
-        :Name="'InstallmentsToDate'"
+        ref="ElectricitysToDate"
+        :Name="'ElectricitysToDate'"
         :Label="'تاريخ الى'"
       ></MDate>
     </div>
 
     <MTable
-      ref="InstallmentsTB"
-      :MTableName="'InstallmentsTB'"
-      :DataArray="InstallmentsTBData"
-      :HeadersArray="InstallmentsTBHeaders"
-      :TotalsArray="InstallmentsTBTotals"
-      :DisplayColumnsArray="InstallmentsTBDisplayColumns"
-      :GetDataFunction="GetInstallmentsData"
-      :RowsCount="InstallmentsTBRowsCount"
+      ref="ElectricitysTB"
+      :MTableName="'ElectricitysTB'"
+      :DataArray="ElectricitysTBData"
+      :HeadersArray="ElectricitysTBHeaders"
+      :TotalsArray="ElectricitysTBTotals"
+      :DisplayColumnsArray="ElectricitysTBDisplayColumns"
+      :GetDataFunction="GetElectricitysData"
+      :RowsCount="ElectricitysTBRowsCount"
       :RowsPerPage="10"
     >
       <template v-slot:options>
@@ -51,7 +51,7 @@
 
     <div class="MGroup">
       <div class="MlabelText">مجموع المبالغ =</div>
-      <div class="MlabelNumber" id="InstallmentsTotal"></div>
+      <div class="MlabelNumber" id="ElectricitysTotal"></div>
     </div>
   </div>
 </template>
@@ -74,9 +74,9 @@ export default {
 
     return {
       hasPermission,
-      InstallmentsTB: ref(null),
-      InstallmentsTBData: ref([]),
-      InstallmentsTBHeaders: ref([
+      ElectricitysTB: ref(null),
+      ElectricitysTBData: ref([]),
+      ElectricitysTBHeaders: ref([
         '#',
         'المجمع',
         'اسم الساكن',
@@ -88,7 +88,7 @@ export default {
         'التاريخ',
         'معرف المعاملة',
       ]),
-      InstallmentsTBDisplayColumns: ref([
+      ElectricitysTBDisplayColumns: ref([
         'id',
         'compound',
         'person_name',
@@ -100,39 +100,39 @@ export default {
         'created_at',
         'transaction_id',
       ]),
-      InstallmentsTBTotals: ref(['Count', '', '', '', '', '', '']),
-      InstallmentsTBRowsCount: ref(0),
-      InstallmentsFromDate: ref(null),
-      InstallmentsToDate: ref(null),
+      ElectricitysTBTotals: ref(['Count', '', '', '', '', '', '']),
+      ElectricitysTBRowsCount: ref(0),
+      ElectricitysFromDate: ref(null),
+      ElectricitysToDate: ref(null),
     }
   },
   mounted() {
-    this.InstallmentsTB.LoadMTable()
+    this.ElectricitysTB.LoadMTable()
     document
-      .getElementById('GetSuccessInstallmentsTransactionsBTN')
+      .getElementById('GetSuccessElectricitysTransactionsBTN')
       .addEventListener(
         'click',
         function () {
-          this.InstallmentsTB.LoadMTable()
+          this.ElectricitysTB.LoadMTable()
         }.bind(this),
       )
   },
   methods: {
-    GetInstallmentsData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetElectricitysData(PageNo = 1, FilterArray = {}, SortArray = {}) {
       api
-        .get('GetInstallmentsTransactions', {
+        .get('GetElectricityTransactions', {
           params: {
             PageNo: PageNo,
             FilterArray: FilterArray,
             SortArray: SortArray,
-            installmentFrom: this.InstallmentsFromDate.Get(),
-            installmentTo: this.InstallmentsToDate.Get(),
+            electricityFrom: this.ElectricitysFromDate.Get(),
+            electricityTo: this.ElectricitysToDate.Get(),
           },
         })
         .then(response => {
-          this.InstallmentsTBRowsCount = response.data.paginated_data.total
-          this.InstallmentsTBData = response.data.paginated_data.data
-          document.getElementById('InstallmentsTotal').innerHTML =
+          this.ElectricitysTBRowsCount = response.data.paginated_data.total
+          this.ElectricitysTBData = response.data.paginated_data.data
+          document.getElementById('ElectricitysTotal').innerHTML =
             new Intl.NumberFormat('en-US').format(
               response.data.total_payment_amount,
             )
@@ -146,8 +146,8 @@ export default {
 </script>
 
 <style scoped>
-#InstallmentsFromDate,
-#InstallmentsToDate {
+#ElectricitysFromDate,
+#ElectricitysToDate {
   max-width: 300px;
 }
 </style>

@@ -1,30 +1,30 @@
 <template>
   <div class="ComponentWrapper">
-    <div class="MButton" id="GetSuccessInstallmentsTransactionsBTN">
+    <div class="MButton" id="GetSuccessCarLabelsTransactionsBTN">
       عرض البيانات
     </div>
     <div class="MGroup">
       <MDate
-        ref="InstallmentsFromDate"
-        :Name="'InstallmentsFromDate'"
+        ref="CarLabelsFromDate"
+        :Name="'CarLabelsFromDate'"
         :Label="'تاريخ من'"
       ></MDate>
       <MDate
-        ref="InstallmentsToDate"
-        :Name="'InstallmentsToDate'"
+        ref="CarLabelsToDate"
+        :Name="'CarLabelsToDate'"
         :Label="'تاريخ الى'"
       ></MDate>
     </div>
 
     <MTable
-      ref="InstallmentsTB"
-      :MTableName="'InstallmentsTB'"
-      :DataArray="InstallmentsTBData"
-      :HeadersArray="InstallmentsTBHeaders"
-      :TotalsArray="InstallmentsTBTotals"
-      :DisplayColumnsArray="InstallmentsTBDisplayColumns"
-      :GetDataFunction="GetInstallmentsData"
-      :RowsCount="InstallmentsTBRowsCount"
+      ref="CarLabelsTB"
+      :MTableName="'CarLabelsTB'"
+      :DataArray="CarLabelsTBData"
+      :HeadersArray="CarLabelsTBHeaders"
+      :TotalsArray="CarLabelsTBTotals"
+      :DisplayColumnsArray="CarLabelsTBDisplayColumns"
+      :GetDataFunction="GetCarLabelsData"
+      :RowsCount="CarLabelsTBRowsCount"
       :RowsPerPage="10"
     >
       <template v-slot:options>
@@ -51,7 +51,7 @@
 
     <div class="MGroup">
       <div class="MlabelText">مجموع المبالغ =</div>
-      <div class="MlabelNumber" id="InstallmentsTotal"></div>
+      <div class="MlabelNumber" id="CarLabelsTotal"></div>
     </div>
   </div>
 </template>
@@ -61,7 +61,7 @@ import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
 import MTable from '../../components/MTable.vue'
 import MDate from '../../components/MDate.vue'
-import { ShowMessage } from '@/MJS.js'
+
 export default {
   components: {
     MTable,
@@ -74,71 +74,73 @@ export default {
 
     return {
       hasPermission,
-      InstallmentsTB: ref(null),
-      InstallmentsTBData: ref([]),
-      InstallmentsTBHeaders: ref([
+      CarLabelsTB: ref(null),
+      CarLabelsTBData: ref([]),
+      CarLabelsTBHeaders: ref([
         '#',
         'المجمع',
         'اسم الساكن',
         'العنوان',
         'رقم الهاتف',
+        'نوع العملية',
         'المبلغ',
         'الحالة',
         'الية الدفع',
         'التاريخ',
         'معرف المعاملة',
       ]),
-      InstallmentsTBDisplayColumns: ref([
+      CarLabelsTBDisplayColumns: ref([
         'id',
         'compound',
         'person_name',
         'address',
         'phone',
+        'payment_name',
         'payment_amount',
         'transaction_status',
         'payment_method',
         'created_at',
         'transaction_id',
       ]),
-      InstallmentsTBTotals: ref(['Count', '', '', '', '', '', '']),
-      InstallmentsTBRowsCount: ref(0),
-      InstallmentsFromDate: ref(null),
-      InstallmentsToDate: ref(null),
+      CarLabelsTBTotals: ref(['Count', '', '', '', '', '', '']),
+      CarLabelsTBRowsCount: ref(0),
+      CarLabelsFromDate: ref(null),
+      CarLabelsToDate: ref(null),
     }
   },
   mounted() {
-    this.InstallmentsTB.LoadMTable()
+    this.CarLabelsTB.LoadMTable()
     document
-      .getElementById('GetSuccessInstallmentsTransactionsBTN')
+      .getElementById('GetSuccessCarLabelsTransactionsBTN')
       .addEventListener(
         'click',
         function () {
-          this.InstallmentsTB.LoadMTable()
+          this.CarLabelsTB.LoadMTable()
         }.bind(this),
       )
   },
   methods: {
-    GetInstallmentsData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetCarLabelsData(PageNo = 1, FilterArray = {}, SortArray = {}) {
       api
-        .get('GetInstallmentsTransactions', {
+        .get('GetCarLabelsTransactions', {
           params: {
             PageNo: PageNo,
             FilterArray: FilterArray,
             SortArray: SortArray,
-            installmentFrom: this.InstallmentsFromDate.Get(),
-            installmentTo: this.InstallmentsToDate.Get(),
+            carLabelFrom: this.CarLabelsFromDate.Get(),
+            carLabelTo: this.CarLabelsToDate.Get(),
           },
         })
         .then(response => {
-          this.InstallmentsTBRowsCount = response.data.paginated_data.total
-          this.InstallmentsTBData = response.data.paginated_data.data
-          document.getElementById('InstallmentsTotal').innerHTML =
+          this.CarLabelsTBRowsCount = response.data.paginated_data.total
+          this.CarLabelsTBData = response.data.paginated_data.data
+          document.getElementById('CarLabelsTotal').innerHTML =
             new Intl.NumberFormat('en-US').format(
               response.data.total_payment_amount,
             )
         })
         .catch(error => {
-          ShowMessage('حدث خطا', error)
+          this.ShowMessage('حدث خطا', error)
         })
     },
   },
@@ -146,8 +148,8 @@ export default {
 </script>
 
 <style scoped>
-#InstallmentsFromDate,
-#InstallmentsToDate {
+#CarLabelsFromDate,
+#CarLabelsToDate {
   max-width: 300px;
 }
 </style>

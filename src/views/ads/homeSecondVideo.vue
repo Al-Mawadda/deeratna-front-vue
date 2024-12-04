@@ -1,16 +1,10 @@
 <template>
   <div class="ComponentWrapper">
-    <div v-if="hasPermission('ads_video_create')" class="MGroup">
+    <div v-if="hasPermission('ads_ser_view')" class="MGroup">
       <form @submit.prevent="postSliderAd" class="MGroup">
-        <div class="MField" id="name">
-          <input v-model="formData.name" type="text" required />
+        <div class="MField">
+          <input v-model="formData.name" type="text" id="name" required />
           <label>اسم الفيديو</label>
-          <div class="MFieldBG"></div>
-        </div>
-
-        <div class="MField" id="compound">
-          <input v-model="formData.compound" type="text" required />
-          <label>اسم المجمع</label>
           <div class="MFieldBG"></div>
         </div>
 
@@ -26,38 +20,35 @@
             />
           </label>
         </div>
-
         <div>
           <button class="MButton" type="submit">ارسال</button>
         </div>
       </form>
+      <!-- Table Section -->
 
-      <table
-        v-if="hasPermission('ads_video_view')"
-        class="table table-bordered"
-      >
+      <table v-if="hasPermission('ads_main_view')" class="table table-bordered">
         <thead>
           <tr>
-            <th>اسم الفيديو</th>
-            <th>المجمع</th>
-            <th>الفيديو</th>
-            <th>الإجراءات</th>
+            <th>اسم الاعلان</th>
+            <th>الصورة</th>
+            <th>الاجراءات</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="row in tableData" :key="row.id">
             <td>{{ row.name }}</td>
-            <td>{{ row.compound }}</td>
             <td>
-              <video
-                :src="row.video"
-                controls
-                style="width: 200px; height: 180px"
-              ></video>
+              <div v-if="row.images[0]?.path">
+                <video
+                  :src="row.images[0]?.path"
+                  controls
+                  style="width: 100px; height: auto"
+                ></video>
+              </div>
             </td>
             <td>
               <button
-                v-if="hasPermission('ads_video_delete')"
+                v-if="hasPermission('ads_main_delete')"
                 class="btn btn-danger"
                 @click="deleteRow(row)"
               >
@@ -68,9 +59,6 @@
         </tbody>
       </table>
     </div>
-
-    <!-- Form Section -->
-    <div v-if="hasPermission('ads_video_create')" class="form-section"></div>
   </div>
 </template>
 
@@ -79,6 +67,7 @@ import { ref, onMounted } from 'vue'
 import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
 import { ShowLoading, HideLoading } from '@/MJS.js'
+
 export default {
   name: 'PostSliderAd',
   setup() {
@@ -92,9 +81,14 @@ export default {
     // Form data
     const formData = ref({
       name: '',
-      compound: '',
       image: null,
     })
+
+    // Handle file upload
+    const handleFileUpload = event => {
+      formData.value.image = event.target.files[0]
+      event.target.value = ''
+    }
 
     // Table data
     const tableData = ref([])
@@ -102,75 +96,67 @@ export default {
     // Fetch table data
     const fetchTableData = async () => {
       try {
-        const response = await api.get('/main-slider-ads-get') // Replace with your API endpoint
+        const response = await api.get('ads-get/secondVideo')
         if (response.data.success) {
-          tableData.value = response.data.data.map(item => ({
-            id: item.id,
-            name: item.name,
-            compound: item.compound,
-            video: item.images.length > 0 ? item.images[0].path : null,
-          }))
+          tableData.value = response.data.data
         }
       } catch (error) {
-        console.error('Failed to fetch slider ads.', error)
+        console.error('Failed to fetch ads.', error)
       }
     }
 
-    // Post new slider ad
+    // Post new ad
     const postSliderAd = async () => {
       ShowLoading()
       try {
         const formDataObj = new FormData()
         formDataObj.append('name', formData.value.name)
-        formDataObj.append('compound', formData.value.compound)
-        //console.log(formData.value.image)
+        formDataObj.append('type', 'secondVideo')
         if (formData.value.image) {
           formDataObj.append('image', formData.value.image)
         }
 
-        await api.post('/main-slider-ads-post', formDataObj, {
+        await api.post('/ads-post', formDataObj, {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
 
         fetchTableData()
         HideLoading()
-
-        formData.value = { name: '', compound: '', image: null }
+        formData.value = { name: '', image: null }
       } catch (error) {
         HideLoading()
-        console.error('Failed to post slider ad.', error)
+        console.error('Failed to post ad.', error)
       }
     }
 
-    // Delete a row
+    // Delete an ad
     const deleteRow = async row => {
+      ShowLoading()
       try {
-        await api.delete(`/main-slider-ads-delete/${row.id}`)
+        await api.delete(`ads-delete/${row.id}`)
         fetchTableData()
+        HideLoading()
       } catch (error) {
-        console.error('Failed to delete slider ad.', error)
+        HideLoading()
+        console.error('Failed to delete ad.', error)
       }
     }
-    // Handle file upload
-    const handleFileUpload = event => {
-      formData.value.image = event.target.files[0]
-      event.target.value = ''
-    }
+
     // Fetch data on mounted
     onMounted(fetchTableData)
 
     return {
-      // Handle file upload
-      handleFileUpload,
       hasPermission,
       formData,
       tableData,
+      handleFileUpload,
       postSliderAd,
       deleteRow,
     }
   },
 }
 </script>
+
 <style scoped>
 .btn {
   padding: 8px 16px;

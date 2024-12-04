@@ -1,22 +1,34 @@
-import axios from 'axios';
-import { useAuthStore } from './stores/auth';
+import axios from 'axios'
+import { useAuthStore } from './stores/auth'
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api/',
+  //baseURL: 'http://localhost:8000/api/',
+  baseURL: 'https://app.deeratna.net/public/api/',
   headers: {
     'Content-Type': 'application/json',
   },
-});
+})
 
-api.interceptors.request.use((config) => {
-  const authStore = useAuthStore();
-  const token = authStore.token;
+api.interceptors.request.use(config => {
+  const authStore = useAuthStore()
+  const token = authStore.token
 
   if (token) {
-    config.headers['Authorization'] = `Bearer ${token}`;
+    config.headers['Authorization'] = `Bearer ${token}`
   }
 
-  return config;
-});
+  return config
+})
+export function GetServerPath() {
+  const baseURL = api.defaults.baseURL // Get the baseURL
+  try {
+    const url = new URL(baseURL)
+    const pathWithoutAPI = url.pathname.replace(/\/api\/?$/, '') // Remove '/api/' from the pathname
+    return `${url.origin}${pathWithoutAPI}` // Combine origin and modified pathname
+  } catch (error) {
+    console.error('Invalid URL', error)
+    return null
+  }
+}
 
-export { api };
+export { api }

@@ -1,12 +1,16 @@
-import { defineStore } from 'pinia';
+import { defineStore } from 'pinia'
 
-export const useGlobalsStore = defineStore('Globals', { 
+export const useGlobalsStore = defineStore('Globals', {
   state: () => ({
     MArray: [],
+    Permissions: [],
   }),
   actions: {
     setMArray(Value) {
-      this.MArray = Value;
+      this.MArray = Value
+    },
+    setPermissions(Value) {
+      this.Permissions = Value
     },
   },
-});
+})

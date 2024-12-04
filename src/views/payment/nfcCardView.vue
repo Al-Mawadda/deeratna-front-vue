@@ -1,30 +1,30 @@
 <template>
   <div class="ComponentWrapper">
-    <div class="MButton" id="GetSuccessInstallmentsTransactionsBTN">
+    <div class="MButton" id="GetSuccessNfcCardsTransactionsBTN">
       عرض البيانات
     </div>
     <div class="MGroup">
       <MDate
-        ref="InstallmentsFromDate"
-        :Name="'InstallmentsFromDate'"
+        ref="NfcCardsFromDate"
+        :Name="'NfcCardsFromDate'"
         :Label="'تاريخ من'"
       ></MDate>
       <MDate
-        ref="InstallmentsToDate"
-        :Name="'InstallmentsToDate'"
+        ref="NfcCardsToDate"
+        :Name="'NfcCardsToDate'"
         :Label="'تاريخ الى'"
       ></MDate>
     </div>
 
     <MTable
-      ref="InstallmentsTB"
-      :MTableName="'InstallmentsTB'"
-      :DataArray="InstallmentsTBData"
-      :HeadersArray="InstallmentsTBHeaders"
-      :TotalsArray="InstallmentsTBTotals"
-      :DisplayColumnsArray="InstallmentsTBDisplayColumns"
-      :GetDataFunction="GetInstallmentsData"
-      :RowsCount="InstallmentsTBRowsCount"
+      ref="NfcCardsTB"
+      :MTableName="'NfcCardsTB'"
+      :DataArray="NfcCardsTBData"
+      :HeadersArray="NfcCardsTBHeaders"
+      :TotalsArray="NfcCardsTBTotals"
+      :DisplayColumnsArray="NfcCardsTBDisplayColumns"
+      :GetDataFunction="GetNfcCardsData"
+      :RowsCount="NfcCardsTBRowsCount"
       :RowsPerPage="10"
     >
       <template v-slot:options>
@@ -51,7 +51,7 @@
 
     <div class="MGroup">
       <div class="MlabelText">مجموع المبالغ =</div>
-      <div class="MlabelNumber" id="InstallmentsTotal"></div>
+      <div class="MlabelNumber" id="NfcCardsTotal"></div>
     </div>
   </div>
 </template>
@@ -74,65 +74,67 @@ export default {
 
     return {
       hasPermission,
-      InstallmentsTB: ref(null),
-      InstallmentsTBData: ref([]),
-      InstallmentsTBHeaders: ref([
+      NfcCardsTB: ref(null),
+      NfcCardsTBData: ref([]),
+      NfcCardsTBHeaders: ref([
         '#',
         'المجمع',
         'اسم الساكن',
         'العنوان',
         'رقم الهاتف',
+        'نوع العملية',
         'المبلغ',
         'الحالة',
         'الية الدفع',
         'التاريخ',
         'معرف المعاملة',
       ]),
-      InstallmentsTBDisplayColumns: ref([
+      NfcCardsTBDisplayColumns: ref([
         'id',
         'compound',
         'person_name',
         'address',
         'phone',
+        'payment_name',
         'payment_amount',
         'transaction_status',
         'payment_method',
         'created_at',
         'transaction_id',
       ]),
-      InstallmentsTBTotals: ref(['Count', '', '', '', '', '', '']),
-      InstallmentsTBRowsCount: ref(0),
-      InstallmentsFromDate: ref(null),
-      InstallmentsToDate: ref(null),
+      NfcCardsTBTotals: ref(['Count', '', '', '', '', '', '']),
+      NfcCardsTBRowsCount: ref(0),
+      NfcCardsFromDate: ref(null),
+      NfcCardsToDate: ref(null),
     }
   },
   mounted() {
-    this.InstallmentsTB.LoadMTable()
+    this.NfcCardsTB.LoadMTable()
     document
-      .getElementById('GetSuccessInstallmentsTransactionsBTN')
+      .getElementById('GetSuccessNfcCardsTransactionsBTN')
       .addEventListener(
         'click',
         function () {
-          this.InstallmentsTB.LoadMTable()
+          this.NfcCardsTB.LoadMTable()
         }.bind(this),
       )
   },
   methods: {
-    GetInstallmentsData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetNfcCardsData(PageNo = 1, FilterArray = {}, SortArray = {}) {
       api
-        .get('GetInstallmentsTransactions', {
+        .get('GetNfcCardsTransactions', {
           params: {
             PageNo: PageNo,
             FilterArray: FilterArray,
             SortArray: SortArray,
-            installmentFrom: this.InstallmentsFromDate.Get(),
-            installmentTo: this.InstallmentsToDate.Get(),
+            nfcCardFrom: this.NfcCardsFromDate.Get(),
+            nfcCardTo: this.NfcCardsToDate.Get(),
           },
         })
         .then(response => {
-          this.InstallmentsTBRowsCount = response.data.paginated_data.total
-          this.InstallmentsTBData = response.data.paginated_data.data
-          document.getElementById('InstallmentsTotal').innerHTML =
+          this.NfcCardsTBRowsCount = response.data.paginated_data.total
+          this.NfcCardsTBData = response.data.paginated_data.data
+          document.getElementById('NfcCardsTotal').innerHTML =
             new Intl.NumberFormat('en-US').format(
               response.data.total_payment_amount,
             )
@@ -146,8 +148,8 @@ export default {
 </script>
 
 <style scoped>
-#InstallmentsFromDate,
-#InstallmentsToDate {
+#NfcCardsFromDate,
+#NfcCardsToDate {
   max-width: 300px;
 }
 </style>

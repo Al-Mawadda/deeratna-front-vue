@@ -1,11 +1,11 @@
 @font-face {
-  font-family: "MFontR";
+  font-family: 'MFontR';
   src: url('../assets/fonts/Tajawal-Regular.ttf') format('truetype');
   font-weight: normal;
 }
 
 @font-face {
-  font-family: "MFontB";
+  font-family: 'MFontB';
   src: url('../assets/fonts/Tajawal-Bold.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
@@ -55,6 +55,12 @@
   --MComboBoxItemEven: rgba(0, 0, 0, 0.05);
   --MComboBoxFilled: rgba(0, 0, 0, 1);
   --MComboBoxDisabled: #777;
+  /* #endregion */
+
+  /* #region RequestDetailsTable */
+  --RequestDetailsTableColor1: rgba(0, 0, 0, 0.05);
+  --RequestDetailsTableColor2: rgba(0, 0, 0, 0.1);
+  --RequestDetailsTableColor3: rgba(0, 0, 0, 0.4);
   /* #endregion */
 }
 
@@ -109,4 +115,9 @@
   --AttachmentBorder: #666;
   /* #endregion */
 
+  /* #region RequestDetailsTable */
+  --RequestDetailsTableColor1: rgba(255, 255, 255, 0.05);
+  --RequestDetailsTableColor2: rgba(255, 255, 255, 0.1);
+  --RequestDetailsTableColor3: rgba(255, 255, 255, 0.4);
+  /* #endregion */
 }

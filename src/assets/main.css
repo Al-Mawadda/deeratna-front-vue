@@ -92,7 +92,9 @@ body {
   width: 100%;
   box-shadow: 0 2px 5px 1px #0000001a;
 }
-
+.ModalMGroup {
+  margin: 10px 20px;
+}
 .MGroupTitle {
   display: flex;
   width: 100%;
@@ -190,26 +192,26 @@ body {
   color: var(--TextColor);
 }
 
-.MField input:focus~.MFieldBG,
-.MField textarea:focus~.MFieldBG {
+.MField input:focus ~ .MFieldBG,
+.MField textarea:focus ~ .MFieldBG {
   border: 1px solid var(--PrimaryColor);
 }
 
-.MField input:valid:not(:focus)~.MFieldBG,
-.MField textarea:valid:not(:focus)~.MFieldBG {
+.MField input:valid:not(:focus) ~ .MFieldBG,
+.MField textarea:valid:not(:focus) ~ .MFieldBG {
   border: 1px solid var(--TextColor);
 }
 
-.MField input:focus~label,
-.MField textarea:focus~label {
+.MField input:focus ~ label,
+.MField textarea:focus ~ label {
   color: var(--PrimaryColor);
   top: -13px;
   font-size: 13px;
   font-family: 'MFontR';
 }
 
-.MField input:valid:not(:focus)~label,
-.MField textarea:valid:not(:focus)~label {
+.MField input:valid:not(:focus) ~ label,
+.MField textarea:valid:not(:focus) ~ label {
   color: var(--TextColor);
   top: -13px;
   font-size: 13px;
@@ -221,31 +223,30 @@ body {
   color: var(--MFieldDisabled);
   cursor: default;
   line-height: 0.5;
-
 }
 
-.MField input:read-only~.MFieldBG,
-.MField textarea:read-only~.MFieldBG {
+.MField input:read-only ~ .MFieldBG,
+.MField textarea:read-only ~ .MFieldBG {
   border: 1px dashed var(--MFieldDisabled);
 }
 
-.MField input:read-only~label,
-.MField textarea:read-only~label {
+.MField input:read-only ~ label,
+.MField textarea:read-only ~ label {
   color: var(--MFieldDisabled);
   top: -13px;
   font-size: 13px;
   font-family: 'MFontR';
 }
 
-.MField input[DateType="Day"],
-.MField input[DateType="Month"] {
+.MField input[DateType='Day'],
+.MField input[DateType='Month'] {
   width: 20%;
   max-width: 30px;
   margin: 5px;
   text-align: center;
 }
 
-.MField input[DateType="Year"] {
+.MField input[DateType='Year'] {
   flex: 1;
   margin: 5px;
   text-align: right;
@@ -340,7 +341,7 @@ body {
   color: var(--TextColor);
 }
 
-input[type="file"] {
+input[type='file'] {
   display: none;
 }
 /* #endregion */
@@ -483,43 +484,43 @@ input[type="file"] {
   color: var(--PrimaryColor) !important;
 }
 
-.MComboBox input:focus~.MComboBoxBG {
+.MComboBox input:focus ~ .MComboBoxBG {
   border: 1px solid var(--PrimaryColor);
 }
 
-.MComboBox input:valid:not(:focus)~.MComboBoxBG {
+.MComboBox input:valid:not(:focus) ~ .MComboBoxBG {
   border: 1px solid var(--MComboBoxFilled);
 }
 
-.MComboBox input:focus~label {
+.MComboBox input:focus ~ label {
   color: var(--PrimaryColor);
   top: -11.5px;
   font-size: 13px;
   font-family: 'MFontR';
 }
 
-.MComboBox input:valid:not(:focus)~label {
+.MComboBox input:valid:not(:focus) ~ label {
   color: var(--MComboBoxFilled);
   top: -11.5px;
   font-size: 13px;
   font-family: 'MFontR';
 }
 
-.MComboBox input:focus~.MComboBoxChevron svg {
+.MComboBox input:focus ~ .MComboBoxChevron svg {
   fill: var(--PrimaryColor);
 }
-.MComboBox input:valid:not(:focus)~.MComboBoxChevron svg {
+.MComboBox input:valid:not(:focus) ~ .MComboBoxChevron svg {
   fill: var(--MComboBoxFilled);
 }
 
-.MComboBox input:read-only:not(:focus)~label {
+.MComboBox input:read-only:not(:focus) ~ label {
   color: var(--TextColor);
   top: -11.5px;
   font-size: 13px;
   font-family: 'MFontR';
 }
 
-.MComboBox input:read-only:not(:focus)~.MComboBoxBG {
+.MComboBox input:read-only:not(:focus) ~ .MComboBoxBG {
   border: 2px solid var(--TextColor);
 }
 
@@ -558,7 +559,7 @@ input[type="file"] {
   top: 0;
   left: 0;
   transform: scale(0);
-  z-index: 101;
+  z-index: 201;
   display: none;
   animation: unfoldIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
@@ -635,7 +636,6 @@ input[type="file"] {
   overflow-y: auto;
   max-height: calc(90vh - 65px);
   padding: 10px 0;
-
 }
 
 .ModalContentGroup {
@@ -703,49 +703,49 @@ input[type="file"] {
 
 @keyframes unfoldIn {
   0% {
-      transform: scaleY(0.005) scaleX(0);
+    transform: scaleY(0.005) scaleX(0);
   }
 
   50% {
-      transform: scaleY(0.005) scaleX(1);
+    transform: scaleY(0.005) scaleX(1);
   }
 
   100% {
-      transform: scaleY(1) scaleX(1);
+    transform: scaleY(1) scaleX(1);
   }
 }
 
 @keyframes unfoldOut {
   0% {
-      transform: scaleY(1) scaleX(1);
+    transform: scaleY(1) scaleX(1);
   }
 
   50% {
-      transform: scaleY(0.005) scaleX(1);
+    transform: scaleY(0.005) scaleX(1);
   }
 
   100% {
-      transform: scaleY(0.005) scaleX(0);
+    transform: scaleY(0.005) scaleX(0);
   }
 }
 
 @keyframes zoomIn {
   0% {
-      transform: scale(0);
+    transform: scale(0);
   }
 
   100% {
-      transform: scale(1);
+    transform: scale(1);
   }
 }
 
 @keyframes zoomOut {
   0% {
-      transform: scale(1);
+    transform: scale(1);
   }
 
   100% {
-      transform: scale(0);
+    transform: scale(0);
   }
 }
 
@@ -794,5 +794,125 @@ input[type="file"] {
   color: var(--TextColor);
   margin: 10px 5px;
   width: 100%;
+}
+/* #endregion */
+
+.MlabelText {
+  display: flex;
+  width: min-content;
+  white-space: nowrap;
+  font-size: 17px;
+  font-family: 'MFontB';
+}
+.MlabelNumber {
+  display: flex;
+  width: min-content;
+  white-space: nowrap;
+  font-size: 17px;
+  font-family: 'MFontB';
+  margin: 5px;
+}
+
+.RequestsMTable {
+  width: 100%;
+  border: 1px solid var(--RequestDetailsTableColor3);
+  border-radius: 5px;
+  margin: 5px 20px;
+}
+
+.RequestsMTable tr:nth-child(even) {
+  background-color: var(--RequestDetailsTableColor1);
+}
+
+.RequestsMTable th {
+  padding: 7px 10px;
+  background-color: var(--RequestDetailsTableColor2);
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid var(--RequestDetailsTableColor3);
+  font-size: 14px;
+}
+
+.RequestsMTable td {
+  padding: 5px 10px;
+  min-width: 150px;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* #region Images Container  */
+.ImagesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  height: min-content;
+  margin: 10px 0;
+}
+
+.ImagesContainer .InformationRequestImage {
+  display: flex;
+  border: 1px solid var(--MediumLightColor);
+  border-radius: 5px;
+  flex-wrap: wrap;
+  width: min-content;
+  padding: 5px;
+  margin: 5px;
+  height: min-content;
+}
+
+.ImagesContainer .InformationRequestImage .InformationRequestImageTitle {
+  display: flex;
+  width: 100%;
+  padding: 5px 0 15px 0;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.ImagesContainer .InformationRequestImage .InformationRequestImagePreview {
+  display: flex;
+  width: 100%;
+  border-radius: 5px;
+  width: 120px;
+  height: 120px;
+  position: relative;
+}
+
+.ImagesContainer
+  .InformationRequestImage
+  .InformationRequestImagePreview
+  .InformationRequestImagePreviewOverlay {
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  transition-duration: 0.3s;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+.InformationRequestImagePreviewOverlay svg {
+  width: 40px;
+  height: 40px;
+  display: flex;
+}
+.ImagesContainer
+  .InformationRequestImage
+  .InformationRequestImagePreview
+  .InformationRequestImagePreviewOverlay:hover {
+  opacity: 1;
+}
+
+.ImagesContainer .InformationRequestImage .InformationRequestImagePreview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
 }
 /* #endregion */

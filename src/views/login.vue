@@ -1,146 +1,75 @@
-
-
-<template >
-  <div class="componentwrapper">
-  <div class="login-container">
-    <div class="login-form">
-      <h2>Login</h2>
-      <form @submit.prevent="login">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            v-model="form.name"
-            placeholder="Enter your username"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            v-model="form.password"
-            placeholder="Enter your password"
-            required
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
+<template>
+  <div class="ComponentWrapper">
+    <div class="MGroup">
+      <div class="MGroupTitle">تسجيل الدخول</div>
+      <div class="MField" id="username">
+        <input type="text" required />
+        <label>اسم المستخدم</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="password">
+        <input type="password" required />
+        <label>كلمة المرور</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MButton" id="LoginBTN" @click="login">تسجيل الدخول</div>
     </div>
   </div>
-</div>
 </template>
 
-
 <script>
-import { useAuthStore } from '../stores/auth';
-import { ShowMessage } from '@/MJS.js';
+import { useAuthStore } from '../stores/auth'
+import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 export default {
-  data() {
-    return {
-      form: {
-        name: "",
-        password: "",
-      },
-      errorMessage: null,
-    };
-  },
   methods: {
     async login() {
-
-        const authStore = useAuthStore();
-        authStore.login(this.form.name,this.form.password).then(()=>{
-          this.$router.push("/");
-        }).catch((error)=>{
-          ShowMessage("حدث خطا "+error);
-        });
+      ShowLoading()
+      const authStore = useAuthStore()
+      authStore
+        .login(
+          document.getElementById('username').querySelector('input').value,
+          document.getElementById('password').querySelector('input').value,
+        )
+        .then(() => {
+          HideLoading()
+          this.$router.push('/')
+        })
+        .catch(error => {
+          HideLoading()
+          ShowMessage(error)
+        })
     },
   },
-};
+}
 </script>
 
 <style scoped>
-.componentwrapper {
-    display: flex;
-    flex-wrap: wrap;
-    position: fixed;
-    z-index: 11;
-    top: 0;
-    right: 0;
-    background-color: var(--BGColor);
-    justify-content: center;
-    width: 100vw;
-    height: 100vh;
-    align-items: center;
-    padding: 0;
-    margin: 0;
-}
-.login-container {
+.ComponentWrapper {
   display: flex;
+  flex-wrap: wrap;
+  position: fixed;
+  z-index: 11;
+  top: 0;
+  right: 0;
+  background-color: var(--BGColor);
   justify-content: center;
-  align-items: center;
-  height: 100vh;
   width: 100vw;
-  background-color: #f4f4f9;
-}
-
-.login-form {
-  background: #fff;
-  padding: 20px 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-}
-.login-form form .form-group{
-  width: 80%;
+  height: 100vh;
   align-items: center;
-  margin:  auto ;
+  padding: 0;
+  margin: 0;
 }
-
-h2 {
-  margin-bottom: 20px;
-  text-align: center;
+.MGroup {
+  padding: 30px 50px;
+  width: 70%;
+  max-width: 300px;
+  min-width: 300px;
 }
-
-.form-group {
-  margin-bottom: 15px;
+.MField {
+  min-width: 100%;
+  margin: 10px;
 }
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  font-size: 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-.error {
-  color: red;
-  text-align: center;
-  margin-top: 10px;
+.MButton {
+  margin-top: 20px;
 }
 </style>

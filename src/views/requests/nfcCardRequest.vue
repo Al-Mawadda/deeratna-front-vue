@@ -1,0 +1,509 @@
+<template>
+  <div class="ComponentWrapper">
+    <div class="ModalContainer" id="NfcCardRequestModal">
+      <div class="ModalBackground">
+        <div class="Modal">
+          <div class="ModalHeaderRow">
+            <div class="ModalHeaderTitle">
+              طلب
+              {{ selectedRowData.request_type }}
+              بطاقة
+              {{ selectedRowData.name }}
+            </div>
+            <div class="ModalHeaderCloseBTN" v-ModalCloseBTN>
+              <svg viewBox="0 0 100 100">
+                <polygon
+                  points="85.179,16.589 83.411,14.821 50,48.232 16.589,14.821 14.821,16.589 48.232,50 14.821,83.411 16.589,85.179
+              50,51.767 83.411,85.179 85.179,83.411 51.768,50 "
+                />
+                <path
+                  d="M89.421,16.59l-6.01-6.011L50,43.99L16.59,10.579l-6.011,6.011L43.99,50L10.579,83.411l6.011,6.01L50,56.01l33.411,33.411
+              l6.01-6.01L56.01,50L89.421,16.59z"
+                />
+              </svg>
+            </div>
+          </div>
+          <div class="ModalContent">
+            <table
+              cellpadding="0"
+              cellspacing="0"
+              class="RequestsMTable"
+              id="NfcCardRequestsTable"
+            >
+              <thead>
+                <tr>
+                  <th>الحقل</th>
+                  <th>القيمة</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>الرقم</td>
+                  <td>{{ selectedRowData.pid }}</td>
+                </tr>
+                <tr>
+                  <td>الاسم</td>
+                  <td>{{ selectedRowData.name }}</td>
+                </tr>
+                <tr>
+                  <td>المدينة</td>
+                  <td>{{ selectedRowData.compound }}</td>
+                </tr>
+                <tr>
+                  <td>العنوان</td>
+                  <td>{{ selectedRowData.address }}</td>
+                </tr>
+                <tr>
+                  <td>رقم الهاتف</td>
+                  <td>{{ selectedRowData.phone }}</td>
+                </tr>
+                <tr>
+                  <td>الصفة</td>
+                  <td>{{ selectedRowData.person_type }}</td>
+                </tr>
+                <tr v-show="selectedRowData.request_status == 'مرفوض'">
+                  <td>سبب الرفض</td>
+                  <td>{{ selectedRowData.rejection_reason }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="MGroup ModalMGroup">
+              <div class="MField" id="CardCode">
+                <input
+                  :disabled="
+                    selectedRowData.request_status !== 'قيد المراجعة' ||
+                    selectedRowData.request_type !== 'اضافة'
+                  "
+                  type="text"
+                  required
+                />
+                <label>رمز البطاقة</label>
+                <div class="MFieldBG"></div>
+              </div>
+
+              <MDate
+                :Disabled="selectedRowData.request_status !== 'قيد المراجعة'"
+                :Visible="
+                  selectedRowData.request_type == 'اضافة' ||
+                  selectedRowData.request_type == 'تمديد'
+                "
+                ref="CardExpire"
+                :Name="'CardExpire'"
+                :Label="'تاريخ الانتهاء'"
+              ></MDate>
+            </div>
+
+            <div
+              class="MGroup ModalMGroup"
+              id="GatesMGroup"
+              v-show="selectedRowData.request_type == 'اضافة'"
+            >
+              <MCheckBox
+                :Disabled="selectedRowData.request_status != 'قيد المراجعة'"
+                :Name="'Amal1-1Box'"
+                :Label="'الامل 1-البوابة 1'"
+              ></MCheckBox>
+              <MCheckBox
+                :Disabled="selectedRowData.request_status != 'قيد المراجعة'"
+                :Name="'Amal1-2Box'"
+                :Label="'الامل 1-البوابة 2'"
+              ></MCheckBox>
+              <MCheckBox
+                :Disabled="selectedRowData.request_status != 'قيد المراجعة'"
+                :Name="'Amal2-1Box'"
+                :Label="'الامل 2-البوابة 1'"
+              ></MCheckBox>
+              <MCheckBox
+                :Disabled="selectedRowData.request_status != 'قيد المراجعة'"
+                :Name="'Amal2-2Box'"
+                :Label="'الامل 2-البوابة 2'"
+              ></MCheckBox>
+              <MCheckBox
+                :Disabled="selectedRowData.request_status != 'قيد المراجعة'"
+                :Name="'Amaal-1Box'"
+                :Label="'الامال-البوابة 1'"
+              ></MCheckBox>
+              <MCheckBox
+                :Disabled="selectedRowData.request_status != 'قيد المراجعة'"
+                :Name="'Amaal-2Box'"
+                :Label="'الامال-البوابة 2'"
+              ></MCheckBox>
+              <MCheckBox
+                :Disabled="selectedRowData.request_status != 'قيد المراجعة'"
+                :Name="'jawhara-1Box'"
+                :Label="'جوهرة البصرة-البوابة 1'"
+              ></MCheckBox>
+              <MCheckBox
+                :Disabled="selectedRowData.request_status != 'قيد المراجعة'"
+                :Name="'jawhara-2Box'"
+                :Label="'جوهرة البصرة-البوابة 2'"
+              ></MCheckBox>
+              <MCheckBox
+                :Disabled="selectedRowData.request_status != 'قيد المراجعة'"
+                :Name="'eye-1Box'"
+                :Label="'عين البصرة-البوابة 1'"
+              ></MCheckBox>
+              <MCheckBox
+                :Disabled="selectedRowData.request_status != 'قيد المراجعة'"
+                :Name="'eye-2Box'"
+                :Label="'عين البصرة-البوابة 2'"
+              ></MCheckBox>
+              <MCheckBox
+                :Disabled="selectedRowData.request_status != 'قيد المراجعة'"
+                :Name="'dura-1Box'"
+                :Label="'درة البصرة-البوابة 1'"
+              ></MCheckBox>
+              <MCheckBox
+                :Disabled="selectedRowData.request_status != 'قيد المراجعة'"
+                :Name="'dura-2Box'"
+                :Label="'درة البصرة-البوابة 2'"
+              ></MCheckBox>
+            </div>
+
+            <div class="ModalButtons">
+              <div
+                v-show="selectedRowData.request_status == 'قيد المراجعة'"
+                class="MButton"
+                id="AcceptBTN"
+                @click="AcceptRequest"
+              >
+                قبول
+              </div>
+              <div
+                v-show="selectedRowData.request_status == 'قيد المراجعة'"
+                class="MButton"
+                id="RejectBTN"
+                @click="RejectRequest"
+              >
+                رفض
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ModalContainer" id="NfcCardRequestRejectModal">
+      <div class="ModalBackground">
+        <div class="Modal">
+          <div class="ModalHeaderRow">
+            <div class="ModalHeaderTitle">رفض الطلب</div>
+            <div class="ModalHeaderCloseBTN" v-ModalCloseBTN>
+              <svg viewBox="0 0 100 100">
+                <polygon
+                  points="85.179,16.589 83.411,14.821 50,48.232 16.589,14.821 14.821,16.589 48.232,50 14.821,83.411 16.589,85.179
+              50,51.767 83.411,85.179 85.179,83.411 51.768,50 "
+                />
+                <path
+                  d="M89.421,16.59l-6.01-6.011L50,43.99L16.59,10.579l-6.011,6.011L43.99,50L10.579,83.411l6.011,6.01L50,56.01l33.411,33.411
+              l6.01-6.01L56.01,50L89.421,16.59z"
+                />
+              </svg>
+            </div>
+          </div>
+          <div class="ModalContent">
+            <div class="MField" id="RejectionReason">
+              <input type="text" required />
+              <label>سبب الرفض</label>
+              <div class="MFieldBG"></div>
+            </div>
+            <div class="ModalButtons">
+              <div class="MButton" id="SaveBTN" @click="SaveRejectRequest">
+                حفظ
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="MButton" id="GetNfcCardRequestsBTN">عرض البيانات</div>
+    <div class="MGroup">
+      <MDate
+        ref="NfcCardRequestsFromDate"
+        :Name="'NfcCardRequestsFromDate'"
+        :Label="'تاريخ من'"
+      ></MDate>
+      <MDate
+        ref="NfcCardRequestsToDate"
+        :Name="'NfcCardRequestsToDate'"
+        :Label="'تاريخ الى'"
+      ></MDate>
+    </div>
+
+    <MTable
+      ref="NfcCardRequestsTB"
+      :MTableName="'NfcCardRequestsTB'"
+      :DataArray="NfcCardRequestsTBData"
+      :HeadersArray="NfcCardRequestsTBHeaders"
+      :TotalsArray="NfcCardRequestsTBTotals"
+      :DisplayColumnsArray="NfcCardRequestsTBDisplayColumns"
+      :GetDataFunction="GetNfcCardRequestsData"
+      :RowsCount="NfcCardRequestsTBRowsCount"
+      :RowsPerPage="10"
+    >
+      <template v-slot:options>
+        <!-- View Videosdffhroif Option -->
+        <div class="MTableOption" OptionEventName="ViewItem">
+          <div class="MTableOptionIcon">
+            <svg viewBox="0 0 1000 1000">
+              <path
+                d="M500.2,249.6c124.1,1.1,233.2,42.7,328.2,122.1c39.6,33,72.3,72.7,106.8,110.6c9,9.9,8.7,25.5-0.8,36.4
+  c-53.9,62.1-109.3,122.5-182.1,163.7c-66,37.4-136.2,60.8-212,66.4C399.6,759.2,276.4,716.6,169,626.3
+  C130.9,594.3,99.2,556,66,519.3c-10-11-10.5-26-0.9-37.1c53.3-61.5,107.9-121.4,179.6-162.7c66.8-38.5,138-62.1,215.1-68.3
+  C473.2,250.2,486.7,250.1,500.2,249.6z M504.7,308.1c-19.4,0.8-34.9,0.7-50.4,2.2c-61.5,6.1-119,24.8-173,54.6
+  c-59.2,32.7-106.2,79.4-150.3,129.6c-4.1,4.7-3.1,8.1,0.7,12.1c21.3,22.2,40.9,45.9,63.9,66.5c86.2,77.3,186.4,118.2,302.7,118.9
+  c68.3,0.4,133-14.2,194.7-43.2c70.8-33.3,126.2-85.4,176.6-143.7c4-4.6,2-7.9-1.3-11.3c-21.3-22.2-40.9-45.9-63.8-66.6
+  C718.1,349.4,617.3,308.9,504.7,308.1z"
+              />
+              <path
+                d="M392.3,499.7c0.2-59,49.3-108.3,108.1-107.4c60.6,0.9,107.4,47.4,107.2,108c-0.2,60.9-47.5,106.9-107.8,107.4
+  C440.8,608.1,392.1,558.6,392.3,499.7z M500.2,556.5c30.5,0,56.4-25.9,56.4-56.4c0-30.6-25.7-56.5-56.2-56.6
+  c-31-0.1-56.9,25.8-56.8,56.8C443.8,530.8,469.7,556.6,500.2,556.5z"
+              />
+            </svg>
+          </div>
+          <div class="MTableOptionName">عرض</div>
+        </div>
+      </template>
+    </MTable>
+  </div>
+</template>
+<script>
+import { ref } from 'vue'
+import { api } from '../../axios'
+import { useAuthStore } from '../../stores/auth'
+import MTable from '../../components/MTable.vue'
+import MDate from '../../components/MDate.vue'
+import {
+  ShowMessage,
+  ShowModal,
+  HideModal,
+  ShowLoading,
+  HideLoading,
+} from '@/MJS.js'
+import MCheckBox from '../../components/MCheckBox.vue'
+
+export default {
+  components: {
+    MTable,
+    MDate,
+    MCheckBox,
+  },
+  setup() {
+    const authStore = useAuthStore()
+    const hasPermission = permission =>
+      authStore.user && authStore.user.permissions.includes(permission)
+
+    return {
+      hasPermission,
+      NfcCardRequestsTB: ref(null),
+      NfcCardRequestsTBData: ref([]),
+      NfcCardRequestsTBHeaders: ref([
+        '#',
+        'الرقم',
+        'المجمع',
+        'الاسم',
+        'اسم الكفيل',
+        'العنوان',
+        'رقم الهاتف',
+        'الصفة',
+        'العملية',
+        'حالة الطلب',
+      ]),
+      NfcCardRequestsTBDisplayColumns: ref([
+        'id',
+        'pid',
+        'compound',
+        'name',
+        'guarantorname',
+        'address',
+        'phone',
+        'person_type',
+        'request_type',
+        'request_status',
+      ]),
+      NfcCardRequestsTBTotals: ref(['Count', '', '', '', '', '', '']),
+      NfcCardRequestsTBRowsCount: ref(0),
+      NfcCardRequestsFromDate: ref(null),
+      NfcCardRequestsToDate: ref(null),
+      selectedRowData: ref([]),
+      CardCode: ref(''),
+      CardExpire: ref(null),
+      Gates: ref(''),
+    }
+  },
+  mounted() {
+    this.NfcCardRequestsTB.LoadMTable()
+    document.getElementById('GetNfcCardRequestsBTN').addEventListener(
+      'click',
+      function () {
+        this.NfcCardRequestsTB.LoadMTable()
+      }.bind(this),
+    )
+    document.getElementById('RejectBTN').addEventListener(
+      'click',
+      function () {
+        document
+          .getElementById('RejectionReason')
+          .querySelector('input').value = ''
+        ShowModal(document.getElementById('NfcCardRequestRejectModal'))
+      }.bind(this),
+    )
+    document.getElementById('NfcCardRequestsTB').addEventListener(
+      'ViewItem',
+      function (data) {
+        this.selectedRowData = this.NfcCardRequestsTBData.filter(
+          function (item) {
+            if (item['id'] == data.detail.RowID) {
+              return item
+            }
+          },
+        )[0]
+        document.getElementById('CardCode').querySelector('input').value = ''
+        this.CardExpire.Clear()
+        document.querySelectorAll('.MCheckBox input').forEach(function (e) {
+          e.checked = false
+        })
+
+        document.getElementById('CardCode').querySelector('input').value =
+          this.selectedRowData.cardnfcid
+        this.CardExpire.Set(this.selectedRowData.cardexpire)
+        this.selectedRowData.gates.split('|').forEach(function (e) {
+          document.querySelectorAll('.MCheckBox').forEach(function (d) {
+            if (e == d.querySelector('.MCheckBoxText').innerHTML) {
+              d.querySelector('input').checked = true
+            }
+          })
+        })
+        ShowModal(document.getElementById('NfcCardRequestModal'))
+      }.bind(this),
+    )
+  },
+
+  methods: {
+    GetNfcCardRequestsData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+      api
+        .get('GetNFCCardRequests', {
+          params: {
+            PageNo: PageNo,
+            FilterArray: FilterArray,
+            SortArray: SortArray,
+            nfcCardRequestFrom: this.NfcCardRequestsFromDate.Get(),
+            nfcCardRequestTo: this.NfcCardRequestsToDate.Get(),
+          },
+        })
+        .then(response => {
+          this.NfcCardRequestsTBRowsCount = response.data.total
+          this.NfcCardRequestsTBData = response.data.data
+        })
+        .catch(error => {
+          ShowMessage(error)
+        })
+    },
+
+    //==============Accept Request =========================
+
+    AcceptRequest() {
+      ShowLoading()
+      var GatesCheckBoxes = document
+        .getElementById('GatesMGroup')
+        .querySelectorAll('.MCheckBox')
+
+      this.Gates = ''
+      for (var i = 0; i < GatesCheckBoxes.length; i++) {
+        if (GatesCheckBoxes[i].querySelector('input').checked) {
+          const gateText =
+            GatesCheckBoxes[i].querySelector('.MCheckBoxText').innerHTML
+
+          // Add the gate text with a separator only if this.Gates is not empty
+          this.Gates += this.Gates ? '|' + gateText : gateText
+        }
+      }
+
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id)
+      Parameters.append(
+        'NFCCardID',
+        document.getElementById('CardCode').querySelector('input').value,
+      )
+      Parameters.append('NFCCardExpire', this.CardExpire.Get())
+      Parameters.append('Gates', this.Gates)
+
+      api
+        .post('AcceptNFCCardRequest', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          HideLoading()
+          if (response.data == 'تمت العملية بنجاح') {
+            HideModal(document.getElementById('NfcCardRequestModal'))
+            this.NfcCardRequestsTB.LoadMTable()
+          } else {
+            ShowMessage(response.data)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          ShowMessage(error)
+        })
+    },
+
+    //==============Save Reject Request =========================
+
+    SaveRejectRequest() {
+      ShowLoading()
+
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id)
+      Parameters.append(
+        'Reason',
+        document.getElementById('RejectionReason').querySelector('input').value,
+      )
+
+      api
+        .post('RejectNFCCardRequest', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          HideLoading()
+          if (response.data == 'تمت العملية بنجاح') {
+            HideModal(document.getElementById('NfcCardRequestModal'))
+            HideModal(document.getElementById('NfcCardRequestRejectModal'))
+            this.NfcCardRequestsTB.LoadMTable()
+          } else {
+            ShowMessage(response.data)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          ShowMessage(error)
+        })
+    },
+  },
+}
+</script>
+
+<style scoped>
+#NfcCardRequestsFromDate,
+#NfcCardRequestsToDate {
+  max-width: 300px;
+}
+#RejectBTN {
+  background-color: red;
+}
+#RejectBTN:hover {
+  color: red;
+  background-color: var(--MButtonBG);
+}
+#NfcCardRequestModal .Modal {
+  max-width: 700px;
+}
+#GatesMGroup .MCheckBox {
+  width: 50%;
+}
+</style>
