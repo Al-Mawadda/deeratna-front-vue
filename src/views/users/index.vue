@@ -130,15 +130,14 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { api } from '../../axios';
-import { useAuthStore } from '../../stores/auth'; 
+import { useAuthStore } from '../../stores/auth';
 const users = ref([]);
-const columns = [
-  { name: 'id', label: 'المعرف', field: 'id' },
-  { name: 'name', label: 'اسم المستخدم', field: 'name' },
-  { name: 'permissions', label: 'الصلاحيات', field: 'permissions' },
-  { name: 'actions', label: 'الإجراءات', field: 'actions' },
-];
+const authStore = useAuthStore()
 
+// Check permission
+const hasPermission = permission => {
+      return authStore.user && authStore.user.permissions.includes(permission)
+    }
 const groupedPermissions = ref([
   {
     label: 'الطلبات',
@@ -178,7 +177,7 @@ const fetchUsers = async () => {
   try {
     const response = await api.get('/users');
     users.value = response.data;
-  } catch (error) {
+  } catch {
     alert('فشل في تحميل المستخدمين');
   }
 };
