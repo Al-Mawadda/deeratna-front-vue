@@ -139,11 +139,19 @@ const hasPermission = permission => {
       return authStore.user && authStore.user.permissions.includes(permission)
     }
 const groupedPermissions = ref([
-  {
+{
     label: 'الطلبات',
     items: [
       { val: 'request_view', label: 'عرض الطلبات' },
       { val: 'info_view', label: 'عرض ادارة المعلومات' },
+      { val: 'info_accept', label: 'قبول طلب إدارة المعلومات' },
+      { val: 'info_reject', label: 'رفض طلب إدارة المعلومات ' },
+      { val: 'entry_card_view', label: 'رؤية بطاقات الدخول' },
+      { val: 'entry_card_accept', label: 'قبول طلب بطاقات الدخول' },
+      { val: 'entry_card_reject', label: 'رفض طلب بطاقات الدخول ' },
+      { val: 'car_label_view', label: 'عرض ملصق السيارة' },
+      { val: 'car_label_accept', label: 'قبول طلب ملصق السيارة' },
+      { val: 'car_label_reject', label: 'رفض طلب ملصق السيارة' },
     ],
   },
   {
@@ -151,6 +159,12 @@ const groupedPermissions = ref([
     items: [
       { val: 'on_pay_view', label: 'رؤية الدفع الإلكتروني' },
       { val: 'on_pay_inst', label: 'عرض دفعات الأقساط' },
+      { val: 'on_pay_ene', label: 'عرض دفعات المولد' },
+      { val: 'on_pay_ser', label: 'عرض دفعات الخدمات' },
+      { val: 'on_pay_nfcadd', label: 'عرض دفعات بطاقات الدخول' },
+      { val: 'on_pay_nfcrenew', label: 'عرض دفعات تجديد بطاقات الدخول' },
+      { val: 'on_pay_caradd', label: 'عرض دفعات ملصق السيارة' },
+      { val: 'on_pay_carrenew', label: 'عرض دفعات تجديد ملصق السيارة' },
     ],
   },
   {
@@ -158,6 +172,30 @@ const groupedPermissions = ref([
     items: [
       { val: 'users_view', label: 'عرض المستخدمين' },
       { val: 'users_create', label: 'إنشاء مستخدم' },
+      { val: 'users_update', label: 'تعديل المستخدمين' },
+      { val: 'users_delete', label: 'حذف المستخدم' },
+    ],
+  },
+  {
+    label: 'إدارة الإعلانات',
+    items: [
+      { val: 'ads_view_all', label: 'عرض الإعلانات' },
+
+      { val: 'ads_video_view', label: 'عرض إعلانات الفيديوا' },
+      { val: 'ads_video_create', label: 'إنشاء فيديو جديد' },
+      { val: 'ads_video_delete', label: 'حذف الفيديو' },
+
+      { val: 'ads_main_view', label:   'عرض الاعلانات العامة' },
+      { val: 'ads_main_create', label: 'انشاء الاعلانات العامة' },
+      { val: 'ads_main_delete', label: 'حذف الاعلانات العامة' },
+
+      { val: 'ads_ser_view', label:   'عرض اعلانات الخدمات' },
+      { val: 'ads_ser_create', label: 'انشاء اعلانات الخدمات' },
+      { val: 'ads_ser_delete', label: 'حذف اعلانات الخدمات' },
+
+      { val: 'ads_ene_view', label:   'عرض اعلانات المولد' },
+      { val: 'ads_ene_create', label: 'انشاء اعلانات المولد' },
+      { val: 'ads_ene_delete', label: 'حذف اعلانات المولد' },
     ],
   },
 ]);
