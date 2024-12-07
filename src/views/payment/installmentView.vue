@@ -27,8 +27,7 @@
       :RowsCount="InstallmentsTBRowsCount"
       :RowsPerPage="10"
     >
-      <template v-slot:options>
-        <!-- View Videosdffhroif Option -->
+      <!-- <template v-slot:options>
         <div class="MTableOption" OptionEventName="ViewItem">
           <div class="MTableOptionIcon">
             <svg viewBox="0 0 1000 1000">
@@ -37,7 +36,6 @@
           </div>
           <div class="MTableOptionName">عرض</div>
         </div>
-        <!-- Delete Video Option -->
         <div class="MTableOption" OptionEventName="DeleteItem">
           <div class="MTableOptionIcon">
             <svg viewBox="0 0 1000 1000">
@@ -46,7 +44,7 @@
           </div>
           <div class="MTableOptionName">حذف</div>
         </div>
-      </template>
+      </template> -->
     </MTable>
 
     <div class="MGroup">
