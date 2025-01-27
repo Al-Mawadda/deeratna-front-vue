@@ -269,13 +269,55 @@
 
 <script>
 import { useAuthStore } from '../stores/auth'
-import { ref, watch, nextTick } from 'vue'
+import { ref } from 'vue'
 export default {
   setup() {
     const authStore = useAuthStore()
     const activeGroup = ref(null)
 
     const groups = ref([
+      //  =========== التسويق ============
+      {
+        text: 'العقود',
+        permission: 'ads_view_all',
+        items: [
+          {
+            text: 'ادخال عقد جديد',
+            route: '/contracts/add',
+            permission: 'ads_video_view',
+          },
+        ],
+      },
+      //  =========== المعلومات ============
+      {
+        text: 'المعلومات',
+        permission: 'ads_view_all',
+        items: [
+          {
+            text: 'معلومات الافراد',
+            route: '/information/add',
+            permission: 'ads_video_view',
+          },
+        ],
+      },
+      //  =========== الانترنت ============
+      {
+        text: 'الانترنت',
+        permission: 'internet_view_all',
+        items: [
+          {
+            text: 'بيانات المشتركين',
+            route: '/internet/subscribers',
+            permission: 'subscribers_view',
+          },
+          {
+            text: 'الاشتراكات',
+            route: '/internet/profile',
+            permission: 'profile_view',
+          },
+        ],
+      },
+      //  =========== الاعلانات ============
       {
         text: 'الاعلانات',
         permission: 'ads_view_all',
@@ -308,7 +350,7 @@ export default {
         ],
       },
 
-      //  =======================
+      //  =========== الطلبات ============
       {
         text: 'الطلبات',
         permission: 'request_view',
@@ -328,10 +370,15 @@ export default {
             route: '/cars-label-requests',
             permission: 'car_label_view',
           },
+          {
+            text: 'الانترنيت',
+            route: '/internet-requests',
+            permission: 'internet_requests_view',
+          },
         ],
       },
 
-      //==================================
+      //  =========== الدفع الالكتروني' ============
       {
         text: 'الدفع الالكتروني',
         permission: 'on_pay_view',
@@ -365,6 +412,8 @@ export default {
           },
         ],
       },
+
+      //==================================
       {
         text: 'المستخدمين',
         permission: 'users_view',
@@ -409,7 +458,21 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+:root {
+  --MSideBarBGColor: #fff;
+  --MSideBarItemHover: rgba(25, 118, 210, 0.1);
+  --MSidebarItemsGroupHeader: rgba(0, 0, 0, 0.05);
+  --MSidebarItemsGroupHeaderActive: rgba(0, 0, 0, 0.05);
+}
+
+.DarkMode {
+  --MSideBarBGColor: #2f3349;
+  --MSideBarItemHover: rgba(25, 118, 210, 0.1);
+  --MSidebarItemsGroupHeader: rgba(255, 255, 255, 0.05);
+  --MSidebarItemsGroupHeaderActive: rgba(255, 255, 255, 0.05);
+}
+
 .MSidebar {
   display: flex;
   width: 250px;
@@ -545,10 +608,10 @@ export default {
 
 .MSidebarItemsGroup {
   display: flex;
-  width: calc(100% - 20px);
+  width: calc(100% - 14px);
   flex-wrap: wrap;
   overflow: hidden;
-  margin: 5px 0;
+  margin-bottom: 6px;
   border-radius: 5px;
   background-color: var(--MSidebarItemsGroupHeader);
 }
@@ -559,7 +622,7 @@ export default {
   flex-wrap: nowrap;
   align-items: center;
   margin: 0;
-  padding: 7px;
+  padding: 7.5px;
   border-radius: 5px;
   border: 1px solid rgba(0, 0, 0, 0);
   transition-duration: 0.3s;
@@ -661,6 +724,7 @@ export default {
   max-height: calc(100% - 260px);
   justify-content: center;
   align-content: flex-start;
+  padding: 5px 0;
 }
 
 .MSidebarItem {
@@ -673,11 +737,7 @@ export default {
   text-decoration: none;
   transition-duration: 0.3s;
   border-radius: 5px;
-  margin: 2px 0;
-}
-
-.MSidebarItem:hover {
-  background-color: var(--MSideBarItemHover);
+  margin-bottom: 6px;
 }
 
 .MSidebarItemIcon {
@@ -708,14 +768,11 @@ export default {
   font-family: 'MFontB';
   font-size: 15px;
   white-space: nowrap;
+  transition-duration: 0.3s;
 }
 
-.router-link-active svg {
-  fill: var(--PrimaryColor);
-}
-
-.router-link-active .MSidebarItemText {
-  color: var(--PrimaryColor);
+.MSidebarItemsGroup .MSidebarItems {
+  justify-content: center;
 }
 
 .MSidebarItemsGroup .MSidebarItem {
@@ -723,14 +780,18 @@ export default {
   flex-wrap: nowrap;
   width: 100%;
   padding: 7px 10px;
+  margin: 0 5px 7px 5px;
   transition-duration: 0.5s;
   cursor: pointer;
   outline: 0;
   user-select: none;
   text-decoration: none;
   position: relative;
-  border-radius: 0;
   padding-right: 15px;
+  box-sizing: border-box;
+}
+.MSidebarItemsGroup .MSidebarItem:first-child {
+  margin-top: 10px;
 }
 
 .MSidebarItemsGroup .MSidebarItemIcon {
@@ -778,6 +839,39 @@ export default {
 
 .MSidebarItemsGroup .router-link-active .MSidebarItemText {
   color: var(--PrimaryColor);
+}
+
+.MSidebarItem:hover {
+  background-color: var(--MSideBarItemHover);
+}
+
+.MSidebarItem:hover .MSidebarItemIcon {
+  border-color: var(--PrimaryColor);
+}
+
+.MSidebarItem:hover .MSidebarItemText {
+  color: var(--PrimaryColor);
+}
+
+.MSidebarItem:hover svg {
+  fill: var(--PrimaryColor);
+}
+
+.MSidebar .router-link-active {
+  background-color: var(--PrimaryColor);
+  box-shadow: 0px 0px 6px 0px rgba(25, 118, 210, 0.8);
+}
+
+.MSidebar .router-link-active .MSidebarItemIcon {
+  border-color: #fff;
+}
+
+.MSidebar .router-link-active svg {
+  fill: #fff;
+}
+
+.MSidebar .router-link-active .MSidebarItemText {
+  color: #fff;
 }
 
 .MSidebarFooter {

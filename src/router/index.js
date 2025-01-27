@@ -13,6 +13,34 @@ const router = createRouter({
         HeaderTitle: 'الرئيسية',
       },
     },
+
+    // Contracts
+    {
+      path: '/contracts/add',
+      component: () => import('../views/contracts/ContractDetails.vue'),
+      name: 'ContractDetails',
+      meta: { requiresAuth: true, HeaderTitle: 'ادخال عقد جديد' },
+    },
+    // Information
+    {
+      path: '/information/add',
+      component: () => import('../views/information/PersonsInformation.vue'),
+      name: 'PersonsInformation',
+      meta: { requiresAuth: true, HeaderTitle: 'بيانات الاشخاص' },
+    },
+    // Internet
+    {
+      path: '/internet/subscribers',
+      component: () => import('../views/internet/InternetSubscribers.vue'),
+      name: 'SubscribersInformation',
+      meta: { requiresAuth: true, HeaderTitle: 'بيانات المشتركين' },
+    },
+    {
+      path: '/internet/profile',
+      component: () => import('../views/internet/InternetProfiles.vue'),
+      name: 'InternetProfiles',
+      meta: { requiresAuth: true, HeaderTitle: 'الاشتراكات' },
+    },
     //ADS
     {
       path: '/ads/video',
@@ -65,38 +93,43 @@ const router = createRouter({
       name: 'CarsLabelRequests',
       meta: { requiresAuth: true, HeaderTitle: 'ملصق السيارات' },
     },
+    {
+      path: '/internet-requests',
+      component: () => import('../views/requests/internetRequest.vue'),
+      name: 'internetRequest',
+      meta: { requiresAuth: true, HeaderTitle: 'طلبات الانترنت' },
+    },
 
     // PAYMENTS
     {
       path: '/installment-payment',
       component: () => import('../views/payment/installmentView.vue'),
       name: 'Installment-Payment',
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, HeaderTitle: 'دفع الاقساط' },
     },
     {
       path: '/services-payment',
       component: () => import('../views/payment/servicesView.vue'),
       name: 'Services-Payment',
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, HeaderTitle: 'دفع الخدمات' },
     },
     {
       path: '/electricity-payment',
       component: () => import('../views/payment/electricityView.vue'),
       name: 'Electricity-Payment',
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, HeaderTitle: 'دفع المولد' },
     },
     {
       path: '/nfccard-payment',
       component: () => import('../views/payment/nfcCardView.vue'),
       name: 'Nfccard-Payment',
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, HeaderTitle: 'دفع البطاقات' },
     },
-
     {
       path: '/carlabele-payment',
       component: () => import('../views/payment/carLabelView.vue'),
       name: 'Carlabele-Payment',
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, HeaderTitle: 'دفع ملصق السيارات' },
     },
 
     // USERS
@@ -104,14 +137,13 @@ const router = createRouter({
       path: '/users',
       component: () => import('../views/users/index.vue'),
       name: 'users',
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, HeaderTitle: 'ادارة المستخدمين' },
     },
     {
       path: '/login',
       name: 'Login',
       component: () => import('../views/login.vue'),
       meta: {
-        RequiresAuth: true,
         HeaderTitle: 'تعديل الطلب',
         Operation: 'EDIT',
       },
@@ -122,6 +154,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
   const isAuthenticated = !!authStore.token
+
   if (to.meta.requiresAuth && !isAuthenticated) {
     next({ name: 'Login' })
   } else {

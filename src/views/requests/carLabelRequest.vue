@@ -323,6 +323,7 @@ export default {
         'الصفة',
         'العملية',
         'حالة الطلب',
+        'تاريخ الطلب',
       ]),
       CarLabelRequestsTBDisplayColumns: ref([
         'id',
@@ -334,6 +335,7 @@ export default {
         'person_type',
         'request_type',
         'request_status',
+        'created_at',
       ]),
       CarLabelRequestsTBTotals: ref(['Count', '', '', '', '', '', '']),
       CarLabelRequestsTBRowsCount: ref(0),
@@ -352,25 +354,25 @@ export default {
       'click',
       function () {
         this.CarLabelRequestsTB.LoadMTable()
-      }.bind(this),
+      }.bind(this)
     )
     document.getElementById('RejectBTN').addEventListener(
       'click',
       function () {
         ShowModal(document.getElementById('CarLableRequestRejectModal'))
-      }.bind(this),
+      }.bind(this)
     )
 
     document.getElementById('CarLabelRequestsTB').addEventListener(
       'ViewItem',
       function (data) {
-        this.selectedRowData = this.CarLabelRequestsTBData.filter(
-          function (item) {
-            if (item['id'] == data.detail.RowID) {
-              return item
-            }
-          },
-        )[0]
+        this.selectedRowData = this.CarLabelRequestsTBData.filter(function (
+          item
+        ) {
+          if (item['id'] == data.detail.RowID) {
+            return item
+          }
+        })[0]
         document.getElementById('LabelCode').querySelector('input').value = ''
         this.LabelIssue.Clear()
         this.LabelExpire.Clear()
@@ -390,7 +392,7 @@ export default {
           })
         })
         ShowModal(document.getElementById('CarLableRequestModal'))
-      }.bind(this),
+      }.bind(this)
     )
   },
 
@@ -435,7 +437,7 @@ export default {
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append(
         'LabelCode',
-        document.getElementById('LabelCode').querySelector('input').value,
+        document.getElementById('LabelCode').querySelector('input').value
       )
       Parameters.append('LabelIssue', this.LabelIssue.Get())
       Parameters.append('LabelExpire', this.LabelExpire.Get())
@@ -471,7 +473,7 @@ export default {
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append(
         'Reason',
-        document.getElementById('RejectionReason').querySelector('input').value,
+        document.getElementById('RejectionReason').querySelector('input').value
       )
 
       api

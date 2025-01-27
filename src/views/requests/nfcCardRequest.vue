@@ -310,6 +310,7 @@ export default {
         'الصفة',
         'العملية',
         'حالة الطلب',
+        'تاريخ الطلب',
       ]),
       NfcCardRequestsTBDisplayColumns: ref([
         'id',
@@ -322,6 +323,7 @@ export default {
         'person_type',
         'request_type',
         'request_status',
+        'created_at',
       ]),
       NfcCardRequestsTBTotals: ref(['Count', '', '', '', '', '', '']),
       NfcCardRequestsTBRowsCount: ref(0),
@@ -339,7 +341,7 @@ export default {
       'click',
       function () {
         this.NfcCardRequestsTB.LoadMTable()
-      }.bind(this),
+      }.bind(this)
     )
     document.getElementById('RejectBTN').addEventListener(
       'click',
@@ -348,18 +350,18 @@ export default {
           .getElementById('RejectionReason')
           .querySelector('input').value = ''
         ShowModal(document.getElementById('NfcCardRequestRejectModal'))
-      }.bind(this),
+      }.bind(this)
     )
     document.getElementById('NfcCardRequestsTB').addEventListener(
       'ViewItem',
       function (data) {
-        this.selectedRowData = this.NfcCardRequestsTBData.filter(
-          function (item) {
-            if (item['id'] == data.detail.RowID) {
-              return item
-            }
-          },
-        )[0]
+        this.selectedRowData = this.NfcCardRequestsTBData.filter(function (
+          item
+        ) {
+          if (item['id'] == data.detail.RowID) {
+            return item
+          }
+        })[0]
         document.getElementById('CardCode').querySelector('input').value = ''
         this.CardExpire.Clear()
         document.querySelectorAll('.MCheckBox input').forEach(function (e) {
@@ -377,7 +379,7 @@ export default {
           })
         })
         ShowModal(document.getElementById('NfcCardRequestModal'))
-      }.bind(this),
+      }.bind(this)
     )
   },
 
@@ -425,7 +427,7 @@ export default {
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append(
         'NFCCardID',
-        document.getElementById('CardCode').querySelector('input').value,
+        document.getElementById('CardCode').querySelector('input').value
       )
       Parameters.append('NFCCardExpire', this.CardExpire.Get())
       Parameters.append('Gates', this.Gates)
@@ -460,7 +462,7 @@ export default {
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append(
         'Reason',
-        document.getElementById('RejectionReason').querySelector('input').value,
+        document.getElementById('RejectionReason').querySelector('input').value
       )
 
       api

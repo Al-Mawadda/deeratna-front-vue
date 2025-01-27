@@ -187,11 +187,6 @@ body {
   transition-duration: 0.3s;
 }
 
-.MDateSeperator {
-  display: none;
-  color: var(--TextColor);
-}
-
 .MField input:focus ~ .MFieldBG,
 .MField textarea:focus ~ .MFieldBG {
   border: 1px solid var(--PrimaryColor);
@@ -344,206 +339,6 @@ body {
 input[type='file'] {
   display: none;
 }
-/* #endregion */
-
-/* #region MComboBox */
-/*rtl:begin:ignore*/
-.MComboBox {
-  display: flex;
-  position: relative;
-  max-height: 40px;
-  height: 35px;
-  margin: 10px 5px;
-}
-
-.MComboBox::-webkit-scrollbar-track {
-  border-radius: 2.5px 0 0 2.5px;
-}
-
-.MComboBox::-webkit-scrollbar-thumb {
-  border-radius: 2.5px 0 0 2.5px;
-}
-
-.MComboBox .MCBValueContainer {
-  display: flex;
-  flex-wrap: wrap;
-  position: relative;
-  transition-duration: 0.3s;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-.MComboBox label {
-  display: flex;
-  width: min-content;
-  position: absolute;
-  pointer-events: none;
-  top: calc(50% - 0.7em);
-  right: 5px;
-  font-family: 'MFontR';
-  font-size: 14px;
-  color: var(--MComboBoxLabelColor);
-  transition-duration: 0.3s;
-  padding: 0 3px;
-  z-index: 5;
-  white-space: nowrap;
-}
-
-.MComboBox label::before {
-  content: '';
-  position: absolute;
-  height: 3px;
-  width: 100%;
-  bottom: 5px;
-  right: 0;
-  background-color: var(--MComboBoxBG);
-  z-index: -1;
-  transition-duration: 0.3s;
-}
-
-.MComboBox input {
-  margin: 6px 8px;
-  display: flex;
-  width: calc(100% - 47px);
-  height: calc(100% - 12px);
-  padding: 0;
-  background-color: rgba(0, 0, 0, 0);
-  border: 0;
-  outline: 0;
-  font-family: 'MFontR';
-  font-size: 15px;
-  color: var(--TextColor);
-}
-
-.MComboBox .MComboBoxChevron {
-  width: 15px;
-  display: flex;
-  margin: 0 5px 0 10px;
-  transform: rotate(0);
-  transition-duration: 0.3s;
-}
-
-.MComboBox .MComboBoxBG {
-  display: flex;
-  width: calc(100% - 4px);
-  height: 100%;
-  border-radius: 5px;
-  background-color: var(--MComboBoxBG);
-  border: 1px solid var(--MComboBoxBorder);
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: -1;
-  transition-duration: 0.3s;
-}
-
-.MComboBox .MComboBoxChevron svg {
-  fill: var(--MComboBoxSVG);
-  width: 100%;
-}
-
-.MComboBox .MComboBoxItems {
-  position: absolute;
-  display: none;
-  background-color: var(--MComboBoxItemsBG);
-  border: 1px solid var(--MComboBoxItemsBorder);
-  border-radius: 5px;
-  width: calc(100% - 4px);
-  max-height: 150px;
-  overflow-y: auto;
-  top: calc(100% + 5px);
-  z-index: 100;
-  transition-duration: 0.3s;
-  flex-wrap: wrap;
-}
-
-.MComboBox .MComboBoxItem {
-  font-family: 'MFontR';
-  font-size: 15px;
-  color: var(--TextColor);
-  width: 100%;
-  padding: 5px;
-  outline: none;
-  user-select: none;
-  cursor: pointer;
-  min-height: 30px;
-  transition-duration: 0.3s;
-  align-items: center;
-}
-
-.MComboBox .MComboBoxItem:nth-child(even) {
-  background-color: var(--MComboBoxItemEven);
-}
-
-.MComboBox .MComboBoxItem:hover {
-  color: var(--PrimaryColor);
-}
-
-.MComboBox .MComboBoxItemHighlight {
-  color: var(--PrimaryColor) !important;
-}
-
-.MComboBox input:focus ~ .MComboBoxBG {
-  border: 1px solid var(--PrimaryColor);
-}
-
-.MComboBox input:valid:not(:focus) ~ .MComboBoxBG {
-  border: 1px solid var(--MComboBoxFilled);
-}
-
-.MComboBox input:focus ~ label {
-  color: var(--PrimaryColor);
-  top: -11.5px;
-  font-size: 13px;
-  font-family: 'MFontR';
-}
-
-.MComboBox input:valid:not(:focus) ~ label {
-  color: var(--MComboBoxFilled);
-  top: -11.5px;
-  font-size: 13px;
-  font-family: 'MFontR';
-}
-
-.MComboBox input:focus ~ .MComboBoxChevron svg {
-  fill: var(--PrimaryColor);
-}
-.MComboBox input:valid:not(:focus) ~ .MComboBoxChevron svg {
-  fill: var(--MComboBoxFilled);
-}
-
-.MComboBox input:read-only:not(:focus) ~ label {
-  color: var(--TextColor);
-  top: -11.5px;
-  font-size: 13px;
-  font-family: 'MFontR';
-}
-
-.MComboBox input:read-only:not(:focus) ~ .MComboBoxBG {
-  border: 2px solid var(--TextColor);
-}
-
-.MComboBox[MCBDisabled='true'] {
-  pointer-events: none;
-}
-
-.MComboBox[MCBDisabled='true'] input {
-  color: var(--MComboBoxDisabled) !important;
-}
-
-.MComboBox[MCBDisabled='true'] label {
-  color: var(--MComboBoxDisabled) !important;
-}
-
-.MComboBox[MCBDisabled='true'] .MComboBoxChevron svg {
-  display: none;
-}
-
-.MComboBox[MCBDisabled='true'] .MComboBoxBG {
-  border: 1px dashed var(--MComboBoxDisabled) !important;
-}
-/*rtl:end:ignore*/
 /* #endregion */
 
 /* #region Modals */
@@ -914,5 +709,108 @@ input[type='file'] {
   height: 100%;
   object-fit: cover;
   border-radius: 5px;
+}
+/* #endregion */
+
+/* #region MStepper */
+.MStepper {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.MStepperHeader {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.MStepHeader {
+  display: flex;
+  width: min-content;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  transition-duration: 0.3s;
+}
+
+.MStepHeaderIcon {
+  display: flex;
+  width: 25px;
+  height: 25px;
+  min-width: 25px;
+  min-height: 25px;
+  border-radius: 50%;
+  border: 1px solid var(--TextColor);
+  color: var(--TextColor);
+  justify-content: center;
+  align-items: center;
+  font-family: 'MFontB';
+  line-height: 0.3;
+  transition-duration: 0.3s;
+  margin-left: 5px;
+}
+
+.MStepHeaderTitle {
+  font-family: 'MFontB';
+  display: flex;
+  white-space: nowrap;
+  width: min-content;
+  height: 100%;
+  align-items: center;
+  color: var(--TextColor);
+  transition-duration: 0.3s;
+}
+
+.ActiveMStepHeader .MStepHeaderIcon {
+  border: 1px solid var(--PrimaryColor);
+  background-color: var(--PrimaryColor);
+  color: #fff;
+}
+
+.ActiveMStepHeader .MStepHeaderTitle {
+  color: var(--PrimaryColor);
+}
+
+.MStepHeader:hover {
+  background-color: var(--MStepperheaderHoverBG);
+}
+
+.MStepperHeaderLine {
+  display: flex;
+  flex: 1;
+  background-color: var(--TextColor);
+  height: 1px;
+}
+
+.MStepperContent {
+  display: flex;
+  width: 100%;
+  background-color: var(--MStepperContentBG);
+  border-radius: 5px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.MStepContent {
+  display: flex;
+  min-width: calc(100% - 20px);
+  padding: 20px 10px;
+  height: min-content;
+  transition-duration: 0.3s;
+  transform: translateX(0);
+  justify-content: center;
+}
+
+.MStepContentWrapper {
+  display: none;
+  flex-wrap: wrap;
+}
+
+.ActiveMStepContent .MStepContentWrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 /* #endregion */

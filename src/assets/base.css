@@ -45,22 +45,14 @@
   --MFieldDisabled: #777;
   /* #endregion */
 
-  /* #region MComboBox */
-  --MComboBoxBG: #fff;
-  --MComboBoxLabelColor: rgba(0, 0, 0, 0.6);
-  --MComboBoxBorder: rgba(0, 0, 0, 0.6);
-  --MComboBoxSVG: rgba(0, 0, 0, 0.6);
-  --MComboBoxItemsBG: #fff;
-  --MComboBoxItemsBorder: rgba(0, 0, 0, 0.6);
-  --MComboBoxItemEven: rgba(0, 0, 0, 0.05);
-  --MComboBoxFilled: rgba(0, 0, 0, 1);
-  --MComboBoxDisabled: #777;
-  /* #endregion */
-
   /* #region RequestDetailsTable */
   --RequestDetailsTableColor1: rgba(0, 0, 0, 0.05);
   --RequestDetailsTableColor2: rgba(0, 0, 0, 0.1);
   --RequestDetailsTableColor3: rgba(0, 0, 0, 0.4);
+  /* #endregion */
+  /* #region MStepper */
+  --MStepperheaderHoverBG: rgba(0, 0, 0, 0.05);
+  --MStepperContentBG: rgba(0, 0, 0, 0.05);
   /* #endregion */
 }
 
@@ -99,18 +91,6 @@
   /* #endregion */
 
   /* #region MComboBox */
-  --MComboBoxBG: #2f3349;
-  --MComboBoxLabelColor: rgba(255, 255, 255, 0.6);
-  --MComboBoxBorder: rgba(255, 255, 255, 0.6);
-  --MComboBoxSVG: rgba(255, 255, 255, 0.6);
-  --MComboBoxItemsBG: #2f3349;
-  --MComboBoxItemsBorder: rgba(255, 255, 255, 0.6);
-  --MComboBoxItemEven: rgba(255, 255, 255, 0.05);
-  --MComboBoxFilled: rgba(255, 255, 255, 1);
-  --MComboBoxDisabled: #aaa;
-  /* #endregion */
-
-  /* #region MComboBox */
   --AttachmentBG: #25293c;
   --AttachmentBorder: #666;
   /* #endregion */
@@ -119,5 +99,9 @@
   --RequestDetailsTableColor1: rgba(255, 255, 255, 0.05);
   --RequestDetailsTableColor2: rgba(255, 255, 255, 0.1);
   --RequestDetailsTableColor3: rgba(255, 255, 255, 0.4);
+  /* #endregion */
+  /* #region MStepper */
+  --MStepperheaderHoverBG: rgba(255, 255, 255, 0.05);
+  --MStepperContentBG: rgba(255, 255, 255, 0.05);
   /* #endregion */
 }

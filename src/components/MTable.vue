@@ -8,7 +8,7 @@ var SortDataArray = {}
 var PageNo = 1
 var PagesCount = 1
 var FilterRow = true
-var MTableMaxHeight = 510
+var MTableMaxHeight = 600
 
 export default {
   props: {
@@ -51,7 +51,7 @@ export default {
 
         var icon = ''
         var iconNode = vnode.children.find(child =>
-          child.props?.class?.includes('MTableOptionIcon'),
+          child.props?.class?.includes('MTableOptionIcon')
         )
 
         if (iconNode) {
@@ -96,7 +96,7 @@ export default {
       FilterRow,
       this.GetDataFunction,
       PagesCount,
-      this.OptionsArray,
+      this.OptionsArray
     )
   },
   watch: {
@@ -117,7 +117,7 @@ export default {
           FilterRow,
           this.GetDataFunction,
           PagesCount,
-          this.OptionsArray,
+          this.OptionsArray
         )
       },
       deep: true,
@@ -136,7 +136,7 @@ export default {
       ShowFilterRow,
       GetDataFunction,
       PagesCount,
-      MTableOptions,
+      MTableOptions
     ) {
       // Empty The Element
       Element.innerHTML = ''
@@ -255,13 +255,13 @@ export default {
                           .closest('.MTableOptions')
                           .getAttribute('MTableRowID'),
                       },
-                    }),
+                    })
                   )
                 }
               })
-            }.bind(this),
+            }.bind(this)
           )
-        }.bind(this),
+        }.bind(this)
       )
 
       // Hide Summary If Its Empty
@@ -288,7 +288,7 @@ export default {
         Element.querySelector(
           '.MTableFilterRow .MTableCell[filtername="' +
             DisplayArrayColumns[F] +
-            '"] .MTableFilterInput',
+            '"] .MTableFilterInput'
         ).value = FilterDataArray[DisplayArrayColumns[F]]
       }
 
@@ -298,7 +298,7 @@ export default {
           if (e.querySelector('input').value != '') {
             e.querySelector('.MTableClearBTN').style.display = 'flex'
           }
-        },
+        }
       )
 
       // Filter Rows Code
@@ -341,7 +341,7 @@ export default {
                 var FilterRowInput = Element.querySelector(
                   '.MTableFilterRow .MTableCell[filtername="' +
                     DisplayArrayColumns[i] +
-                    '"] .MTableFilterInput',
+                    '"] .MTableFilterInput'
                 )
                 FilterDataArray[DisplayArrayColumns[i]] = FilterRowInput.value
               }
@@ -351,23 +351,23 @@ export default {
               Element.querySelectorAll('.MTableFilterRow input').forEach(
                 function (e) {
                   e.disabled = true
-                },
+                }
               )
               Element.querySelectorAll(
-                '.MTableFilterRow .MTableFilterBTN',
+                '.MTableFilterRow .MTableFilterBTN'
               ).forEach(function (e) {
                 e.style.display = 'none'
               })
               Element.querySelectorAll('.MTableHeaderRow .MTableCell').forEach(
                 function (e) {
                   e.style.pointerEvents = 'none'
-                },
+                }
               )
               Element.querySelector(
-                '.MTableBodyContainer',
+                '.MTableBodyContainer'
               ).style.pointerEvents = 'none'
               Element.querySelectorAll(
-                '.MTablePageButtons .MTablePageButton',
+                '.MTablePageButtons .MTablePageButton'
               ).forEach(function (e) {
                 e.style.pointerEvents = 'none'
               })
@@ -376,7 +376,7 @@ export default {
               GetDataFunction(PageNo, FilterDataArray, SortDataArray)
             }
           })
-        },
+        }
       )
 
       Element.querySelectorAll('.MTableFilterRow .MTableFilterBTN').forEach(
@@ -387,7 +387,7 @@ export default {
               var FilterRowInput = Element.querySelector(
                 '.MTableFilterRow .MTableCell[filtername="' +
                   DisplayArrayColumns[i] +
-                  '"] .MTableFilterInput',
+                  '"] .MTableFilterInput'
               )
               FilterDataArray[DisplayArrayColumns[i]] = FilterRowInput.value
             }
@@ -397,22 +397,22 @@ export default {
             Element.querySelectorAll('.MTableFilterRow input').forEach(
               function (e) {
                 e.disabled = true
-              },
+              }
             )
             Element.querySelectorAll(
-              '.MTableFilterRow .MTableFilterBTN',
+              '.MTableFilterRow .MTableFilterBTN'
             ).forEach(function (e) {
               e.style.display = 'none'
             })
             Element.querySelectorAll('.MTableHeaderRow .MTableCell').forEach(
               function (e) {
                 e.style.pointerEvents = 'none'
-              },
+              }
             )
             Element.querySelector('.MTableBodyContainer').style.pointerEvents =
               'none'
             Element.querySelectorAll(
-              '.MTablePageButtons .MTablePageButton',
+              '.MTablePageButtons .MTablePageButton'
             ).forEach(function (e) {
               e.style.pointerEvents = 'none'
             })
@@ -420,7 +420,7 @@ export default {
             PageNo = 1
             GetDataFunction(PageNo, FilterDataArray, SortDataArray)
           })
-        },
+        }
       )
 
       Element.querySelectorAll('.MTableFilterRow .MTableClearBTN').forEach(
@@ -432,7 +432,7 @@ export default {
               var FilterRowInput = Element.querySelector(
                 '.MTableFilterRow .MTableCell[filtername="' +
                   DisplayArrayColumns[i] +
-                  '"] .MTableFilterInput',
+                  '"] .MTableFilterInput'
               )
               FilterDataArray[DisplayArrayColumns[i]] = FilterRowInput.value
             }
@@ -442,22 +442,22 @@ export default {
             Element.querySelectorAll('.MTableFilterRow input').forEach(
               function (e) {
                 e.disabled = true
-              },
+              }
             )
             Element.querySelectorAll(
-              '.MTableFilterRow .MTableFilterBTN',
+              '.MTableFilterRow .MTableFilterBTN'
             ).forEach(function (e) {
               e.style.display = 'none'
             })
             Element.querySelectorAll('.MTableHeaderRow .MTableCell').forEach(
               function (e) {
                 e.style.pointerEvents = 'none'
-              },
+              }
             )
             Element.querySelector('.MTableBodyContainer').style.pointerEvents =
               'none'
             Element.querySelectorAll(
-              '.MTablePageButtons .MTablePageButton',
+              '.MTablePageButtons .MTablePageButton'
             ).forEach(function (e) {
               e.style.pointerEvents = 'none'
             })
@@ -465,7 +465,7 @@ export default {
             PageNo = 1
             GetDataFunction(PageNo, FilterDataArray, SortDataArray)
           })
-        },
+        }
       )
 
       // Show / Hide Filter Row
@@ -496,7 +496,7 @@ export default {
           var DisplayArrayColumnsObject = {}
           for (var i = 0; i <= DisplayArrayColumns.length - 1; i++) {
             var TheValue = DisplayArrayColumns[i].match(
-              /^([a-zA-Z_]\w*)\.([a-zA-Z_]\w*)$/,
+              /^([a-zA-Z_]\w*)\.([a-zA-Z_]\w*)$/
             )
             if (TheValue) {
               DisplayArrayColumnsObject[DisplayArrayColumns[i]] =
@@ -513,7 +513,7 @@ export default {
         for (var HW = 0; HW <= HeadersArray.length - 1; HW++) {
           ColumnSize.font = '18px MFontB'
           MTableColumnsSizes[HW] = Math.ceil(
-            ColumnSize.measureText(HeadersArray[HW]).width,
+            ColumnSize.measureText(HeadersArray[HW]).width
           )
         }
 
@@ -540,7 +540,7 @@ export default {
                       '</div>'
                     ColumnSize.font = '16px MFontR'
                     CurrentColumnSize += Math.ceil(
-                      ColumnSize.measureText(TheData[D][TheValue[2]]).width,
+                      ColumnSize.measureText(TheData[D][TheValue[2]]).width
                     )
                   }
                   DisplayArray[x][y] += '</div>'
@@ -549,14 +549,14 @@ export default {
                 // Calculating The Columns Sizes Array
                 ColumnSize.font = '16px MFontR'
                 CurrentColumnSize = Math.ceil(
-                  ColumnSize.measureText(DisplayArray[x][y]).width,
+                  ColumnSize.measureText(DisplayArray[x][y]).width
                 )
               }
             } else {
               // Calculating The Columns Sizes Array
               ColumnSize.font = '16px MFontR'
               CurrentColumnSize = Math.ceil(
-                ColumnSize.measureText(DisplayArray[x][y]).width,
+                ColumnSize.measureText(DisplayArray[x][y]).width
               )
             }
 
@@ -586,7 +586,7 @@ export default {
                 parseFloat(TotalResultArray[ArrayCounter]) +
                 parseFloat(DisplayArray[x][y])
               TotalResultArray[ArrayCounter] = Number.isInteger(
-                TotalResultArray[ArrayCounter],
+                TotalResultArray[ArrayCounter]
               )
                 ? TotalResultArray[ArrayCounter]
                 : TotalResultArray[ArrayCounter].toFixed(2)
@@ -651,7 +651,7 @@ export default {
               Math.ceil(ColumnSize.measureText(TotalResultArray[FW]).width)
             ) {
               MTableColumnsSizes[FW] = Math.ceil(
-                ColumnSize.measureText(TotalResultArray[FW]).width,
+                ColumnSize.measureText(TotalResultArray[FW]).width
               )
             }
           }
@@ -684,9 +684,9 @@ export default {
             function (e) {
               e.style.minWidth +=
                 parseInt(
-                  parseInt(window.getComputedStyle(e).minWidth) + ScrollWidth,
+                  parseInt(window.getComputedStyle(e).minWidth) + ScrollWidth
                 ) + 'px'
-            },
+            }
           )
         }, 0)
 
@@ -700,17 +700,17 @@ export default {
                 Element.dispatchEvent(
                   new CustomEvent(MTableOptions[0]['event'], {
                     detail: { RowID: e.getAttribute('MTableRowID') },
-                  }),
+                  })
                 )
               } else {
                 ShowMTableOptions(event)
               }
             })
-          },
+          }
         )
 
         Element.querySelectorAll(
-          '.MTableBodyContainer .MTableRow .MTableRowOptions',
+          '.MTableBodyContainer .MTableRow .MTableRowOptions'
         ).forEach(function (e) {
           e.removeEventListener('click', null)
           e.addEventListener('click', function (event) {
@@ -718,7 +718,7 @@ export default {
               Element.dispatchEvent(
                 new CustomEvent(MTableOptions[0]['event'], {
                   detail: { RowID: e.getAttribute('MTableRowID') },
-                }),
+                })
               )
             } else {
               ShowMTableOptions(event)
@@ -732,7 +732,7 @@ export default {
             e.removeEventListener('click', null)
             e.addEventListener('click', function () {
               var MTableHeaderIndex = Array.from(
-                this.parentNode.children,
+                this.parentNode.children
               ).indexOf(this)
               var SortName = DisplayArrayColumns[MTableHeaderIndex]
 
@@ -755,23 +755,23 @@ export default {
               Element.querySelectorAll('.MTableFilterRow input').forEach(
                 function (e) {
                   e.disabled = true
-                },
+                }
               )
               Element.querySelectorAll(
-                '.MTableFilterRow .MTableFilterBTN',
+                '.MTableFilterRow .MTableFilterBTN'
               ).forEach(function (e) {
                 e.style.display = 'none'
               })
               Element.querySelectorAll('.MTableHeaderRow .MTableCell').forEach(
                 function (e) {
                   e.style.pointerEvents = 'none'
-                },
+                }
               )
               Element.querySelector(
-                '.MTableBodyContainer',
+                '.MTableBodyContainer'
               ).style.pointerEvents = 'none'
               Element.querySelectorAll(
-                '.MTablePageButtons .MTablePageButton',
+                '.MTablePageButtons .MTablePageButton'
               ).forEach(function (e) {
                 e.style.pointerEvents = 'none'
               })
@@ -779,26 +779,26 @@ export default {
               PageNo = 1
               GetDataFunction(PageNo, FilterDataArray, SortDataArray)
             })
-          },
+          }
         )
 
         if (SortDataArray != null) {
           for (var SA = 0; SA < DisplayArrayColumns.length; SA++) {
             if (DisplayArrayColumns[SA] == SortDataArray[0]) {
               Element.querySelector(
-                '.MTableHeaderRow .MTableCell:nth-child(' + (SA + 1) + ')',
+                '.MTableHeaderRow .MTableCell:nth-child(' + (SA + 1) + ')'
               ).innerHTML += '<div class="MTableSortArrow"></div>'
               if (SortDataArray[1] == 'ASC') {
                 Element.querySelector(
                   '.MTableHeaderRow .MTableCell:nth-child(' +
                     (SA + 1) +
-                    ') .MTableSortArrow',
+                    ') .MTableSortArrow'
                 ).style.transform = 'rotate(0)'
               } else {
                 Element.querySelector(
                   '.MTableHeaderRow .MTableCell:nth-child(' +
                     (SA + 1) +
-                    ') .MTableSortArrow',
+                    ') .MTableSortArrow'
                 ).style.transform = 'rotate(180deg)'
               }
             }
@@ -812,7 +812,7 @@ export default {
           Element.querySelectorAll('.MTableRowOptionsPadding').forEach(
             function (e) {
               e.style.display = 'none'
-            },
+            }
           )
         }
 
@@ -820,7 +820,7 @@ export default {
           // Set Loader Top
           Element.querySelector('.MTableLoader').style.top =
             Element.querySelector(
-              '.MTableBodyContainer',
+              '.MTableBodyContainer'
             ).getBoundingClientRect().top -
             Element.getBoundingClientRect().top -
             2 +
@@ -828,10 +828,10 @@ export default {
 
           var MTableDataRows = Element.querySelectorAll('.MTableDataRow')
           var MTableHeaderRows = Element.querySelectorAll(
-            '.MTableHeaderRow .MTableCell',
+            '.MTableHeaderRow .MTableCell'
           )
           var MTableFilterRows = Element.querySelectorAll(
-            '.MTableFilterRow .MTableCell',
+            '.MTableFilterRow .MTableCell'
           )
           if (Element.clientWidth > MaxMTableColumnsSizes) {
             for (var l = 0; l <= MTableColumnsSizes.length - 1; l++) {
@@ -840,35 +840,35 @@ export default {
               var MTableColumnSizePixel = MTableColumnsSizes[l]
               if (MTableHeaderRows.length != 0) {
                 Element.querySelector(
-                  '.MTableHeaderRow .MTableCell:nth-child(' + (l + 1) + ')',
+                  '.MTableHeaderRow .MTableCell:nth-child(' + (l + 1) + ')'
                 ).style.width = MTableColumnSizePercentage + '%'
                 Element.querySelector(
-                  '.MTableHeaderRow .MTableCell:nth-child(' + (l + 1) + ')',
+                  '.MTableHeaderRow .MTableCell:nth-child(' + (l + 1) + ')'
                 ).style.minWidth = MTableColumnSizePixel + 'px'
               }
 
               if (MTableFilterRows.length != 0) {
                 Element.querySelector(
-                  '.MTableFilterRow .MTableCell:nth-child(' + (l + 1) + ')',
+                  '.MTableFilterRow .MTableCell:nth-child(' + (l + 1) + ')'
                 ).style.width = MTableColumnSizePercentage + '%'
                 Element.querySelector(
-                  '.MTableFilterRow .MTableCell:nth-child(' + (l + 1) + ')',
+                  '.MTableFilterRow .MTableCell:nth-child(' + (l + 1) + ')'
                 ).style.minWidth = MTableColumnSizePixel + 'px'
               }
 
               if (MTableDataRows.length != 0) {
                 Element.querySelector(
-                  '.MTableTotalsRow .MTableCell:nth-child(' + (l + 1) + ')',
+                  '.MTableTotalsRow .MTableCell:nth-child(' + (l + 1) + ')'
                 ).style.width = MTableColumnSizePercentage + '%'
                 Element.querySelector(
-                  '.MTableTotalsRow .MTableCell:nth-child(' + (l + 1) + ')',
+                  '.MTableTotalsRow .MTableCell:nth-child(' + (l + 1) + ')'
                 ).style.minWidth = MTableColumnSizePixel + 'px'
                 MTableDataRows.forEach(function (e) {
                   e.querySelector(
-                    '.MTableCell:nth-child(' + (l + 1) + ')',
+                    '.MTableCell:nth-child(' + (l + 1) + ')'
                   ).style.width = MTableColumnSizePercentage + '%'
                   e.querySelector(
-                    '.MTableCell:nth-child(' + (l + 1) + ')',
+                    '.MTableCell:nth-child(' + (l + 1) + ')'
                   ).style.minWidth = MTableColumnSizePixel + 'px'
                 })
               }
@@ -877,33 +877,33 @@ export default {
             for (var MTCS = 0; MTCS <= MTableColumnsSizes.length - 1; MTCS++) {
               if (MTableHeaderRows.length != 0) {
                 Element.querySelector(
-                  '.MTableHeaderRow .MTableCell:nth-child(' + (MTCS + 1) + ')',
+                  '.MTableHeaderRow .MTableCell:nth-child(' + (MTCS + 1) + ')'
                 ).style.width = MTableColumnsSizes[MTCS] + 'px'
                 Element.querySelector(
-                  '.MTableHeaderRow .MTableCell:nth-child(' + (MTCS + 1) + ')',
+                  '.MTableHeaderRow .MTableCell:nth-child(' + (MTCS + 1) + ')'
                 ).style.minWidth = MTableColumnSizePixel + 'px'
               }
               if (MTableFilterRows.length != 0) {
                 Element.querySelector(
-                  '.MTableFilterRow .MTableCell:nth-child(' + (MTCS + 1) + ')',
+                  '.MTableFilterRow .MTableCell:nth-child(' + (MTCS + 1) + ')'
                 ).style.width = MTableColumnsSizes[MTCS] + 'px'
                 Element.querySelector(
-                  '.MTableFilterRow .MTableCell:nth-child(' + (MTCS + 1) + ')',
+                  '.MTableFilterRow .MTableCell:nth-child(' + (MTCS + 1) + ')'
                 ).style.minWidth = MTableColumnSizePixel + 'px'
               }
               if (MTableDataRows.length != 0) {
                 Element.querySelector(
-                  '.MTableTotalsRow .MTableCell:nth-child(' + (MTCS + 1) + ')',
+                  '.MTableTotalsRow .MTableCell:nth-child(' + (MTCS + 1) + ')'
                 ).style.width = MTableColumnsSizes[MTCS] + 'px'
                 Element.querySelector(
-                  '.MTableTotalsRow .MTableCell:nth-child(' + (MTCS + 1) + ')',
+                  '.MTableTotalsRow .MTableCell:nth-child(' + (MTCS + 1) + ')'
                 ).style.minWidth = MTableColumnSizePixel + 'px'
                 MTableDataRows.forEach(function (e) {
                   e.querySelector(
-                    '.MTableCell:nth-child(' + (MTCS + 1) + ')',
+                    '.MTableCell:nth-child(' + (MTCS + 1) + ')'
                   ).style.width = MTableColumnsSizes[MTCS] + 'px'
                   e.querySelector(
-                    '.MTableCell:nth-child(' + (MTCS + 1) + ')',
+                    '.MTableCell:nth-child(' + (MTCS + 1) + ')'
                   ).style.minWidth = MTableColumnSizePixel + 'px'
                 })
               }
@@ -962,7 +962,7 @@ export default {
         contextMenu.style.top = posY + 'px'
         contextMenu.setAttribute(
           'MTableRowID',
-          event.target.closest('.MTableDataRow').getAttribute('MTableRowID'),
+          event.target.closest('.MTableDataRow').getAttribute('MTableRowID')
         )
         event.target.closest('.MTableDataRow').style.backgroundColor =
           'var(--MTableRowHighlight)'
@@ -1053,22 +1053,22 @@ export default {
             Element.querySelectorAll('.MTableFilterRow input').forEach(
               function (e) {
                 e.disabled = true
-              },
+              }
             )
             Element.querySelectorAll(
-              '.MTableFilterRow .MTableFilterBTN',
+              '.MTableFilterRow .MTableFilterBTN'
             ).forEach(function (e) {
               e.style.display = 'none'
             })
             Element.querySelectorAll('.MTableHeaderRow .MTableCell').forEach(
               function (e) {
                 e.style.pointerEvents = 'none'
-              },
+              }
             )
             Element.querySelector('.MTableBodyContainer').style.pointerEvents =
               'none'
             Element.querySelectorAll(
-              '.MTablePageButtons .MTablePageButton',
+              '.MTablePageButtons .MTablePageButton'
             ).forEach(function (e) {
               e.style.pointerEvents = 'none'
             })
@@ -1096,18 +1096,18 @@ export default {
       Element.querySelectorAll('.MTableFilterRow .MTableFilterBTN').forEach(
         function (e) {
           e.style.display = 'none'
-        },
+        }
       )
       Element.querySelectorAll('.MTableHeaderRow .MTableCell').forEach(
         function (e) {
           e.style.pointerEvents = 'none'
-        },
+        }
       )
       Element.querySelector('.MTableBodyContainer').style.pointerEvents = 'none'
       Element.querySelectorAll('.MTablePageButtons .MTablePageButton').forEach(
         function (e) {
           e.style.pointerEvents = 'none'
-        },
+        }
       )
 
       this.GetDataFunction(PageNo, FilterDataArray, SortDataArray)
@@ -1181,8 +1181,8 @@ export default {
 }
 
 .MTable ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 15px;
+  height: 15px;
 }
 
 .MTable ::-webkit-scrollbar-track {
@@ -1190,7 +1190,7 @@ export default {
 }
 
 .MTable ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: var(--MTablePrimaryColor);
 }
 
 .MTable ::-webkit-scrollbar-thumb:hover {

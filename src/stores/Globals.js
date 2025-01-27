@@ -4,6 +4,7 @@ export const useGlobalsStore = defineStore('Globals', {
   state: () => ({
     MArray: [],
     Permissions: [],
+    ComboBoxes: [],
   }),
   actions: {
     setMArray(Value) {
@@ -11,6 +12,9 @@ export const useGlobalsStore = defineStore('Globals', {
     },
     setPermissions(Value) {
       this.Permissions = Value
+    },
+    SetComboBoxes(Value) {
+      this.ComboBoxes = Value
     },
   },
 })

@@ -860,12 +860,9 @@
       <MDate
         ref="InformationRequestsFromDate"
         :Name="'InformationRequestsFromDate'"
-        :Label="'تاريخ من'"
-      ></MDate>
-      <MDate
-        ref="InformationRequestsToDate"
-        :Name="'InformationRequestsToDate'"
-        :Label="'تاريخ الى'"
+        :Label="'التاريخ'"
+        :Range="true"
+        :Clearable="true"
       ></MDate>
     </div>
     <MTable
@@ -947,6 +944,7 @@ export default {
         'الصفة',
         'العملية',
         'حالة الطلب',
+        'تاريخ الطلب',
       ]),
       InformationRequestsTBDisplayColumns: ref([
         'id',
@@ -959,6 +957,7 @@ export default {
         'person_type',
         'request_type',
         'request_status',
+        'created_at',
       ]),
       InformationRequestsTBTotals: ref(['Count', '', '', '', '', '', '']),
       InformationRequestsTBRowsCount: ref(0),
@@ -974,28 +973,28 @@ export default {
       'click',
       function () {
         this.InformationRequestsTB.LoadMTable()
-      }.bind(this),
+      }.bind(this)
     )
 
     document.getElementById('InformationRequestsTB').addEventListener(
       'ViewItem',
       function (data) {
-        this.selectedRowData = this.InformationRequestsTBData.filter(
-          function (item) {
-            if (item['id'] == data.detail.RowID) {
-              return item
-            }
-          },
-        )[0]
+        this.selectedRowData = this.InformationRequestsTBData.filter(function (
+          item
+        ) {
+          if (item['id'] == data.detail.RowID) {
+            return item
+          }
+        })[0]
         ShowModal(document.getElementById('InformationRequestModal'))
-      }.bind(this),
+      }.bind(this)
     )
 
     document.getElementById('RejectBTN').addEventListener(
       'click',
       function () {
         ShowModal(document.getElementById('InformationRequestRejectModal'))
-      }.bind(this),
+      }.bind(this)
     )
   },
   methods: {
@@ -1006,8 +1005,8 @@ export default {
             PageNo: PageNo,
             FilterArray: FilterArray,
             SortArray: SortArray,
-            InformationRequestFrom: this.InformationRequestsFromDate.Get(),
-            InformationRequestTo: this.InformationRequestsToDate.Get(),
+            InformationRequestFrom: this.InformationRequestsFromDate.Get()[0],
+            InformationRequestTo: this.InformationRequestsFromDate.Get()[1],
           },
         })
         .then(response => {
@@ -1053,7 +1052,7 @@ export default {
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append(
         'Reason',
-        document.getElementById('RejectionReason').querySelector('input').value,
+        document.getElementById('RejectionReason').querySelector('input').value
       )
 
       api

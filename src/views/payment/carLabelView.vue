@@ -27,24 +27,7 @@
       :RowsCount="CarLabelsTBRowsCount"
       :RowsPerPage="10"
     >
-      <!-- <template v-slot:options>
-        <div class="MTableOption" OptionEventName="ViewItem">
-          <div class="MTableOptionIcon">
-            <svg viewBox="0 0 1000 1000">
-              <path d="..."></path>
-            </svg>
-          </div>
-          <div class="MTableOptionName">عرض</div>
-        </div>
-        <div class="MTableOption" OptionEventName="DeleteItem">
-          <div class="MTableOptionIcon">
-            <svg viewBox="0 0 1000 1000">
-              <path d="..."></path>
-            </svg>
-          </div>
-          <div class="MTableOptionName">حذف</div>
-        </div>
-      </template> -->
+
     </MTable>
 
     <div class="MGroup">

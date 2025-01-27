@@ -1,15 +1,14 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import MSidebar from './components/MSidebar.vue';
-import MHeader from './components/MHeader.vue';
-
-const animateOn = ref("none");
+import { ref, onMounted } from 'vue'
+import MSidebar from './components/MSidebar.vue'
+import MHeader from './components/MHeader.vue'
+const animateOn = ref('none')
 
 onMounted(() => {
   setTimeout(() => {
-    animateOn.value = "slide-fade";
-  }, 10000);
-});
+    animateOn.value = 'slide-fade'
+  }, 10000)
+})
 </script>
 
 <template>
@@ -59,7 +58,6 @@ onMounted(() => {
   </div>
 </template>
 <script>
-
 </script>
 <style>
 .MainWrapper {

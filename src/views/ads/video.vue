@@ -144,10 +144,13 @@ export default {
 
     // Delete a row
     const deleteRow = async row => {
+      ShowLoading()
       try {
         await api.delete(`/main-slider-ads-delete/${row.id}`)
         fetchTableData()
+        HideLoading()
       } catch (error) {
+        HideLoading()
         console.error('Failed to delete slider ad.', error)
       }
     }
