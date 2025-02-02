@@ -247,7 +247,7 @@
 
     <MTable
       ref="CarLabelRequestsTB"
-      :MTableName="'CarLabelRequestsTB'"
+      :Name="'CarLabelRequestsTB'"
       :DataArray="CarLabelRequestsTBData"
       :HeadersArray="CarLabelRequestsTBHeaders"
       :TotalsArray="CarLabelRequestsTBTotals"
@@ -287,8 +287,6 @@
 import { ref } from 'vue'
 import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
-import MTable from '../../components/MTable.vue'
-import MDate from '../../components/MDate.vue'
 import {
   ShowMessage,
   ShowModal,
@@ -296,14 +294,7 @@ import {
   ShowLoading,
   HideLoading,
 } from '@/MJS.js'
-import MCheckBox from '../../components/MCheckBox.vue'
-
 export default {
-  components: {
-    MTable,
-    MDate,
-    MCheckBox,
-  },
   setup() {
     const authStore = useAuthStore()
     const hasPermission = permission =>

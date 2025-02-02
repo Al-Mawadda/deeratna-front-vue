@@ -281,7 +281,7 @@
     </div>
     <MTable
       ref="InternetRequestsTB"
-      :MTableName="'InternetRequestsTB'"
+      :Name="'InternetRequestsTB'"
       :DataArray="InternetRequestsTBData"
       :HeadersArray="InternetRequestsTBHeaders"
       :TotalsArray="InternetRequestsTBTotals"
@@ -323,9 +323,6 @@
 import { ref } from 'vue'
 import { api, GetServerPath } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
-import MTable from '../../components/MTable.vue'
-import MDate from '../../components/MDate.vue'
-import MComboBox from '../../components/MComboBox.vue'
 
 import {
   ShowMessage,
@@ -336,11 +333,6 @@ import {
 } from '@/MJS.js'
 
 export default {
-  components: {
-    MTable,
-    MDate,
-    MComboBox,
-  },
   setup() {
     const authStore = useAuthStore()
     const hasPermission = permission =>

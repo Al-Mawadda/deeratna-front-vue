@@ -18,7 +18,7 @@
 
     <MTable
       ref="InstallmentsTB"
-      :MTableName="'InstallmentsTB'"
+      :Name="'InstallmentsTB'"
       :DataArray="InstallmentsTBData"
       :HeadersArray="InstallmentsTBHeaders"
       :TotalsArray="InstallmentsTBTotals"
@@ -57,14 +57,8 @@
 import { ref } from 'vue'
 import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
-import MTable from '../../components/MTable.vue'
-import MDate from '../../components/MDate.vue'
 import { ShowMessage } from '@/MJS.js'
 export default {
-  components: {
-    MTable,
-    MDate,
-  },
   setup() {
     const authStore = useAuthStore()
     const hasPermission = permission =>
@@ -112,7 +106,7 @@ export default {
         'click',
         function () {
           this.InstallmentsTB.LoadMTable()
-        }.bind(this),
+        }.bind(this)
       )
   },
   methods: {
@@ -132,7 +126,7 @@ export default {
           this.InstallmentsTBData = response.data.paginated_data.data
           document.getElementById('InstallmentsTotal').innerHTML =
             new Intl.NumberFormat('en-US').format(
-              response.data.total_payment_amount,
+              response.data.total_payment_amount
             )
         })
         .catch(error => {

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { nextTick } from 'vue';
+import { nextTick } from 'vue'
 
 export default {
   props: {
@@ -23,13 +23,13 @@ export default {
       IsDisabled: this.Disabled,
       SelectedItems: [],
       MCBItems: this.Items,
-    };
+    }
   },
   watch: {
     Disabled: {
       handler(newValue) {
-        this.IsDisabled = newValue;
-        this.EnableDisable();
+        this.IsDisabled = newValue
+        this.EnableDisable()
       },
       deep: true,
     },
@@ -37,46 +37,78 @@ export default {
       handler(newValue) {
         nextTick(() => {
           if (this.Items && this.Items.length > 0) {
-            var Element = document.getElementById(this.Name);
-            this.MComboBox = this.MComboBoxBuild(Element, newValue, this.ItemsName, this.Label, this.MultipleSelections, this.AllowInput, this.MaxVisibleItems, this.Clearable);
+            var Element = document.getElementById(this.Name)
+            this.MComboBox = this.MComboBoxBuild(
+              Element,
+              newValue,
+              this.ItemsName,
+              this.Label,
+              this.MultipleSelections,
+              this.AllowInput,
+              this.MaxVisibleItems,
+              this.Clearable,
+            )
           }
-        });
+        })
       },
     },
   },
   mounted() {
-    var Element = document.getElementById(this.Name);
+    var Element = document.getElementById(this.Name)
 
-    this.EnableDisable();
-    this.MComboBox = this.MComboBoxBuild(Element, this.Items, this.ItemsName, this.Label, this.MultipleSelections, this.AllowInput, this.MaxVisibleItems, this.Clearable);
+    this.EnableDisable()
+    this.MComboBox = this.MComboBoxBuild(
+      Element,
+      this.Items,
+      this.ItemsName,
+      this.Label,
+      this.MultipleSelections,
+      this.AllowInput,
+      this.MaxVisibleItems,
+      this.Clearable,
+    )
   },
   methods: {
-    MComboBoxBuild(Element, Items, ItemsName, Label, MultipleSelections, AllowInput, MaxVisibleItems, Clearable) {
-      Element.innerHTML = '';
-      var MCBValue = '';
-      var MFilteredItems = [];
-      var ItemsArrayType = '';
-      var Instance = this;
+    MComboBoxBuild(
+      Element,
+      Items,
+      ItemsName,
+      Label,
+      MultipleSelections,
+      AllowInput,
+      MaxVisibleItems,
+      Clearable,
+    ) {
+      Element.innerHTML = ''
+      var MCBValue = ''
+      var MFilteredItems = []
+      var ItemsArrayType = ''
+      var Instance = this
 
-      if (Items.every(item => Array.isArray(item) || (typeof item === 'object' && item !== null))) {
-        ItemsArrayType = '2D';
+      if (
+        Items.every(
+          item =>
+            Array.isArray(item) || (typeof item === 'object' && item !== null),
+        )
+      ) {
+        ItemsArrayType = '2D'
       } else {
-        ItemsArrayType = '1D';
+        ItemsArrayType = '1D'
       }
 
-      Instance.MCBItems = [];
+      Instance.MCBItems = []
       for (let i = 0; i < Items.length; i++) {
         if (ItemsArrayType == '1D') {
-          Instance.MCBItems[i] = { "MCBIName": Items[i] };
-          Instance.MCBItems[i]['MCBIID'] = i;
+          Instance.MCBItems[i] = { MCBIName: Items[i] }
+          Instance.MCBItems[i]['MCBIID'] = i
         }
         if (ItemsArrayType == '2D') {
-          Instance.MCBItems[i] = JSON.parse(JSON.stringify(Items[i]));
-          Instance.MCBItems[i]['MCBIID'] = i;
+          Instance.MCBItems[i] = JSON.parse(JSON.stringify(Items[i]))
+          Instance.MCBItems[i]['MCBIID'] = i
         }
       }
 
-      MFilteredItems = Instance.MCBItems;
+      MFilteredItems = Instance.MCBItems
 
       if (Items.length == 0) {
         document.getElementById(this.Name).setAttribute('MCBDisabled', true)
@@ -84,7 +116,8 @@ export default {
         document.getElementById(this.Name).removeAttribute('MCBDisabled')
       }
 
-      MCBValue = '<input class="MComboBoxValueInput" autocomplete="false" type="text"/>';
+      MCBValue =
+        '<input class="MComboBoxValueInput" autocomplete="false" type="text"/>'
       var MCBLabel = '<label>' + Label + '</label>'
       var ClearBTN = `<div class="MComboBoxClearBTN"><svg viewBox="0 0 1000 1000">
 	<path d="M922.1,147.7c0.5,14.9-10.1,31.1-24.9,45.8C800.4,290,703.8,386.8,607.1,483.5c-16.5,16.5-16.5,16.5,0.5,33.4
@@ -94,236 +127,382 @@ export default {
 		C297.3,387.5,199.3,289.3,101,191.4c-20.2-20.1-29.1-43-19.9-70.8c15-45.2,70.8-57.9,106.2-23.7c33.9,32.7,66.7,66.4,100,99.7
 		c67.3,67.3,134.7,134.4,201.6,202c8.7,8.8,13.2,9.2,22.1,0.2c98.9-99.4,198.4-198.2,297.5-297.4c13.6-13.7,28.8-23,48.6-23.3
 		C893.3,77.6,921.6,104.9,922.1,147.7z"/>
-</svg></div>`;
-      var MCBChevron = '<div class="MComboBoxChevron"><svg viewBox="0 0 1000 1000"><polygon points="333.8,75.7 241.9,167.7 574.2,500 241.9,832.3 333.8,924.3 758.1,500 "></polygon></svg></div>';
+</svg></div>`
+      var MCBChevron =
+        '<div class="MComboBoxChevron"><svg viewBox="0 0 1000 1000"><polygon points="333.8,75.7 241.9,167.7 574.2,500 241.9,832.3 333.8,924.3 758.1,500 "></polygon></svg></div>'
       var MCBBG = '<div class="MComboBoxBG"></div>'
-      var MComboBoxValueContainer = '<div tabindex="-1" class="MComboBoxValueContainer">' + MCBValue + MCBLabel + MCBBG + ClearBTN + MCBChevron + '</div>';
-      var MCBItemsContainer = '<div class="MComboBoxDropDown"><div class="MComboBoxItemsSearch"><input class="MComboBoxItemsSearchInput" placeholder="بحث" autocomplete="false" type="text"/></div><div class="MComboBoxItems"></div></div>';
+      var MComboBoxValueContainer =
+        '<div tabindex="-1" class="MComboBoxValueContainer">' +
+        MCBValue +
+        MCBLabel +
+        MCBBG +
+        ClearBTN +
+        MCBChevron +
+        '</div>'
+      var MCBItemsContainer =
+        '<div class="MComboBoxDropDown"><div class="MComboBoxItemsSearch"><input class="MComboBoxItemsSearchInput" placeholder="بحث" autocomplete="false" type="text"/></div><div class="MComboBoxItems"></div></div>'
 
-      Element.innerHTML += MComboBoxValueContainer;
-      Element.innerHTML += MCBItemsContainer;
-
+      Element.innerHTML += MComboBoxValueContainer
+      Element.innerHTML += MCBItemsContainer
 
       // Show/Hide Clear Button
-      ShowHideClearBTN();
+      ShowHideClearBTN()
 
-      FillComboBoxItems();
+      FillComboBoxItems()
 
       if (AllowInput == true && MultipleSelections == false) {
-        Element.querySelector('input').removeAttribute('readonly');
+        Element.querySelector('input').removeAttribute('readonly')
       } else {
-        Element.querySelector('input').setAttribute('readonly', true);
+        Element.querySelector('input').setAttribute('readonly', true)
       }
 
       if (Element.querySelector('.MComboBoxValueInput').value) {
-        Element.setAttribute('valid', true);
+        Element.setAttribute('valid', true)
       } else {
-        Element.removeAttribute('valid');
+        Element.removeAttribute('valid')
       }
 
       // Set Max Visible Items
-      Element.querySelector('.MComboBoxDropDown').style.display = 'none';
-      Element.querySelector('.MComboBoxItems').style.maxHeight = (MaxVisibleItems * 41) + 'px';
+      Element.querySelector('.MComboBoxDropDown').style.display = 'none'
+      Element.querySelector('.MComboBoxItems').style.maxHeight =
+        MaxVisibleItems * 41 + 'px'
 
-      Element.removeEventListener('focusin', null);
+      Element.removeEventListener('focusin', null)
       Element.addEventListener('focusin', function () {
         if (Element.getAttribute('MCBDisabled') != 'true') {
-          if (Element.querySelector('.MComboBoxDropDown').style.display == 'none') {
-            ShowDropDown();
+          if (
+            Element.querySelector('.MComboBoxDropDown').style.display == 'none'
+          ) {
+            ShowDropDown()
           }
         }
-      });
+      })
 
-      Element.removeEventListener('focusout', null);
+      Element.removeEventListener('focusout', null)
       Element.addEventListener('focusout', function (e) {
         if (Element.getAttribute('MCBDisabled') != 'true') {
-          if (!e.relatedTarget || !e.relatedTarget.closest('.MComboBox') || e.relatedTarget.closest('.MComboBox').getAttribute('id') != Element.getAttribute('id')) {
-            HideDropDown();
+          if (
+            !e.relatedTarget ||
+            !e.relatedTarget.closest('.MComboBox') ||
+            e.relatedTarget.closest('.MComboBox').getAttribute('id') !=
+              Element.getAttribute('id')
+          ) {
+            HideDropDown()
           }
         }
-        InputValidate();
-        window.removeEventListener('keydown', null);
-      });
+        InputValidate()
+        window.removeEventListener('keydown', null)
+      })
 
-      Element.querySelector('.MComboBoxClearBTN').removeEventListener('click', null);
-      Element.querySelector('.MComboBoxClearBTN').addEventListener('click', function () {
-        Instance.SelectedItems = [];
-        PopulateSelections();
-        ShowHideClearBTN();
-      });
+      Element.querySelector('.MComboBoxClearBTN').removeEventListener(
+        'click',
+        null,
+      )
+      Element.querySelector('.MComboBoxClearBTN').addEventListener(
+        'click',
+        function () {
+          Instance.SelectedItems = []
+          PopulateSelections()
+          ShowHideClearBTN()
+        },
+      )
 
-      Element.querySelector('.MComboBoxValueInput').removeEventListener('keyup', null);
-      Element.querySelector('.MComboBoxValueInput').addEventListener('keyup', function () {
-        // Show/Hide Clear Button
-        ShowHideClearBTN();
-      });
+      Element.querySelector('.MComboBoxValueInput').removeEventListener(
+        'keyup',
+        null,
+      )
+      Element.querySelector('.MComboBoxValueInput').addEventListener(
+        'keyup',
+        function () {
+          // Show/Hide Clear Button
+          ShowHideClearBTN()
+        },
+      )
 
-      var CurrentHighlight = 0;
-      Element.querySelector('.MComboBoxItemsSearchInput').removeEventListener('keyup', null);
-      Element.querySelector('.MComboBoxItemsSearchInput').addEventListener('keyup', function (e) {
-        var MCBSearchInput = Element.querySelector('.MComboBoxItemsSearchInput');
-        MFilteredItems = Instance.MCBItems;
+      var CurrentHighlight = 0
+      Element.querySelector('.MComboBoxItemsSearchInput').removeEventListener(
+        'keyup',
+        null,
+      )
+      Element.querySelector('.MComboBoxItemsSearchInput').addEventListener(
+        'keyup',
+        function (e) {
+          var MCBSearchInput = Element.querySelector(
+            '.MComboBoxItemsSearchInput',
+          )
+          MFilteredItems = Instance.MCBItems
 
-        if (ItemsArrayType == '1D') {
-          MFilteredItems = Instance.MCBItems.filter(function (item) {
-            if (item['MCBIName'].toLowerCase().indexOf(MCBSearchInput.value.toLowerCase()) > -1) {
-              return item;
+          if (ItemsArrayType == '1D') {
+            MFilteredItems = Instance.MCBItems.filter(function (item) {
+              if (
+                item['MCBIName']
+                  .toLowerCase()
+                  .indexOf(MCBSearchInput.value.toLowerCase()) > -1
+              ) {
+                return item
+              }
+            })
+          }
+          if (ItemsArrayType == '2D') {
+            Element.removeAttribute('SelectionID')
+            MFilteredItems = Instance.MCBItems.filter(function (item) {
+              if (
+                item[ItemsName].toLowerCase().indexOf(
+                  MCBSearchInput.value.toLowerCase(),
+                ) > -1
+              ) {
+                return item
+              }
+            })
+          }
+
+          FillComboBoxItems()
+
+          var MaxHighlight = Element.querySelectorAll(
+            '.MComboBoxItems .MComboBoxItem',
+          ).length
+
+          if (e.keyCode == 38) {
+            if (CurrentHighlight > 1) {
+              CurrentHighlight--
             }
-          });
-        }
-        if (ItemsArrayType == '2D') {
-          Element.removeAttribute('SelectionID');
-          MFilteredItems = Instance.MCBItems.filter(function (item) {
-            if (item[ItemsName].toLowerCase().indexOf(MCBSearchInput.value.toLowerCase()) > -1) {
-              return item;
+
+            if (
+              Element.querySelectorAll('.MComboBoxItemHighlight').length != 0
+            ) {
+              Element.querySelector('.MComboBoxItemHighlight').removeClass(
+                'MComboBoxItemHighlight',
+              )
             }
-          });
-        }
-
-        FillComboBoxItems();
-
-        var MaxHighlight = Element.querySelectorAll('.MComboBoxItems .MComboBoxItem').length;
-
-        if (e.keyCode == 38) {
-          if (CurrentHighlight > 1) {
-            CurrentHighlight--;
-          }
-
-          if (Element.querySelectorAll('.MComboBoxItemHighlight').length != 0) {
-            Element.querySelector('.MComboBoxItemHighlight').removeClass('MComboBoxItemHighlight');
-          }
-          Element.querySelector('.MComboBoxItem:nth-child(' + CurrentHighlight + ')').classList.add('MComboBoxItemHighlight');
-          Element.querySelector('.MComboBoxItemHighlight').scrollIntoView(false);
-        } else if (e.keyCode == 40) {
-          if (CurrentHighlight < MaxHighlight) {
-            CurrentHighlight++;
-          }
-          if (Element.querySelectorAll('.MComboBoxItemHighlight').length != 0) {
-            Element.querySelector('.MComboBoxItemHighlight').removeClass('MComboBoxItemHighlight');
-          }
-          Element.querySelector('.MComboBoxItem:nth-child(' + CurrentHighlight + ')').classList.add('MComboBoxItemHighlight');
-          Element.querySelector('.MComboBoxItemHighlight').scrollIntoView(false);
-        } else if (e.keyCode == 13) {
-          if (Element.querySelector('.MComboBoxDropDown').style.display != 'none') {
-            if (CurrentHighlight != 0) {
-              Element.querySelector('input').value = Element.querySelector('.MComboBoxItem:nth-child(' + CurrentHighlight + ')').innerHTML;
-              Element.querySelector('input').blur();
-              HideDropDown();
+            Element.querySelector(
+              '.MComboBoxItem:nth-child(' + CurrentHighlight + ')',
+            ).classList.add('MComboBoxItemHighlight')
+            Element.querySelector('.MComboBoxItemHighlight').scrollIntoView(
+              false,
+            )
+          } else if (e.keyCode == 40) {
+            if (CurrentHighlight < MaxHighlight) {
+              CurrentHighlight++
+            }
+            if (
+              Element.querySelectorAll('.MComboBoxItemHighlight').length != 0
+            ) {
+              Element.querySelector('.MComboBoxItemHighlight').removeClass(
+                'MComboBoxItemHighlight',
+              )
+            }
+            Element.querySelector(
+              '.MComboBoxItem:nth-child(' + CurrentHighlight + ')',
+            ).classList.add('MComboBoxItemHighlight')
+            Element.querySelector('.MComboBoxItemHighlight').scrollIntoView(
+              false,
+            )
+          } else if (e.keyCode == 13) {
+            if (
+              Element.querySelector('.MComboBoxDropDown').style.display !=
+              'none'
+            ) {
+              if (CurrentHighlight != 0) {
+                Element.querySelector('input').value = Element.querySelector(
+                  '.MComboBoxItem:nth-child(' + CurrentHighlight + ')',
+                ).innerHTML
+                Element.querySelector('input').blur()
+                HideDropDown()
+              }
+            } else {
+              ShowDropDown()
             }
           } else {
-            ShowDropDown();
+            CurrentHighlight = 0
           }
-        } else {
-          CurrentHighlight = 0;
-        }
-      });
+        },
+      )
 
       /* ============ FUNCTIONS ============ */
       function FillComboBoxItems() {
-        var MFilteredItemsCode = '';
-        Element.querySelector('.MComboBoxItems').innerHTML = '';
+        var MFilteredItemsCode = ''
+        Element.querySelector('.MComboBoxItems').innerHTML = ''
         if (ItemsArrayType == '1D') {
           for (let i = 0; i <= MFilteredItems.length - 1; i++) {
-            MFilteredItemsCode += '<div tabindex="-1" style="display: flex;" class="MComboBoxItem" MCBIID="' + MFilteredItems[i]['MCBIID'] + '">' + MFilteredItems[i]['MCBIName'] + '</div>';
+            MFilteredItemsCode +=
+              '<div tabindex="-1" style="display: flex;" class="MComboBoxItem" MCBIID="' +
+              MFilteredItems[i]['MCBIID'] +
+              '">' +
+              MFilteredItems[i]['MCBIName'] +
+              '</div>'
           }
         }
         if (ItemsArrayType == '2D') {
           for (let i = 0; i <= MFilteredItems.length - 1; i++) {
-            MFilteredItemsCode += '<div tabindex="-1" style="display: flex;" class="MComboBoxItem" MCBIID="' + MFilteredItems[i]['MCBIID'] + '">' + MFilteredItems[i][ItemsName] + '</div>';
+            MFilteredItemsCode +=
+              '<div tabindex="-1" style="display: flex;" class="MComboBoxItem" MCBIID="' +
+              MFilteredItems[i]['MCBIID'] +
+              '">' +
+              MFilteredItems[i][ItemsName] +
+              '</div>'
           }
         }
 
-        Element.querySelector('.MComboBoxItems').innerHTML = MFilteredItemsCode;
+        Element.querySelector('.MComboBoxItems').innerHTML = MFilteredItemsCode
         Element.querySelectorAll('.MComboBoxItem').forEach(function (e) {
-          e.removeEventListener('click', null);
+          e.removeEventListener('click', null)
           e.addEventListener('click', function (event) {
             if (MultipleSelections == false) {
-              Instance.SelectedItems = [];
-              let SelectedItem = MFilteredItems.filter(MFilteredItem => MFilteredItem['MCBIID'] == event.target.getAttribute('MCBIID'))[0];
-              Instance.SelectedItems.push(SelectedItem);
-              HideDropDown();
+              Instance.SelectedItems = []
+              let SelectedItem = MFilteredItems.filter(
+                MFilteredItem =>
+                  MFilteredItem['MCBIID'] ==
+                  event.target.getAttribute('MCBIID'),
+              )[0]
+              Instance.SelectedItems.push(SelectedItem)
+              HideDropDown()
             }
             if (MultipleSelections == true) {
-              let SelectedItem = MFilteredItems.filter(MFilteredItem => MFilteredItem['MCBIID'] == event.target.getAttribute('MCBIID'))[0];
-              let OldSelectedItems = Instance.SelectedItems.findIndex(OldSelectedItem => OldSelectedItem['MCBIID'] == SelectedItem['MCBIID']);
+              let SelectedItem = MFilteredItems.filter(
+                MFilteredItem =>
+                  MFilteredItem['MCBIID'] ==
+                  event.target.getAttribute('MCBIID'),
+              )[0]
+              let OldSelectedItems = Instance.SelectedItems.findIndex(
+                OldSelectedItem =>
+                  OldSelectedItem['MCBIID'] == SelectedItem['MCBIID'],
+              )
               if (OldSelectedItems == -1) {
-                Instance.SelectedItems.push(SelectedItem);
+                Instance.SelectedItems.push(SelectedItem)
               } else {
-                Instance.SelectedItems = Instance.SelectedItems.filter(OldSelectedItem => OldSelectedItem['MCBIID'] != SelectedItem['MCBIID']);
+                Instance.SelectedItems = Instance.SelectedItems.filter(
+                  OldSelectedItem =>
+                    OldSelectedItem['MCBIID'] != SelectedItem['MCBIID'],
+                )
               }
             }
 
-            PopulateSelections();
-            InputValidate();
-            ShowHideClearBTN();
+            PopulateSelections()
+            InputValidate()
+            ShowHideClearBTN()
 
-            const MCBValueChange = new CustomEvent("MCBValueChange", { detail: { MCBID: Element.getAttribute('SelectionID'), MCBValue: Element.querySelector('.MComboBoxValueInput').value, MCBData: Instance.SelectedItems } });
-            Element.dispatchEvent(MCBValueChange);
-          });
-        });
+            const MCBValueChange = new CustomEvent('MCBValueChange', {
+              detail: {
+                MCBID: Element.getAttribute('SelectionID'),
+                MCBValue: Element.querySelector('.MComboBoxValueInput').value,
+                MCBData: Instance.SelectedItems,
+              },
+            })
+            Element.dispatchEvent(MCBValueChange)
+          })
+        })
       }
       function ShowDropDown() {
-        Element.querySelector('.MComboBoxDropDown').style.display = 'flex';
-        Element.querySelector('.MComboBoxChevron svg').style.transform = 'rotate(90deg)';
+        const targetDiv = Element.querySelector('.MComboBoxDropDown')
+        const referenceDiv = Element
+        const offset = 0
+        const referenceRect = referenceDiv.getBoundingClientRect()
+
+        targetDiv.style.width =
+          parseFloat(Element.getBoundingClientRect().width.toFixed(2)) + 'px'
+
+        targetDiv.style.display = 'flex'
+
+        let newTop = referenceRect.bottom + 5
+        let newLeft = referenceRect.left
+
+        if (newTop + targetDiv.offsetHeight > window.innerHeight - offset) {
+          newTop = window.innerHeight - targetDiv.offsetHeight - offset
+        }
+        if (newTop < offset) {
+          newTop = offset
+        }
+
+        if (newLeft + targetDiv.offsetWidth > window.innerWidth - offset) {
+          newLeft = window.innerWidth - targetDiv.offsetWidth - offset
+        }
+        if (newLeft < offset) {
+          newLeft = offset
+        }
+
+        targetDiv.style.top = `${newTop}px`
+        targetDiv.style.left = `${newLeft}px`
+
+        Element.querySelector('.MComboBoxChevron svg').style.transform =
+          'rotate(90deg)'
       }
       function HideDropDown() {
-        Element.querySelector('.MComboBoxDropDown').style.display = 'none';
-        Element.querySelector('.MComboBoxChevron svg').style.transform = 'rotate(0deg)';
+        Element.querySelector('.MComboBoxDropDown').style.display = 'none'
+        Element.querySelector('.MComboBoxChevron svg').style.transform =
+          'rotate(0deg)'
       }
       function ShowHideClearBTN() {
         if (Element.getAttribute('MCBDisabled') != 'true') {
-          if (Clearable == true && Element.querySelector('.MComboBoxValueInput').value != '') {
-            Element.querySelector('.MComboBoxClearBTN').style.display = 'flex';
-            Element.querySelector('.MComboBoxValueInput').style.width = 'calc(100% - 75px)';
+          if (
+            Clearable == true &&
+            Element.querySelector('.MComboBoxValueInput').value != ''
+          ) {
+            Element.querySelector('.MComboBoxClearBTN').style.display = 'flex'
+            Element.querySelector('.MComboBoxValueInput').style.width =
+              'calc(100% - 75px)'
           } else {
-            Element.querySelector('.MComboBoxClearBTN').style.display = 'none';
-            Element.querySelector('.MComboBoxValueInput').style.width = '';
+            Element.querySelector('.MComboBoxClearBTN').style.display = 'none'
+            Element.querySelector('.MComboBoxValueInput').style.width = ''
           }
         } else {
-          Element.querySelector('.MComboBoxClearBTN').style.display = 'none';
-          Element.querySelector('.MComboBoxValueInput').style.width = 'calc(100% - 75px)';
+          Element.querySelector('.MComboBoxClearBTN').style.display = 'none'
+          Element.querySelector('.MComboBoxValueInput').style.width =
+            'calc(100% - 75px)'
         }
       }
       function InputValidate() {
         if (Element.querySelector('.MComboBoxValueInput').value) {
-          Element.setAttribute('valid', true);
+          Element.setAttribute('valid', true)
         } else {
-          Element.removeAttribute('valid');
+          Element.removeAttribute('valid')
         }
       }
       function PopulateSelections() {
-        var SelectedIDs = '';
-        Element.querySelector('input').value = '';
+        var SelectedIDs = ''
+        Element.querySelector('input').value = ''
 
-        Element.querySelectorAll('.MComboBoxItem[Selected]').forEach(function (e) {
-          e.removeAttribute('Selected');
-        });
+        Element.querySelectorAll('.MComboBoxItem[Selected]').forEach(
+          function (e) {
+            e.removeAttribute('Selected')
+          },
+        )
 
-        for (let i = 0; i < Instance.SelectedItems.length; i++) {
-          Element.querySelector('.MComboBoxItem[MCBIID="' + Instance.SelectedItems[i]['MCBIID'] + '"]').setAttribute('Selected', true);
-          if (Element.querySelector('input').value != 0) {
-            Element.querySelector('input').value += ' | ';
+        if (
+          Element.querySelectorAll('.MComboBoxItem').length > 0 &&
+          Instance.SelectedItems.length > 0
+        ) {
+          for (let i = 0; i < Instance.SelectedItems.length; i++) {
+            Element.querySelector(
+              '.MComboBoxItem[MCBIID="' +
+                Instance.SelectedItems[i]['MCBIID'] +
+                '"]',
+            ).setAttribute('Selected', true)
+            if (Element.querySelector('input').value != 0) {
+              Element.querySelector('input').value += ' | '
+            }
+            if (ItemsArrayType == '1D') {
+              Element.querySelector('input').value +=
+                Instance.SelectedItems[i]['MCBIName']
+            }
+            if (ItemsArrayType == '2D') {
+              Element.querySelector('input').value +=
+                Instance.SelectedItems[i][ItemsName]
+            }
+            if (SelectedIDs != '') {
+              SelectedIDs += '|'
+            }
+            SelectedIDs += Instance.SelectedItems[i]['MCBIID']
           }
-          if (ItemsArrayType == '1D') {
-            Element.querySelector('input').value += Instance.SelectedItems[i]['MCBIName'];
-          }
-          if (ItemsArrayType == '2D') {
-            Element.querySelector('input').value += Instance.SelectedItems[i][ItemsName];
-          }
-          if (SelectedIDs != '') {
-            SelectedIDs += '|';
-          }
-          SelectedIDs += Instance.SelectedItems[i]['MCBIID'];
         }
 
-        ShowHideClearBTN();
-        InputValidate();
-        Element.setAttribute('SelectionID', SelectedIDs);
+        ShowHideClearBTN()
+        InputValidate()
+        Element.setAttribute('SelectionID', SelectedIDs)
       }
 
       return {
         PopulateSelections: PopulateSelections,
-      };
+      }
     },
     EnableDisable() {
       if (this.IsDisabled == true) {
@@ -333,132 +512,166 @@ export default {
       }
     },
     Get() {
-      return this.SelectedItems;
+      return this.SelectedItems
     },
     GetValue() {
-      return document.getElementById(this.Name).querySelector('.MComboBoxValueInput').value;
+      return document
+        .getElementById(this.Name)
+        .querySelector('.MComboBoxValueInput').value
     },
     GetID() {
       if (!document.getElementById(this.Name).getAttribute('SelectionID')) {
-        return [];
+        return []
       }
-      return document.getElementById(this.Name).getAttribute('SelectionID');
+      return document.getElementById(this.Name).getAttribute('SelectionID')
     },
     Set(Data, DataColumn = null, ItemsColumn = null) {
-      var Element = document.getElementById(this.Name);
-      nextTick(() => {
-        this.SelectedItems = [];
-        var ItemsArrayType = '';
+      let Instance = this
+      var Element = document.getElementById(Instance.Name)
+      setTimeout(() => {
+        Instance.SelectedItems = []
+        var ItemsArrayType = ''
 
-        if (this.Items.every(item => Array.isArray(item) || (typeof item === 'object' && item !== null))) {
-          ItemsArrayType = '2D';
+        if (
+          Instance.Items.every(
+            item =>
+              Array.isArray(item) ||
+              (typeof item === 'object' && item !== null),
+          )
+        ) {
+          ItemsArrayType = '2D'
         } else {
-          ItemsArrayType = '1D';
+          ItemsArrayType = '1D'
         }
 
         if (ItemsArrayType == '1D') {
-          if (typeof Data === "string" || typeof Data === "boolean" || (typeof Data === "number" && !isNaN(Data))) { // string, number, boolean
-            let SelectedItem = this.MCBItems.filter(function (item) {
-              if (item['MCBIName'] == Data) {
-                return item;
+          if (
+            typeof Data === 'string' ||
+            typeof Data === 'boolean' ||
+            (typeof Data === 'number' && !isNaN(Data))
+          ) {
+            // string, number, boolean
+            if (Data != '') {
+              let SelectedItem = Instance.MCBItems.find(function (item) {
+                if (item['MCBIName'] == Data) {
+                  return item
+                }
+              })
+              if (SelectedItem) {
+                Instance.SelectedItems.push(SelectedItem)
               }
-            })[0];
-
-            this.SelectedItems.push(SelectedItem);
+            }
           } else {
-
-            if (typeof Data[0] == "string") {
+            if (typeof Data[0] == 'string' && Data[0] != '') {
               for (let i = 0; i < Data.length; i++) {
-                let SelectedItem = this.MCBItems.filter(function (item) {
+                let SelectedItem = Instance.MCBItems.find(function (item) {
                   if (item['MCBIName'] == Data[i]) {
-                    return item;
+                    return item
                   }
-                })[0];
-
-                this.SelectedItems.push(SelectedItem);
+                })
+                if (SelectedItem) {
+                  Instance.SelectedItems.push(SelectedItem)
+                }
               }
             } else {
               for (let i = 0; i < Data.length; i++) {
-                let SelectedItem = this.MCBItems.filter(function (item) {
+                let SelectedItem = Instance.MCBItems.find(function (item) {
                   if (item['MCBIName'] == Data[i][DataColumn]) {
-                    return item;
+                    return item
                   }
-                })[0];
-
-                this.SelectedItems.push(SelectedItem);
+                })
+                if (SelectedItem) {
+                  Instance.SelectedItems.push(SelectedItem)
+                }
               }
             }
           }
         }
 
         if (ItemsArrayType == '2D') {
-          if (typeof Data === "string" || typeof Data === "boolean" || (typeof Data === "number" && !isNaN(Data))) { // string, number, boolean
-            let SelectedItem = this.MCBItems.filter(function (item) {
+          if (
+            typeof Data === 'string' ||
+            typeof Data === 'boolean' ||
+            (typeof Data === 'number' && !isNaN(Data))
+          ) {
+            // string, number, boolean
+            let SelectedItem = Instance.MCBItems.find(function (item) {
               if (item[DataColumn] == Data) {
-                return item;
+                return item
               }
-            })[0];
+            })
 
-            this.SelectedItems.push(SelectedItem);
+            if (SelectedItem) {
+              Instance.SelectedItems.push(SelectedItem)
+            } else {
+              console.log(
+                Instance.Name +
+                  ' :Make Sure you SET the data and its column name',
+              )
+            }
           } else {
             if (Array.isArray(Data)) {
               for (let i = 0; i < Data.length; i++) {
-                let SelectedItem = this.MCBItems.filter(function (item) {
+                let SelectedItem = Instance.MCBItems.find(function (item) {
                   if (item[ItemsColumn] == Data[i][DataColumn]) {
-                    return item;
+                    return item
                   }
-                })[0];
+                })
 
-                this.SelectedItems.push(SelectedItem);
+                if (SelectedItem) {
+                  Instance.SelectedItems.push(SelectedItem)
+                }
               }
             } else {
-              let SelectedItem = this.MCBItems.filter(function (item) {
+              let SelectedItem = Instance.MCBItems.find(function (item) {
                 if (item[ItemsColumn] == Data[DataColumn]) {
-                  return item;
+                  return item
                 }
-              })[0];
+              })
 
-              this.SelectedItems.push(SelectedItem);
-
+              if (SelectedItem) {
+                Instance.SelectedItems.push(SelectedItem)
+              }
             }
           }
         }
 
-        const MCBValueChange = new CustomEvent("MCBValueChange", { detail: { MCBID: Element.getAttribute('SelectionID'), MCBValue: Element.querySelector('.MComboBoxValueInput').value, MCBData: this.SelectedItems } });
-        Element.dispatchEvent(MCBValueChange);
-
-        this.MComboBox.PopulateSelections();
-      });
+        const MCBValueChange = new CustomEvent('MCBValueChange', {
+          detail: {
+            MCBID: Element.getAttribute('SelectionID'),
+            MCBValue: Element.querySelector('.MComboBoxValueInput').value,
+            MCBData: Instance.SelectedItems,
+          },
+        })
+        Element.dispatchEvent(MCBValueChange)
+        Instance.MComboBox.PopulateSelections()
+      }, 100)
     },
     SetValue(TheValue) {
-      nextTick(() => {
-        document.getElementById(this.Name).querySelector('.MComboBoxValueInput').value = TheValue;
-      });
+      setTimeout(() => {
+        document
+          .getElementById(this.Name)
+          .querySelector('.MComboBoxValueInput').value = TheValue
+      }, 100)
     },
     SetID(TheValue) {
-      nextTick(() => {
-        document.getElementById(this.Name).setAttribute('SelectionID', TheValue);
-      });
+      setTimeout(() => {
+        document.getElementById(this.Name).setAttribute('SelectionID', TheValue)
+      }, 100)
     },
     Disable() {
-      nextTick(() => {
-        this.IsDisabled = true;
-        this.EnableDisable();
-      });
+      this.IsDisabled = true
+      this.EnableDisable()
     },
     Enable() {
-      nextTick(() => {
-        this.IsDisabled = false;
-        this.EnableDisable();
-      });
+      this.IsDisabled = false
+      this.EnableDisable()
     },
     Clear() {
-      nextTick(() => {
-        this.SelectedItems = [];
-        this.MComboBox.PopulateSelections();
-      });
+      this.SelectedItems = []
+      this.MComboBox.PopulateSelections()
     },
-  }
+  },
 }
 </script>
 
@@ -510,6 +723,8 @@ export default {
   max-height: 40px;
   height: 37px;
   margin: 15px 5px;
+  min-width: 150px;
+  flex: 1;
 }
 
 .MComboBox ::-webkit-scrollbar {
@@ -650,16 +865,14 @@ export default {
 }
 
 .MComboBoxDropDown {
-  position: absolute;
+  position: fixed;
   display: flex;
   background-color: var(--MComboBoxItemsBG);
   border: 1px solid var(--PrimaryColor);
   border-radius: 5px;
   width: 100%;
   overflow-y: auto;
-  top: calc(100% + 5px);
   z-index: 100;
-  transition-duration: 0.3s;
   flex-wrap: wrap;
   justify-content: center;
   box-sizing: border-box;
@@ -729,41 +942,41 @@ export default {
   color: var(--PrimaryColor) !important;
 }
 
-.MComboBoxValueInput:focus~.MComboBoxBG {
+.MComboBoxValueInput:focus ~ .MComboBoxBG {
   border: 1px solid var(--PrimaryColor);
 }
 
-.MComboBox[valid] .MComboBoxValueInput:not(:focus)~.MComboBoxBG {
+.MComboBox[valid] .MComboBoxValueInput:not(:focus) ~ .MComboBoxBG {
   border: 1px solid var(--MComboBoxFilled);
 }
 
-.MComboBoxValueInput:focus~label {
+.MComboBoxValueInput:focus ~ label {
   color: var(--PrimaryColor);
   top: -11.5px;
   font-size: 13px;
   font-family: 'MFontR';
 }
 
-.MComboBox[valid] .MComboBoxValueInput:not(:focus)~label {
+.MComboBox[valid] .MComboBoxValueInput:not(:focus) ~ label {
   color: var(--MComboBoxFilled);
   top: -11.5px;
   font-size: 13px;
   font-family: 'MFontR';
 }
 
-.MComboBoxValueInput:focus~.MComboBoxChevron {
+.MComboBoxValueInput:focus ~ .MComboBoxChevron {
   border-color: var(--PrimaryColor);
 }
 
-.MComboBoxValueInput:focus~.MComboBoxChevron svg {
+.MComboBoxValueInput:focus ~ .MComboBoxChevron svg {
   fill: var(--PrimaryColor);
 }
 
-.MComboBox[valid] .MComboBoxValueInput:not(:focus)~.MComboBoxChevron {
+.MComboBox[valid] .MComboBoxValueInput:not(:focus) ~ .MComboBoxChevron {
   border-color: var(--MComboBoxFilled);
 }
 
-.MComboBox[valid] .MComboBoxValueInput:not(:focus)~.MComboBoxChevron svg {
+.MComboBox[valid] .MComboBoxValueInput:not(:focus) ~ .MComboBoxChevron svg {
   fill: var(--MComboBoxFilled);
 }
 

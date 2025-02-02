@@ -1,73 +1,58 @@
 <template>
   <div class="ComponentWrapper">
     <!-- =============== add subsc Model========= -->
-    <div class="ModalContainer" id="AddProfilesModal">
-      <div class="ModalBackground">
-        <div class="Modal">
-          <div class="ModalHeaderRow">
-            <div class="ModalHeaderTitle">اضافة اشتراك جديد</div>
-            <div class="ModalHeaderCloseBTN" v-ModalCloseBTN>
-              <svg viewBox="0 0 100 100">
-                <polygon
-                  points="85.179,16.589 83.411,14.821 50,48.232 16.589,14.821 14.821,16.589 48.232,50 14.821,83.411 16.589,85.179
-              50,51.767 83.411,85.179 85.179,83.411 51.768,50 "
-                />
-                <path
-                  d="M89.421,16.59l-6.01-6.011L50,43.99L16.59,10.579l-6.011,6.011L43.99,50L10.579,83.411l6.011,6.01L50,56.01l33.411,33.411
-              l6.01-6.01L56.01,50L89.421,16.59z"
-                />
-              </svg>
-            </div>
-          </div>
-          <div class="ModalContent">
-            <MComboBox
-              ref="CompanyName"
-              :Name="'CompanyName'"
-              :Label="' اسم الشركة *'"
-              :Items="CompanyNameItems"
-              :ItemsName="'company_name'"
-            >
-            </MComboBox>
-            <div class="MField" id="SubscriptionType">
-              <input ref="SubscriptionType" type="text" required />
-              <label>نوع الاشتراك</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="PriceCompany" v-OnlyNumbers>
-              <input ref="PriceCompany" type="text" required />
-              <label>سعر الشركة</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="Price" v-OnlyNumbers>
-              <input ref="Price" type="text" required />
-              <label>سعر المكتب</label>
-              <div class="MFieldBG"></div>
-            </div>
+    <MModal
+      ref="AddProfilesModal"
+      :Name="'AddProfilesModal'"
+      :Title="'اضافة اشتراك جديد'"
+    >
+      <div class="ModalContent">
+        <MComboBox
+          ref="CompanyName"
+          :Name="'CompanyName'"
+          :Label="' اسم الشركة *'"
+          :Items="CompanyNameItems"
+          :ItemsName="'company_name'"
+        >
+        </MComboBox>
+        <div class="MField" id="SubscriptionType">
+          <input ref="SubscriptionType" type="text" required />
+          <label>نوع الاشتراك</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="PriceCompany" v-OnlyNumbers>
+          <input ref="PriceCompany" type="text" required />
+          <label>سعر الشركة</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="Price" v-OnlyNumbers>
+          <input ref="Price" type="text" required />
+          <label>سعر المكتب</label>
+          <div class="MFieldBG"></div>
+        </div>
 
-            <MComboBox
-              ref="Status"
-              :Name="'Status'"
-              :Label="'حالة الاشتراك *'"
-              :Items="StatusItems"
-              :ItemsName="'status'"
-            >
-            </MComboBox>
+        <MComboBox
+          ref="Status"
+          :Name="'Status'"
+          :Label="'حالة الاشتراك *'"
+          :Items="StatusItems"
+          :ItemsName="'status'"
+        >
+        </MComboBox>
 
-            <div class="ModalButtons">
-              <div class="MButton" id="SaveProfilesBTN" @click="SaveProfiles">
-                حفـــظ
-              </div>
-            </div>
+        <div class="ModalButtons">
+          <div class="MButton" id="SaveProfilesBTN" @click="SaveProfiles">
+            حفـــظ
           </div>
         </div>
       </div>
-    </div>
+    </MModal>
 
     <div class="MButton" id="AddInternetProfilesBTN">ادخال اشتراك جديد</div>
     <div class="MButton" id="GetInternetProfilesBTN">عرض البيانات</div>
     <MTable
       ref="InternetProfilesTB"
-      :MTableName="'InternetProfilesTB'"
+      :Name="'InternetProfilesTB'"
       :DataArray="InternetProfilesTBData"
       :HeadersArray="InternetProfilesTBHeaders"
       :TotalsArray="InternetProfilesTBTotals"
@@ -130,22 +115,10 @@
 import { ref } from 'vue'
 import { api, GetServerPath } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
-import MTable from '../../components/MTable.vue'
-import MComboBox from '../../components/MComboBox.vue'
 import { useGlobalsStore } from '../../stores/Globals.js'
-import {
-  ShowMessage,
-  ShowModal,
-  ShowLoading,
-  HideLoading,
-  HideModal,
-} from '@/MJS.js'
+import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 
 export default {
-  components: {
-    MTable,
-    MComboBox,
-  },
   setup() {
     const authStore = useAuthStore()
     const hasPermission = permission =>
@@ -154,6 +127,7 @@ export default {
     return {
       hasPermission,
       Operation: ref(''),
+      AddProfilesModal: ref(null),
       ID: ref(''),
       GlobalsStore: ref(useGlobalsStore()),
       CompanyName: ref(null),
@@ -205,7 +179,7 @@ export default {
     document.getElementById('AddInternetProfilesBTN').addEventListener(
       'click',
       function () {
-        ShowModal(document.getElementById('AddProfilesModal'))
+        this.AddProfilesModal.Show()
         this.Operation = 1
         this.clearFields()
       }.bind(this)
@@ -232,8 +206,7 @@ export default {
         document.getElementById('PriceCompany').querySelector('input').value =
           this.selectedRowData.price_company
         this.Status.Set(this.selectedRowData.status)
-
-        ShowModal(document.getElementById('AddProfilesModal'))
+        this.AddProfilesModal.Show()
       }.bind(this)
     )
     //Delete Data
@@ -341,7 +314,7 @@ export default {
             HideLoading()
             if (response.data.message == 'تمت العملية بنجاح') {
               this.InternetProfilesTB.LoadMTable()
-              HideModal(document.getElementById('AddProfilesModal'))
+              this.AddProfilesModal.Hide()
               this.clearFields()
             } else {
               HideLoading()
@@ -362,7 +335,7 @@ export default {
             HideLoading()
             if (response.data.message == 'تمت العملية بنجاح') {
               this.InternetProfilesTB.LoadMTable()
-              HideModal(document.getElementById('AddProfilesModal'))
+              this.AddProfilesModal.Hide()
               this.clearFields()
             } else {
               HideLoading()

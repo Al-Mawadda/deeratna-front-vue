@@ -1,27 +1,23 @@
 <template>
-  <div class="MTable" :id="MTableName"></div>
+  <div class="MTable" :id="Name"></div>
 </template>
 
 <script>
 var FilterDataArray = {}
 var SortDataArray = {}
-var PageNo = 1
-var PagesCount = 1
-var FilterRow = true
-var MTableMaxHeight = 600
 
 export default {
   props: {
-    MTableName: { type: String, required: true },
+    Name: { type: String, required: true },
     DataArray: { type: Array, required: true },
     DisplayColumnsArray: { type: Array, required: true },
     HeadersArray: { type: Array, required: true },
     TotalsArray: { type: Array, required: true },
-    GetDataFunction: Function,
+    ShowFilterRow: { type: Boolean, default: true },
+    GetDataFunction: { type: Function, default: null },
     RowsCount: Number,
     RowsPerPage: Number,
-    FilterRow: String,
-    MTableMaxHeight: Number,
+    MTableMaxHeight: { type: Number, default: 510 },
   },
   created() {
     for (var i = 0; i < this.DisplayColumnsArray.length; i++) {
@@ -30,16 +26,14 @@ export default {
   },
   data() {
     return {
+      Element: null,
       OptionsArray: [],
+      PageNo: 1,
+      PagesCount: 1,
     }
   },
   mounted() {
-    if (this.FilterRow) {
-      FilterRow = this.FilterRow
-    }
-    if (this.MTableMaxHeight) {
-      MTableMaxHeight = this.MTableMaxHeight
-    }
+    this.Element = document.getElementById(this.Name)
 
     // Get The Options
     var slotContent = this.$slots['options'] ? this.$slots['options']() : []
@@ -85,17 +79,17 @@ export default {
     }
 
     this.BuildMTable(
-      document.getElementById(this.MTableName),
+      this.Element,
       [],
       this.HeadersArray,
       this.TotalsArray,
       this.DisplayColumnsArray,
       50,
       200,
-      MTableMaxHeight,
-      FilterRow,
+      this.MTableMaxHeight,
+      this.ShowFilterRow,
       this.GetDataFunction,
-      PagesCount,
+      this.PagesCount,
       this.OptionsArray
     )
   },
@@ -103,20 +97,20 @@ export default {
     DataArray: {
       handler(newValue) {
         if (this.RowsPerPage) {
-          PagesCount = Math.ceil(this.RowsCount / this.RowsPerPage)
+          this.PagesCount = Math.ceil(this.RowsCount / this.RowsPerPage)
         }
         this.BuildMTable(
-          document.getElementById(this.MTableName),
+          this.Element,
           newValue,
           this.HeadersArray,
           this.TotalsArray,
           this.DisplayColumnsArray,
           50,
           200,
-          MTableMaxHeight,
-          FilterRow,
+          this.MTableMaxHeight,
+          this.ShowFilterRow,
           this.GetDataFunction,
-          PagesCount,
+          this.PagesCount,
           this.OptionsArray
         )
       },
@@ -140,7 +134,7 @@ export default {
     ) {
       // Empty The Element
       Element.innerHTML = ''
-
+      var Instance = this
       // Fix DataArray (Null,Undefined)
       for (var i = 0; i < DataArray.length; i++) {
         for (var key in DataArray[i]) {
@@ -251,9 +245,12 @@ export default {
                   Element.dispatchEvent(
                     new CustomEvent(d['event'], {
                       detail: {
-                        RowID: e
-                          .closest('.MTableOptions')
-                          .getAttribute('MTableRowID'),
+                        RowData:
+                          DataArray[
+                            e
+                              .closest('.MTableOptions')
+                              .getAttribute('MTableRowID')
+                          ],
                       },
                     })
                   )
@@ -279,8 +276,11 @@ export default {
       }
 
       FillTableContent()
-      if (PageNo != 0) {
+      if (Instance.PageNo != 0 && DataArray.length > 0) {
         BuildMTablePages()
+      } else {
+        this.Element.querySelector('.MTableSummary').style.display = 'none'
+        this.Element.querySelector('.MTablePageButtons').innerHTML = ''
       }
 
       // Fill The Filter Rows
@@ -372,8 +372,15 @@ export default {
                 e.style.pointerEvents = 'none'
               })
 
-              PageNo = 1
-              GetDataFunction(PageNo, FilterDataArray, SortDataArray)
+              if (GetDataFunction) {
+                Instance.PageNo = 1
+                GetDataFunction(
+                  Instance.PageNo,
+                  FilterDataArray,
+                  SortDataArray,
+                  Instance.RowsPerPage
+                )
+              }
             }
           })
         }
@@ -416,9 +423,10 @@ export default {
             ).forEach(function (e) {
               e.style.pointerEvents = 'none'
             })
-
-            PageNo = 1
-            GetDataFunction(PageNo, FilterDataArray, SortDataArray)
+            if (GetDataFunction) {
+              Instance.PageNo = 1
+              GetDataFunction(Instance.PageNo, FilterDataArray, SortDataArray)
+            }
           })
         }
       )
@@ -462,8 +470,15 @@ export default {
               e.style.pointerEvents = 'none'
             })
 
-            PageNo = 1
-            GetDataFunction(PageNo, FilterDataArray, SortDataArray)
+            if (GetDataFunction) {
+              Instance.PageNo = 1
+              GetDataFunction(
+                Instance.PageNo,
+                FilterDataArray,
+                SortDataArray,
+                Instance.RowsPerPage
+              )
+            }
           })
         }
       )
@@ -510,7 +525,7 @@ export default {
         })
 
         //Get Header Column Max Size
-        for (var HW = 0; HW <= HeadersArray.length - 1; HW++) {
+        for (var HW = 0; HW < HeadersArray.length; HW++) {
           ColumnSize.font = '18px MFontB'
           MTableColumnsSizes[HW] = Math.ceil(
             ColumnSize.measureText(HeadersArray[HW]).width
@@ -518,12 +533,10 @@ export default {
         }
 
         //Build The Table Data
-        for (var x in DisplayArray) {
+        for (let x = 0; x < DisplayArray.length; x++) {
           var ArrayCounter = 0
           ContentCodeBlock +=
-            '<div class="MTableRow MTableDataRow" MTableRowID="' +
-            DataArray[x]['id'] +
-            '">'
+            '<div class="MTableRow MTableDataRow" MTableRowID="' + x + '">'
           for (var y in DisplayArray[x]) {
             // MTable Sub Arrays
             if (y != 'id') {
@@ -611,7 +624,7 @@ export default {
           ContentCodeBlock =
             ContentCodeBlock +
             '<div class="MTableRowOptions" MTableRowID="' +
-            DataArray[x]['id'] +
+            x +
             '"><div class="MTableOptionsIcon">' +
             MTableOptionsIcon +
             '</div></div>' +
@@ -699,7 +712,9 @@ export default {
               if (MTableOptions.length == 1) {
                 Element.dispatchEvent(
                   new CustomEvent(MTableOptions[0]['event'], {
-                    detail: { RowID: e.getAttribute('MTableRowID') },
+                    detail: {
+                      RowData: DataArray[e.getAttribute('MTableRowID')],
+                    },
                   })
                 )
               } else {
@@ -717,7 +732,7 @@ export default {
             if (MTableOptions.length == 1) {
               Element.dispatchEvent(
                 new CustomEvent(MTableOptions[0]['event'], {
-                  detail: { RowID: e.getAttribute('MTableRowID') },
+                  detail: { RowData: DataArray[e.getAttribute('MTableRowID')] },
                 })
               )
             } else {
@@ -775,9 +790,15 @@ export default {
               ).forEach(function (e) {
                 e.style.pointerEvents = 'none'
               })
-
-              PageNo = 1
-              GetDataFunction(PageNo, FilterDataArray, SortDataArray)
+              if (GetDataFunction) {
+                Instance.PageNo = 1
+                GetDataFunction(
+                  Instance.PageNo,
+                  FilterDataArray,
+                  SortDataArray,
+                  Instance.RowsPerPage
+                )
+              }
             })
           }
         )
@@ -978,8 +999,8 @@ export default {
         if (PagesCount < 1) {
           PagesCount = 1
         }
-        var PagesBefore = PageNo - 1
-        var PagesAfter = PagesCount - PageNo
+        var PagesBefore = Instance.PageNo - 1
+        var PagesAfter = PagesCount - Instance.PageNo
         var PagesBeforeResult = 0
         var PagesAfterResult = 0
 
@@ -1002,35 +1023,35 @@ export default {
             }
           }
         }
-        if (PageNo != 1) {
+        if (Instance.PageNo != 1) {
           MTablePageButtonsElement.innerHTML +=
             '<div id="1" class="MTablePageButton"><svg viewBox="0 0 100 100"><polygon points="53.7,49.99 28.95,25.24 23.3,30.9 42.4,50 23.3,69.1 28.95,74.76 53.7,50.01 53.69,50"/><polygon points="76.7,49.99 51.95,25.24 46.3,30.9 65.4,50 46.3,69.1 51.95,74.76 76.7,50.01 76.69,50"/></svg></div>'
         }
         for (var i = PagesBeforeResult; i >= 1; i--) {
           MTablePageButtonsElement.innerHTML +=
             '<div id="' +
-            (PageNo - i) +
+            (Instance.PageNo - i) +
             '" class="MTablePageButton">' +
-            (PageNo - i) +
+            (Instance.PageNo - i) +
             '</div>'
         }
 
         MTablePageButtonsElement.innerHTML +=
           '<div id="' +
-          PageNo +
+          Instance.PageNo +
           '" class="MTablePageButton">' +
-          PageNo +
+          Instance.PageNo +
           '</div>'
 
         for (var j = 1; j <= PagesAfterResult; j++) {
           MTablePageButtonsElement.innerHTML +=
             '<div id="' +
-            (PageNo + j) +
+            (Instance.PageNo + j) +
             '" class="MTablePageButton">' +
-            (PageNo + j) +
+            (Instance.PageNo + j) +
             '</div>'
         }
-        if (PageNo != PagesCount) {
+        if (Instance.PageNo != PagesCount) {
           MTablePageButtonsElement.innerHTML +=
             '<div id="' +
             PagesCount +
@@ -1042,7 +1063,7 @@ export default {
         MTablePageButton.forEach(function (e) {
           e.classList.remove('ActiveMTablePageButton')
 
-          if (e.getAttribute('id') == PageNo) {
+          if (e.getAttribute('id') == Instance.PageNo) {
             e.classList.add('ActiveMTablePageButton')
           }
 
@@ -1072,45 +1093,63 @@ export default {
             ).forEach(function (e) {
               e.style.pointerEvents = 'none'
             })
-
-            PageNo = parseInt(this.getAttribute('id'))
-            GetDataFunction(PageNo, FilterDataArray, SortDataArray)
+            if (GetDataFunction) {
+              Instance.PageNo = parseInt(this.getAttribute('id'))
+              GetDataFunction(
+                Instance.PageNo,
+                FilterDataArray,
+                SortDataArray,
+                Instance.RowsPerPage
+              )
+            }
           })
         })
       }
     },
     LoadMTable() {
       FilterDataArray = {}
-      var Element = document.getElementById(this.MTableName)
+      this.Element.querySelector('.MTableSummary').style.display = 'none'
+      this.Element.querySelector('.MTablePageButtons').innerHTML = ''
+
       for (var i = 0; i < this.DisplayColumnsArray.length; i++) {
         FilterDataArray[this.DisplayColumnsArray[i]] = ''
       }
 
       SortDataArray = {}
 
-      Element.querySelector('.MTableLoader').style.display = 'flex'
+      this.Element.querySelector('.MTableLoader').style.display = 'flex'
 
-      Element.querySelectorAll('.MTableFilterRow input').forEach(function (e) {
+      this.Element.querySelectorAll('.MTableFilterRow input').forEach(function (
+        e
+      ) {
         e.disabled = true
       })
-      Element.querySelectorAll('.MTableFilterRow .MTableFilterBTN').forEach(
-        function (e) {
-          e.style.display = 'none'
-        }
-      )
-      Element.querySelectorAll('.MTableHeaderRow .MTableCell').forEach(
-        function (e) {
-          e.style.pointerEvents = 'none'
-        }
-      )
-      Element.querySelector('.MTableBodyContainer').style.pointerEvents = 'none'
-      Element.querySelectorAll('.MTablePageButtons .MTablePageButton').forEach(
+      this.Element.querySelectorAll(
+        '.MTableFilterRow .MTableFilterBTN'
+      ).forEach(function (e) {
+        e.style.display = 'none'
+      })
+      this.Element.querySelectorAll('.MTableHeaderRow .MTableCell').forEach(
         function (e) {
           e.style.pointerEvents = 'none'
         }
       )
+      this.Element.querySelector('.MTableBodyContainer').style.pointerEvents =
+        'none'
+      this.Element.querySelectorAll(
+        '.MTablePageButtons .MTablePageButton'
+      ).forEach(function (e) {
+        e.style.pointerEvents = 'none'
+      })
 
-      this.GetDataFunction(PageNo, FilterDataArray, SortDataArray)
+      if (this.GetDataFunction) {
+        this.GetDataFunction(
+          this.PageNo,
+          FilterDataArray,
+          SortDataArray,
+          this.RowsPerPage
+        )
+      }
     },
     serializeVNode(vnode) {
       if (!vnode) return ''
@@ -1181,8 +1220,8 @@ export default {
 }
 
 .MTable ::-webkit-scrollbar {
-  width: 15px;
-  height: 15px;
+  width: 5px;
+  height: 5px;
 }
 
 .MTable ::-webkit-scrollbar-track {
@@ -1190,7 +1229,7 @@ export default {
 }
 
 .MTable ::-webkit-scrollbar-thumb {
-  background: var(--MTablePrimaryColor);
+  background: #888;
 }
 
 .MTable ::-webkit-scrollbar-thumb:hover {

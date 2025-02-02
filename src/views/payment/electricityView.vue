@@ -18,7 +18,7 @@
 
     <MTable
       ref="ElectricitysTB"
-      :MTableName="'ElectricitysTB'"
+      :Name="'ElectricitysTB'"
       :DataArray="ElectricitysTBData"
       :HeadersArray="ElectricitysTBHeaders"
       :TotalsArray="ElectricitysTBTotals"
@@ -57,14 +57,8 @@
 import { ref } from 'vue'
 import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
-import MTable from '../../components/MTable.vue'
-import MDate from '../../components/MDate.vue'
 import { ShowMessage } from '@/MJS.js'
 export default {
-  components: {
-    MTable,
-    MDate,
-  },
   setup() {
     const authStore = useAuthStore()
     const hasPermission = permission =>

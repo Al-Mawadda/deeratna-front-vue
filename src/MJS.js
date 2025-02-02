@@ -158,11 +158,15 @@ export function MStepperBuild(Element, MStepHeaders, AllowStepSelection) {
 
     Element.querySelectorAll('.MStepContent').forEach(function (e) {
       var Translate = (Step - 1) * 100
-      e.style.transform = 'translateX(' + Translate + '%)'
+      e.style.right = '-' + Translate + '%'
     })
 
     setTimeout(function () {
       Element.querySelector('.MStepperContent').style.overflow = ''
     }, 300)
+  }
+
+  return {
+    GoToStep: GoToStep,
   }
 }

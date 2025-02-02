@@ -12,7 +12,7 @@
 
       <MTable
         ref="CarLabelsTB"
-        :MTableName="'CarLabelsTB'"
+        :Name="'CarLabelsTB'"
         :DataArray="CarLabelsTBData"
         :HeadersArray="CarLabelsTBHeaders"
         :TotalsArray="CarLabelsTBTotals"

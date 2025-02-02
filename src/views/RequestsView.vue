@@ -6,7 +6,7 @@
     <div class="MButton" id="ReloadVideosBTN">اعادة تحميل الفيديوات</div>
     <MTable
       ref="VideosTB"
-      :MTableName="'VideosTB'"
+      :Name="'VideosTB'"
       :DataArray="VideosTBData"
       :HeadersArray="VideosTBHeaders"
       :TotalsArray="VideosTBTotals"
@@ -40,25 +40,20 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import axios from '../axios.js';
-import { useGlobalsStore } from '../stores/Globals.js';
-import MTable from '../components/MTable.vue';
-import { ShowMessage, HideModal, ShowChooseModal } from '@/MJS.js';
+import { ref } from 'vue'
+import axios from '../axios.js'
+import { useGlobalsStore } from '../stores/Globals.js'
+import { ShowMessage, HideModal, ShowChooseModal } from '@/MJS.js'
 
 export default {
-  components: {
-    MTable,
-  },
   setup() {
-    const GlobalsStore = ref(useGlobalsStore());
-    const VideosTB = ref(null);
-    const VideosTBData = ref([]);
-    const VideosTBHeaders = ref(['#', 'اسم الفيديو', 'المجمع', 'الفيديو']);
-    const VideosTBDisplayColumns = ref(['id', 'name', 'compound', 'video']);
-    const VideosTBTotals = ref(['Count', '', '', '']);
-    const VideosTBRowsCount = ref(0);
-
+    const GlobalsStore = ref(useGlobalsStore())
+    const VideosTB = ref(null)
+    const VideosTBData = ref([])
+    const VideosTBHeaders = ref(['#', 'اسم الفيديو', 'المجمع', 'الفيديو'])
+    const VideosTBDisplayColumns = ref(['id', 'name', 'compound', 'video'])
+    const VideosTBTotals = ref(['Count', '', '', ''])
+    const VideosTBRowsCount = ref(0)
 
     const GetVideosData = (PageNo = 1, FilterArray = {}, SortArray = {}) => {
       axios
@@ -69,44 +64,44 @@ export default {
             SortArray,
           },
         })
-        .then((response) => {
-          VideosTBRowsCount.value = response.data.total;
-          VideosTBData.value = response.data.data.map((item) => ({
+        .then(response => {
+          VideosTBRowsCount.value = response.data.total
+          VideosTBData.value = response.data.data.map(item => ({
             id: item.id,
             name: item.name,
             compound: item.compound,
             video: item.images.length > 0 ? item.images[0].path : null,
-          }));
+          }))
         })
-        .catch((error) => {
-          ShowMessage('حدث خطأ', error.message);
-        });
-    };
+        .catch(error => {
+          ShowMessage('حدث خطأ', error.message)
+        })
+    }
 
-    const DeleteVideo = (row) => {
+    const DeleteVideo = row => {
       const YesFunction = () => {
         axios
           .delete(`/main-slider-ads-delete/${row.id}`)
-          .then((response) => {
+          .then(response => {
             if (response.data.success) {
-              GetVideosData();
-              HideModal(document.getElementById('ChooseModal'));
-              ShowMessage('تم الحذف بنجاح');
+              GetVideosData()
+              HideModal(document.getElementById('ChooseModal'))
+              ShowMessage('تم الحذف بنجاح')
             } else {
-              ShowMessage(response.data.message);
+              ShowMessage(response.data.message)
             }
           })
-          .catch((error) => {
-            ShowMessage('فشل الحذف', error.message);
-          });
-      };
+          .catch(error => {
+            ShowMessage('فشل الحذف', error.message)
+          })
+      }
 
       const NoFunction = () => {
-        HideModal(document.getElementById('ChooseModal'));
-      };
+        HideModal(document.getElementById('ChooseModal'))
+      }
 
-      ShowChooseModal('هل انت متأكد من عملية الحذف؟', YesFunction, NoFunction);
-    };
+      ShowChooseModal('هل انت متأكد من عملية الحذف؟', YesFunction, NoFunction)
+    }
 
     return {
       GlobalsStore,
@@ -117,36 +112,43 @@ export default {
       VideosTBTotals,
       VideosTBRowsCount,
       GetVideosData,
-    };
+    }
   },
   mounted() {
-    this.VideosTB.LoadMTable();
+    this.VideosTB.LoadMTable()
 
     document.getElementById('ReloadVideosBTN').addEventListener(
       'click',
       function () {
-        this.VideosTB.LoadMTable();
+        this.VideosTB.LoadMTable()
       }.bind(this)
-    );
+    )
 
     document.getElementById('VideosTB').addEventListener(
       'ViewItem',
       function (data) {
-        const SelectedRow = this.VideosTBData.find((item) => item.id === data.detail.RowID);
-        this.GlobalsStore.setMArray(SelectedRow);
-        this.$router.push({ name: 'EditVideo', params: { id: data.detail.RowID } });
+        const SelectedRow = this.VideosTBData.find(
+          item => item.id === data.detail.RowID
+        )
+        this.GlobalsStore.setMArray(SelectedRow)
+        this.$router.push({
+          name: 'EditVideo',
+          params: { id: data.detail.RowID },
+        })
       }.bind(this)
-    );
+    )
 
     document.getElementById('VideosTB').addEventListener(
       'DeleteItem',
       function (data) {
-        const SelectedRow = this.VideosTBData.find((item) => item.id === data.detail.RowID);
-        this.DeleteVideo(SelectedRow);
+        const SelectedRow = this.VideosTBData.find(
+          item => item.id === data.detail.RowID
+        )
+        this.DeleteVideo(SelectedRow)
       }.bind(this)
-    );
+    )
   },
-};
+}
 </script>
 
 <style scoped>

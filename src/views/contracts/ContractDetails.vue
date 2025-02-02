@@ -1,120 +1,100 @@
 <template>
   <div class="ComponentWrapper">
-    <div class="ModalContainer" id="AddPersonModal">
-      <div class="ModalBackground">
-        <div class="Modal">
-          <div class="ModalHeaderRow">
-            <div class="ModalHeaderTitle">اضافة شخص جديد</div>
-            <div class="ModalHeaderCloseBTN" v-ModalCloseBTN>
-              <svg viewBox="0 0 100 100">
-                <polygon
-                  points="85.179,16.589 83.411,14.821 50,48.232 16.589,14.821 14.821,16.589 48.232,50 14.821,83.411 16.589,85.179
-              50,51.767 83.411,85.179 85.179,83.411 51.768,50 "
-                />
-                <path
-                  d="M89.421,16.59l-6.01-6.011L50,43.99L16.59,10.579l-6.011,6.011L43.99,50L10.579,83.411l6.011,6.01L50,56.01l33.411,33.411
-              l6.01-6.01L56.01,50L89.421,16.59z"
-                />
-              </svg>
-            </div>
-          </div>
-          <div class="ModalContent">
-            <div class="MField" id="Name">
-              <input ref="Name" type="text" required />
-              <label>اسم المالك *</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="motherName">
-              <input ref="motherName" type="text" required />
-              <label>اسم الام *</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <MComboBox
-              ref="Gender"
-              :Name="'Gender'"
-              :Label="' الجنس *'"
-              :Items="GenderItems"
-            >
-            </MComboBox>
-            <MDate ref="Birth" :Name="'Birth'" :Label="'المواليد'"></MDate>
-            <div class="MField" id="identificationType">
-              <input ref="identificationType" type="text" required />
-              <label>نوع الهوية *</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="identificationNumber" v-OnlyNumbers>
-              <input ref="identificationNumber" type="text" required />
-              <label>رقم الهوية *</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="identificationRecord">
-              <input ref="identificationRecord" type="text" required />
-              <label>الصحيفة</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="identificationPage">
-              <input ref="identificationPage" type="text" required />
-              <label>السجل</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="identificationIssuingAuthority">
-              <input
-                ref="identificationIssuingAuthority"
-                type="text"
-                required
-              />
-              <label>جهة الاصدار</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <MDate
-              ref="identificationIssuingDate"
-              :Name="'identificationIssuingDate'"
-              :Label="'تاريخ الاصدار'"
-            ></MDate>
-            <div class="MField" id="Study">
-              <input ref="Study" type="text" required />
-              <label>التحصيل الدراسي</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="workType">
-              <input ref="workType" type="text" required />
-              <label>المهنة</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="workPlace">
-              <input ref="workPlace" type="text" required />
-              <label>مكان العمل</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="Phone" v-OnlyNumbers>
-              <input ref="Phone" type="text" required />
-              <label>الهاتف *</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="Email">
-              <input ref="Email" type="text" required />
-              <label>الايميل</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="Address">
-              <input ref="Address" type="text" required />
-              <label>العنوان *</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="Notes">
-              <input ref="Notes" type="text" required />
-              <label>الملاحظات</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="ModalButtons">
-              <div class="MButton" id="SavePersonBTN" @click="SavePerson">
-                حفـــظ
-              </div>
-            </div>
-          </div>
-        </div>
+    <MModal
+      ref="AddPersonModal"
+      :Name="'AddPersonModal'"
+      :Title="'اضافة شخص جديد'"
+    >
+      <div class="MField" id="Name">
+        <input ref="Name" type="text" required />
+        <label>اسم المالك *</label>
+        <div class="MFieldBG"></div>
       </div>
-    </div>
+      <div class="MField" id="motherName">
+        <input ref="motherName" type="text" required />
+        <label>اسم الام *</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <MComboBox
+        ref="Gender"
+        :Name="'Gender'"
+        :Label="' الجنس *'"
+        :Items="GenderItems"
+      >
+      </MComboBox>
+      <MDate ref="Birth" :Name="'Birth'" :Label="'المواليد'"></MDate>
+      <div class="MField" id="identificationType">
+        <input ref="identificationType" type="text" required />
+        <label>نوع الهوية *</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="identificationNumber" v-OnlyNumbers>
+        <input ref="identificationNumber" type="text" required />
+        <label>رقم الهوية *</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="identificationRecord">
+        <input ref="identificationRecord" type="text" required />
+        <label>الصحيفة</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="identificationPage">
+        <input ref="identificationPage" type="text" required />
+        <label>السجل</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="identificationIssuingAuthority">
+        <input ref="identificationIssuingAuthority" type="text" required />
+        <label>جهة الاصدار</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <MDate
+        ref="identificationIssuingDate"
+        :Name="'identificationIssuingDate'"
+        :Label="'تاريخ الاصدار'"
+      ></MDate>
+      <div class="MField" id="Study">
+        <input ref="Study" type="text" required />
+        <label>التحصيل الدراسي</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <MComboBox
+        ref="workType"
+        :Name="'workType'"
+        :Label="' المهنة *'"
+        :Items="workTypeItems"
+      >
+      </MComboBox>
+
+      <div class="MField" id="workPlace">
+        <input ref="workPlace" type="text" required />
+        <label>مكان العمل</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="Phone" v-OnlyNumbers>
+        <input ref="Phone" type="text" required />
+        <label>الهاتف *</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="Email">
+        <input ref="Email" type="text" required />
+        <label>الايميل</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="Address">
+        <input ref="Address" type="text" required />
+        <label>العنوان *</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="Notes">
+        <input ref="Notes" type="text" required />
+        <label>الملاحظات</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="ModalButtons">
+        <div class="MButton" id="SavePersonBTN" @click="SavePerson">حفـــظ</div>
+      </div>
+    </MModal>
     <div class="MStepper" id="TheMStepper">
       <div class="MStepperContent">
         <!-- ------step 1------- -->
@@ -132,7 +112,7 @@
 
             <MTable
               ref="PersonsTB"
-              :MTableName="'PersonsTB'"
+              :Name="'PersonsTB'"
               :DataArray="PersonsTBData"
               :HeadersArray="PersonsTBHeaders"
               :TotalsArray="PersonsTBTotals"
@@ -302,25 +282,11 @@ import { ref } from 'vue'
 import { api } from '../../axios'
 import { MStepperBuild } from '../../MJS.js'
 import { useAuthStore } from '../../stores/auth'
-import MDate from '../../components/MDate.vue'
-import MTable from '../../components/MTable.vue'
-import MComboBox from '../../components/MComboBox.vue'
 import { useGlobalsStore } from '../../stores/Globals.js'
-import {
-  ShowMessage,
-  ShowModal,
-  ShowLoading,
-  HideLoading,
-  HideModal,
-} from '@/MJS.js'
+import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 var thecount = 1
 
 export default {
-  components: {
-    MDate,
-    MTable,
-    MComboBox,
-  },
   setup() {
     const authStore = useAuthStore()
     const hasPermission = permission =>
@@ -328,9 +294,12 @@ export default {
 
     return {
       hasPermission,
+      AddPersonModal: ref(null),
       GlobalsStore: ref(useGlobalsStore()),
       Gender: ref(null),
       GenderItems: ref([]),
+      workType: ref(null),
+      workTypeItems: ref([]),
       Birth: ref(null),
       identificationIssuingDate: ref(null),
       ContractDate: ref(null),
@@ -357,6 +326,7 @@ export default {
   },
   mounted() {
     this.GenderItems = this.GlobalsStore.ComboBoxes['Gender']
+    this.workTypeItems = this.GlobalsStore.ComboBoxes['WorkType']
     var MStepHeaders = [
       'المعلومات الشخصية',
       'بيانات الوحدة السكنية',
@@ -368,7 +338,7 @@ export default {
     document.getElementById('AddPersonBTN').addEventListener(
       'click',
       function () {
-        ShowModal(document.getElementById('AddPersonModal'))
+        this.AddPersonModal.Show()
       }.bind(this)
     )
   },
@@ -477,7 +447,7 @@ export default {
             thecount = thecount + 1
 
             this.PersonsTBData.push(PersonArray)
-            HideModal(document.getElementById('AddPersonModal'))
+            this.AddPersonModal.Hide()
             this.clearFields()
           } else {
             HideLoading()

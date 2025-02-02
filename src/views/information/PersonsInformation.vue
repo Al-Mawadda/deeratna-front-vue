@@ -3,7 +3,7 @@
     <div class="MGroup">
       <MTable
         ref="PersonsTB"
-        :MTableName="'PersonsTB'"
+        :Name="'PersonsTB'"
         :DataArray="PersonsTBData"
         :HeadersArray="PersonsTBHeaders"
         :TotalsArray="PersonsTBTotals"
@@ -46,20 +46,11 @@
 import { ref } from 'vue'
 import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
-import MTable from '../../components/MTable.vue'
 
-import {
-  ShowMessage,
-  ShowLoading,
-  HideLoading,
-  HideModal,
-} from '@/MJS.js'
+import { ShowMessage, ShowLoading, HideLoading, HideModal } from '@/MJS.js'
 var thecount = 1
 
 export default {
-  components: {
-    MTable,
-  },
   setup() {
     const authStore = useAuthStore()
     const hasPermission = permission =>

@@ -867,7 +867,7 @@
     </div>
     <MTable
       ref="InformationRequestsTB"
-      :MTableName="'InformationRequestsTB'"
+      :Name="'InformationRequestsTB'"
       :DataArray="InformationRequestsTBData"
       :HeadersArray="InformationRequestsTBHeaders"
       :TotalsArray="InformationRequestsTBTotals"
@@ -909,8 +909,6 @@
 import { ref } from 'vue'
 import { api, GetServerPath } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
-import MTable from '../../components/MTable.vue'
-import MDate from '../../components/MDate.vue'
 import {
   ShowMessage,
   ShowModal,
@@ -920,10 +918,6 @@ import {
 } from '@/MJS.js'
 
 export default {
-  components: {
-    MTable,
-    MDate,
-  },
   setup() {
     const authStore = useAuthStore()
     const hasPermission = permission =>

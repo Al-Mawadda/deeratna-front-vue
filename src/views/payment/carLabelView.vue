@@ -18,7 +18,7 @@
 
     <MTable
       ref="CarLabelsTB"
-      :MTableName="'CarLabelsTB'"
+      :Name="'CarLabelsTB'"
       :DataArray="CarLabelsTBData"
       :HeadersArray="CarLabelsTBHeaders"
       :TotalsArray="CarLabelsTBTotals"
@@ -40,14 +40,8 @@
 import { ref } from 'vue'
 import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
-import MTable from '../../components/MTable.vue'
-import MDate from '../../components/MDate.vue'
 
 export default {
-  components: {
-    MTable,
-    MDate,
-  },
   setup() {
     const authStore = useAuthStore()
     const hasPermission = permission =>

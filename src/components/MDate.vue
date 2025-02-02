@@ -1,81 +1,35 @@
 <template>
   <div class="MDate" :id="Name">
     <div class="MDateValues">
-      <input
-        class="MDateInput"
-        autocomplete="false"
-        DateType="Day"
-        maxlength="2"
-        type="tel"
-        required
-      />
+      <input class="MDateInput" autocomplete="false" DateType="Day" maxlength="2" type="tel" required>
       <div class="MDateInputSeperator">/</div>
-      <input
-        class="MDateInput"
-        autocomplete="false"
-        DateType="Month"
-        maxlength="2"
-        type="tel"
-        required
-      />
+      <input class="MDateInput" autocomplete="false" DateType="Month" maxlength="2" type="tel" required>
       <div class="MDateInputSeperator">/</div>
-      <input
-        class="MDateInput"
-        autocomplete="false"
-        DateType="Year"
-        maxlength="4"
-        type="tel"
-        required
-      />
+      <input class="MDateInput" autocomplete="false" DateType="Year" maxlength="4" type="tel" required>
     </div>
-
     <div class="MDateSeperator" v-show="Range == true">-</div>
     <div class="MDateValues" v-show="Range == true">
-      <input
-        class="MDateInput"
-        autocomplete="false"
-        DateType="Day"
-        maxlength="2"
-        type="tel"
-        required
-      />
+      <input class="MDateInput" autocomplete="false" DateType="Day" maxlength="2" type="tel" required>
       <div class="MDateInputSeperator">/</div>
-      <input
-        class="MDateInput"
-        autocomplete="false"
-        DateType="Month"
-        maxlength="2"
-        type="tel"
-        required
-      />
+      <input class="MDateInput" autocomplete="false" DateType="Month" maxlength="2" type="tel" required>
       <div class="MDateInputSeperator">/</div>
-      <input
-        class="MDateInput"
-        autocomplete="false"
-        DateType="Year"
-        maxlength="4"
-        type="tel"
-        required
-      />
+      <input class="MDateInput" autocomplete="false" DateType="Year" maxlength="4" type="tel" required>
     </div>
     <label>{{ Label }}</label>
     <div class="MDateClearBTN">
       <svg viewBox="0 0 1000 1000">
-        <path
-          d="M922.1,147.7c0.5,14.9-10.1,31.1-24.9,45.8C800.4,290,703.8,386.8,607.1,483.5c-16.5,16.5-16.5,16.5,0.5,33.4
+        <path d="M922.1,147.7c0.5,14.9-10.1,31.1-24.9,45.8C800.4,290,703.8,386.8,607.1,483.5c-16.5,16.5-16.5,16.5,0.5,33.4
 		c97,97,194,194.1,291.1,291c17.4,17.3,27.2,36.8,22.7,61.9c-8.5,47.1-63.2,68.5-101.3,39.4c-5.5-4.2-10.5-9.3-15.4-14.2
 		c-97.8-97.7-195.6-195.3-293-293.4c-9.4-9.5-14-9.2-23.2,0.1C389.7,701.1,290.3,800,191.3,899.3c-19.7,19.8-42.3,28.4-69.5,20
 		c-41.1-12.7-57.5-63.1-32.2-97.9c4.1-5.6,9.2-10.6,14.1-15.5c97.3-97.4,194.7-194.8,292.1-292.2c13.8-13.8,13.8-13.8-0.5-28.1
 		C297.3,387.5,199.3,289.3,101,191.4c-20.2-20.1-29.1-43-19.9-70.8c15-45.2,70.8-57.9,106.2-23.7c33.9,32.7,66.7,66.4,100,99.7
 		c67.3,67.3,134.7,134.4,201.6,202c8.7,8.8,13.2,9.2,22.1,0.2c98.9-99.4,198.4-198.2,297.5-297.4c13.6-13.7,28.8-23,48.6-23.3
-		C893.3,77.6,921.6,104.9,922.1,147.7z"
-        />
+		C893.3,77.6,921.6,104.9,922.1,147.7z" />
       </svg>
     </div>
     <div class="MDatePickerBTN">
       <svg viewBox="0 0 1000 1000">
-        <path
-          d="M82.1,525.3c-0.9-55.6-0.1-111.3,2.9-166.8c2-37.4,0-75.2,9.6-111.9c18.6-71.2,85.3-122.7,159-123.1
+        <path d="M82.1,525.3c-0.9-55.6-0.1-111.3,2.9-166.8c2-37.4,0-75.2,9.6-111.9c18.6-71.2,85.3-122.7,159-123.1
 	c12.2-0.1,24.3-0.3,36.5,0.1c6.9,0.2,9.3-2.5,9-9.2c-0.3-8.3-0.3-16.7,0-25c0.7-18.9,14.8-32.5,33.7-32.6
 	c19-0.1,33.8,14.1,34.4,33.1c0.2,8.3,0.3,16.7,0,25c-0.2,6.2,2.2,8.9,8.5,8.6c9-0.3,18.1-0.1,27.1-0.1c72.3,0,144.7-0.2,217,0.2
 	c10.8,0.1,14.4-3.2,13.2-13.6c-0.7-6.5-0.3-13.2-0.1-19.8c0.5-19.6,14.6-33.4,33.8-33.5c19-0.1,33.7,14.1,34.3,33.2
@@ -90,32 +44,19 @@
 	c0,8.3,0.1,16.7-0.1,25c-0.5,19.4-14.8,33.4-33.9,33.5c-18.9,0-33.7-14.2-34.2-33.3c-0.2-8.3-0.3-16.7,0-25c0.2-6.4-2.6-8.5-8.7-8.5
 	c-82.7,0.1-165.5,0.1-248.2,0c-7,0-9.1,2.9-8.9,9.4c0.3,8,0.2,16,0,24c-0.5,19.4-14.8,33.4-33.9,33.5c-18.9,0-33.7-14.2-34.2-33.3
 	c-0.2-8.3-0.3-16.7,0-25c0.2-6.4-2.5-8.6-8.7-8.5c-10.8,0.3-21.6-0.2-32.3,0.2c-51.1,1.8-89.4,33.2-98.5,81.3
-	c-2.2,11.9-2.5,24.2-3,36.3c-0.7,14.4-0.4,14.4,13.9,14.4C280.3,323.8,390.2,323.8,500,323.8z"
-        />
-        <path
-          d="M282.4,540.6c0.2-28.5,22.5-50.1,51.6-49.9c28.6,0.2,50.2,22.5,49.9,51.6c-0.2,28.6-22.6,50.2-51.7,49.9
-	C303.7,592.1,282.2,569.8,282.4,540.6z"
-        />
-        <path
-          d="M449.3,540.4c0.2-28.4,22.7-50,51.9-49.7c28.5,0.3,50,22.7,49.7,51.8c-0.3,28.5-22.8,50-51.9,49.7
-	C470.5,592,449.1,569.6,449.3,540.4z"
-        />
-        <path
-          d="M616.3,540.8c0.1-28.6,22.5-50.2,51.5-50c28.7,0.2,50.2,22.4,50.1,51.5c-0.2,28.6-22.6,50.3-51.6,50.1
-	C637.7,592.1,616.1,569.9,616.3,540.8z"
-        />
-        <path
-          d="M332.9,657.7c29-0.1,51,21.7,51.1,50.5c0.1,28.9-21.8,51-50.5,51.1c-29,0.1-50.9-21.7-51-50.5
-	C282.3,679.8,304.1,657.8,332.9,657.7z"
-        />
-        <path
-          d="M550.9,709.1c-0.2,28.6-22.5,50.4-51.5,50.2c-28.6-0.2-50.2-22.4-50.1-51.5c0.1-28.6,22.4-50.3,51.4-50.1
-	C529.4,657.9,551.1,680,550.9,709.1z"
-        />
-        <path
-          d="M667.5,657.7c28.7,0.1,50.4,22.2,50.3,51.3c-0.1,28.7-22.4,50.5-51.3,50.3c-28.7-0.1-50.3-22.2-50.3-51.3
-	C616.3,679.3,638.5,657.6,667.5,657.7z"
-        />
+	c-2.2,11.9-2.5,24.2-3,36.3c-0.7,14.4-0.4,14.4,13.9,14.4C280.3,323.8,390.2,323.8,500,323.8z" />
+        <path d="M282.4,540.6c0.2-28.5,22.5-50.1,51.6-49.9c28.6,0.2,50.2,22.5,49.9,51.6c-0.2,28.6-22.6,50.2-51.7,49.9
+	C303.7,592.1,282.2,569.8,282.4,540.6z" />
+        <path d="M449.3,540.4c0.2-28.4,22.7-50,51.9-49.7c28.5,0.3,50,22.7,49.7,51.8c-0.3,28.5-22.8,50-51.9,49.7
+	C470.5,592,449.1,569.6,449.3,540.4z" />
+        <path d="M616.3,540.8c0.1-28.6,22.5-50.2,51.5-50c28.7,0.2,50.2,22.4,50.1,51.5c-0.2,28.6-22.6,50.3-51.6,50.1
+	C637.7,592.1,616.1,569.9,616.3,540.8z" />
+        <path d="M332.9,657.7c29-0.1,51,21.7,51.1,50.5c0.1,28.9-21.8,51-50.5,51.1c-29,0.1-50.9-21.7-51-50.5
+	C282.3,679.8,304.1,657.8,332.9,657.7z" />
+        <path d="M550.9,709.1c-0.2,28.6-22.5,50.4-51.5,50.2c-28.6-0.2-50.2-22.4-50.1-51.5c0.1-28.6,22.4-50.3,51.4-50.1
+	C529.4,657.9,551.1,680,550.9,709.1z" />
+        <path d="M667.5,657.7c28.7,0.1,50.4,22.2,50.3,51.3c-0.1,28.7-22.4,50.5-51.3,50.3c-28.7-0.1-50.3-22.2-50.3-51.3
+	C616.3,679.3,638.5,657.6,667.5,657.7z" />
       </svg>
     </div>
     <div class="MDateBG"></div>
@@ -124,44 +65,26 @@
         <div class="MDatePickerMonth">
           <div class="MDatePickerMonthPrevious">
             <svg viewBox="0 0 1000 1000">
-              <polygon
-                points="333.8,75.7 241.9,167.7 574.2,500 241.9,832.3 333.8,924.3 758.1,500 "
-              ></polygon>
+              <polygon points="333.8,75.7 241.9,167.7 574.2,500 241.9,832.3 333.8,924.3 758.1,500 "></polygon>
             </svg>
           </div>
-          <input
-            class="MDatePickerMonthValue MDateValidate"
-            maxlength="2"
-            value="11"
-            DateType="Month"
-          />
+          <input class="MDatePickerMonthValue MDateValidate" maxlength="2" value="11" DateType="Month" />
           <div class="MDatePickerMonthNext">
             <svg viewBox="0 0 1000 1000">
-              <polygon
-                points="333.8,75.7 241.9,167.7 574.2,500 241.9,832.3 333.8,924.3 758.1,500 "
-              ></polygon>
+              <polygon points="333.8,75.7 241.9,167.7 574.2,500 241.9,832.3 333.8,924.3 758.1,500 "></polygon>
             </svg>
           </div>
         </div>
         <div class="MDatePickerYear">
           <div class="MDatePickerYearPrevious">
             <svg viewBox="0 0 1000 1000">
-              <polygon
-                points="333.8,75.7 241.9,167.7 574.2,500 241.9,832.3 333.8,924.3 758.1,500 "
-              ></polygon>
+              <polygon points="333.8,75.7 241.9,167.7 574.2,500 241.9,832.3 333.8,924.3 758.1,500 "></polygon>
             </svg>
           </div>
-          <input
-            class="MDatePickerYearValue MDateValidate"
-            maxlength="4"
-            value="2024"
-            DateType="Year"
-          />
+          <input class="MDatePickerYearValue MDateValidate" maxlength="4" value="2024" DateType="Year" />
           <div class="MDatePickerYearNext">
             <svg viewBox="0 0 1000 1000">
-              <polygon
-                points="333.8,75.7 241.9,167.7 574.2,500 241.9,832.3 333.8,924.3 758.1,500 "
-              ></polygon>
+              <polygon points="333.8,75.7 241.9,167.7 574.2,500 241.9,832.3 333.8,924.3 758.1,500 "></polygon>
             </svg>
           </div>
         </div>
@@ -188,389 +111,287 @@ export default {
       Element: null,
       SelectedDates: [],
       IsDisabled: null,
-    }
+    };
   },
   watch: {
     Disabled: {
       handler(newValue) {
-        this.IsDisabled = newValue
-        this.EnableDisable()
+        this.IsDisabled = newValue;
+        this.EnableDisable();
       },
       deep: true,
     },
   },
   mounted() {
-    this.Element = document.getElementById(this.Name)
-    this.IsDisabled = this.Disabled
+    this.Element = document.getElementById(this.Name);
+    this.IsDisabled = this.Disabled;
 
-    this.Element.querySelectorAll('.MDateInput').forEach(
-      function (e) {
-        var Instance = this
-        e.addEventListener('focus', function () {
-          Instance.Element.setAttribute('focus', true)
-        })
-        e.addEventListener('blur', function () {
-          Instance.InputToArray()
-          Instance.Element.removeAttribute('focus')
-        })
-        e.addEventListener('input', function (event) {
-          var keyCode = event.which ? event.which : event.keyCode
-          if (!(keyCode >= 48 && keyCode <= 57)) {
-            event.preventDefault()
-          }
-
-          // Show/Hide Clear Button
-          if (Instance.IsDisabled != true && Instance.Clearable == true) {
-            let Inputs = Instance.Element.querySelectorAll('.MDateValues')
-
-            let [YearFrom, MonthFrom, DayFrom] = [
-              Inputs[0].querySelector('.MDateInput[DateType=Year]').value,
-              Inputs[0].querySelector('.MDateInput[DateType=Month]').value,
-              Inputs[0].querySelector('.MDateInput[DateType=Day]').value,
-            ]
-
-            let [YearTo, MonthTo, DayTo] = [
-              Inputs[1].querySelector('.MDateInput[DateType=Year]').value,
-              Inputs[1].querySelector('.MDateInput[DateType=Month]').value,
-              Inputs[1].querySelector('.MDateInput[DateType=Day]').value,
-            ]
-            if (
-              YearFrom != '' ||
-              MonthFrom != '' ||
-              DayFrom != '' ||
-              YearTo != '' ||
-              MonthTo != '' ||
-              DayTo != ''
-            ) {
-              Instance.Element.querySelector('.MDateClearBTN').style.opacity = 1
-              Instance.Element.querySelector(
-                '.MDateClearBTN'
-              ).style.pointerEvents = ''
-            } else {
-              Instance.Element.querySelector('.MDateClearBTN').style.opacity = 0
-              Instance.Element.querySelector(
-                '.MDateClearBTN'
-              ).style.pointerEvents = 'none'
-            }
-          } else {
-            Instance.Element.querySelector('.MDateClearBTN').style.opacity = 0
-            Instance.Element.querySelector(
-              '.MDateClearBTN'
-            ).style.pointerEvents = 'none'
-          }
-
-          Instance.InputValidate()
-        })
-        e.addEventListener('paste', function (event) {
-          event.preventDefault()
-        })
-        e.addEventListener('change', function (event) {
-          var MDateInputValue = event.target.closest('.MDateValues')
-          var DaysOfMonth = new Date(
-            MDateInputValue.querySelector('.MDateInput[DateType=Year]').value,
-            MDateInputValue.querySelector('.MDateInput[DateType=Month]').value,
-            0
-          ).getDate()
-          if (event.target.getAttribute('DateType') == 'Day') {
-            if (event.target.value < 1 && event.target.value != '') {
-              event.target.value = '1'
-            }
-          }
-          if (event.target.getAttribute('DateType') == 'Month') {
-            if (event.target.value < 1 && event.target.value != '') {
-              event.target.value = '1'
-            } else if (event.target.value > 12 && event.target.value != '') {
-              event.target.value = '12'
-            }
-          }
-          if (event.target.getAttribute('DateType') == 'Year') {
-            if (event.target.value < 1 && event.target.value != '') {
-              event.target.value = '1'
-            }
-          }
-          if (
-            MDateInputValue.querySelector('.MDateInput[DateType=Day]').value >
-            DaysOfMonth
-          ) {
-            MDateInputValue.querySelector('.MDateInput[DateType=Day]').value =
-              DaysOfMonth
-          }
-        })
-      }.bind(this)
-    )
-
-    this.Element.querySelector('.MDatePickerMonthValue').addEventListener(
-      'input',
-      function (e) {
-        e.target.value = e.target.value.replace(/[^0-9]/g, '')
-
-        if (e.target.value < 1 && e.target.value != '') {
-          e.target.value = '1'
-        }
-
-        if (e.target.value > 12 && e.target.value != '') {
-          e.target.value = '12'
-        }
-
-        if (e.target.value == '') {
-          this.Element.querySelector('.MDatePickerDaysTable').innerHTML = ''
-        } else {
-          this.MDatePickerBuild(
-            this.Element.querySelector('.MDatePickerYearValue').value,
-            this.Element.querySelector('.MDatePickerMonthValue').value
-          )
-        }
-      }.bind(this)
-    )
-
-    this.Element.querySelector('.MDatePickerYearValue').addEventListener(
-      'input',
-      function (e) {
-        e.target.value = e.target.value.replace(/[^0-9]/g, '')
-
-        if (e.value < 1 && e.target.value != '') {
-          e.value = '1'
-        }
-
-        if (e.target.value == '') {
-          this.Element.querySelector('.MDatePickerDaysTable').innerHTML = ''
-        } else {
-          this.MDatePickerBuild(
-            this.Element.querySelector('.MDatePickerYearValue').value,
-            this.Element.querySelector('.MDatePickerMonthValue').value
-          )
-        }
-      }.bind(this)
-    )
-
-    this.Element.querySelector('.MDatePickerMonthPrevious').addEventListener(
-      'click',
-      function () {
-        var TheMonth = this.Element.querySelector('.MDatePickerMonthValue')
-        var TheYear = this.Element.querySelector('.MDatePickerYearValue')
-
-        if (TheMonth.value == 1) {
-          TheMonth.value = 12
-          TheYear.value--
-        } else {
-          TheMonth.value--
-        }
-        this.MDatePickerBuild(TheYear.value, TheMonth.value)
-      }.bind(this)
-    )
-
-    this.Element.querySelector('.MDatePickerMonthNext').addEventListener(
-      'click',
-      function () {
-        var TheMonth = this.Element.querySelector('.MDatePickerMonthValue')
-        var TheYear = this.Element.querySelector('.MDatePickerYearValue')
-
-        if (TheMonth.value == 12) {
-          TheMonth.value = 1
-          TheYear.value++
-        } else {
-          TheMonth.value++
-        }
-        this.MDatePickerBuild(TheYear.value, TheMonth.value)
-      }.bind(this)
-    )
-
-    this.Element.querySelector('.MDatePickerYearPrevious').addEventListener(
-      'click',
-      function () {
-        var TheMonth = this.Element.querySelector('.MDatePickerMonthValue')
-        var TheYear = this.Element.querySelector('.MDatePickerYearValue')
-
-        if (TheYear.value < 1) {
-          TheYear.value = 1
-        } else {
-          TheYear.value--
-        }
-
-        this.MDatePickerBuild(TheYear.value, TheMonth.value)
-      }.bind(this)
-    )
-
-    this.Element.querySelector('.MDatePickerYearNext').addEventListener(
-      'click',
-      function () {
-        var TheMonth = this.Element.querySelector('.MDatePickerMonthValue')
-        var TheYear = this.Element.querySelector('.MDatePickerYearValue')
-
-        TheYear.value++
-
-        this.MDatePickerBuild(TheYear.value, TheMonth.value)
-      }.bind(this)
-    )
-
-    this.Element.querySelector('.MDatePicker').addEventListener(
-      'focusout',
-      function () {
-        if (this.Range == true) {
-          if (this.SelectedDates.length == 1) {
-            this.SelectedDates.push(this.SelectedDates[0])
-          }
+    this.Element.querySelectorAll('.MDateInput').forEach(function (e) {
+      var Instance = this;
+      e.addEventListener('focus', function () {
+        Instance.Element.setAttribute('focus', true);
+      });
+      e.addEventListener('blur', function () {
+        Instance.InputToArray();
+        Instance.Element.removeAttribute('focus');
+      });
+      e.addEventListener('input', function (event) {
+        var keyCode = event.which ? event.which : event.keyCode
+        if (!(keyCode >= 48 && keyCode <= 57)) {
+          event.preventDefault();
         }
 
         // Show/Hide Clear Button
-        if (this.IsDisabled != true && this.Clearable == true) {
-          let Inputs = this.Element.querySelectorAll('.MDateValues')
+        if (Instance.IsDisabled != true && Instance.Clearable == true) {
+          let Inputs = Instance.Element.querySelectorAll('.MDateValues');
 
           let [YearFrom, MonthFrom, DayFrom] = [
             Inputs[0].querySelector('.MDateInput[DateType=Year]').value,
             Inputs[0].querySelector('.MDateInput[DateType=Month]').value,
             Inputs[0].querySelector('.MDateInput[DateType=Day]').value,
-          ]
+          ];
 
           let [YearTo, MonthTo, DayTo] = [
             Inputs[1].querySelector('.MDateInput[DateType=Year]').value,
             Inputs[1].querySelector('.MDateInput[DateType=Month]').value,
             Inputs[1].querySelector('.MDateInput[DateType=Day]').value,
-          ]
-          if (
-            YearFrom != '' ||
-            MonthFrom != '' ||
-            DayFrom != '' ||
-            YearTo != '' ||
-            MonthTo != '' ||
-            DayTo != ''
-          ) {
-            this.Element.querySelector('.MDateClearBTN').style.opacity = 1
-            this.Element.querySelector('.MDateClearBTN').style.pointerEvents =
-              ''
+          ];
+          if (YearFrom != '' || MonthFrom != '' || DayFrom != '' || YearTo != '' || MonthTo != '' || DayTo != '') {
+            Instance.Element.querySelector('.MDateClearBTN').style.opacity = 1;
+            Instance.Element.querySelector('.MDateClearBTN').style.pointerEvents = '';
           } else {
-            this.Element.querySelector('.MDateClearBTN').style.opacity = 0
-            this.Element.querySelector('.MDateClearBTN').style.pointerEvents =
-              'none'
+            Instance.Element.querySelector('.MDateClearBTN').style.opacity = 0;
+            Instance.Element.querySelector('.MDateClearBTN').style.pointerEvents = 'none';
           }
         } else {
-          this.Element.querySelector('.MDateClearBTN').style.opacity = 0
-          this.Element.querySelector('.MDateClearBTN').style.pointerEvents =
-            'none'
+          Instance.Element.querySelector('.MDateClearBTN').style.opacity = 0;
+          Instance.Element.querySelector('.MDateClearBTN').style.pointerEvents = 'none';
         }
 
-        if (this.Range == true) {
-          if (this.SelectedDates.length == 1) {
-            this.SelectedDates.push(this.SelectedDates[0])
-            this.ArrayToInput()
-            this.InputValidate()
+        Instance.InputValidate();
+      });
+      e.addEventListener('paste', function (event) {
+        event.preventDefault();
+      });
+      e.addEventListener('change', function (event) {
+        var MDateInputValue = event.target.closest('.MDateValues');
+        var DaysOfMonth = new Date(MDateInputValue.querySelector('.MDateInput[DateType=Year]').value, MDateInputValue.querySelector('.MDateInput[DateType=Month]').value, 0).getDate();
+        if (event.target.getAttribute('DateType') == 'Day') {
+          if (event.target.value < 1 && event.target.value != '') {
+            event.target.value = '1';
           }
         }
-
-        this.HideMDatePicker()
-      }.bind(this)
-    )
-
-    this.Element.querySelector('.MDatePickerBTN').addEventListener(
-      'click',
-      function () {
-        if (this.Range == false) {
-          if (
-            this.Element.querySelectorAll('.MDateValues')[0].querySelector(
-              '.MDateInput[DateType=Year]'
-            ).value == '' ||
-            this.Element.querySelectorAll('.MDateValues')[0].querySelector(
-              '.MDateInput[DateType=Month]'
-            ).value == '' ||
-            this.Element.querySelectorAll('.MDateValues')[0].querySelector(
-              '.MDateInput[DateType=Day]'
-            ).value == ''
-          ) {
-            let Year = new Date().getFullYear()
-            let Month = new Date().getMonth() + 1
-
-            this.MDatePickerBuild(Year, Month)
-          } else {
-            this.InputToArray()
+        if (event.target.getAttribute('DateType') == 'Month') {
+          if (event.target.value < 1 && event.target.value != '') {
+            event.target.value = '1';
+          } else if (event.target.value > 12 && event.target.value != '') {
+            event.target.value = '12';
           }
         }
-        if (this.Range == true) {
-          if (
-            this.Element.querySelectorAll('.MDateValues')[0].querySelector(
-              '.MDateInput[DateType=Year]'
-            ).value == '' ||
-            this.Element.querySelectorAll('.MDateValues')[0].querySelector(
-              '.MDateInput[DateType=Month]'
-            ).value == '' ||
-            this.Element.querySelectorAll('.MDateValues')[0].querySelector(
-              '.MDateInput[DateType=Day]'
-            ).value == '' ||
-            this.Element.querySelectorAll('.MDateValues')[1].querySelector(
-              '.MDateInput[DateType=Year]'
-            ).value == '' ||
-            this.Element.querySelectorAll('.MDateValues')[1].querySelector(
-              '.MDateInput[DateType=Month]'
-            ).value == '' ||
-            this.Element.querySelectorAll('.MDateValues')[1].querySelector(
-              '.MDateInput[DateType=Day]'
-            ).value == ''
-          ) {
-            let Year = new Date().getFullYear()
-            let Month = new Date().getMonth() + 1
-
-            this.MDatePickerBuild(Year, Month)
-          } else {
-            this.InputToArray()
+        if (event.target.getAttribute('DateType') == 'Year') {
+          if (event.target.value < 1 && event.target.value != '') {
+            event.target.value = '1';
           }
         }
+        if (MDateInputValue.querySelector('.MDateInput[DateType=Day]').value > DaysOfMonth) {
+          MDateInputValue.querySelector('.MDateInput[DateType=Day]').value = DaysOfMonth;
+        }
+      });
+    }.bind(this));
 
-        this.ShowMDatePicker()
-        this.Element.querySelector('.MDatePicker').focus()
-      }.bind(this)
-    )
+    this.Element.querySelector('.MDatePickerMonthValue').addEventListener('input', function (e) {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '');
 
-    this.Element.querySelector('.MDateClearBTN').addEventListener(
-      'click',
-      function () {
-        this.Clear()
-      }.bind(this)
-    )
+      if (e.target.value < 1 && e.target.value != '') {
+        e.target.value = '1';
+      }
+
+      if (e.target.value > 12 && e.target.value != '') {
+        e.target.value = '12';
+      }
+
+      if (e.target.value == '') {
+        this.Element.querySelector('.MDatePickerDaysTable').innerHTML = '';
+      } else {
+        this.MDatePickerBuild(this.Element.querySelector('.MDatePickerYearValue').value, this.Element.querySelector('.MDatePickerMonthValue').value);
+      }
+
+    }.bind(this));
+
+    this.Element.querySelector('.MDatePickerYearValue').addEventListener('input', function (e) {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+
+      if (e.value < 1 && e.target.value != '') {
+        e.value = '1';
+      }
+
+      if (e.target.value == '') {
+        this.Element.querySelector('.MDatePickerDaysTable').innerHTML = '';
+      } else {
+        this.MDatePickerBuild(this.Element.querySelector('.MDatePickerYearValue').value, this.Element.querySelector('.MDatePickerMonthValue').value);
+      }
+    }.bind(this));
+
+    this.Element.querySelector('.MDatePickerMonthPrevious').addEventListener('click', function () {
+      var TheMonth = this.Element.querySelector('.MDatePickerMonthValue');
+      var TheYear = this.Element.querySelector('.MDatePickerYearValue');
+
+      if (TheMonth.value == 1) {
+        TheMonth.value = 12;
+        TheYear.value--;
+      } else {
+        TheMonth.value--;
+      }
+      this.MDatePickerBuild(TheYear.value, TheMonth.value);
+    }.bind(this));
+
+    this.Element.querySelector('.MDatePickerMonthNext').addEventListener('click', function () {
+      var TheMonth = this.Element.querySelector('.MDatePickerMonthValue');
+      var TheYear = this.Element.querySelector('.MDatePickerYearValue');
+
+      if (TheMonth.value == 12) {
+        TheMonth.value = 1;
+        TheYear.value++
+      } else {
+        TheMonth.value++;
+      }
+      this.MDatePickerBuild(TheYear.value, TheMonth.value);
+    }.bind(this));
+
+    this.Element.querySelector('.MDatePickerYearPrevious').addEventListener('click', function () {
+      var TheMonth = this.Element.querySelector('.MDatePickerMonthValue');
+      var TheYear = this.Element.querySelector('.MDatePickerYearValue');
+
+      if (TheYear.value < 1) {
+        TheYear.value = 1;
+      } else {
+        TheYear.value--;
+      }
+
+      this.MDatePickerBuild(TheYear.value, TheMonth.value);
+    }.bind(this));
+
+    this.Element.querySelector('.MDatePickerYearNext').addEventListener('click', function () {
+      var TheMonth = this.Element.querySelector('.MDatePickerMonthValue');
+      var TheYear = this.Element.querySelector('.MDatePickerYearValue');
+
+      TheYear.value++;
+
+      this.MDatePickerBuild(TheYear.value, TheMonth.value);
+    }.bind(this));
+
+    this.Element.querySelector('.MDatePicker').addEventListener('focusout', function () {
+      if (this.Range == true) {
+        if (this.SelectedDates.length == 1) {
+          this.SelectedDates.push(this.SelectedDates[0]);
+        }
+      }
+
+      // Show/Hide Clear Button
+      if (this.IsDisabled != true && this.Clearable == true) {
+        let Inputs = this.Element.querySelectorAll('.MDateValues');
+
+        let [YearFrom, MonthFrom, DayFrom] = [
+          Inputs[0].querySelector('.MDateInput[DateType=Year]').value,
+          Inputs[0].querySelector('.MDateInput[DateType=Month]').value,
+          Inputs[0].querySelector('.MDateInput[DateType=Day]').value,
+        ];
+
+        let [YearTo, MonthTo, DayTo] = [
+          Inputs[1].querySelector('.MDateInput[DateType=Year]').value,
+          Inputs[1].querySelector('.MDateInput[DateType=Month]').value,
+          Inputs[1].querySelector('.MDateInput[DateType=Day]').value,
+        ];
+        if (YearFrom != '' || MonthFrom != '' || DayFrom != '' || YearTo != '' || MonthTo != '' || DayTo != '') {
+          this.Element.querySelector('.MDateClearBTN').style.opacity = 1;
+          this.Element.querySelector('.MDateClearBTN').style.pointerEvents = '';
+        } else {
+          this.Element.querySelector('.MDateClearBTN').style.opacity = 0;
+          this.Element.querySelector('.MDateClearBTN').style.pointerEvents = 'none';
+        }
+      } else {
+        this.Element.querySelector('.MDateClearBTN').style.opacity = 0;
+        this.Element.querySelector('.MDateClearBTN').style.pointerEvents = 'none';
+      }
+
+      if (this.Range == true) {
+        if (this.SelectedDates.length == 1) {
+          this.SelectedDates.push(this.SelectedDates[0]);
+          this.ArrayToInput();
+          this.InputValidate();
+        }
+      }
+
+      this.HideMDatePicker();
+    }.bind(this));
+
+    this.Element.querySelector('.MDatePickerBTN').addEventListener('click', function () {
+      if (this.Range == false) {
+        if (this.Element.querySelectorAll('.MDateValues')[0].querySelector('.MDateInput[DateType=Year]').value == '' || this.Element.querySelectorAll('.MDateValues')[0].querySelector('.MDateInput[DateType=Month]').value == '' || this.Element.querySelectorAll('.MDateValues')[0].querySelector('.MDateInput[DateType=Day]').value == '') {
+          let Year = new Date().getFullYear();
+          let Month = new Date().getMonth() + 1;
+
+          this.MDatePickerBuild(Year, Month);
+        } else {
+          this.InputToArray();
+        }
+      }
+      if (this.Range == true) {
+        if (this.Element.querySelectorAll('.MDateValues')[0].querySelector('.MDateInput[DateType=Year]').value == '' || this.Element.querySelectorAll('.MDateValues')[0].querySelector('.MDateInput[DateType=Month]').value == '' || this.Element.querySelectorAll('.MDateValues')[0].querySelector('.MDateInput[DateType=Day]').value == '' || this.Element.querySelectorAll('.MDateValues')[1].querySelector('.MDateInput[DateType=Year]').value == '' || this.Element.querySelectorAll('.MDateValues')[1].querySelector('.MDateInput[DateType=Month]').value == '' || this.Element.querySelectorAll('.MDateValues')[1].querySelector('.MDateInput[DateType=Day]').value == '') {
+          let Year = new Date().getFullYear();
+          let Month = new Date().getMonth() + 1;
+
+          this.MDatePickerBuild(Year, Month);
+        } else {
+          this.InputToArray();
+        }
+      }
+
+      this.ShowMDatePicker();
+      this.Element.querySelector('.MDatePicker').focus();
+    }.bind(this));
+
+    this.Element.querySelector('.MDateClearBTN').addEventListener('click', function () {
+      this.Clear();
+    }.bind(this));
 
     // Show/Hide Clear Button
     if (this.IsDisabled != true && this.Clearable == true) {
-      let Inputs = this.Element.querySelectorAll('.MDateValues')
+      let Inputs = this.Element.querySelectorAll('.MDateValues');
 
       let [YearFrom, MonthFrom, DayFrom] = [
         Inputs[0].querySelector('.MDateInput[DateType=Year]').value,
         Inputs[0].querySelector('.MDateInput[DateType=Month]').value,
         Inputs[0].querySelector('.MDateInput[DateType=Day]').value,
-      ]
+      ];
 
       let [YearTo, MonthTo, DayTo] = [
         Inputs[1].querySelector('.MDateInput[DateType=Year]').value,
         Inputs[1].querySelector('.MDateInput[DateType=Month]').value,
         Inputs[1].querySelector('.MDateInput[DateType=Day]').value,
-      ]
-      if (
-        YearFrom != '' ||
-        MonthFrom != '' ||
-        DayFrom != '' ||
-        YearTo != '' ||
-        MonthTo != '' ||
-        DayTo != ''
-      ) {
-        this.Element.querySelector('.MDateClearBTN').style.opacity = 1
-        this.Element.querySelector('.MDateClearBTN').style.pointerEvents = ''
+      ];
+      if (YearFrom != '' || MonthFrom != '' || DayFrom != '' || YearTo != '' || MonthTo != '' || DayTo != '') {
+        this.Element.querySelector('.MDateClearBTN').style.opacity = 1;
+        this.Element.querySelector('.MDateClearBTN').style.pointerEvents = '';
       } else {
-        this.Element.querySelector('.MDateClearBTN').style.opacity = 0
-        this.Element.querySelector('.MDateClearBTN').style.pointerEvents =
-          'none'
+        this.Element.querySelector('.MDateClearBTN').style.opacity = 0;
+        this.Element.querySelector('.MDateClearBTN').style.pointerEvents = 'none';
       }
     } else {
-      this.Element.querySelector('.MDateClearBTN').style.opacity = 0
-      this.Element.querySelector('.MDateClearBTN').style.pointerEvents = 'none'
+      this.Element.querySelector('.MDateClearBTN').style.opacity = 0;
+      this.Element.querySelector('.MDateClearBTN').style.pointerEvents = 'none';
     }
 
-    this.EnableDisable()
+    this.EnableDisable();
   },
   methods: {
     MDatePickerBuild(Year, Month) {
-      this.Element.querySelector('.MDatePickerDaysTable').innerHTML = ''
-      var Instance = this
-      var FirstDay = (new Date(Year, Month - 1, 1).getDay() + 1) % 7
-      var TotalDays = new Date(Year, Month, 0).getDate()
-      var Weeks = Math.ceil((FirstDay + TotalDays) / 7)
-      var DayNo = 1
+      this.Element.querySelector('.MDatePickerDaysTable').innerHTML = '';
+      var Instance = this;
+      var FirstDay = (new Date(Year, Month - 1, 1).getDay() + 1) % 7;
+      var TotalDays = new Date(Year, Month, 0).getDate();
+      var Weeks = Math.ceil((FirstDay + TotalDays) / 7);
+      var DayNo = 1;
 
       var DaysCode = `
       <thead>
@@ -583,89 +404,61 @@ export default {
           <th><div class="MDatePickerDaysName">خ</div></th>
           <th><div class="MDatePickerDaysName">ج</div></th>
         </tr>
-      </thead>`
-      DaysCode += '<tbody>'
+      </thead>`;
+      DaysCode += '<tbody>';
 
       for (let i = 0; i < Weeks; i++) {
-        DaysCode += '<tr>'
+        DaysCode += '<tr>';
         for (let j = 0; j < 7; j++) {
           if (i === 0 && j < FirstDay) {
-            DaysCode += '<td></td>'
+            DaysCode += '<td></td>';
           } else if (DayNo > TotalDays) {
-            DaysCode += '<td></td>'
+            DaysCode += '<td></td>';
           } else {
-            DaysCode +=
-              '<td><div MDatePickerValue=' +
-              Year +
-              '-' +
-              Month +
-              '-' +
-              DayNo +
-              ' class="MDatePickerDay">' +
-              DayNo +
-              '</div></td>'
-            DayNo++
+            DaysCode += '<td><div MDatePickerValue=' + Year + '-' + Month + '-' + DayNo + ' class="MDatePickerDay">' + DayNo + '</div></td>';
+            DayNo++;
           }
         }
-        DaysCode += '</tr>'
+        DaysCode += '</tr>';
       }
 
-      DaysCode += '</tbody>'
-      this.Element.querySelector('.MDatePickerDaysTable').innerHTML = DaysCode
+      DaysCode += '</tbody>';
+      this.Element.querySelector('.MDatePickerDaysTable').innerHTML = DaysCode;
 
-      this.Element.querySelector('.MDatePickerMonthValue').value = Month
-      this.Element.querySelector('.MDatePickerYearValue').value = Year
+      this.Element.querySelector('.MDatePickerMonthValue').value = Month;
+      this.Element.querySelector('.MDatePickerYearValue').value = Year;
 
-      Instance.PickerSelect()
+      Instance.PickerSelect();
 
-      // Events
+      // Events 
       this.Element.querySelectorAll('.MDatePickerDay').forEach(function (e) {
         e.addEventListener('click', function (d) {
           if (Instance.Range == false) {
-            Instance.SelectedDates = []
-            Instance.SelectedDates.push(
-              d.target.getAttribute('MDatePickerValue')
-            )
+            Instance.SelectedDates = [];
+            Instance.SelectedDates.push(d.target.getAttribute('MDatePickerValue'));
 
             Instance.ArrayToInput()
-            Instance.InputValidate()
+            Instance.InputValidate();
 
-            Instance.Element.querySelector('.MDatePicker').style.display =
-              'none'
+            Instance.Element.querySelector('.MDatePicker').style.display = 'none';
           }
           if (Instance.Range == true) {
-            if (
-              Instance.SelectedDates.includes(
-                d.target.getAttribute('MDatePickerValue')
-              )
-            ) {
-              if (
-                Instance.SelectedDates.length == 2 &&
-                Instance.SelectedDates[0] == Instance.SelectedDates[1]
-              ) {
-                Instance.SelectedDates.pop()
+            if (Instance.SelectedDates.includes(d.target.getAttribute('MDatePickerValue'))) {
+              if (Instance.SelectedDates.length == 2 && Instance.SelectedDates[0] == Instance.SelectedDates[1]) {
+                Instance.SelectedDates.pop();
               } else {
-                Instance.SelectedDates = Instance.SelectedDates.filter(
-                  item => item !== d.target.getAttribute('MDatePickerValue')
-                )
+                Instance.SelectedDates = Instance.SelectedDates.filter(item => item !== d.target.getAttribute('MDatePickerValue'));
               }
             } else {
               if (Instance.SelectedDates.length == 0) {
-                Instance.SelectedDates.push(
-                  d.target.getAttribute('MDatePickerValue')
-                )
-                Instance.SelectedDates.push(
-                  d.target.getAttribute('MDatePickerValue')
-                )
+                Instance.SelectedDates.push(d.target.getAttribute('MDatePickerValue'));
+                Instance.SelectedDates.push(d.target.getAttribute('MDatePickerValue'));
               }
               if (Instance.SelectedDates.length == 1) {
-                Instance.SelectedDates.push(
-                  d.target.getAttribute('MDatePickerValue')
-                )
+                Instance.SelectedDates.push(d.target.getAttribute('MDatePickerValue'));
               }
               if (Instance.SelectedDates.length == 2) {
-                Instance.SelectedDates[1] =
-                  d.target.getAttribute('MDatePickerValue')
+                Instance.SelectedDates[1] = d.target.getAttribute('MDatePickerValue');
               }
               /*
               if (Instance.SelectedDates.length == 2) {
@@ -674,427 +467,325 @@ export default {
               */
             }
 
-            Instance.SelectedDates.sort((a, b) => new Date(a) - new Date(b))
+            Instance.SelectedDates.sort((a, b) => new Date(a) - new Date(b));
 
-            Instance.ArrayToInput()
-            Instance.InputValidate()
+            Instance.ArrayToInput();
+            Instance.InputValidate();
           }
 
-          Instance.PickerSelect()
-        })
-      })
+          Instance.PickerSelect();
+        });
+      });
     },
     Get() {
       if (this.SelectedDates && this.SelectedDates.length > 0) {
         if (this.Range == false) {
-          return this.SelectedDates[0]
+          return this.SelectedDates[0];
         }
         if (this.Range == true) {
-          return this.SelectedDates
+          return this.SelectedDates;
         }
       } else {
-        return ''
+        return '';
       }
     },
     Set(TheValue) {
-      let MDateSetValue = TheValue
-      let Instance = this
+      let MDateSetValue = TheValue;
+      let Instance = this;
       if (MDateSetValue && MDateSetValue != '') {
-        Instance.SelectedDates = []
-        if (typeof MDateSetValue == 'string') {
-          MDateSetValue = MDateSetValue.replaceAll('/', '-')
-          MDateSetValue = MDateSetValue.replace(/-0(\d)/g, '-$1') // remove zeros
+        Instance.SelectedDates = [];
+        if (typeof MDateSetValue == "string") {
+          MDateSetValue = MDateSetValue.replaceAll("/", "-");
+          MDateSetValue = MDateSetValue.replace(/-0(\d)/g, '-$1'); // remove zeros
         } else {
           for (let i = 0; i < MDateSetValue.length; i++) {
-            MDateSetValue[i] = MDateSetValue[i].replaceAll('/', '-')
-            MDateSetValue[i] = MDateSetValue[i].replace(/-0(\d)/g, '-$1') // remove zeros
+            MDateSetValue[i] = MDateSetValue[i].replaceAll("/", "-");
+            MDateSetValue[i] = MDateSetValue[i].replace(/-0(\d)/g, '-$1'); // remove zeros
           }
         }
 
+
         if (Instance.Range == false) {
-          if (typeof MDateSetValue === 'string') {
-            Instance.SelectedDates.push(MDateSetValue)
+          if (typeof MDateSetValue === "string") {
+            Instance.SelectedDates.push(MDateSetValue);
           } else {
-            Instance.SelectedDates.push(MDateSetValue[0])
+            Instance.SelectedDates.push(MDateSetValue[0]);
           }
         }
         if (Instance.Range == true) {
-          if (typeof MDateSetValue === 'string') {
-            Instance.SelectedDates.push(MDateSetValue)
-            Instance.SelectedDates.push(MDateSetValue)
+          if (typeof MDateSetValue === "string") {
+            Instance.SelectedDates.push(MDateSetValue);
+            Instance.SelectedDates.push(MDateSetValue);
           } else {
             if (MDateSetValue.length == 1) {
-              Instance.SelectedDates.push(MDateSetValue[0])
-              Instance.SelectedDates.push(MDateSetValue[0])
+              Instance.SelectedDates.push(MDateSetValue[0]);
+              Instance.SelectedDates.push(MDateSetValue[0]);
             }
             if (MDateSetValue.length == 2) {
-              Instance.SelectedDates.push(MDateSetValue[0])
-              Instance.SelectedDates.push(MDateSetValue[1])
+              Instance.SelectedDates.push(MDateSetValue[0]);
+              Instance.SelectedDates.push(MDateSetValue[1]);
             }
           }
         }
 
-        Instance.ArrayToInput()
-        Instance.InputValidate()
+        Instance.ArrayToInput();
+        Instance.InputValidate();
       }
     },
     Clear() {
-      var Instance = this
-      Instance.SelectedDates = []
+      var Instance = this;
+      Instance.SelectedDates = [];
       Instance.Element.querySelectorAll('.MDateInput').forEach(function (e) {
-        e.value = ''
-      })
+        e.value = '';
+      });
     },
     Disable() {
-      this.IsDisabled = true
-      this.EnableDisable()
+      this.IsDisabled = true;
+      this.EnableDisable();
     },
     Enable() {
-      this.IsDisabled = false
-      this.EnableDisable()
+      this.IsDisabled = false;
+      this.EnableDisable();
     },
     PickerSelect() {
-      var Instance = this
-      Instance.Element.querySelector('.MDatePickerFullDate').innerHTML = ''
-      Instance.Element.querySelectorAll('.MDatePickerDay').forEach(function (
-        e
-      ) {
-        e.removeAttribute('Selected')
-        e.closest('td').classList.remove('MDateRangeShadow')
-        e.closest('td').classList.remove('MDateRangeStart')
-        e.closest('td').classList.remove('MDateRangeEnd')
-      })
+      var Instance = this;
+      Instance.Element.querySelector('.MDatePickerFullDate').innerHTML = '';
+      Instance.Element.querySelectorAll('.MDatePickerDay').forEach(function (e) {
+        e.removeAttribute('Selected');
+        e.closest('td').classList.remove("MDateRangeShadow");
+        e.closest('td').classList.remove("MDateRangeStart");
+        e.closest('td').classList.remove("MDateRangeEnd");
+      });
 
       for (let i = 0; i < Instance.SelectedDates.length; i++) {
         if (i > 0) {
-          Instance.Element.querySelector('.MDatePickerFullDate').innerHTML +=
-            '-'
+          Instance.Element.querySelector('.MDatePickerFullDate').innerHTML += '-';
         }
 
-        Instance.Element.querySelector('.MDatePickerFullDate').innerHTML +=
-          '<div class="MDatePickerFullDateValue">' +
-          Instance.SelectedDates[i] +
-          '</div>'
+        Instance.Element.querySelector('.MDatePickerFullDate').innerHTML += '<div class="MDatePickerFullDateValue">' + Instance.SelectedDates[i] + '</div>';
 
-        if (
-          Instance.Element.querySelector(
-            '.MDatePickerDay[MDatePickerValue="' +
-              Instance.SelectedDates[i] +
-              '"]'
-          )
-        ) {
-          Instance.Element.querySelector(
-            '.MDatePickerDay[MDatePickerValue="' +
-              Instance.SelectedDates[i] +
-              '"]'
-          ).setAttribute('Selected', true)
+        if (Instance.Element.querySelector('.MDatePickerDay[MDatePickerValue="' + Instance.SelectedDates[i] + '"]')) {
+          Instance.Element.querySelector('.MDatePickerDay[MDatePickerValue="' + Instance.SelectedDates[i] + '"]').setAttribute('Selected', true);
         }
       }
 
       if (Instance.Element.querySelector('.MDatePickerFullDateValue')) {
-        Instance.Element.querySelectorAll('.MDatePickerFullDateValue').forEach(
-          function (e) {
-            e.addEventListener('click', function (d) {
-              var TheDate = new Date(d.target.innerHTML)
-              var Year = TheDate.getFullYear()
-              var Month = TheDate.getMonth() + 1
+        Instance.Element.querySelectorAll('.MDatePickerFullDateValue').forEach(function (e) {
+          e.addEventListener('click', function (d) {
+            var TheDate = new Date(d.target.innerHTML);
+            var Year = TheDate.getFullYear();
+            var Month = TheDate.getMonth() + 1;
 
-              Instance.MDatePickerBuild(Year, Month)
-            })
-          }
-        )
+            Instance.MDatePickerBuild(Year, Month);
+          });
+        });
       }
 
       if (Instance.SelectedDates.length == 2) {
-        var DatesRange = []
-        var Start = new Date(Instance.SelectedDates[0])
-        var End = new Date(Instance.SelectedDates[1])
+        var DatesRange = [];
+        var Start = new Date(Instance.SelectedDates[0]);
+        var End = new Date(Instance.SelectedDates[1]);
 
-        var TargetYear = parseInt(
-          Instance.Element.querySelector('.MDatePickerYearValue').value
-        )
-        var TargetMonth = parseInt(
-          Instance.Element.querySelector('.MDatePickerMonthValue').value
-        )
+        var TargetYear = parseInt(Instance.Element.querySelector('.MDatePickerYearValue').value);
+        var TargetMonth = parseInt(Instance.Element.querySelector('.MDatePickerMonthValue').value);
 
         while (Start <= End) {
-          var Year = Start.getFullYear()
-          var Month = Start.getMonth() + 1
-          var Day = Start.getDate()
+          var Year = Start.getFullYear();
+          var Month = Start.getMonth() + 1;
+          var Day = Start.getDate();
 
           if (Year == TargetYear && Month == TargetMonth) {
-            DatesRange.push(`${Year}-${Month}-${Day}`)
+            DatesRange.push(`${Year}-${Month}-${Day}`);
           }
-          Start.setDate(Start.getDate() + 1)
+          Start.setDate(Start.getDate() + 1);
         }
 
         for (let i = 0; i < DatesRange.length; i++) {
-          if (
-            this.Element.querySelector(
-              '.MDatePickerDay[MDatePickerValue="' + DatesRange[i] + '"]'
-            )
-          ) {
+          if (this.Element.querySelector('.MDatePickerDay[MDatePickerValue="' + DatesRange[i] + '"]')) {
             if (this.Element.querySelectorAll('.MDateRangeStart').length == 0) {
-              this.Element.querySelector(
-                '.MDatePickerDay[MDatePickerValue="' + DatesRange[i] + '"]'
-              )
-                .closest('td')
-                .classList.add('MDateRangeStart')
+              this.Element.querySelector('.MDatePickerDay[MDatePickerValue="' + DatesRange[i] + '"]').closest('td').classList.add("MDateRangeStart");
             }
-            if (
-              this.Element.querySelector(
-                '.MDatePickerDay[MDatePickerValue="' + DatesRange[i] + '"]'
-              ).closest('tr') !=
-              this.Element.querySelector(
-                '.MDatePickerDay[MDatePickerValue="' + DatesRange[i + 1] + '"]'
-              )?.closest('tr')
-            ) {
-              this.Element.querySelector(
-                '.MDatePickerDay[MDatePickerValue="' + DatesRange[i] + '"]'
-              )
-                .closest('td')
-                .classList.add('MDateRangeEnd')
+            if (this.Element.querySelector('.MDatePickerDay[MDatePickerValue="' + DatesRange[i] + '"]').closest("tr") != this.Element.querySelector('.MDatePickerDay[MDatePickerValue="' + DatesRange[i + 1] + '"]')?.closest("tr")) {
+              this.Element.querySelector('.MDatePickerDay[MDatePickerValue="' + DatesRange[i] + '"]').closest('td').classList.add("MDateRangeEnd");
             }
-            this.Element.querySelector(
-              '.MDatePickerDay[MDatePickerValue="' + DatesRange[i] + '"]'
-            )
-              .closest('td')
-              .classList.add('MDateRangeShadow')
+            this.Element.querySelector('.MDatePickerDay[MDatePickerValue="' + DatesRange[i] + '"]').closest('td').classList.add("MDateRangeShadow");
           }
         }
       } else {
-        Instance.Element.querySelectorAll('.MDatePickerDay').forEach(function (
-          e
-        ) {
-          e.closest('td').classList.remove('MDateRangeShadow')
-          e.closest('td').classList.remove('MDateRangeStart')
-          e.closest('td').classList.remove('MDateRangeEnd')
-        })
+        Instance.Element.querySelectorAll('.MDatePickerDay').forEach(function (e) {
+          e.closest('td').classList.remove("MDateRangeShadow");
+          e.closest('td').classList.remove("MDateRangeStart");
+          e.closest('td').classList.remove("MDateRangeEnd");
+        });
       }
     },
     EnableDisable() {
-      this.Element.querySelectorAll('.MDateInput').forEach(
-        function (e) {
-          if (this.IsDisabled == true) {
-            e.setAttribute('disabled', true)
-          } else {
-            e.removeAttribute('disabled')
-          }
-        }.bind(this)
-      )
+      this.Element.querySelectorAll('.MDateInput').forEach(function (e) {
+        if (this.IsDisabled == true) {
+          e.setAttribute('disabled', true);
+        } else {
+          e.removeAttribute('disabled')
+        }
+      }.bind(this));
 
       if (this.IsDisabled == true) {
-        this.Element.setAttribute('disabled', true)
-        this.Element.querySelector('.MDatePickerBTN').style.display = 'none'
+        this.Element.setAttribute('disabled', true);
+        this.Element.querySelector('.MDatePickerBTN').style.display = 'none';
       } else {
-        this.Element.removeAttribute('disabled')
-        this.Element.querySelector('.MDatePickerBTN').style.display = ''
+        this.Element.removeAttribute('disabled');
+        this.Element.querySelector('.MDatePickerBTN').style.display = '';
       }
 
       // Show/Hide Clear Button
       if (this.IsDisabled != true && this.Clearable == true) {
-        let Inputs = this.Element.querySelectorAll('.MDateValues')
+        let Inputs = this.Element.querySelectorAll('.MDateValues');
 
         let [YearFrom, MonthFrom, DayFrom] = [
           Inputs[0].querySelector('.MDateInput[DateType=Year]').value,
           Inputs[0].querySelector('.MDateInput[DateType=Month]').value,
           Inputs[0].querySelector('.MDateInput[DateType=Day]').value,
-        ]
+        ];
 
         let [YearTo, MonthTo, DayTo] = [
           Inputs[1].querySelector('.MDateInput[DateType=Year]').value,
           Inputs[1].querySelector('.MDateInput[DateType=Month]').value,
           Inputs[1].querySelector('.MDateInput[DateType=Day]').value,
-        ]
-        if (
-          YearFrom != '' ||
-          MonthFrom != '' ||
-          DayFrom != '' ||
-          YearTo != '' ||
-          MonthTo != '' ||
-          DayTo != ''
-        ) {
-          this.Element.querySelector('.MDateClearBTN').style.opacity = 1
-          this.Element.querySelector('.MDateClearBTN').style.pointerEvents = ''
+        ];
+        if (YearFrom != '' || MonthFrom != '' || DayFrom != '' || YearTo != '' || MonthTo != '' || DayTo != '') {
+          this.Element.querySelector('.MDateClearBTN').style.opacity = 1;
+          this.Element.querySelector('.MDateClearBTN').style.pointerEvents = '';
         } else {
-          this.Element.querySelector('.MDateClearBTN').style.opacity = 0
-          this.Element.querySelector('.MDateClearBTN').style.pointerEvents =
-            'none'
+          this.Element.querySelector('.MDateClearBTN').style.opacity = 0;
+          this.Element.querySelector('.MDateClearBTN').style.pointerEvents = 'none';
         }
       } else {
-        this.Element.querySelector('.MDateClearBTN').style.opacity = 0
-        this.Element.querySelector('.MDateClearBTN').style.pointerEvents =
-          'none'
+        this.Element.querySelector('.MDateClearBTN').style.opacity = 0;
+        this.Element.querySelector('.MDateClearBTN').style.pointerEvents = 'none';
       }
     },
     InputValidate() {
-      var FilledInputs = 0
-      this.Element.querySelectorAll('.MDateInput').forEach(
-        function (e) {
-          if (e.value) {
-            FilledInputs++
-          }
-        }.bind(this)
-      )
+      var FilledInputs = 0;
+      this.Element.querySelectorAll('.MDateInput').forEach(function (e) {
+        if (e.value) {
+          FilledInputs++;
+        }
+      }.bind(this));
       if (FilledInputs > 0) {
-        this.Element.setAttribute('valid', true)
+        this.Element.setAttribute('valid', true);
       } else {
-        this.Element.removeAttribute('valid')
+        this.Element.removeAttribute('valid');
       }
     },
     ArrayToInput() {
       if (this.Range == false) {
-        this.Element.querySelectorAll('.MDateValues')[0].querySelector(
-          '.MDateInput[DateType="Day"]'
-        ).value = this.SelectedDates[0].split('-')[2]
-        this.Element.querySelectorAll('.MDateValues')[0].querySelector(
-          '.MDateInput[DateType="Month"]'
-        ).value = this.SelectedDates[0].split('-')[1]
-        this.Element.querySelectorAll('.MDateValues')[0].querySelector(
-          '.MDateInput[DateType="Year"]'
-        ).value = this.SelectedDates[0].split('-')[0]
+        this.Element.querySelectorAll('.MDateValues')[0].querySelector('.MDateInput[DateType="Day"]').value = (this.SelectedDates[0]).split('-')[2];
+        this.Element.querySelectorAll('.MDateValues')[0].querySelector('.MDateInput[DateType="Month"]').value = (this.SelectedDates[0]).split('-')[1];
+        this.Element.querySelectorAll('.MDateValues')[0].querySelector('.MDateInput[DateType="Year"]').value = (this.SelectedDates[0]).split('-')[0];
       }
       if (this.Range == true) {
         for (let i = 0; i < this.SelectedDates.length; i++) {
           if (this.Element.querySelectorAll('.MDateValues')[i]) {
-            this.Element.querySelectorAll('.MDateValues')[i].querySelector(
-              '.MDateInput[DateType="Day"]'
-            ).value = this.SelectedDates[i].split('-')[2]
-            this.Element.querySelectorAll('.MDateValues')[i].querySelector(
-              '.MDateInput[DateType="Month"]'
-            ).value = this.SelectedDates[i].split('-')[1]
-            this.Element.querySelectorAll('.MDateValues')[i].querySelector(
-              '.MDateInput[DateType="Year"]'
-            ).value = this.SelectedDates[i].split('-')[0]
+            this.Element.querySelectorAll('.MDateValues')[i].querySelector('.MDateInput[DateType="Day"]').value = (this.SelectedDates[i]).split('-')[2];
+            this.Element.querySelectorAll('.MDateValues')[i].querySelector('.MDateInput[DateType="Month"]').value = (this.SelectedDates[i]).split('-')[1];
+            this.Element.querySelectorAll('.MDateValues')[i].querySelector('.MDateInput[DateType="Year"]').value = (this.SelectedDates[i]).split('-')[0];
           }
         }
       }
     },
     InputToArray() {
       if (this.Range == false) {
-        this.SelectedDates = []
-        let Year = this.Element.querySelectorAll(
-          '.MDateValues'
-        )[0].querySelector('.MDateInput[DateType=Year]').value
-        let Month = this.Element.querySelectorAll(
-          '.MDateValues'
-        )[0].querySelector('.MDateInput[DateType=Month]').value
-        let Day = this.Element.querySelectorAll(
-          '.MDateValues'
-        )[0].querySelector('.MDateInput[DateType=Day]').value
+        this.SelectedDates = [];
+        let Year = this.Element.querySelectorAll('.MDateValues')[0].querySelector('.MDateInput[DateType=Year]').value;
+        let Month = this.Element.querySelectorAll('.MDateValues')[0].querySelector('.MDateInput[DateType=Month]').value;
+        let Day = this.Element.querySelectorAll('.MDateValues')[0].querySelector('.MDateInput[DateType=Day]').value;
 
         if (Year != '' && Month != '' && Day != '') {
-          this.SelectedDates.push(Year + '-' + Month + '-' + Day)
-          this.MDatePickerBuild(Year, Month)
+          this.SelectedDates.push(Year + '-' + Month + '-' + Day);
+          this.MDatePickerBuild(Year, Month);
         }
       }
       if (this.Range == true) {
-        this.SelectedDates = []
-        let Inputs = this.Element.querySelectorAll('.MDateValues')
+        this.SelectedDates = [];
+        let Inputs = this.Element.querySelectorAll('.MDateValues');
 
         let [YearFrom, MonthFrom, DayFrom] = [
           Inputs[0].querySelector('.MDateInput[DateType=Year]').value,
           Inputs[0].querySelector('.MDateInput[DateType=Month]').value,
           Inputs[0].querySelector('.MDateInput[DateType=Day]').value,
-        ]
+        ];
 
         let [YearTo, MonthTo, DayTo] = [
           Inputs[1].querySelector('.MDateInput[DateType=Year]').value,
           Inputs[1].querySelector('.MDateInput[DateType=Month]').value,
           Inputs[1].querySelector('.MDateInput[DateType=Day]').value,
-        ]
+        ];
 
         if (YearFrom == '' || MonthFrom == '' || DayFrom == '') {
           if (YearTo != '' && MonthTo != '' && DayTo != '') {
-            ;[YearFrom, MonthFrom, DayFrom] = [YearTo, MonthTo, DayTo]
+            [YearFrom, MonthFrom, DayFrom] = [YearTo, MonthTo, DayTo];
           }
         }
 
         if (YearTo == '' || MonthTo == '' || DayTo == '') {
           if (YearFrom != '' && MonthFrom != '' && DayFrom != '') {
-            ;[YearTo, MonthTo, DayTo] = [YearFrom, MonthFrom, DayFrom]
+            [YearTo, MonthTo, DayTo] = [YearFrom, MonthFrom, DayFrom];
+
           }
         }
 
-        if (
-          (YearFrom != '' && MonthFrom != '' && DayFrom != '') ||
-          (YearTo != '' && MonthTo != '' && DayTo != '')
-        ) {
-          if (
-            new Date(`${YearFrom}-${MonthFrom}-${DayFrom}`) >
-            new Date(`${YearTo}-${MonthTo}-${DayTo}`)
-          ) {
-            ;[YearFrom, MonthFrom, DayFrom, YearTo, MonthTo, DayTo] = [
-              YearTo,
-              MonthTo,
-              DayTo,
-              YearFrom,
-              MonthFrom,
-              DayFrom,
-            ]
+        if ((YearFrom != '' && MonthFrom != '' && DayFrom != '') || (YearTo != '' && MonthTo != '' && DayTo != '')) {
+          if (new Date(`${YearFrom}-${MonthFrom}-${DayFrom}`) > new Date(`${YearTo}-${MonthTo}-${DayTo}`)) {
+            [YearFrom, MonthFrom, DayFrom, YearTo, MonthTo, DayTo] = [YearTo, MonthTo, DayTo, YearFrom, MonthFrom, DayFrom];
           }
 
-          this.SelectedDates.push(`${YearFrom}-${MonthFrom}-${DayFrom}`)
-          this.SelectedDates.push(`${YearTo}-${MonthTo}-${DayTo}`)
+          this.SelectedDates.push(`${YearFrom}-${MonthFrom}-${DayFrom}`);
+          this.SelectedDates.push(`${YearTo}-${MonthTo}-${DayTo}`);
 
-          Inputs[0].querySelector('.MDateInput[DateType=Year]').value = YearFrom
-          Inputs[0].querySelector('.MDateInput[DateType=Month]').value =
-            MonthFrom
-          Inputs[0].querySelector('.MDateInput[DateType=Day]').value = DayFrom
+          Inputs[0].querySelector('.MDateInput[DateType=Year]').value = YearFrom;
+          Inputs[0].querySelector('.MDateInput[DateType=Month]').value = MonthFrom;
+          Inputs[0].querySelector('.MDateInput[DateType=Day]').value = DayFrom;
 
-          Inputs[1].querySelector('.MDateInput[DateType=Year]').value = YearTo
-          Inputs[1].querySelector('.MDateInput[DateType=Month]').value = MonthTo
-          Inputs[1].querySelector('.MDateInput[DateType=Day]').value = DayTo
+          Inputs[1].querySelector('.MDateInput[DateType=Year]').value = YearTo;
+          Inputs[1].querySelector('.MDateInput[DateType=Month]').value = MonthTo;
+          Inputs[1].querySelector('.MDateInput[DateType=Day]').value = DayTo;
         }
 
-        this.MDatePickerBuild(YearTo, MonthTo)
+
+        this.MDatePickerBuild(YearTo, MonthTo);
       }
     },
     ShowMDatePicker() {
-      const targetDiv = this.Element.querySelector('.MDatePicker')
-      const container = this.Element
-      const containerRect = container.getBoundingClientRect()
+      const targetDiv = this.Element.querySelector('.MDatePicker');
+      const referenceDiv = this.Element;
+      const offset = 10;
+      const referenceRect = referenceDiv.getBoundingClientRect();
+      
+      targetDiv.style.display = 'flex';
 
-      const offset = 10
+      let newTop = referenceRect.bottom;
+      let newLeft = referenceRect.left;
 
-      let newTop = -40
-      let newLeft = 10
-
-      const containerTopViewport = containerRect.top + newTop
-      const containerLeftViewport = containerRect.left + newLeft
-
-      if (containerTopViewport < offset) {
-        newTop += offset - containerTopViewport
-      } else if (
-        containerTopViewport + targetDiv.offsetHeight >
-        window.innerHeight - offset
-      ) {
-        newTop -=
-          containerTopViewport +
-          targetDiv.offsetHeight -
-          (window.innerHeight - offset)
+      if (newTop + targetDiv.offsetHeight > window.innerHeight - offset) {
+        newTop = window.innerHeight - targetDiv.offsetHeight - offset;
+      }
+      if (newTop < offset) {
+        newTop = offset;
       }
 
-      if (containerLeftViewport < offset) {
-        newLeft += offset - containerLeftViewport
-      } else if (
-        containerLeftViewport + targetDiv.offsetWidth >
-        window.innerWidth - offset
-      ) {
-        newLeft -=
-          containerLeftViewport +
-          targetDiv.offsetWidth -
-          (window.innerWidth - offset)
+      if (newLeft + targetDiv.offsetWidth > window.innerWidth - offset) {
+        newLeft = window.innerWidth - targetDiv.offsetWidth - offset;
+      }
+      if (newLeft < offset) {
+        newLeft = offset;
       }
 
-      targetDiv.style.top = `${newTop}px`
-      targetDiv.style.left = `${newLeft}px`
-      this.Element.querySelector('.MDatePicker').style.display = 'flex'
+      targetDiv.style.top = `${newTop}px`;
+      targetDiv.style.left = `${newLeft}px`;
     },
     HideMDatePicker() {
-      this.Element.querySelector('.MDatePicker').style.display = 'none'
-    },
-  },
+      this.Element.querySelector('.MDatePicker').style.display = 'none';
+    }
+  }
 }
 </script>
 
@@ -1278,6 +969,7 @@ export default {
   color: var(--MDateDisabled);
   cursor: default;
   line-height: 0.5;
+
 }
 
 .MDate[disabled] .MDateBG {
@@ -1295,13 +987,13 @@ export default {
   color: var(--MDateDisabled);
 }
 
-.MDate .MDateInput[DateType='Day'],
-.MDate .MDateInput[DateType='Month'] {
+.MDate .MDateInput[DateType="Day"],
+.MDate .MDateInput[DateType="Month"] {
   width: 20px;
   text-align: center;
 }
 
-.MDate .MDateInput[DateType='Year'] {
+.MDate .MDateInput[DateType="Year"] {
   width: 35px;
   text-align: right;
 }
@@ -1366,7 +1058,7 @@ export default {
 
 .MDatePicker {
   display: none;
-  position: absolute;
+  position: fixed;
   justify-content: center;
   align-content: flex-start;
   flex-wrap: wrap;
@@ -1471,6 +1163,7 @@ export default {
 .MDatePickerMonthNext,
 .MDatePickerYearNext {
   transform: rotate(180deg);
+
 }
 
 .MDatePickerMonthNext svg:hover,

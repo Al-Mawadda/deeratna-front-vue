@@ -9,7 +9,26 @@ import router from './router'
 import { useAuthStore } from './stores/auth'
 import { useGlobalsStore } from './stores/Globals.js'
 import { api } from './axios'
+
+// Importing The Tools
+import MTable from './components/MTable.vue'
+import MPrompts from './components/MPrompts.vue'
+import MDate from './components/MDate.vue'
+import MModal from './components/MModal.vue'
+import MComboBox from './components/MComboBox.vue'
+import MRadioButton from './components/MRadioButton.vue'
+import MCheckBox from './components/MCheckBox.vue'
+
 const app = createApp(App)
+
+// Adding The Tools
+app.component('MDate', MDate)
+app.component('MComboBox', MComboBox)
+app.component('MCheckBox', MCheckBox)
+app.component('MRadioButton', MRadioButton)
+app.component('MModal', MModal)
+app.component('MTable', MTable)
+app.component('MPrompts', MPrompts)
 
 app.use(createPinia())
 

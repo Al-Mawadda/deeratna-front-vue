@@ -1,25 +1,12 @@
 <template>
   <div class="ComponentWrapper">
     <!-- =============== add subsc Model========= -->
-    <div class="ModalContainer" id="AddSubscriberModal">
-      <div class="ModalBackground">
-        <div class="Modal">
-          <div class="ModalHeaderRow">
-            <div class="ModalHeaderTitle">اضافة مشترك جديد</div>
-            <div class="ModalHeaderCloseBTN" v-ModalCloseBTN>
-              <svg viewBox="0 0 100 100">
-                <polygon
-                  points="85.179,16.589 83.411,14.821 50,48.232 16.589,14.821 14.821,16.589 48.232,50 14.821,83.411 16.589,85.179
-              50,51.767 83.411,85.179 85.179,83.411 51.768,50 "
-                />
-                <path
-                  d="M89.421,16.59l-6.01-6.011L50,43.99L16.59,10.579l-6.011,6.011L43.99,50L10.579,83.411l6.011,6.01L50,56.01l33.411,33.411
-              l6.01-6.01L56.01,50L89.421,16.59z"
-                />
-              </svg>
-            </div>
-          </div>
-          <div class="ModalContent">
+    <MModal
+      ref="AddSubscriberModal"
+      :Name="'AddSubscriberModal'"
+      :Title="'اضافة مشترك جديد'"
+    >
+    <div class="ModalContent">
             <MComboBox
               ref="Compounds"
               :Name="'Compounds'"
@@ -85,6 +72,26 @@
               </div>
             </div>
           </div>
+    </MModal>
+    <div class="ModalContainer" id="AddSubscriberModal">
+      <div class="ModalBackground">
+        <div class="Modal">
+          <div class="ModalHeaderRow">
+            <div class="ModalHeaderTitle">اضافة مشترك جديد</div>
+            <div class="ModalHeaderCloseBTN" v-ModalCloseBTN>
+              <svg viewBox="0 0 100 100">
+                <polygon
+                  points="85.179,16.589 83.411,14.821 50,48.232 16.589,14.821 14.821,16.589 48.232,50 14.821,83.411 16.589,85.179
+              50,51.767 83.411,85.179 85.179,83.411 51.768,50 "
+                />
+                <path
+                  d="M89.421,16.59l-6.01-6.011L50,43.99L16.59,10.579l-6.011,6.011L43.99,50L10.579,83.411l6.011,6.01L50,56.01l33.411,33.411
+              l6.01-6.01L56.01,50L89.421,16.59z"
+                />
+              </svg>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -105,7 +112,7 @@
     </div>
     <MTable
       ref="InternetSubscribersTB"
-      :MTableName="'InternetSubscribersTB'"
+      :Name="'InternetSubscribersTB'"
       :DataArray="InternetSubscribersTBData"
       :HeadersArray="InternetSubscribersTBHeaders"
       :TotalsArray="InternetSubscribersTBTotals"
@@ -168,9 +175,6 @@
 import { ref } from 'vue'
 import { api, GetServerPath } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
-import MTable from '../../components/MTable.vue'
-import MDate from '../../components/MDate.vue'
-import MComboBox from '../../components/MComboBox.vue'
 import { useGlobalsStore } from '../../stores/Globals.js'
 import {
   ShowMessage,
@@ -181,11 +185,6 @@ import {
 } from '@/MJS.js'
 
 export default {
-  components: {
-    MTable,
-    MDate,
-    MComboBox,
-  },
   setup() {
     const authStore = useAuthStore()
     const hasPermission = permission =>
