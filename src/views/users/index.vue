@@ -1,27 +1,10 @@
 <template>
   <div class="ComponentWrapper">
     <div class="MGroup">
-      <div
-        v-if="hasPermission('users_create')"
-        class="MButton"
-        id="LoginBTN"
-        @click="openCreateUserDialog"
-      >
+      <div v-if="hasPermission('users_create')" class="MButton" id="LoginBTN" @click="openCreateUserDialog">
         اضافة مستخدم جديد
       </div>
 
-      <MTable
-        ref="CarLabelsTB"
-        :MTableName="'CarLabelsTB'"
-        :DataArray="CarLabelsTBData"
-        :HeadersArray="CarLabelsTBHeaders"
-        :TotalsArray="CarLabelsTBTotals"
-        :DisplayColumnsArray="CarLabelsTBDisplayColumns"
-        :GetDataFunction="GetCarLabelsData"
-        :RowsCount="CarLabelsTBRowsCount"
-        :RowsPerPage="10"
-      >
-      </MTable>
 
       <!-- Users Table -->
       <table class="table table-bordered">
@@ -39,128 +22,110 @@
             <td>{{ user.name }}</td>
             <td>
               <div class="chip-container">
-                <span
-                  v-for="permission in user.permissions"
-                  :key="permission"
-                  class="badge badge-primary me-1"
-                >
+                <span v-for="permission in user.permissions" :key="permission" class="badge badge-primary me-1">
                   {{ permission }}
                 </span>
               </div>
             </td>
             <td>
-              <button
-                v-if="hasPermission('users_update')"
-                class="btn btn-sm btn-warning me-1"
-                @click="openUpdateUserDialog(user)"
-              >
+              <div v-if="hasPermission('users_update')" class="MButton me-1" @click="openUpdateUserDialog(user)">
                 تعديل
-              </button>
-              <button
-                v-if="hasPermission('users_delete')"
-                class="btn btn-sm btn-danger"
-                @click="deleteUser(user.id)"
-              >
+              </div>
+              <div v-if="hasPermission('users_delete')" class="MButton" @click="deleteUser(user.id)">
                 حذف
-              </button>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div v-if="showUserDialog" class="modal show d-block" tabindex="-1">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">
-              {{ editMode ? 'تعديل بيانات المستخدم' : 'اضافة مستخدم جديد' }}
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              @click="closeDialog"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form @submit.prevent="editMode ? updateUser() : createUser()">
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <label>اسم المستخدم</label>
-                  <input
-                    type="text"
-                    v-model="form.name"
-                    class="form-control"
-                    required
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label>كلمة المرور</label>
-                  <input
-                    type="password"
-                    v-model="form.password"
-                    class="form-control"
-                    required
-                  />
-                </div>
+    <!-- Modal -->
+    <div v-if="showUserDialog" class="custom-modal-overlay">
+      <div class="custom-modal">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            {{ editMode ? 'تعديل بيانات المستخدم' : 'اضافة مستخدم جديد' }}
+          </h5>
+          <div class="close-btn MButton" @click="closeDialog">×</div>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row mb-3">
+              <div class="MField">
+                <input v-model="form.name" type="text" required />
+                <label>اسم المستخدم</label>
+                <div class="MFieldBG"></div>
+              </div>
+              <span style="height: 25px !important; width: 100% !important;"></span>
+              <div class="MField">
+                <input v-model="form.password" type="password" required />
+                <label>كلمة المرور</label>
+                <div class="MFieldBG"></div>
               </div>
 
-              <!-- Permissions -->
-              <div class="permissions-tree mt-3">
-                <div
-                  v-for="group in groupedPermissions"
-                  :key="group.label"
-                  class="permission-group mb-3"
-                >
-                  <label
-                    ><strong>{{ group.label }}</strong></label
-                  >
-                  <div class="permissions-items">
-                    <div
-                      v-for="permission in group.items"
-                      :key="permission.val"
-                      class="form-check"
-                    >
-                      <input
-                        type="checkbox"
-                        class="form-check-input"
-                        :id="permission.val"
-                        v-model="form.permissions"
-                        :value="permission.val"
-                      />
+            </div>
+
+
+
+            <!-- Permissions -->
+            <div class="permissions-tree mt-3">
+              <!-- Global Select All Button -->
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="text-white">الأذونات</h4>
+
+              </div>
+
+              <!-- Permission Groups -->
+              <div v-for="group in groupedPermissions" :key="group.label" class="permission-group mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <label><strong>{{ group.label }}</strong></label>
+
+                </div>
+                <div class="permissions-items">
+                  <div class="permissions-grid">
+                    <!-- Permission Items -->
+                    <div v-for="permission in group.items" :key="permission.val" class="form-check permission-item">
+                      <input type="checkbox" class="form-check-input" :id="permission.val"
+  v-model="form.permissions"
+  :value="permission.val"/>
                       <label :for="permission.val" class="form-check-label">
                         {{ permission.label }}
                       </label>
+                        
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div class="mt-4">
-                <button type="submit" class="btn btn-primary w-100">حفظ</button>
+
+
+
+
+            <hr>
+            <div class="ModalButtons">
+              <div class="MButton" id="SavePersonBTN" @click.prevent="editMode ? updateUser() : createUser()">
+                حفـــظ
               </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              @click="closeDialog"
-            >
-              إلغاء
-            </button>
-          </div>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div class="MButton" @click="closeDialog">إلغاء</div>
         </div>
       </div>
     </div>
+
+
   </div>
 </template>
 
 
-  <script setup>
-import { ref, computed, onMounted } from 'vue'
+<script setup>
+import { ref,  computed, onMounted } from 'vue'
 import { api } from '../../axios'
-//import MTable from '../../components/MTable.vue'
 import { useAuthStore } from '../../stores/auth'
 
 const users = ref([])
@@ -240,7 +205,13 @@ const groupedPermissions = ref([
       { val: 'profile_view', label: 'عرض الاشتراكات' },
     ],
   },
-])
+].map(group => ({
+  ...group,
+  items: group.items.map(item => ({
+    ...item,
+    val: item.val.trim()
+  }))
+})))
 
 const showUserDialog = ref(false)
 const editMode = ref(false)
@@ -270,7 +241,15 @@ const openCreateUserDialog = () => {
 
 const openUpdateUserDialog = user => {
   editMode.value = true
-  form.value = { ...user, permissions: user.permissions }
+
+  const reversedPermissions = user.permissions.map(label => {
+    const found = groupedPermissions.value
+      .flatMap(group => group.items)
+      .find(item => item.label === label)
+    return found ? found.val : null
+  }).filter(Boolean)
+
+  form.value = { ...user, permissions: reversedPermissions }
   showUserDialog.value = true
 }
 
@@ -324,7 +303,7 @@ onMounted(fetchUsers)
 </script>
 
 
-  <style scoped>
+<style scoped>
 .card {
   border: 1px solid #ddd;
   padding: 1rem;
@@ -332,20 +311,225 @@ onMounted(fetchUsers)
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin: 1rem 0;
 }
+
 .permissions-tree {
   margin-top: 1rem;
 }
+
 .permission-group {
   margin-bottom: 1rem;
 }
+
 .chip-container {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
+
 .badge {
   padding: 0.25rem 0.5rem;
   border-radius: 12px;
   font-size: 0.8rem;
+}
+
+
+/* Modal Overlay */
+.custom-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  /* Slightly darker background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 10px;
+  /* Adds spacing for small screens */
+}
+
+/* Modal Container */
+.custom-modal {
+  background: #2b2b2b;
+  /* Dark background for better visibility */
+  width: 80%;
+  /* 80% width of the screen */
+  max-width: 1200px;
+  /* Max width for larger screens */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+  overflow: hidden;
+  /* Prevent content from overflowing */
+  color: #fff;
+  /* White text for contrast */
+}
+
+/* Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #444;
+  padding-bottom: 10px;
+}
+
+/* Close Button */
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Modal Body */
+.modal-body {
+  margin-top: 10px;
+  max-height: 70vh;
+  /* Restricts height for better responsiveness */
+  overflow-y: auto;
+  /* Adds scrolling if content overflows */
+}
+
+/* Modal Footer */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .custom-modal {
+    width: 95%;
+    /* Reduce width for smaller screens */
+    padding: 15px;
+  }
+
+  .modal-body {
+    max-height: 60vh;
+    /* Reduce height for smaller screens */
+  }
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+
+
+.form-check-input {
+  accent-color: #007bff;
+  /* Custom checkbox color */
+}
+
+.modal-body {
+  max-height: 70vh;
+  /* Limit modal height */
+  overflow-y: auto;
+  /* Enable scrolling if content is too long */
+}
+
+
+
+
+
+
+/* Permissions Tree */
+.permissions-tree {
+  background-color: #1e1e1e;
+  /* Dark background for better visibility */
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Permission Group */
+.permission-group {
+  margin-bottom: 30px;
+  /* Add spacing between sections */
+  padding-bottom: 10px;
+  /* Optional: Adds padding inside each group */
+  border-bottom: 1px solid #444;
+  /* Optional: Divider between sections */
+}
+
+.permission-group:last-child {
+  margin-bottom: 0;
+  /* Remove margin for the last section */
+  border-bottom: none;
+  /* Remove divider for the last section */
+}
+
+/* Permissions Grid */
+.permissions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  /* Auto-adjust columns */
+  gap: 15px;
+  /* Spacing between items */
+  margin-top: 10px;
+}
+
+.permission-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* Spacing between checkbox and label */
+}
+
+.permission-group label strong {
+  color: #ffffff;
+  /* White text for better contrast */
+  margin-bottom: 10px;
+  /* Space between the title and checkboxes */
+  display: inline-block;
+  /* Ensure margin applies properly */
+}
+
+
+
+
+
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 5px;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.permission-group {
+  margin-bottom: 20px;
+}
+
+.permission-group button {
+  margin-left: 10px;
 }
 </style>
