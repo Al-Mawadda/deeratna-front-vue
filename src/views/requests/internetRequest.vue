@@ -2,270 +2,235 @@
   <div class="ComponentWrapper">
     <!-- ========= InternetRequest Model======== -->
 
-    <div class="ModalContainer" id="InternetRequestModal">
-      <div class="ModalBackground">
-        <div class="Modal">
-          <div class="ModalHeaderRow">
-            <div class="ModalHeaderTitle">
-              طلب
-              {{ selectedRowData.request_type }}
-              اشتراك انترنت
-              {{ selectedRowData.name }}
-            </div>
-            <div class="ModalHeaderCloseBTN" v-ModalCloseBTN>
-              <svg viewBox="0 0 100 100">
-                <polygon
-                  points="85.179,16.589 83.411,14.821 50,48.232 16.589,14.821 14.821,16.589 48.232,50 14.821,83.411 16.589,85.179
-              50,51.767 83.411,85.179 85.179,83.411 51.768,50 "
-                />
+    <MModal
+      ref="InternetRequestModal"
+      :Name="'InternetRequestModal'"
+      :Title="
+        ' طلب ' +
+        selectedRowData.request_type +
+        ' اشتراك انترنت ' +
+        selectedRowData.name
+      "
+    >
+      <!-- ============= details Table =============== -->
+
+      <table cellpadding="0" cellspacing="0" class="RequestsMTable">
+        <thead>
+          <tr>
+            <th>الحقل</th>
+            <th>القيمة</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Shared Columns (Always Visible) -->
+
+          <tr>
+            <td>الاسم</td>
+            <td>{{ selectedRowData.name }}</td>
+          </tr>
+          <tr>
+            <td>المدينة</td>
+            <td>{{ selectedRowData.compound }}</td>
+          </tr>
+
+          <tr>
+            <td>العنوان</td>
+            <td>{{ selectedRowData.address }}</td>
+          </tr>
+          <tr>
+            <td>الهاتف</td>
+            <td>{{ selectedRowData.phone }}</td>
+          </tr>
+          <tr>
+            <td>هاتف الاشتراك</td>
+            <td>{{ selectedRowData.subscriber_phone }}</td>
+          </tr>
+          <tr>
+            <td>الشركة</td>
+            <td>{{ selectedRowData.company_name }}</td>
+          </tr>
+          <tr>
+            <td>الاشتراك</td>
+            <td>{{ selectedRowData.subscription_type }}</td>
+          </tr>
+          <tr>
+            <td>السعر</td>
+            <td>{{ selectedRowData.price }}</td>
+          </tr>
+          <tr>
+            <td>نوع الطلب</td>
+            <td>{{ selectedRowData.request_type }}</td>
+          </tr>
+          <tr>
+            <td>حالة الطلب</td>
+            <td>{{ selectedRowData.request_status }}</td>
+          </tr>
+          <tr>
+            <td>تاريخ الطلب</td>
+            <td>{{ selectedRowData.created_at }}</td>
+          </tr>
+          <!-- Rejection Reason -->
+          <tr v-if="selectedRowData.rejection_reason != ''">
+            <td>سبب الرفض</td>
+            <td>{{ selectedRowData.rejection_reason }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="MField" id="SubscriberName">
+        <input type="text" required />
+        <label>اسم المشترك</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="SubscriberPhone" v-OnlyNumbers>
+        <input type="text" required />
+        <label>رقم هاتف الاشتراك</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <MComboBox
+        ref="CompanyName"
+        :Name="'CompanyName'"
+        :Label="' اسم الشركة *'"
+        :Items="CompanyNamesItems"
+        :ItemsName="'company_name'"
+      >
+      </MComboBox>
+      <MComboBox
+        ref="SubscriptionType"
+        :Name="'SubscriptionType'"
+        :Label="' نوع الاشتراك *'"
+        :Items="SubscriptionTypeItems"
+        :ItemsName="'subscription_type'"
+      >
+      </MComboBox>
+      <div class="MField" id="Price">
+        <input type="text" required disabled />
+        <label>السعر</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <!--========== The Images ==========-->
+      <div class="ImagesContainer">
+        <div
+          class="InformationRequestImage"
+          v-if="selectedRowData.id_image != ''"
+        >
+          <div class="InformationRequestImageTitle">بطاقة موحدة</div>
+          <div class="InformationRequestImagePreview" @click="ShowImage">
+            <div class="InformationRequestImagePreviewOverlay">
+              <svg viewBox="0 0 1000 1000">
                 <path
-                  d="M89.421,16.59l-6.01-6.011L50,43.99L16.59,10.579l-6.011,6.011L43.99,50L10.579,83.411l6.011,6.01L50,56.01l33.411,33.411
-              l6.01-6.01L56.01,50L89.421,16.59z"
+                  d="M450.2565,36.0294c18.6849,2.9482,37.5594,5.0146,56.0247,8.9843C653.55,76.6735,769.4424,197.507,794.0276,345.7818c18.3481,110.6581-7.8676,210.2677-77.061,298.56-1.47,1.8753-2.8516,3.8192-4.6057,6.1761q38.9827,40.554,77.7513,80.8829,70.1942,72.9948,140.3751,146.0021c20.5779,21.4581,20.7684,51.8715.7262,71.1147-20.2148,19.409-50.1806,18.0733-70.9443-3.48Q753.6258,834.3367,647.148,723.4766c-2.08-2.1635-3.9735-4.5069-6.357-7.2263-7.1169,4.4964-13.6031,8.6938-20.1838,12.7375C404.2984,861.8989,117.8611,741.5022,61.5828,494.0268A374.2062,374.2062,0,0,1,279.3051,66.0859,359.6555,359.6555,0,0,1,394.45,37.5392a50.3221,50.3221,0,0,0,6.9671-1.51ZM426.2127,686.3013c152.993-.5451,276.6613-124.73,275.9217-277.0737-.7433-153.105-124.6084-276.1761-277.355-275.5773-152.2376.5968-275.5054,124.7523-275.0328,277.0133C150.22,563.0212,274.4127,686.8422,426.2127,686.3013Z"
+                  fill="white"
                 />
               </svg>
             </div>
+            <img :src="IDImage" />
           </div>
-          <div class="ModalContent">
-            <!-- ============= details Table =============== -->
-
-            <table cellpadding="0" cellspacing="0" class="RequestsMTable">
-              <thead>
-                <tr>
-                  <th>الحقل</th>
-                  <th>القيمة</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Shared Columns (Always Visible) -->
-
-                <tr>
-                  <td>الاسم</td>
-                  <td>{{ selectedRowData.name }}</td>
-                </tr>
-                <tr>
-                  <td>المدينة</td>
-                  <td>{{ selectedRowData.compound }}</td>
-                </tr>
-
-                <tr>
-                  <td>العنوان</td>
-                  <td>{{ selectedRowData.address }}</td>
-                </tr>
-                <tr>
-                  <td>الهاتف</td>
-                  <td>{{ selectedRowData.phone }}</td>
-                </tr>
-                <tr>
-                  <td>هاتف الاشتراك</td>
-                  <td>{{ selectedRowData.subscriber_phone }}</td>
-                </tr>
-                <tr>
-                  <td>الشركة</td>
-                  <td>{{ selectedRowData.company_name }}</td>
-                </tr>
-                <tr>
-                  <td>الاشتراك</td>
-                  <td>{{ selectedRowData.subscription_type }}</td>
-                </tr>
-                <tr>
-                  <td>السعر</td>
-                  <td>{{ selectedRowData.price }}</td>
-                </tr>
-                <tr>
-                  <td>نوع الطلب</td>
-                  <td>{{ selectedRowData.request_type }}</td>
-                </tr>
-                <tr>
-                  <td>حالة الطلب</td>
-                  <td>{{ selectedRowData.request_status }}</td>
-                </tr>
-                <tr>
-                  <td>تاريخ الطلب</td>
-                  <td>{{ selectedRowData.created_at }}</td>
-                </tr>
-                <!-- Rejection Reason -->
-                <tr v-if="selectedRowData.rejection_reason != ''">
-                  <td>سبب الرفض</td>
-                  <td>{{ selectedRowData.rejection_reason }}</td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="MField" id="SubscriberName">
-              <input type="text" required />
-              <label>اسم المشترك</label>
-              <div class="MFieldBG"></div>
+        </div>
+        <div
+          class="InformationRequestImage"
+          v-if="selectedRowData.id_image_back != ''"
+        >
+          <div class="InformationRequestImageTitle">ضهر البطاقة الموحدة</div>
+          <div class="InformationRequestImagePreview" @click="ShowImage">
+            <div class="InformationRequestImagePreviewOverlay">
+              <svg viewBox="0 0 1000 1000">
+                <path
+                  d="M450.2565,36.0294c18.6849,2.9482,37.5594,5.0146,56.0247,8.9843C653.55,76.6735,769.4424,197.507,794.0276,345.7818c18.3481,110.6581-7.8676,210.2677-77.061,298.56-1.47,1.8753-2.8516,3.8192-4.6057,6.1761q38.9827,40.554,77.7513,80.8829,70.1942,72.9948,140.3751,146.0021c20.5779,21.4581,20.7684,51.8715.7262,71.1147-20.2148,19.409-50.1806,18.0733-70.9443-3.48Q753.6258,834.3367,647.148,723.4766c-2.08-2.1635-3.9735-4.5069-6.357-7.2263-7.1169,4.4964-13.6031,8.6938-20.1838,12.7375C404.2984,861.8989,117.8611,741.5022,61.5828,494.0268A374.2062,374.2062,0,0,1,279.3051,66.0859,359.6555,359.6555,0,0,1,394.45,37.5392a50.3221,50.3221,0,0,0,6.9671-1.51ZM426.2127,686.3013c152.993-.5451,276.6613-124.73,275.9217-277.0737-.7433-153.105-124.6084-276.1761-277.355-275.5773-152.2376.5968-275.5054,124.7523-275.0328,277.0133C150.22,563.0212,274.4127,686.8422,426.2127,686.3013Z"
+                  fill="white"
+                />
+              </svg>
             </div>
-            <div class="MField" id="SubscriberPhone" v-OnlyNumbers>
-              <input type="text" required />
-              <label>رقم هاتف الاشتراك</label>
-              <div class="MFieldBG"></div>
+            <img :src="IDImageBack" />
+          </div>
+        </div>
+        <div
+          class="InformationRequestImage"
+          v-if="selectedRowData.housing_image != ''"
+        >
+          <div class="InformationRequestImageTitle">بطاقة السكن</div>
+          <div class="InformationRequestImagePreview" @click="ShowImage">
+            <div class="InformationRequestImagePreviewOverlay">
+              <svg viewBox="0 0 1000 1000">
+                <path
+                  d="M450.2565,36.0294c18.6849,2.9482,37.5594,5.0146,56.0247,8.9843C653.55,76.6735,769.4424,197.507,794.0276,345.7818c18.3481,110.6581-7.8676,210.2677-77.061,298.56-1.47,1.8753-2.8516,3.8192-4.6057,6.1761q38.9827,40.554,77.7513,80.8829,70.1942,72.9948,140.3751,146.0021c20.5779,21.4581,20.7684,51.8715.7262,71.1147-20.2148,19.409-50.1806,18.0733-70.9443-3.48Q753.6258,834.3367,647.148,723.4766c-2.08-2.1635-3.9735-4.5069-6.357-7.2263-7.1169,4.4964-13.6031,8.6938-20.1838,12.7375C404.2984,861.8989,117.8611,741.5022,61.5828,494.0268A374.2062,374.2062,0,0,1,279.3051,66.0859,359.6555,359.6555,0,0,1,394.45,37.5392a50.3221,50.3221,0,0,0,6.9671-1.51ZM426.2127,686.3013c152.993-.5451,276.6613-124.73,275.9217-277.0737-.7433-153.105-124.6084-276.1761-277.355-275.5773-152.2376.5968-275.5054,124.7523-275.0328,277.0133C150.22,563.0212,274.4127,686.8422,426.2127,686.3013Z"
+                  fill="white"
+                />
+              </svg>
             </div>
-            <MComboBox
-              ref="CompanyName"
-              :Name="'CompanyName'"
-              :Label="' اسم الشركة *'"
-              :Items="CompanyNamesItems"
-              :ItemsName="'company_name'"
-            >
-            </MComboBox>
-            <MComboBox
-              ref="SubscriptionType"
-              :Name="'SubscriptionType'"
-              :Label="' نوع الاشتراك *'"
-              :Items="SubscriptionTypeItems"
-              :ItemsName="'subscription_type'"
-            >
-            </MComboBox>
-            <div class="MField" id="Price">
-              <input type="text" required disabled />
-              <label>السعر</label>
-              <div class="MFieldBG"></div>
+            <img :src="HousingImage" />
+          </div>
+        </div>
+        <div
+          class="InformationRequestImage"
+          v-if="selectedRowData.housing_image_back != ''"
+        >
+          <div class="InformationRequestImageTitle">ضهر بطاقة السكن</div>
+          <div class="InformationRequestImagePreview" @click="ShowImage">
+            <div class="InformationRequestImagePreviewOverlay">
+              <svg viewBox="0 0 1000 1000">
+                <path
+                  d="M450.2565,36.0294c18.6849,2.9482,37.5594,5.0146,56.0247,8.9843C653.55,76.6735,769.4424,197.507,794.0276,345.7818c18.3481,110.6581-7.8676,210.2677-77.061,298.56-1.47,1.8753-2.8516,3.8192-4.6057,6.1761q38.9827,40.554,77.7513,80.8829,70.1942,72.9948,140.3751,146.0021c20.5779,21.4581,20.7684,51.8715.7262,71.1147-20.2148,19.409-50.1806,18.0733-70.9443-3.48Q753.6258,834.3367,647.148,723.4766c-2.08-2.1635-3.9735-4.5069-6.357-7.2263-7.1169,4.4964-13.6031,8.6938-20.1838,12.7375C404.2984,861.8989,117.8611,741.5022,61.5828,494.0268A374.2062,374.2062,0,0,1,279.3051,66.0859,359.6555,359.6555,0,0,1,394.45,37.5392a50.3221,50.3221,0,0,0,6.9671-1.51ZM426.2127,686.3013c152.993-.5451,276.6613-124.73,275.9217-277.0737-.7433-153.105-124.6084-276.1761-277.355-275.5773-152.2376.5968-275.5054,124.7523-275.0328,277.0133C150.22,563.0212,274.4127,686.8422,426.2127,686.3013Z"
+                  fill="white"
+                />
+              </svg>
             </div>
-            <!--========== The Images ==========-->
-            <div class="ImagesContainer">
-              <div
-                class="InformationRequestImage"
-                v-if="selectedRowData.id_image != ''"
-              >
-                <div class="InformationRequestImageTitle">بطاقة موحدة</div>
-                <div class="InformationRequestImagePreview" @click="ShowImage">
-                  <div class="InformationRequestImagePreviewOverlay">
-                    <svg viewBox="0 0 1000 1000">
-                      <path
-                        d="M450.2565,36.0294c18.6849,2.9482,37.5594,5.0146,56.0247,8.9843C653.55,76.6735,769.4424,197.507,794.0276,345.7818c18.3481,110.6581-7.8676,210.2677-77.061,298.56-1.47,1.8753-2.8516,3.8192-4.6057,6.1761q38.9827,40.554,77.7513,80.8829,70.1942,72.9948,140.3751,146.0021c20.5779,21.4581,20.7684,51.8715.7262,71.1147-20.2148,19.409-50.1806,18.0733-70.9443-3.48Q753.6258,834.3367,647.148,723.4766c-2.08-2.1635-3.9735-4.5069-6.357-7.2263-7.1169,4.4964-13.6031,8.6938-20.1838,12.7375C404.2984,861.8989,117.8611,741.5022,61.5828,494.0268A374.2062,374.2062,0,0,1,279.3051,66.0859,359.6555,359.6555,0,0,1,394.45,37.5392a50.3221,50.3221,0,0,0,6.9671-1.51ZM426.2127,686.3013c152.993-.5451,276.6613-124.73,275.9217-277.0737-.7433-153.105-124.6084-276.1761-277.355-275.5773-152.2376.5968-275.5054,124.7523-275.0328,277.0133C150.22,563.0212,274.4127,686.8422,426.2127,686.3013Z"
-                        fill="white"
-                      />
-                    </svg>
-                  </div>
-                  <img :src="IDImage" />
-                </div>
-              </div>
-              <div
-                class="InformationRequestImage"
-                v-if="selectedRowData.id_image_back != ''"
-              >
-                <div class="InformationRequestImageTitle">
-                  ضهر البطاقة الموحدة
-                </div>
-                <div class="InformationRequestImagePreview" @click="ShowImage">
-                  <div class="InformationRequestImagePreviewOverlay">
-                    <svg viewBox="0 0 1000 1000">
-                      <path
-                        d="M450.2565,36.0294c18.6849,2.9482,37.5594,5.0146,56.0247,8.9843C653.55,76.6735,769.4424,197.507,794.0276,345.7818c18.3481,110.6581-7.8676,210.2677-77.061,298.56-1.47,1.8753-2.8516,3.8192-4.6057,6.1761q38.9827,40.554,77.7513,80.8829,70.1942,72.9948,140.3751,146.0021c20.5779,21.4581,20.7684,51.8715.7262,71.1147-20.2148,19.409-50.1806,18.0733-70.9443-3.48Q753.6258,834.3367,647.148,723.4766c-2.08-2.1635-3.9735-4.5069-6.357-7.2263-7.1169,4.4964-13.6031,8.6938-20.1838,12.7375C404.2984,861.8989,117.8611,741.5022,61.5828,494.0268A374.2062,374.2062,0,0,1,279.3051,66.0859,359.6555,359.6555,0,0,1,394.45,37.5392a50.3221,50.3221,0,0,0,6.9671-1.51ZM426.2127,686.3013c152.993-.5451,276.6613-124.73,275.9217-277.0737-.7433-153.105-124.6084-276.1761-277.355-275.5773-152.2376.5968-275.5054,124.7523-275.0328,277.0133C150.22,563.0212,274.4127,686.8422,426.2127,686.3013Z"
-                        fill="white"
-                      />
-                    </svg>
-                  </div>
-                  <img :src="IDImageBack" />
-                </div>
-              </div>
-              <div
-                class="InformationRequestImage"
-                v-if="selectedRowData.housing_image != ''"
-              >
-                <div class="InformationRequestImageTitle">بطاقة السكن</div>
-                <div class="InformationRequestImagePreview" @click="ShowImage">
-                  <div class="InformationRequestImagePreviewOverlay">
-                    <svg viewBox="0 0 1000 1000">
-                      <path
-                        d="M450.2565,36.0294c18.6849,2.9482,37.5594,5.0146,56.0247,8.9843C653.55,76.6735,769.4424,197.507,794.0276,345.7818c18.3481,110.6581-7.8676,210.2677-77.061,298.56-1.47,1.8753-2.8516,3.8192-4.6057,6.1761q38.9827,40.554,77.7513,80.8829,70.1942,72.9948,140.3751,146.0021c20.5779,21.4581,20.7684,51.8715.7262,71.1147-20.2148,19.409-50.1806,18.0733-70.9443-3.48Q753.6258,834.3367,647.148,723.4766c-2.08-2.1635-3.9735-4.5069-6.357-7.2263-7.1169,4.4964-13.6031,8.6938-20.1838,12.7375C404.2984,861.8989,117.8611,741.5022,61.5828,494.0268A374.2062,374.2062,0,0,1,279.3051,66.0859,359.6555,359.6555,0,0,1,394.45,37.5392a50.3221,50.3221,0,0,0,6.9671-1.51ZM426.2127,686.3013c152.993-.5451,276.6613-124.73,275.9217-277.0737-.7433-153.105-124.6084-276.1761-277.355-275.5773-152.2376.5968-275.5054,124.7523-275.0328,277.0133C150.22,563.0212,274.4127,686.8422,426.2127,686.3013Z"
-                        fill="white"
-                      />
-                    </svg>
-                  </div>
-                  <img :src="HousingImage" />
-                </div>
-              </div>
-              <div
-                class="InformationRequestImage"
-                v-if="selectedRowData.housing_image_back != ''"
-              >
-                <div class="InformationRequestImageTitle">ضهر بطاقة السكن</div>
-                <div class="InformationRequestImagePreview" @click="ShowImage">
-                  <div class="InformationRequestImagePreviewOverlay">
-                    <svg viewBox="0 0 1000 1000">
-                      <path
-                        d="M450.2565,36.0294c18.6849,2.9482,37.5594,5.0146,56.0247,8.9843C653.55,76.6735,769.4424,197.507,794.0276,345.7818c18.3481,110.6581-7.8676,210.2677-77.061,298.56-1.47,1.8753-2.8516,3.8192-4.6057,6.1761q38.9827,40.554,77.7513,80.8829,70.1942,72.9948,140.3751,146.0021c20.5779,21.4581,20.7684,51.8715.7262,71.1147-20.2148,19.409-50.1806,18.0733-70.9443-3.48Q753.6258,834.3367,647.148,723.4766c-2.08-2.1635-3.9735-4.5069-6.357-7.2263-7.1169,4.4964-13.6031,8.6938-20.1838,12.7375C404.2984,861.8989,117.8611,741.5022,61.5828,494.0268A374.2062,374.2062,0,0,1,279.3051,66.0859,359.6555,359.6555,0,0,1,394.45,37.5392a50.3221,50.3221,0,0,0,6.9671-1.51ZM426.2127,686.3013c152.993-.5451,276.6613-124.73,275.9217-277.0737-.7433-153.105-124.6084-276.1761-277.355-275.5773-152.2376.5968-275.5054,124.7523-275.0328,277.0133C150.22,563.0212,274.4127,686.8422,426.2127,686.3013Z"
-                        fill="white"
-                      />
-                    </svg>
-                  </div>
-                  <img :src="HousingImageBack" />
-                </div>
-              </div>
-            </div>
-            <div class="ModalButtons">
-              <div
-                v-show="
-                  selectedRowData.request_type == 'نصب' ||
-                  (selectedRowData.request_type == 'تجديد' &&
-                    selectedRowData.request_status != 'تم')
-                "
-                class="MButton"
-                id="AcceptBTN"
-                @click="AcceptRequest()"
-              >
-                موافق
-              </div>
-              <div
-                v-show="selectedRowData.request_status == 'قيد المراجعة'"
-                class="MButton"
-                id="RejectBTN"
-                @click="RejectRequest"
-              >
-                رفض
-              </div>
-              <div
-                v-show="
-                  selectedRowData.request_type == 'نصب' ||
-                  (selectedRowData.request_type == 'تجديد' &&
-                    selectedRowData.request_status == 'قيد العمل')
-                "
-                class="MButton"
-                id="CloseRequestBTN"
-                @click="CloseRequest()"
-              >
-                تحديث وغلق الطلب
-              </div>
-            </div>
+            <img :src="HousingImageBack" />
           </div>
         </div>
       </div>
-    </div>
+      <div class="ModalButtons">
+        <div
+          v-show="
+            selectedRowData.request_type == 'نصب' ||
+            (selectedRowData.request_type == 'تجديد' &&
+              selectedRowData.request_status != 'تم')
+          "
+          class="MButton"
+          id="AcceptBTN"
+          @click="AcceptRequest()"
+        >
+          موافق
+        </div>
+        <div
+          v-show="selectedRowData.request_status == 'قيد المراجعة'"
+          class="MButton"
+          id="RejectBTN"
+          @click="RejectRequest"
+        >
+          رفض
+        </div>
+        <div
+          v-show="
+            selectedRowData.request_type == 'نصب' ||
+            (selectedRowData.request_type == 'تجديد' &&
+              selectedRowData.request_status == 'قيد العمل')
+          "
+          class="MButton"
+          id="CloseRequestBTN"
+          @click="CloseRequest()"
+        >
+          تحديث وغلق الطلب
+        </div>
+      </div>
+    </MModal>
+
     <!-- ========= Reject Model======== -->
-    <div class="ModalContainer" id="InternetRequestRejectModal">
-      <div class="ModalBackground">
-        <div class="Modal">
-          <div class="ModalHeaderRow">
-            <div class="ModalHeaderTitle">رفض الطلب</div>
-            <div class="ModalHeaderCloseBTN" v-ModalCloseBTN>
-              <svg viewBox="0 0 100 100">
-                <polygon
-                  points="85.179,16.589 83.411,14.821 50,48.232 16.589,14.821 14.821,16.589 48.232,50 14.821,83.411 16.589,85.179
-              50,51.767 83.411,85.179 85.179,83.411 51.768,50 "
-                />
-                <path
-                  d="M89.421,16.59l-6.01-6.011L50,43.99L16.59,10.579l-6.011,6.011L43.99,50L10.579,83.411l6.011,6.01L50,56.01l33.411,33.411
-              l6.01-6.01L56.01,50L89.421,16.59z"
-                />
-              </svg>
-            </div>
-          </div>
-          <div class="ModalContent">
-            <div class="MField" id="RejectionReason">
-              <input type="text" required />
-              <label>سبب الرفض</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="ModalButtons">
-              <div class="MButton" id="SaveBTN" @click="SaveRejectRequest">
-                حفظ
-              </div>
-            </div>
-          </div>
-        </div>
+
+    <MModal
+      ref="InternetRequestRejectModal"
+      :Name="'InternetRequestRejectModal'"
+      :Title="'رفض الطلب'"
+    >
+      <div class="MField" id="RejectionReason">
+        <input type="text" required />
+        <label>سبب الرفض</label>
+        <div class="MFieldBG"></div>
       </div>
-    </div>
+      <div class="ModalButtons">
+        <div class="MButton" id="SaveBTN" @click="SaveRejectRequest">حفظ</div>
+      </div>
+    </MModal>
+
     <div class="MButton" id="GetInternetRequestsBTN">عرض البيانات</div>
     <div class="MGroup">
       <MDate
@@ -324,13 +289,7 @@ import { ref } from 'vue'
 import { api, GetServerPath } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
 
-import {
-  ShowMessage,
-  ShowModal,
-  ShowLoading,
-  HideLoading,
-  HideModal,
-} from '@/MJS.js'
+import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 
 export default {
   setup() {
@@ -341,6 +300,8 @@ export default {
     return {
       hasPermission,
       IDImage: ref(''),
+      InternetRequestModal: ref(null),
+      InternetRequestRejectModal: ref(null),
       HousingImage: ref(''),
       IDImageBack: ref(''),
       HousingImageBack: ref(''),
@@ -409,13 +370,7 @@ export default {
     document.getElementById('InternetRequestsTB').addEventListener(
       'ViewItem',
       function (data) {
-        this.selectedRowData = this.InternetRequestsTBData.filter(function (
-          item
-        ) {
-          if (item['id'] == data.detail.RowID) {
-            return item
-          }
-        })[0]
+        this.selectedRowData = this.selectedRowData = data.detail.RowData
         // this.CompanyName.Clear()
         // this.SubscriptionType.Clear()
         document.getElementById('SubscriberName').querySelector('input').value =
@@ -441,47 +396,30 @@ export default {
           }, '100')
         }
 
-        let PersonType = ''
-        if (this.selectedRowData.person_type == 'مالك') {
-          PersonType = 'Owners'
-        }
-        if (this.selectedRowData.person_type == 'مستاجر') {
-          PersonType = 'Tenants'
-        }
-
         this.IDImage =
-          'https://www.almawadda-software.com/nfc/UploadedFiles/' +
-          PersonType +
-          '/IDImages/' +
-          this.selectedRowData.pid +
-          '.jpg'
-        this.HousingImage =
-          'https://www.almawadda-software.com/nfc/UploadedFiles/' +
-          PersonType +
-          '/HousingImages/' +
-          this.selectedRowData.pid +
+          'https://www.app.deeratna.net/public/storage/internet_images/id/' +
+          this.selectedRowData.id +
           '.jpg'
         this.IDImageBack =
-          'https://www.almawadda-software.com/nfc/UploadedFiles/' +
-          PersonType +
-          '/IDImagesBack/' +
-          this.selectedRowData.pid +
+          'https://www.app.deeratna.net/public/storage/internet_images/id_back/' +
+          this.selectedRowData.id +
+          '.jpg'
+        this.HousingImage =
+          'https://www.app.deeratna.net/public/storage/internet_images/housing/' +
+          this.selectedRowData.id +
           '.jpg'
         this.HousingImageBack =
-          'https://www.almawadda-software.com/nfc/UploadedFiles/' +
-          PersonType +
-          '/HousingImagesBack/' +
-          this.selectedRowData.pid +
+          'https://www.app.deeratna.net/public/storage/internet_images/housing_back/' +
+          this.selectedRowData.id +
           '.jpg'
-
-        ShowModal(document.getElementById('InternetRequestModal'))
+        this.InternetRequestModal.Show()
       }.bind(this)
     )
     // RejectBTN
     document.getElementById('RejectBTN').addEventListener(
       'click',
       function () {
-        ShowModal(document.getElementById('InternetRequestRejectModal'))
+        this.InternetRequestRejectModal.Show()
       }.bind(this)
     )
     //load data to SubscriptionTypeItems
@@ -572,7 +510,7 @@ export default {
           HideLoading()
           if (response.data.success == true) {
             this.InternetRequestsTB.LoadMTable()
-            HideModal(document.getElementById('InternetRequestModal'))
+            this.InternetRequestModal.Hide()
           } else {
             HideLoading()
             ShowMessage(response.data.message)
@@ -619,7 +557,7 @@ export default {
           HideLoading()
           if (response.data.success == true) {
             this.InternetRequestsTB.LoadMTable()
-            HideModal(document.getElementById('InternetRequestModal'))
+            this.InternetRequestModal.Hide()
           } else {
             HideLoading()
             ShowMessage(response.data.message)
@@ -652,8 +590,8 @@ export default {
         .then(response => {
           HideLoading()
           if (response.data == 'تمت العملية بنجاح') {
-            HideModal(document.getElementById('InternetRequestModal'))
-            HideModal(document.getElementById('InternetRequestRejectModal'))
+            this.InternetRequestModal.Hide()
+            this.InternetRequestRejectModal.Hide()
             this.InternetRequestsTB.LoadMTable()
           } else {
             ShowMessage(response.data)

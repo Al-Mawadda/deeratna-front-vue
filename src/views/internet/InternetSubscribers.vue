@@ -6,95 +6,69 @@
       :Name="'AddSubscriberModal'"
       :Title="'اضافة مشترك جديد'"
     >
-    <div class="ModalContent">
-            <MComboBox
-              ref="Compounds"
-              :Name="'Compounds'"
-              :Label="' اسم المدينة *'"
-              :Items="CompoundsItems"
-            >
-            </MComboBox>
-            <div class="MField" id="Name">
-              <input ref="Name" type="text" required />
-              <label>اسم المالك *</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="SubscriberName">
-              <input ref="SubscriberName" type="text" required />
-              <label>اسم المشترك *</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="Address">
-              <input ref="Address" type="text" required />
-              <label>العنوان *</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="Phone">
-              <input ref="Phone" type="text" required />
-              <label>هاتف المالك *</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="SubscriberPhone">
-              <input ref="SubscriberPhone" type="text" required />
-              <label>هاتف المشترك *</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <MComboBox
-              ref="CompanyName"
-              :Name="'CompanyName'"
-              :Label="' اسم الشركة *'"
-              :Items="CompanyNameItems"
-              :ItemsName="'company_name'"
-            >
-            </MComboBox>
-            <MComboBox
-              ref="SubscriptionType"
-              :Name="'SubscriptionType'"
-              :Label="' نوع الاشتراك *'"
-              :Items="SubscriptionTypeItems"
-              :ItemsName="'subscription_type'"
-            >
-            </MComboBox>
-            <div class="MField" id="Price" v-OnlyNumbers>
-              <input ref="Price" type="text" required />
-              <label>السعر</label>
-              <div class="MFieldBG"></div>
-            </div>
-            <div class="MField" id="Notes">
-              <input ref="Notes" type="text" required />
-              <label>الملاحظات *</label>
-              <div class="MFieldBG"></div>
-            </div>
-
-            <div class="ModalButtons">
-              <div class="MButton" id="SavePersonBTN" @click="SavePerson">
-                حفـــظ
-              </div>
-            </div>
-          </div>
-    </MModal>
-    <div class="ModalContainer" id="AddSubscriberModal">
-      <div class="ModalBackground">
-        <div class="Modal">
-          <div class="ModalHeaderRow">
-            <div class="ModalHeaderTitle">اضافة مشترك جديد</div>
-            <div class="ModalHeaderCloseBTN" v-ModalCloseBTN>
-              <svg viewBox="0 0 100 100">
-                <polygon
-                  points="85.179,16.589 83.411,14.821 50,48.232 16.589,14.821 14.821,16.589 48.232,50 14.821,83.411 16.589,85.179
-              50,51.767 83.411,85.179 85.179,83.411 51.768,50 "
-                />
-                <path
-                  d="M89.421,16.59l-6.01-6.011L50,43.99L16.59,10.579l-6.011,6.011L43.99,50L10.579,83.411l6.011,6.01L50,56.01l33.411,33.411
-              l6.01-6.01L56.01,50L89.421,16.59z"
-                />
-              </svg>
-            </div>
-          </div>
-
-        </div>
+      <MComboBox
+        ref="Compounds"
+        :Name="'Compounds'"
+        :Label="' اسم المدينة *'"
+        :Items="CompoundsItems"
+      >
+      </MComboBox>
+      <div class="MField" id="Name">
+        <input ref="Name" type="text" required />
+        <label>اسم المالك *</label>
+        <div class="MFieldBG"></div>
       </div>
-    </div>
+      <div class="MField" id="SubscriberName">
+        <input ref="SubscriberName" type="text" required />
+        <label>اسم المشترك *</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="Address">
+        <input ref="Address" type="text" required />
+        <label>العنوان *</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="Phone">
+        <input ref="Phone" type="text" required />
+        <label>هاتف المالك *</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="SubscriberPhone">
+        <input ref="SubscriberPhone" type="text" required />
+        <label>هاتف المشترك *</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <MComboBox
+        ref="CompanyName"
+        :Name="'CompanyName'"
+        :Label="' اسم الشركة *'"
+        :Items="CompanyNameItems"
+        :ItemsName="'company_name'"
+      >
+      </MComboBox>
+      <MComboBox
+        ref="SubscriptionType"
+        :Name="'SubscriptionType'"
+        :Label="' نوع الاشتراك *'"
+        :Items="SubscriptionTypeItems"
+        :ItemsName="'subscription_type'"
+      >
+      </MComboBox>
+      <div class="MField" id="Price" v-OnlyNumbers>
+        <input ref="Price" type="text" required />
+        <label>السعر</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="Notes">
+        <input ref="Notes" type="text" required />
+        <label>الملاحظات *</label>
+        <div class="MFieldBG"></div>
+      </div>
+
+      <div class="ModalButtons">
+        <div class="MButton" id="SavePersonBTN" @click="SavePerson">حفـــظ</div>
+      </div>
+    </MModal>
 
     <div class="MButton" id="AddInternetSubscribersBTN">ادخال مشترك</div>
     <div class="MButton" id="GetInternetSubscribersBTN">عرض البيانات</div>
@@ -176,13 +150,7 @@ import { ref } from 'vue'
 import { api, GetServerPath } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
 import { useGlobalsStore } from '../../stores/Globals.js'
-import {
-  ShowMessage,
-  ShowModal,
-  ShowLoading,
-  HideLoading,
-  HideModal,
-} from '@/MJS.js'
+import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 
 export default {
   setup() {
@@ -193,6 +161,7 @@ export default {
     return {
       hasPermission,
       Operation: ref(''),
+      AddSubscriberModal: ref(null),
       ID: ref(''),
       GlobalsStore: ref(useGlobalsStore()),
       Compounds: ref(null),
@@ -252,7 +221,7 @@ export default {
     document.getElementById('AddInternetSubscribersBTN').addEventListener(
       'click',
       function () {
-        ShowModal(document.getElementById('AddSubscriberModal'))
+        this.AddSubscriberModal.Show()
         this.Operation = 1
         this.clearFields()
       }.bind(this)
@@ -308,8 +277,7 @@ export default {
             'subscription_type'
           )
         }, '100')
-
-        ShowModal(document.getElementById('AddSubscriberModal'))
+        this.AddSubscriberModal.Show()
       }.bind(this)
     )
     // DeleteItem
@@ -445,7 +413,7 @@ export default {
             HideLoading()
             if (response.data.message == 'تمت العملية بنجاح') {
               this.InternetSubscribersTB.LoadMTable()
-              HideModal(document.getElementById('AddSubscriberModal'))
+              this.AddSubscriberModal.Hide()
               this.clearFields()
             } else {
               HideLoading()
@@ -467,7 +435,7 @@ export default {
             HideLoading()
             if (response.data.message == 'تمت العملية بنجاح') {
               this.InternetSubscribersTB.LoadMTable()
-              HideModal(document.getElementById('AddSubscriberModal'))
+              this.AddSubscriberModal.Hide()
               this.clearFields()
             } else {
               HideLoading()

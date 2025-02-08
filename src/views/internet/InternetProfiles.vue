@@ -6,44 +6,42 @@
       :Name="'AddProfilesModal'"
       :Title="'اضافة اشتراك جديد'"
     >
-      <div class="ModalContent">
-        <MComboBox
-          ref="CompanyName"
-          :Name="'CompanyName'"
-          :Label="' اسم الشركة *'"
-          :Items="CompanyNameItems"
-          :ItemsName="'company_name'"
-        >
-        </MComboBox>
-        <div class="MField" id="SubscriptionType">
-          <input ref="SubscriptionType" type="text" required />
-          <label>نوع الاشتراك</label>
-          <div class="MFieldBG"></div>
-        </div>
-        <div class="MField" id="PriceCompany" v-OnlyNumbers>
-          <input ref="PriceCompany" type="text" required />
-          <label>سعر الشركة</label>
-          <div class="MFieldBG"></div>
-        </div>
-        <div class="MField" id="Price" v-OnlyNumbers>
-          <input ref="Price" type="text" required />
-          <label>سعر المكتب</label>
-          <div class="MFieldBG"></div>
-        </div>
+      <MComboBox
+        ref="CompanyName"
+        :Name="'CompanyName'"
+        :Label="' اسم الشركة *'"
+        :Items="CompanyNameItems"
+        :ItemsName="'company_name'"
+      >
+      </MComboBox>
+      <div class="MField" id="SubscriptionType">
+        <input ref="SubscriptionType" type="text" required />
+        <label>نوع الاشتراك</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="PriceCompany" v-OnlyNumbers>
+        <input ref="PriceCompany" type="text" required />
+        <label>سعر الشركة</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="Price" v-OnlyNumbers>
+        <input ref="Price" type="text" required />
+        <label>سعر المكتب</label>
+        <div class="MFieldBG"></div>
+      </div>
 
-        <MComboBox
-          ref="Status"
-          :Name="'Status'"
-          :Label="'حالة الاشتراك *'"
-          :Items="StatusItems"
-          :ItemsName="'status'"
-        >
-        </MComboBox>
+      <MComboBox
+        ref="Status"
+        :Name="'Status'"
+        :Label="'حالة الاشتراك *'"
+        :Items="StatusItems"
+        :ItemsName="'status'"
+      >
+      </MComboBox>
 
-        <div class="ModalButtons">
-          <div class="MButton" id="SaveProfilesBTN" @click="SaveProfiles">
-            حفـــظ
-          </div>
+      <div class="ModalButtons">
+        <div class="MButton" id="SaveProfilesBTN" @click="SaveProfiles">
+          حفـــظ
         </div>
       </div>
     </MModal>
