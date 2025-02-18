@@ -561,6 +561,7 @@
               </svg>
             </div>
             <img
+              v-if="selectedRowData.personal_image"
               :src="
                 ServerPath + '/storage/images/' + selectedRowData.personal_image
               "
@@ -585,6 +586,7 @@
               </svg>
             </div>
             <img
+              v-if="selectedRowData.id_image"
               :src="ServerPath + '/storage/images/' + selectedRowData.id_image"
             />
           </div>
@@ -607,6 +609,7 @@
               </svg>
             </div>
             <img
+              v-if="selectedRowData.id_image_back"
               :src="
                 ServerPath + '/storage/images/' + selectedRowData.id_image_back
               "
@@ -631,6 +634,7 @@
               </svg>
             </div>
             <img
+              v-if="selectedRowData.housing_image"
               :src="
                 ServerPath + '/storage/images/' + selectedRowData.housing_image
               "
@@ -655,6 +659,7 @@
               </svg>
             </div>
             <img
+              v-if="selectedRowData.housing_image_back"
               :src="
                 ServerPath +
                 '/storage/images/' +
@@ -681,6 +686,7 @@
               </svg>
             </div>
             <img
+              v-if="selectedRowData.driver_licence_image"
               :src="
                 ServerPath +
                 '/storage/images/' +
@@ -707,6 +713,7 @@
               </svg>
             </div>
             <img
+              v-if="selectedRowData.driver_licence_image_back"
               :src="
                 ServerPath +
                 '/storage/images/' +
@@ -897,7 +904,6 @@ export default {
         this.InformationRequestsTB.LoadMTable()
       }.bind(this)
     )
-
     document.getElementById('InformationRequestsTB').addEventListener(
       'ViewItem',
       function (data) {
@@ -905,7 +911,6 @@ export default {
         this.InformationRequestModal.Show()
       }.bind(this)
     )
-
     document.getElementById('RejectBTN').addEventListener(
       'click',
       function () {
@@ -940,7 +945,7 @@ export default {
       Parameters.append('PID', OwnerID)
 
       api
-        .post(this.ServerPath + '/api/AcceptInformationRequest', Parameters, {
+        .post('AcceptInformationRequest', Parameters, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

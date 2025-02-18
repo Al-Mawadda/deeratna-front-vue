@@ -410,6 +410,11 @@ export default {
             route: '/carlabele-payment',
             permission: 'on_pay_carrenew',
           },
+          {
+            text: 'الانترنيت',
+            route: '/internet-payment',
+            permission: 'on_pay_carrenew',
+          },
         ],
       },
 

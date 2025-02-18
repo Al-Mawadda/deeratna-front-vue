@@ -247,13 +247,7 @@ export default {
     document.getElementById('InternetSubscribersTB').addEventListener(
       'EditItem',
       function (data) {
-        this.selectedRowData = this.InternetSubscribersTBData.filter(function (
-          item
-        ) {
-          if (item['id'] == data.detail.RowID) {
-            return item
-          }
-        })[0]
+        this.selectedRowData = data.detail.RowData
         this.Operation = 2
         this.ID = this.selectedRowData.id
         this.Compounds.Set(this.selectedRowData.compound)
@@ -284,13 +278,7 @@ export default {
     document.getElementById('InternetSubscribersTB').addEventListener(
       'DeleteItem',
       function (data) {
-        this.selectedRowData = this.InternetSubscribersTBData.filter(function (
-          item
-        ) {
-          if (item['id'] == data.detail.RowID) {
-            return item
-          }
-        })[0]
+        this.selectedRowData = data.detail.RowData
         this.ID = this.selectedRowData.id
         api
           .delete(`InternetSubscribers/` + this.ID)
