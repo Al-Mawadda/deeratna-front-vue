@@ -412,7 +412,24 @@ export default {
           },
         ],
       },
-
+      //  =========== الكمب ============
+      {
+        text: 'الكمب',
+        permission: 'camps',
+        items: [
+          {
+            text: 'المتعهدين',
+            route: '/camps/contractors',
+            permission: 'camps',
+          },
+          {
+            text: 'العمال',
+            route: '/camps/workers',
+            permission: 'camps',
+          },
+        ],
+      },
+      
       //==================================
       {
         text: 'المستخدمين',

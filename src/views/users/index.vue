@@ -205,6 +205,12 @@ const groupedPermissions = ref([
       { val: 'profile_view', label: 'عرض الاشتراكات' },
     ],
   },
+  {
+    label: 'الكمب',
+    items: [
+      { val: 'camps', label: 'الكمب' },
+    ],
+  },
 ].map(group => ({
   ...group,
   items: group.items.map(item => ({

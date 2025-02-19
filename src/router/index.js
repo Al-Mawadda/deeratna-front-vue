@@ -132,6 +132,46 @@ const router = createRouter({
       meta: { requiresAuth: true, HeaderTitle: 'دفع ملصق السيارات' },
     },
 
+    // Camps Contractors
+    {
+      path: '/camps/contractors',
+      component: () => import('../views/camps/ContractorsView.vue'),
+      name: 'CampsConractors',
+      meta: { requiresAuth: true, HeaderTitle: 'المتعهدين' },
+    },
+    {
+      path: '/camps/contractors/add',
+      component: () => import('../views/camps/ContractorDetailsView.vue'),
+      name: 'AddCampsContractor',
+      meta: { requiresAuth: true, Operation: 'ADD', HeaderTitle: 'اضافة متعهد' },
+    },
+    {
+      path: '/camps/contractors/edit',
+      component: () => import('../views/camps/ContractorDetailsView.vue'),
+      name: 'EditCampsContractor',
+      meta: { requiresAuth: true, Operation: 'EDIT', HeaderTitle: 'تعديل المتعهد' },
+    },
+
+    // Camps Workers
+    {
+      path: '/camps/workers',
+      component: () => import('../views/camps/WorkersView.vue'),
+      name: 'CampsWorkers',
+      meta: { requiresAuth: true, HeaderTitle: 'العمال' },
+    },
+    {
+      path: '/camps/workers/add',
+      component: () => import('../views/camps/WorkerDetailsView.vue'),
+      name: 'AddCampsWorker',
+      meta: { requiresAuth: true, Operation: 'ADD', HeaderTitle: 'اضافة عامل' },
+    },
+    {
+      path: '/camps/workers/edit',
+      component: () => import('../views/camps/WorkerDetailsView.vue'),
+      name: 'EditCampsWorker',
+      meta: { requiresAuth: true, Operation: 'EDIT', HeaderTitle: 'تعديل العامل' },
+    },
+
     // USERS
     {
       path: '/users',

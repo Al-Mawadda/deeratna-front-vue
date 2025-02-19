@@ -1,17 +1,35 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import MSidebar from './components/MSidebar.vue'
-import MHeader from './components/MHeader.vue'
+import { ref, onMounted } from 'vue';
+import MSidebar from './components/MSidebar.vue';
+import MHeader from './components/MHeader.vue';
+const MPrompt = ref(null);
 const animateOn = ref('none')
 
 onMounted(() => {
   setTimeout(() => {
     animateOn.value = 'slide-fade'
-  }, 10000)
-})
+  }, 2000)
+
+  window.ShowMessage = function (Message) {
+    MPrompt.value.ShowMessage(Message);
+  };
+  window.ShowChoose = function (Message, YesFunction, NoFunction) {
+    MPrompt.value.ShowChoose(Message, YesFunction, NoFunction);
+  };
+  window.HideChoose = function () {
+    MPrompt.value.HideChoose();
+  };
+  window.ShowLoading = function () {
+    MPrompt.value.ShowLoading();
+  };
+  window.HideLoading = function () {
+    MPrompt.value.HideLoading();
+  };
+});
 </script>
 
 <template>
+  <MPrompts ref="MPrompt" />
   <div class="ModalContainer" id="ChooseModal">
     <div class="ModalBackground">
       <div class="Modal">

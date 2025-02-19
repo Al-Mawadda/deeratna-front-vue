@@ -59,24 +59,6 @@ export default {
         this.OptionsArray.push({ name, icon, event: optionEventName })
       }
     })
-    if (!window.contextMenuListenerAttached) {
-      window.contextMenuListenerAttached = true
-
-      document.addEventListener('click', function (event) {
-        var contextMenu = document.querySelector('.MTableOptions')
-        if (
-          contextMenu &&
-          contextMenu.style.display == 'flex' &&
-          !event.target.closest('.MTableRowOptions')
-        ) {
-          contextMenu.removeAttribute('MTableRowID')
-          document.querySelectorAll('.MTableDataRow').forEach(function (e) {
-            e.style.backgroundColor = ''
-          })
-          contextMenu.style.display = 'none'
-        }
-      })
-    }
 
     this.BuildMTable(
       this.Element,
@@ -207,7 +189,7 @@ export default {
 
       // Build Options
       if (MTableOptions.length > 0) {
-        MTableOptionsCode = '<div class="MTableOptions">'
+        MTableOptionsCode = '<div tabindex="-1" class="MTableOptions">'
         MTableOptions.forEach(function (e) {
           MTableOptionsCode +=
             '<div class="MTableOption"><div class="MTableOptionIcon">' +
@@ -247,9 +229,9 @@ export default {
                       detail: {
                         RowData:
                           DataArray[
-                            e
-                              .closest('.MTableOptions')
-                              .getAttribute('MTableRowID')
+                          e
+                            .closest('.MTableOptions')
+                            .getAttribute('MTableRowID')
                           ],
                       },
                     })
@@ -287,8 +269,8 @@ export default {
       for (var F = 0; F < DisplayArrayColumns.length; F++) {
         Element.querySelector(
           '.MTableFilterRow .MTableCell[filtername="' +
-            DisplayArrayColumns[F] +
-            '"] .MTableFilterInput'
+          DisplayArrayColumns[F] +
+          '"] .MTableFilterInput'
         ).value = FilterDataArray[DisplayArrayColumns[F]]
       }
 
@@ -312,7 +294,7 @@ export default {
             if (
               e.value ==
               FilterDataArray[
-                e.closest('.MTableCell').getAttribute('filtername')
+              e.closest('.MTableCell').getAttribute('filtername')
               ]
             ) {
               e
@@ -340,8 +322,8 @@ export default {
               for (var i = 0; i < DisplayArrayColumns.length; i++) {
                 var FilterRowInput = Element.querySelector(
                   '.MTableFilterRow .MTableCell[filtername="' +
-                    DisplayArrayColumns[i] +
-                    '"] .MTableFilterInput'
+                  DisplayArrayColumns[i] +
+                  '"] .MTableFilterInput'
                 )
                 FilterDataArray[DisplayArrayColumns[i]] = FilterRowInput.value
               }
@@ -393,8 +375,8 @@ export default {
             for (var i = 0; i < DisplayArrayColumns.length; i++) {
               var FilterRowInput = Element.querySelector(
                 '.MTableFilterRow .MTableCell[filtername="' +
-                  DisplayArrayColumns[i] +
-                  '"] .MTableFilterInput'
+                DisplayArrayColumns[i] +
+                '"] .MTableFilterInput'
               )
               FilterDataArray[DisplayArrayColumns[i]] = FilterRowInput.value
             }
@@ -439,8 +421,8 @@ export default {
             for (var i = 0; i < DisplayArrayColumns.length; i++) {
               var FilterRowInput = Element.querySelector(
                 '.MTableFilterRow .MTableCell[filtername="' +
-                  DisplayArrayColumns[i] +
-                  '"] .MTableFilterInput'
+                DisplayArrayColumns[i] +
+                '"] .MTableFilterInput'
               )
               FilterDataArray[DisplayArrayColumns[i]] = FilterRowInput.value
             }
@@ -536,7 +518,7 @@ export default {
         for (let x = 0; x < DisplayArray.length; x++) {
           var ArrayCounter = 0
           ContentCodeBlock +=
-            '<div class="MTableRow MTableDataRow" MTableRowID="' + x + '">'
+            '<div class="MTableRow MTableDataRow" tabindex="-1" MTableRowID="' + x + '">'
           for (var y in DisplayArray[x]) {
             // MTable Sub Arrays
             if (y != 'id') {
@@ -704,29 +686,31 @@ export default {
         }, 0)
 
         // Set Events
-        Element.querySelectorAll('.MTableBodyContainer .MTableRow').forEach(
-          function (e) {
-            e.removeEventListener('contextmenu', null)
-            e.addEventListener('contextmenu', event => {
-              event.preventDefault()
-              if (MTableOptions.length == 1) {
-                Element.dispatchEvent(
-                  new CustomEvent(MTableOptions[0]['event'], {
-                    detail: {
-                      RowData: DataArray[e.getAttribute('MTableRowID')],
-                    },
-                  })
-                )
-              } else {
-                ShowMTableOptions(event)
-              }
-            })
-          }
-        )
+        Element.querySelectorAll('.MTableBodyContainer .MTableRow').forEach(function (e) {
+          e.removeEventListener('contextmenu', null)
+          e.addEventListener('contextmenu', event => {
+            event.preventDefault()
+            if (MTableOptions.length == 1) {
+              Element.dispatchEvent(
+                new CustomEvent(MTableOptions[0]['event'], {
+                  detail: {
+                    RowData: DataArray[e.getAttribute('MTableRowID')],
+                  },
+                })
+              )
+            } else {
+              ShowMTableOptions(event)
+            }
+          });
 
-        Element.querySelectorAll(
-          '.MTableBodyContainer .MTableRow .MTableRowOptions'
-        ).forEach(function (e) {
+          // Hide Options
+          e.removeEventListener('focusout', null)
+          e.addEventListener('focusout', function (e) {
+            HideMTableOptions(e);
+          })
+        })
+
+        Element.querySelectorAll('.MTableBodyContainer .MTableRow .MTableRowOptions').forEach(function (e) {
           e.removeEventListener('click', null)
           e.addEventListener('click', function (event) {
             if (MTableOptions.length == 1) {
@@ -740,6 +724,11 @@ export default {
             }
           })
         })
+
+        Element.querySelector('.MTableBodyContainer').addEventListener("scroll", () => {
+          HideMTableOptions();
+        });
+
 
         // Sorting
         Element.querySelectorAll('.MTableHeaderRow .MTableCell').forEach(
@@ -812,14 +801,14 @@ export default {
               if (SortDataArray[1] == 'ASC') {
                 Element.querySelector(
                   '.MTableHeaderRow .MTableCell:nth-child(' +
-                    (SA + 1) +
-                    ') .MTableSortArrow'
+                  (SA + 1) +
+                  ') .MTableSortArrow'
                 ).style.transform = 'rotate(0)'
               } else {
                 Element.querySelector(
                   '.MTableHeaderRow .MTableCell:nth-child(' +
-                    (SA + 1) +
-                    ') .MTableSortArrow'
+                  (SA + 1) +
+                  ') .MTableSortArrow'
                 ).style.transform = 'rotate(180deg)'
               }
             }
@@ -989,7 +978,25 @@ export default {
           'var(--MTableRowHighlight)'
         contextMenu.style.display = 'flex'
       }
+      function HideMTableOptions(event = null) {
+        Element.querySelectorAll('.MTableBodyContainer .MTableRow').forEach(function (e) {
+          e.style.backgroundColor = '';
+        });
 
+        if (event != null) {
+          if (event.relatedTarget && event.relatedTarget.classList.contains('MTableOptions')) {
+            setTimeout(function () {
+              if (document.querySelector('.MTableOptions')) {
+                document.querySelector('.MTableOptions').style.display = 'none';
+              }
+            }, 100);
+          } else {
+            document.querySelector('.MTableOptions').style.display = 'none';
+          }
+        } else {
+          document.querySelector('.MTableOptions').style.display = 'none';
+        }
+      }
       function BuildMTablePages() {
         var MTablePageButtonsElement =
           Element.querySelector('.MTablePageButtons')
@@ -1119,9 +1126,7 @@ export default {
 
       this.Element.querySelector('.MTableLoader').style.display = 'flex'
 
-      this.Element.querySelectorAll('.MTableFilterRow input').forEach(function (
-        e
-      ) {
+      this.Element.querySelectorAll('.MTableFilterRow input').forEach(function (e) {
         e.disabled = true
       })
       this.Element.querySelectorAll(
@@ -1247,7 +1252,7 @@ export default {
 
 .MTableOptions {
   display: none;
-  position: absolute;
+  position: fixed;
   min-width: 150px;
   max-width: 250px;
   width: min-content;
@@ -1315,6 +1320,10 @@ export default {
   position: relative;
   background-color: var(--MTableBG);
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.MGroup .MTableWrapper {
+  border:1px solid #777;
 }
 
 .MTableBackground {
