@@ -108,7 +108,10 @@
         <div class="MFieldBG"></div>
       </div>
       <!--========== The Images ==========-->
-      <div class="ImagesContainer">
+      <div
+        v-show="selectedRowData.request_type != 'تجديد'"
+        class="ImagesContainer"
+      >
         <div
           class="InformationRequestImage"
           v-if="selectedRowData.id_image != ''"
@@ -396,22 +399,25 @@ export default {
           }, '100')
         }
 
-        this.IDImage =
-          'https://www.app.deeratna.net/public/storage/internet_images/id/' +
-          this.selectedRowData.id +
-          '.jpg'
-        this.IDImageBack =
-          'https://www.app.deeratna.net/public/storage/internet_images/id_back/' +
-          this.selectedRowData.id +
-          '.jpg'
-        this.HousingImage =
-          'https://www.app.deeratna.net/public/storage/internet_images/housing/' +
-          this.selectedRowData.id +
-          '.jpg'
-        this.HousingImageBack =
-          'https://www.app.deeratna.net/public/storage/internet_images/housing_back/' +
-          this.selectedRowData.id +
-          '.jpg'
+        if (this.selectedRowData.request_type != 'تجديد') {
+          this.IDImage =
+            'https://www.app.deeratna.net/public/storage/internet_images/id/' +
+            this.selectedRowData.id +
+            '.jpg'
+          this.IDImageBack =
+            'https://www.app.deeratna.net/public/storage/internet_images/id_back/' +
+            this.selectedRowData.id +
+            '.jpg'
+          this.HousingImage =
+            'https://www.app.deeratna.net/public/storage/internet_images/housing/' +
+            this.selectedRowData.id +
+            '.jpg'
+          this.HousingImageBack =
+            'https://www.app.deeratna.net/public/storage/internet_images/housing_back/' +
+            this.selectedRowData.id +
+            '.jpg'
+        }
+
         this.InternetRequestModal.Show()
       }.bind(this)
     )
@@ -479,9 +485,14 @@ export default {
       ShowLoading()
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
-      Parameters.append('request_status', 'قيد العمل')
       Parameters.append('pid', this.selectedRowData.pid)
       Parameters.append('uid', this.selectedRowData.uid)
+
+      if (this.selectedRowData.request_type == 'تجديد') {
+        Parameters.append('request_status', 'تم')
+      } else {
+        Parameters.append('request_status', 'قيد العمل')
+      }
 
       Parameters.append(
         'subscriber_name',

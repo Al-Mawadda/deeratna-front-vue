@@ -131,6 +131,12 @@ const router = createRouter({
       name: 'Carlabele-Payment',
       meta: { requiresAuth: true, HeaderTitle: 'دفع ملصق السيارات' },
     },
+    {
+      path: '/internet-payment',
+      component: () => import('../views/payment/InternetView.vue'),
+      name: 'Internet-Payment',
+      meta: { requiresAuth: true, HeaderTitle: 'دفع الانترنيت' },
+    },
 
     // Camps Contractors
     {

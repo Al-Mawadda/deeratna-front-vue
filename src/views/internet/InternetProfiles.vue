@@ -186,13 +186,7 @@ export default {
     document.getElementById('InternetProfilesTB').addEventListener(
       'EditItem',
       function (data) {
-        this.selectedRowData = this.InternetProfilesTBData.filter(function (
-          item
-        ) {
-          if (item['id'] == data.detail.RowID) {
-            return item
-          }
-        })[0]
+        this.selectedRowData = data.detail.RowData
         this.Operation = 2
         this.ID = this.selectedRowData.id
         this.CompanyName.Set(this.selectedRowData.company_name, 'company_name')

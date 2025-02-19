@@ -5,7 +5,6 @@
         اضافة مستخدم جديد
       </div>
 
-
       <!-- Users Table -->
       <table class="table table-bordered">
         <thead>
@@ -57,59 +56,49 @@
                 <label>اسم المستخدم</label>
                 <div class="MFieldBG"></div>
               </div>
-              <span style="height: 25px !important; width: 100% !important;"></span>
+              <span style="height: 25px !important; width: 100% !important"></span>
               <div class="MField">
                 <input v-model="form.password" type="password" required />
                 <label>كلمة المرور</label>
                 <div class="MFieldBG"></div>
               </div>
-
+              <MComboBox ref="UserType" :Name="'UserType'" :Label="' نوع المستخدم *'" :Items="UserTypeItems">
+              </MComboBox>
             </div>
-
-
 
             <!-- Permissions -->
             <div class="permissions-tree mt-3">
               <!-- Global Select All Button -->
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <h4 class="text-white">الأذونات</h4>
-
               </div>
 
               <!-- Permission Groups -->
               <div v-for="group in groupedPermissions" :key="group.label" class="permission-group mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <label><strong>{{ group.label }}</strong></label>
-
                 </div>
                 <div class="permissions-items">
                   <div class="permissions-grid">
                     <!-- Permission Items -->
                     <div v-for="permission in group.items" :key="permission.val" class="form-check permission-item">
-                      <input type="checkbox" class="form-check-input" :id="permission.val"
-  v-model="form.permissions"
-  :value="permission.val"/>
+                      <input type="checkbox" class="form-check-input" :id="permission.val" v-model="form.permissions"
+                        :value="permission.val" />
                       <label :for="permission.val" class="form-check-label">
                         {{ permission.label }}
                       </label>
-
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-
-
-
-
-            <hr>
+            <hr />
             <div class="ModalButtons">
               <div class="MButton" id="SavePersonBTN" @click.prevent="editMode ? updateUser() : createUser()">
                 حفـــظ
               </div>
             </div>
-
           </form>
         </div>
         <div class="modal-footer">
@@ -117,16 +106,15 @@
         </div>
       </div>
     </div>
-
-
   </div>
 </template>
 
 
 <script setup>
-import { ref,  computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
+import { useGlobalsStore } from '../../stores/Globals.js'
 
 const users = ref([])
 const authStore = useAuthStore()
@@ -134,73 +122,77 @@ const authStore = useAuthStore()
 const hasPermission = permission => {
   return authStore.user && authStore.user.permissions.includes(permission)
 }
-const groupedPermissions = ref([
-  {
-    label: 'الطلبات',
-    items: [
-      { val: 'request_view', label: 'عرض الطلبات' },
-      { val: 'info_view', label: 'عرض ادارة المعلومات' },
-      { val: 'info_accept', label: 'قبول طلب إدارة المعلومات' },
-      { val: 'info_reject', label: 'رفض طلب إدارة المعلومات ' },
-      { val: 'entry_card_view', label: 'رؤية بطاقات الدخول' },
-      { val: 'entry_card_accept', label: 'قبول طلب بطاقات الدخول' },
-      { val: 'entry_card_reject', label: 'رفض طلب بطاقات الدخول ' },
-      { val: 'car_label_view', label: 'عرض ملصق السيارة' },
-      { val: 'car_label_accept', label: 'قبول طلب ملصق السيارة' },
-      { val: 'car_label_reject', label: 'رفض طلب ملصق السيارة' },
-      { val: 'internet_requests_view', label: 'عرض طلبات الانترنيت' },
-    ],
-  },
-  {
-    label: 'الدفع الإلكتروني',
-    items: [
-      { val: 'on_pay_view', label: 'رؤية الدفع الإلكتروني' },
-      { val: 'on_pay_inst', label: 'عرض دفعات الأقساط' },
-      { val: 'on_pay_ene', label: 'عرض دفعات المولد' },
-      { val: 'on_pay_ser', label: 'عرض دفعات الخدمات' },
-      { val: 'on_pay_nfcadd', label: 'عرض دفعات بطاقات الدخول' },
-      { val: 'on_pay_nfcrenew', label: 'عرض دفعات تجديد بطاقات الدخول' },
-      { val: 'on_pay_caradd', label: 'عرض دفعات ملصق السيارة' },
-      { val: 'on_pay_carrenew', label: 'عرض دفعات تجديد ملصق السيارة' },
-    ],
-  },
-  {
-    label: 'إدارة المستخدمين',
-    items: [
-      { val: 'users_view', label: 'عرض المستخدمين' },
-      { val: 'users_create', label: 'إنشاء مستخدم' },
-      { val: 'users_update', label: 'تعديل المستخدمين' },
-      { val: 'users_delete', label: 'حذف المستخدم' },
-    ],
-  },
-  {
-    label: 'إدارة الإعلانات',
-    items: [
-      { val: 'ads_view_all', label: 'عرض الإعلانات' },
+const UserType = ref(null)
+const globalsStore = useGlobalsStore()
+const UserTypeItems = ref([])
+const groupedPermissions = ref(
+  [
+    {
+      label: 'الطلبات',
+      items: [
+        { val: 'request_view', label: 'عرض الطلبات' },
+        { val: 'info_view', label: 'عرض ادارة المعلومات' },
+        { val: 'info_accept', label: 'قبول طلب إدارة المعلومات' },
+        { val: 'info_reject', label: 'رفض طلب إدارة المعلومات ' },
+        { val: 'entry_card_view', label: 'رؤية بطاقات الدخول' },
+        { val: 'entry_card_accept', label: 'قبول طلب بطاقات الدخول' },
+        { val: 'entry_card_reject', label: 'رفض طلب بطاقات الدخول ' },
+        { val: 'car_label_view', label: 'عرض ملصق السيارة' },
+        { val: 'car_label_accept', label: 'قبول طلب ملصق السيارة' },
+        { val: 'car_label_reject', label: 'رفض طلب ملصق السيارة' },
+        { val: 'internet_requests_view', label: 'عرض طلبات الانترنيت' },
+      ],
+    },
+    {
+      label: 'الدفع الإلكتروني',
+      items: [
+        { val: 'on_pay_view', label: 'رؤية الدفع الإلكتروني' },
+        { val: 'on_pay_inst', label: 'عرض دفعات الأقساط' },
+        { val: 'on_pay_ene', label: 'عرض دفعات المولد' },
+        { val: 'on_pay_ser', label: 'عرض دفعات الخدمات' },
+        { val: 'on_pay_nfcadd', label: 'عرض دفعات بطاقات الدخول' },
+        { val: 'on_pay_nfcrenew', label: 'عرض دفعات تجديد بطاقات الدخول' },
+        { val: 'on_pay_caradd', label: 'عرض دفعات ملصق السيارة' },
+        { val: 'on_pay_carrenew', label: 'عرض دفعات تجديد ملصق السيارة' },
+      ],
+    },
+    {
+      label: 'إدارة المستخدمين',
+      items: [
+        { val: 'users_view', label: 'عرض المستخدمين' },
+        { val: 'users_create', label: 'إنشاء مستخدم' },
+        { val: 'users_update', label: 'تعديل المستخدمين' },
+        { val: 'users_delete', label: 'حذف المستخدم' },
+      ],
+    },
+    {
+      label: 'إدارة الإعلانات',
+      items: [
+        { val: 'ads_view_all', label: 'عرض الإعلانات' },
 
-      { val: 'ads_video_view', label: 'عرض إعلانات الفيديوا' },
-      { val: 'ads_video_create', label: 'إنشاء فيديو جديد' },
-      { val: 'ads_video_delete', label: 'حذف الفيديو' },
+        { val: 'ads_video_view', label: 'عرض إعلانات الفيديوا' },
+        { val: 'ads_video_create', label: 'إنشاء فيديو جديد' },
+        { val: 'ads_video_delete', label: 'حذف الفيديو' },
 
-      { val: 'ads_main_view', label: 'عرض الاعلانات العامة' },
-      { val: 'ads_main_create', label: 'انشاء الاعلانات العامة' },
-      { val: 'ads_main_delete', label: 'حذف الاعلانات العامة' },
+        { val: 'ads_main_view', label: 'عرض الاعلانات العامة' },
+        { val: 'ads_main_create', label: 'انشاء الاعلانات العامة' },
+        { val: 'ads_main_delete', label: 'حذف الاعلانات العامة' },
 
-      { val: 'ads_ser_view', label: 'عرض اعلانات الخدمات' },
-      { val: 'ads_ser_create', label: 'انشاء اعلانات الخدمات' },
-      { val: 'ads_ser_delete', label: 'حذف اعلانات الخدمات' },
+        { val: 'ads_ser_view', label: 'عرض اعلانات الخدمات' },
+        { val: 'ads_ser_create', label: 'انشاء اعلانات الخدمات' },
+        { val: 'ads_ser_delete', label: 'حذف اعلانات الخدمات' },
 
-      { val: 'ads_ene_view', label: 'عرض اعلانات المولد' },
-      { val: 'ads_ene_create', label: 'انشاء اعلانات المولد' },
-      { val: 'ads_ene_delete', label: 'حذف اعلانات المولد' },
-    ],
-  },
-  {
-    label: 'الانترنت',
-    items: [
-      { val: 'internet_view_all', label: 'الانترنت' },
+        { val: 'ads_ene_view', label: 'عرض اعلانات المولد' },
+        { val: 'ads_ene_create', label: 'انشاء اعلانات المولد' },
+        { val: 'ads_ene_delete', label: 'حذف اعلانات المولد' },
+      ],
+    },
+    {
+      label: 'الانترنت',
+      items: [
+        { val: 'internet_view_all', label: 'الانترنت' },
 
-      { val: 'subscribers_view', label: 'عرض بيانات المشتركين' },
+        { val: 'subscribers_view', label: 'عرض بيانات المشتركين' },
 
       { val: 'profile_view', label: 'عرض الاشتراكات' },
     ],
@@ -217,7 +209,7 @@ const groupedPermissions = ref([
     ...item,
     val: item.val.trim()
   }))
-})))
+)
 
 const showUserDialog = ref(false)
 const editMode = ref(false)
@@ -248,12 +240,14 @@ const openCreateUserDialog = () => {
 const openUpdateUserDialog = user => {
   editMode.value = true
 
-  const reversedPermissions = user.permissions.map(label => {
-    const found = groupedPermissions.value
-      .flatMap(group => group.items)
-      .find(item => item.label === label)
-    return found ? found.val : null
-  }).filter(Boolean)
+  const reversedPermissions = user.permissions
+    .map(label => {
+      const found = groupedPermissions.value
+        .flatMap(group => group.items)
+        .find(item => item.label === label)
+      return found ? found.val : null
+    })
+    .filter(Boolean)
 
   form.value = { ...user, permissions: reversedPermissions }
   showUserDialog.value = true
@@ -305,7 +299,10 @@ const getPermissionLabel = perm =>
     .flatMap(group => group.items)
     .find(item => item.val === perm)?.label || perm
 
-onMounted(fetchUsers)
+onMounted(async () => {
+  UserTypeItems.value = globalsStore.ComboBoxes['userType'] || [], fetchUsers()
+})
+
 </script>
 
 
@@ -337,7 +334,6 @@ onMounted(fetchUsers)
   border-radius: 12px;
   font-size: 0.8rem;
 }
-
 
 /* Modal Overlay */
 .custom-modal-overlay {
@@ -436,9 +432,6 @@ onMounted(fetchUsers)
   }
 }
 
-
-
-
 .form-check-input {
   accent-color: #007bff;
   /* Custom checkbox color */
@@ -450,11 +443,6 @@ onMounted(fetchUsers)
   overflow-y: auto;
   /* Enable scrolling if content is too long */
 }
-
-
-
-
-
 
 /* Permissions Tree */
 .permissions-tree {
@@ -507,11 +495,6 @@ onMounted(fetchUsers)
   display: inline-block;
   /* Ensure margin applies properly */
 }
-
-
-
-
-
 
 .btn-sm {
   padding: 5px 10px;
