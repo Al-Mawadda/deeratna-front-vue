@@ -1,7 +1,12 @@
 <template>
   <div class="ComponentWrapper">
     <div class="MGroup">
-      <div v-if="hasPermission('users_create')" class="MButton" id="LoginBTN" @click="openCreateUserDialog">
+      <div
+        v-if="hasPermission('users_create')"
+        class="MButton"
+        id="LoginBTN"
+        @click="openCreateUserDialog"
+      >
         اضافة مستخدم جديد
       </div>
 
@@ -21,16 +26,28 @@
             <td>{{ user.name }}</td>
             <td>
               <div class="chip-container">
-                <span v-for="permission in user.permissions" :key="permission" class="badge badge-primary me-1">
+                <span
+                  v-for="permission in user.permissions"
+                  :key="permission"
+                  class="badge badge-primary me-1"
+                >
                   {{ permission }}
                 </span>
               </div>
             </td>
             <td>
-              <div v-if="hasPermission('users_update')" class="MButton me-1" @click="openUpdateUserDialog(user)">
+              <div
+                v-if="hasPermission('users_update')"
+                class="MButton me-1"
+                @click="openUpdateUserDialog(user)"
+              >
                 تعديل
               </div>
-              <div v-if="hasPermission('users_delete')" class="MButton" @click="deleteUser(user.id)">
+              <div
+                v-if="hasPermission('users_delete')"
+                class="MButton"
+                @click="deleteUser(user.id)"
+              >
                 حذف
               </div>
             </td>
@@ -56,34 +73,53 @@
                 <label>اسم المستخدم</label>
                 <div class="MFieldBG"></div>
               </div>
-              <span style="height: 25px !important; width: 100% !important"></span>
+              <span
+                style="height: 25px !important; width: 100% !important"
+              ></span>
               <div class="MField">
                 <input v-model="form.password" type="password" required />
                 <label>كلمة المرور</label>
                 <div class="MFieldBG"></div>
               </div>
-              <MComboBox ref="UserType" :Name="'UserType'" :Label="' نوع المستخدم *'" :Items="UserTypeItems">
-              </MComboBox>
             </div>
 
             <!-- Permissions -->
             <div class="permissions-tree mt-3">
               <!-- Global Select All Button -->
-              <div class="d-flex justify-content-between align-items-center mb-2">
+              <div
+                class="d-flex justify-content-between align-items-center mb-2"
+              >
                 <h4 class="text-white">الأذونات</h4>
               </div>
 
               <!-- Permission Groups -->
-              <div v-for="group in groupedPermissions" :key="group.label" class="permission-group mb-3">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <label><strong>{{ group.label }}</strong></label>
+              <div
+                v-for="group in groupedPermissions"
+                :key="group.label"
+                class="permission-group mb-3"
+              >
+                <div
+                  class="d-flex justify-content-between align-items-center mb-2"
+                >
+                  <label
+                    ><strong>{{ group.label }}</strong></label
+                  >
                 </div>
                 <div class="permissions-items">
                   <div class="permissions-grid">
                     <!-- Permission Items -->
-                    <div v-for="permission in group.items" :key="permission.val" class="form-check permission-item">
-                      <input type="checkbox" class="form-check-input" :id="permission.val" v-model="form.permissions"
-                        :value="permission.val" />
+                    <div
+                      v-for="permission in group.items"
+                      :key="permission.val"
+                      class="form-check permission-item"
+                    >
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        :id="permission.val"
+                        v-model="form.permissions"
+                        :value="permission.val"
+                      />
                       <label :for="permission.val" class="form-check-label">
                         {{ permission.label }}
                       </label>
@@ -95,7 +131,11 @@
 
             <hr />
             <div class="ModalButtons">
-              <div class="MButton" id="SavePersonBTN" @click.prevent="editMode ? updateUser() : createUser()">
+              <div
+                class="MButton"
+                id="SavePersonBTN"
+                @click.prevent="editMode ? updateUser() : createUser()"
+              >
                 حفـــظ
               </div>
             </div>
@@ -114,7 +154,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
-import { useGlobalsStore } from '../../stores/Globals.js'
+//import { useGlobalsStore } from '../../stores/Globals.js'
 
 const users = ref([])
 const authStore = useAuthStore()
@@ -122,9 +162,8 @@ const authStore = useAuthStore()
 const hasPermission = permission => {
   return authStore.user && authStore.user.permissions.includes(permission)
 }
-const UserType = ref(null)
-const globalsStore = useGlobalsStore()
-const UserTypeItems = ref([])
+//const globalsStore = useGlobalsStore()
+//const UserTypeItems = ref([])
 const groupedPermissions = ref(
   [
     {
@@ -208,7 +247,13 @@ const groupedPermissions = ref(
 
 const showUserDialog = ref(false)
 const editMode = ref(false)
-const form = ref({ id: null, name: '', password: '', permissions: [] })
+const form = ref({
+  id: null,
+  name: '',
+  password: '',
+  permissions: [],
+  //user_type: '',
+})
 
 const processedUsers = computed(() =>
   users.value.map(user => ({
@@ -254,8 +299,8 @@ const createUser = async () => {
     alert('تم إنشاء المستخدم بنجاح!')
     fetchUsers()
     closeDialog()
-  } catch {
-    alert('فشل في إنشاء المستخدم.')
+  } catch (e) {
+    alert(e + 'فشل في إنشاء المستخدم.')
   }
 }
 
@@ -294,10 +339,7 @@ const getPermissionLabel = perm =>
     .flatMap(group => group.items)
     .find(item => item.val === perm)?.label || perm
 
-onMounted(async () => {
-  UserTypeItems.value = globalsStore.ComboBoxes['userType'] || [], fetchUsers()
-})
-
+onMounted(fetchUsers())
 </script>
 
 

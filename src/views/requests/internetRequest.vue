@@ -474,7 +474,7 @@ export default {
         .get('internetprofiles')
         .then(response => {
           this.CompanyNameItems = response.data.data
-          const CompanysName = response.data.data.map(item => item.company_name) // Assuming 'job_type' is the relevant field
+          const CompanysName = response.data.data.map(item => item.company_name) // Assuming '' is the relevant field
           this.CompanyNamesItems = [...new Set(CompanysName)] // Using Set to remove duplicates
         })
         .catch(error => {
