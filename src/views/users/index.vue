@@ -233,17 +233,22 @@ const groupedPermissions = ref(
 
         { val: 'subscribers_view', label: 'عرض بيانات المشتركين' },
 
-        { val: 'profile_view', label: 'عرض الاشتراكات' },
-      ],
-    },
-  ].map(group => ({
+      { val: 'profile_view', label: 'عرض الاشتراكات' },
+    ],
+  },
+  {
+    label: 'الكمب',
+    items: [
+      { val: 'camps', label: 'الكمب' },
+    ],
+  },
+].map(group => ({
     ...group,
     items: group.items.map(item => ({
-      ...item,
-      val: item.val.trim(),
-    })),
-  }))
-)
+        ...item,
+        val: item.val.trim()
+    }))
+})))
 
 const showUserDialog = ref(false)
 const editMode = ref(false)

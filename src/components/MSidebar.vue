@@ -295,7 +295,7 @@ export default {
         items: [
           {
             text: 'معلومات الافراد',
-            route: '/information/add',
+            route: '/persons',
             permission: 'ads_video_view',
           },
         ],
@@ -417,7 +417,24 @@ export default {
           },
         ],
       },
-
+      //  =========== الكمب ============
+      {
+        text: 'الكمب',
+        permission: 'camps',
+        items: [
+          {
+            text: 'المتعهدين',
+            route: '/camps/contractors',
+            permission: 'camps',
+          },
+          {
+            text: 'العمال',
+            route: '/camps/workers',
+            permission: 'camps',
+          },
+        ],
+      },
+      
       //==================================
       {
         text: 'المستخدمين',

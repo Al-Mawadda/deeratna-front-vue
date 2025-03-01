@@ -46,26 +46,26 @@ app.directive('OnlyNumbers', {
   mounted(Element) {
     Element.querySelectorAll('input').forEach(function (e) {
       e.addEventListener('keypress', function (event) {
-        if (!/[0-9\.]/.test(event.key)) {
-          event.preventDefault()
+        if (!/[0-9.]/.test(event.key)) {
+          event.preventDefault();
         } else {
           if (event.key === '.' && event.target.value.length === 0) {
-            event.preventDefault()
+            event.preventDefault();
           }
           if (event.key === '.' && event.target.value.includes('.')) {
-            event.preventDefault()
+            event.preventDefault();
           }
         }
-      })
+      });
       e.addEventListener('paste', function (event) {
-        event.preventDefault()
-      })
+        event.preventDefault();
+      });
       e.addEventListener('drop', function (event) {
-        event.preventDefault()
-      })
-    })
+        event.preventDefault();
+      });
+    });
   },
-})
+});
 
 const authStore = useAuthStore()
 if (authStore.token) {

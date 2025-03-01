@@ -23,10 +23,22 @@ const router = createRouter({
     },
     // Information
     {
-      path: '/information/add',
-      component: () => import('../views/information/PersonsInformation.vue'),
-      name: 'PersonsInformation',
-      meta: { requiresAuth: true, HeaderTitle: 'بيانات الاشخاص' },
+      path: '/persons',
+      component: () => import('../views/information/PersonsView.vue'),
+      name: 'Persons',
+      meta: { requiresAuth: true, HeaderTitle: 'معلومات الافراد' },
+    },
+    {
+      path: '/persons/add',
+      component: () => import('../views/information/PersonsDetailsView.vue'),
+      name: 'AddPerson',
+      meta: { requiresAuth: true, Operation: 'ADD', HeaderTitle: 'اضافة فرد' },
+    },
+    {
+      path: '/persons/edit',
+      component: () => import('../views/information/PersonsDetailsView.vue'),
+      name: 'EditPerson',
+      meta: { requiresAuth: true, Operation: 'EDIT', HeaderTitle: 'تعديل الفرد' },
     },
     // Internet
     {
@@ -136,6 +148,46 @@ const router = createRouter({
       component: () => import('../views/payment/InternetView.vue'),
       name: 'Internet-Payment',
       meta: { requiresAuth: true, HeaderTitle: 'دفع الانترنيت' },
+    },
+
+    // Camps Contractors
+    {
+      path: '/camps/contractors',
+      component: () => import('../views/camps/ContractorsView.vue'),
+      name: 'CampsConractors',
+      meta: { requiresAuth: true, HeaderTitle: 'المتعهدين' },
+    },
+    {
+      path: '/camps/contractors/add',
+      component: () => import('../views/camps/ContractorDetailsView.vue'),
+      name: 'AddCampsContractor',
+      meta: { requiresAuth: true, Operation: 'ADD', HeaderTitle: 'اضافة متعهد' },
+    },
+    {
+      path: '/camps/contractors/edit',
+      component: () => import('../views/camps/ContractorDetailsView.vue'),
+      name: 'EditCampsContractor',
+      meta: { requiresAuth: true, Operation: 'EDIT', HeaderTitle: 'تعديل المتعهد' },
+    },
+
+    // Camps Workers
+    {
+      path: '/camps/workers',
+      component: () => import('../views/camps/WorkersView.vue'),
+      name: 'CampsWorkers',
+      meta: { requiresAuth: true, HeaderTitle: 'العمال' },
+    },
+    {
+      path: '/camps/workers/add',
+      component: () => import('../views/camps/WorkerDetailsView.vue'),
+      name: 'AddCampsWorker',
+      meta: { requiresAuth: true, Operation: 'ADD', HeaderTitle: 'اضافة عامل' },
+    },
+    {
+      path: '/camps/workers/edit',
+      component: () => import('../views/camps/WorkerDetailsView.vue'),
+      name: 'EditCampsWorker',
+      meta: { requiresAuth: true, Operation: 'EDIT', HeaderTitle: 'تعديل العامل' },
     },
 
     // USERS
