@@ -426,6 +426,16 @@ export default {
           { text: 'المستخدمين', route: '/users', permission: 'users_view' },
         ],
       },
+      //==================================
+      {
+        text: 'خطار',
+        permission: 'qr_security' || 'qr_managment',
+        items: [
+          { text: 'تطبيق خطار الامنية', route: '/qr-security', permission: 'qr_security' },
+          { text: 'تطبيق خطار الادارة المحلية', route: '/qr-management', permission: 'qr_managment' },
+        ],
+      },
+
     ])
 
     const hasPermission = permission => {

@@ -145,6 +145,22 @@ const router = createRouter({
       name: 'users',
       meta: { requiresAuth: true, HeaderTitle: 'ادارة المستخدمين' },
     },
+
+    // QR خطار
+    {
+      path: '/qr-security',
+      component: () => import('../views/qr/index.vue'),
+      name: 'qr-security',
+      meta: { requiresAuth: true, HeaderTitle: 'تطبيق خطار الامنية' },
+    },
+    {
+      path: '/qr-management',
+      component: () => import('../views/qr/manage.vue'),
+      name: 'qr-management',
+      meta: { requiresAuth: true, HeaderTitle: 'تطبيق خطار الادارة المحلية' },
+    },
+
+
     {
       path: '/login',
       name: 'Login',

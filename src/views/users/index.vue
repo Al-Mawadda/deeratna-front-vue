@@ -197,6 +197,20 @@ const groupedPermissions = ref(
         { val: 'profile_view', label: 'عرض الاشتراكات' },
       ],
     },
+    {
+      label: 'خطار',
+      items: [
+        {
+          val: 'qr_security',
+          label: 'تطبيق خطار الامنية'
+        },
+
+        {
+          val: 'qr_managment',
+          label: 'تطبيق خطار الادارة المحلية'
+        },
+      ],
+    },
   ].map(group => ({
     ...group,
     items: group.items.map(item => ({
