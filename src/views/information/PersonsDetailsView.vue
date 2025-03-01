@@ -1,126 +1,102 @@
 <template>
   <div class="ComponentWrapper">
     <div class="MGroup">
-      <div class="MField" id="ID">
+      <div class="MField" id="ID" v-show="Operation == 'EDIT'">
         <input disabled type="text" required>
         <label>الرمز</label>
         <div class="MFieldBG"></div>
       </div>
+      <MComboBox ref='Attributes' :MultipleSelections="true" :Name="'Attributes'" :Label="'الصفة'"
+        :Items="AttributesItems"></MComboBox>
       <div class="MField" id="Name">
         <input type="text" required>
         <label>الاسم</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="Nationality">
+      <MComboBox ref='Gender' :Name="'Gender'" :Label="'الجنس'" :Items="GenderItems"
+        v-show="CheckAttributes(['مالك', 'مستاجر'])"></MComboBox>
+      <MDate ref="BirthDate" :Name="'BirthDate'" :Label="'المواليد'" v-show="CheckAttributes(['مالك', 'مستاجر'])">
+      </MDate>
+      <div class="MField" id="Nationality" v-show="CheckAttributes(['متعهد'])">
         <input type="text" required>
         <label>الجنسية</label>
         <div class="MFieldBG"></div>
       </div>
+      <div class="MField" id="MotherName" v-show="CheckAttributes(['مالك', 'مستاجر'])">
+        <input type="text" required>
+        <label>اسم الام</label>
+        <div class="MFieldBG"></div>
+      </div>
       <MComboBox ref='IdentificationType' :Name="'IdentificationType'" :Label="'نوع المستمسك'"
-        :Items="IdentificationTypeItems"></MComboBox>
-      <div class="MField" id="IdentificationNumber">
+        :Items="IdentificationTypeItems" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد'])"></MComboBox>
+      <div class="MField" id="IdentificationNumber" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد'])">
         <input type="text" required>
         <label>رقم المستمسك</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="Phone">
+      <div class="MField" id="IdentificationRecord" v-show="CheckAttributes(['مالك', 'مستاجر'])">
+        <input type="text" required>
+        <label>السجل</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="IdentificationPage" v-show="CheckAttributes(['مالك', 'مستاجر'])">
+        <input type="text" required>
+        <label>الصحيفة</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="IdentificationIssuingAuthority" v-show="CheckAttributes(['مالك', 'مستاجر'])">
+        <input type="text" required>
+        <label>جهة الاصدار</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <MDate ref="IdentificationIssuingDate" :Name="'IdentificationIssuingDate'" :Label="'تاريخ الاصدار'"
+        v-show="CheckAttributes(['مالك', 'مستاجر'])"></MDate>
+      <div class="MField" id="Phone" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد'])">
         <input type="text" required>
         <label>رقم الهاتف</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="WorkPlace">
+      <div class="MField" id="Study" v-show="CheckAttributes(['مالك', 'مستاجر'])">
+        <input type="text" required />
+        <label>التحصيل الدراسي</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="WorkType" v-show="CheckAttributes(['مالك', 'مستاجر'])">
+        <input type="text" required />
+        <label>نوع العمل</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="WorkPlace" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد'])">
         <input type="text" required />
         <label>موقع العمل</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="Address">
+      <div class="MField" id="Address" v-show="CheckAttributes(['متعهد'])">
         <input type="text" required />
         <label>العنوان</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="ContractorContractNo">
+      <div class="MField" id="EMail" v-show="CheckAttributes(['مالك', 'مستاجر'])">
+        <input type="text" required />
+        <label>بريد الكتروني</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="ContractorContractNo" v-show="CheckAttributes(['متعهد'])">
         <input type="text" required />
         <label>رقم عقد العمل</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="WorkersCount">
-        <input disabled type="text" required>
-        <label>عدد العمال</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MField" id="EntryPort">
+      <div class="MField" id="EntryPort" v-show="CheckAttributes(['متعهد'])">
         <input type="text" required />
         <label>منفذ الدخول</label>
         <div class="MFieldBG"></div>
       </div>
-      <MDate ref="EntryDate" :Name="'EntryDate'" :Label="'تاريخ الدخول'"></MDate>
-    </div>
-    <div class="MGroup" id="CampsGroup">
-      <div class="MGroupTitle">الكمبات</div>
-      <MComboBox ref='CampName' :Name="'CampName'" :Label="'اسم الكمب'" :Items="CampNameItems"></MComboBox>
-      <div class="MField" id="RoomNo">
-        <input type="text" required>
-        <label>رقم الغرفة</label>
+      <MDate ref="EntryDate" :Name="'EntryDate'" :Label="'تاريخ الدخول'" v-show="CheckAttributes(['متعهد'])"></MDate>
+      <div class="MField" id="Notes">
+        <input type="text" required />
+        <label>الملاحظات</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MGroupButtons">
-        <div class="MButton" id="AddCamp">اضافة</div>
-        <div class="MButton" id="SaveCamp">حفظ</div>
-        <div class="MButton" id="CancelCamp">الغاء</div>
-      </div>
-      <MTable ref="CampsTB" :Name="'CampsTB'" :DataArray="CampsTBData" :HeadersArray="CampsTBHeaders"
-        :TotalsArray="CampsTBTotals" :DisplayColumnsArray="CampsTBDisplayColumns" :ShowFilterRow="false"
-        :RowsPerPage="999">
-        <template v-slot:options>
-          <div class="MTableOption" OptionEventName="EditItem">
-            <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
-                <path d="M500.2,249.6c124.1,1.1,233.2,42.7,328.2,122.1c39.6,33,72.3,72.7,106.8,110.6c9,9.9,8.7,25.5-0.8,36.4
-	c-53.9,62.1-109.3,122.5-182.1,163.7c-66,37.4-136.2,60.8-212,66.4C399.6,759.2,276.4,716.6,169,626.3
-	C130.9,594.3,99.2,556,66,519.3c-10-11-10.5-26-0.9-37.1c53.3-61.5,107.9-121.4,179.6-162.7c66.8-38.5,138-62.1,215.1-68.3
-	C473.2,250.2,486.7,250.1,500.2,249.6z M504.7,308.1c-19.4,0.8-34.9,0.7-50.4,2.2c-61.5,6.1-119,24.8-173,54.6
-	c-59.2,32.7-106.2,79.4-150.3,129.6c-4.1,4.7-3.1,8.1,0.7,12.1c21.3,22.2,40.9,45.9,63.9,66.5c86.2,77.3,186.4,118.2,302.7,118.9
-	c68.3,0.4,133-14.2,194.7-43.2c70.8-33.3,126.2-85.4,176.6-143.7c4-4.6,2-7.9-1.3-11.3c-21.3-22.2-40.9-45.9-63.8-66.6
-	C718.1,349.4,617.3,308.9,504.7,308.1z" />
-                <path d="M392.3,499.7c0.2-59,49.3-108.3,108.1-107.4c60.6,0.9,107.4,47.4,107.2,108c-0.2,60.9-47.5,106.9-107.8,107.4
-	C440.8,608.1,392.1,558.6,392.3,499.7z M500.2,556.5c30.5,0,56.4-25.9,56.4-56.4c0-30.6-25.7-56.5-56.2-56.6
-	c-31-0.1-56.9,25.8-56.8,56.8C443.8,530.8,469.7,556.6,500.2,556.5z" />
-              </svg></div>
-            <div class="MTableOptionName">تعديل</div>
-          </div>
-          <div class="MTableOption" OptionEventName="DeleteItem">
-            <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
-
-                <path
-                  d="M906.1,242.4c-4.5-16.8-18.9-26-40.5-26c-89.9,0-179.8,0-269.8,0l-103.4,0v-0.2l-70.2,0c-65.9,0-131.8,0-197.8,0
-	c-6.8,0-13.5,0-20.3,0c-24.2,0-49.1,0-73.7,0.3c-12.9,0.2-24.3,5.5-31.2,14.5c-6.3,8.3-8.3,18.8-5.5,29.6
-	c4.1,16,18.4,26.1,37.3,26.4c14.2,0.2,28.7,0.1,42.7,0.1c5.9,0,11.9,0,17.8,0c0.8,0,1.6,0,2.5,0c8.9,0,14.2,0,18.3,4.2
-	c4,4.1,4,9.5,4,18.4l0,149.7c0,103.7,0,207.3,0,311c0,13,0.4,23.9,1.2,34.2c6.4,79,75.7,143.7,154.5,144.2
-	c68.3,0.4,137.8,0.3,205,0.2c17,0,34-0.1,51-0.1c15.5,0,31.3-2.8,46.9-8.3c67-23.6,108.6-82.9,108.7-154.7
-	c0.1-108.3,0.1-218.5,0.1-325c0-51,0-102.1,0-153.1c0-7.7,0-12.8,3.8-16.7c3.8-3.9,8.9-3.9,16.6-3.9c7.3,0,14.8,0,22,0.1
-	c14.4,0.1,29.3,0.1,43.8-0.2c12.9-0.3,24.2-5.7,31-14.8C907.1,263.7,909,253.1,906.1,242.4z M686.4,852.8
-	c-17.2,17.3-40.4,26.5-67.2,26.5c0,0,0,0,0,0c-23.8,0-47.6,0-71.5,0c-22.7,0-45.7,0-68.9,0c-32.7,0-65.6,0-98.2-0.1
-	c-46.8-0.1-82.1-27.4-92.1-71.2c-1.7-7.4-1.6-14.6-1.6-21.5c0-1.1,0-2.2,0-3.3c0-60.2,0-120.3,0-180.5l0-51.2l0-58.7
-	c0-61.5,0-123.1,0-184.6c0-7.9,0-13.1,3.9-17c3.9-3.9,8.8-3.9,17-3.9c128,0,256,0,383.9,0c8.2,0,13.2,0,17,3.8
-	c3.9,3.9,3.9,9.1,3.9,17c0,44.2,0,89.1-0.1,132.6c-0.1,112.9-0.2,229.6,0.5,344.4C713.5,810.7,703.7,835.4,686.4,852.8z" />
-                <path class="st1" d="M712.8,440.7c0-43.4,0.1-88.4,0.1-132.6c0-7.9,0-13.1-3.9-17c-3.9-3.8-8.8-3.8-17-3.8c-128,0-256,0-383.9,0
-	c-8.2,0-13.1,0-17,3.9c-3.9,3.9-3.9,9.1-3.9,17c0,61.5,0,123.1,0,184.6l0,58.7l0,51.2c0,60.2,0,120.3,0,180.5c0,1.1,0,2.2,0,3.3
-	c0,6.9-0.1,14.1,1.6,21.5c10,43.8,45.2,71.1,92.1,71.2c32.6,0.1,65.5,0.1,98.2,0.1c23.2,0,46.2,0,68.9,0c23.8,0,47.6,0,71.5,0
-	c0,0,0,0,0,0c26.8,0,50-9.1,67.2-26.5c17.3-17.4,27.1-42.1,26.9-67.8C712.6,670.3,712.7,553.5,712.8,440.7z M619.3,864.3
-	c-23.8,0-47.6,0-71.5,0c-54.7,0-111.3,0.1-167-0.1c-40.1-0.1-69-22.4-77.5-59.5c-1.3-5.7-1.3-11.7-1.2-18.1c0-1.1,0-2.3,0-3.4
-	c0-60.2,0-120.3,0-180.5l0-51.2l0-58.7c0-61.5,0-123.1,0-184.6c0-2,0-4.2,0.1-5.8c1.6-0.1,3.8-0.1,5.9-0.1c128,0,256,0,383.9,0
-	c2.1,0,4.3,0,5.9,0.1c0.1,1.5,0.1,3.7,0.1,5.7c0,44.2,0,89.1-0.1,132.5c-0.1,112.9-0.2,229.7,0.5,344.5c0.1,21.7-8.1,42.5-22.5,57.1
-	C661.5,856.6,641.9,864.3,619.3,864.3z" />
-                <path d="M382.7,86.6c0.1,19.9,14.7,33.9,35.5,34c18.8,0.1,38,0.1,56.5,0c8.3,0,16.6,0,24.9,0c8.1,0,16.3,0,24.4,0c18.7,0,38,0,57,0
-	c21.6-0.1,36.2-13.8,36.2-34.2c0.1-20.4-14.9-35.2-35.5-35.3C553.9,51,526.4,51,499.4,51c-27.8,0-55,0.1-81.4,0.2
-	c-10,0-19.1,3.6-25.5,10.1C386.1,67.7,382.6,76.7,382.7,86.6z" />
-                <path d="M535.3,423.2c0-4.8-0.5-9.4-1.4-13.8c-3.5-16-17.1-26.7-33.9-26.7c0,0,0,0-0.1,0c-16.9,0-30.2,10.6-33.9,27
-	c-1.2,5.4-1.4,10.9-1.4,15.7c0,40.2,0,80.4,0,120.6l0,70.1c0,40.4,0,82.2,0.1,123.3c0,5.8,0.4,10.7,1.2,15c3,16,14.4,26.5,31.4,28.8
-	c12.7,1.7,27.5-6.7,33.8-19.1c3-5.9,4.3-12.7,4.3-22l0-84.7C535.4,580.7,535.4,501.3,535.3,423.2z" />
-              </svg></div>
-            <div class="MTableOptionName">حذف</div>
-          </div>
-        </template>
-      </MTable>
     </div>
     <div class="MGroup">
       <div class="MImage" required="true">
@@ -399,9 +375,12 @@ export default {
   setup() {
     return {
       GlobalsStore: ref(useGlobalsStore()),
+      Operation: ref(''),
       Images: ref([]),
       ID: ref(0),
       ServerPath: ref(''),
+      Attributes: ref(null),
+      AttributesItems: ref([]),
       IdentificationType: ref(null),
       IdentificationTypeItems: ref([]),
       CampName: ref(null),
@@ -414,105 +393,27 @@ export default {
       CampsTBHeaders: ref(['اسم الكمب', 'رقم الغرفة']),
       CampsTBTotals: ref(['', '']),
       CampsTBDisplayColumns: ref(['camp_name', 'room_no']),
+      Gender: ref(null),
+      GenderItems: ref([]),
+      BirthDate: ref(null),
+      IdentificationIssuingDate: ref(null),
+      SelectedAttributes: ref([]),
     };
   },
   mounted() {
     this.ServerPath = GetServerPath();
+    this.GenderItems = this.GlobalsStore.ComboBoxes['Gender'];
     this.IdentificationTypeItems = this.GlobalsStore.ComboBoxes['IdentificationType'];
+    this.AttributesItems = this.GlobalsStore.ComboBoxes['Attributes'];
     this.CampNameItems = this.GlobalsStore.ComboBoxes['Camps'];
+    this.Operation = this.$route.meta.Operation;
 
     this.ComponentLoad();
     let Instance = this;
 
-    document.getElementById('AddCamp').addEventListener('click', function () {
-      let CampData = {};
-
-      CampData['id'] = 'A' + Instance.CampCounter;
-      CampData['contractor_id'] = Instance.ID;
-      CampData['camp_name'] = Instance.CampName.Get()[0]['MCBIName'];
-      CampData['room_no'] = document.getElementById('RoomNo').querySelector('input').value;
-      CampData['ActionType'] = 'ADD';
-
-      Instance.Camps.push(CampData);
-      Instance.CampCounter++;
-
-      document.getElementById('CampsGroup').querySelectorAll('input').forEach(function (e) {
-        e.value = '';
-      });
-
-      Instance.CampName.Clear();
-      Instance.CampsTBData = Instance.Camps.filter(camp => camp.ActionType !== "DELETE");
+    document.getElementById('Attributes').addEventListener('MCBValueChange', function () {
+      Instance.SelectedAttributes = Instance.Attributes.GetValue().split(' | ') ?? [];
     });
-
-    document.getElementById('SaveCamp').addEventListener('click', function () {
-      document.getElementById('AddCamp').style.display = 'flex';
-      document.getElementById('SaveCamp').style.display = 'none';
-      document.getElementById('CancelCamp').style.display = 'none';
-
-      Instance.Camps.forEach(camp => {
-        if (camp.id == document.getElementById('CampsGroup').getAttribute('RowID')) {
-          camp.camp_name = Instance.CampName.Get()[0]['MCBIName'];
-          camp.room_no = document.getElementById('RoomNo').querySelector('input').value;
-          if (camp.ActionType != 'ADD') {
-            camp.ActionType = 'EDIT';
-          }
-        }
-      });
-
-      document.getElementById('CampsGroup').querySelectorAll('input').forEach(function (e) {
-        e.value = '';
-      });
-
-      Instance.CampName.Clear();
-      Instance.CampsTBData = Instance.Camps.filter(camp => camp.ActionType !== "DELETE");
-      document.getElementById('CampsGroup').removeAttribute('RowID')
-    }.bind(this));
-
-    document.getElementById('CancelCamp').addEventListener('click', function () {
-      document.getElementById('AddCamp').style.display = 'flex';
-      document.getElementById('SaveCamp').style.display = 'none';
-      document.getElementById('CancelCamp').style.display = 'none';
-
-      document.getElementById('CampsGroup').removeAttribute('RowID');
-      document.getElementById('CampsGroup').querySelectorAll('input').forEach(function (e) {
-        e.value = '';
-      });
-
-      Instance.CampName.Clear();
-    }.bind(this));
-
-    document.getElementById('CampsTB').addEventListener('EditItem', function (data) {
-      let CampData = data.detail.RowData;
-
-      document.getElementById('AddCamp').style.display = 'none';
-      document.getElementById('SaveCamp').style.display = 'flex';
-      document.getElementById('CancelCamp').style.display = 'flex';
-
-      document.getElementById('CampsGroup').setAttribute('RowID', CampData['id']);
-      Instance.CampName.Set(CampData['camp_name']);
-      document.getElementById('RoomNo').querySelector('input').value = CampData['room_no'];
-    }.bind(this));
-
-    document.getElementById('CampsTB').addEventListener('DeleteItem', function (data) {
-      let CampData = data.detail.RowData;
-
-      Instance.Camps.forEach((camp, index) => {
-        if (camp.id == CampData['id']) {
-          if (camp.ActionType == 'ADD') {
-            Instance.Camps.splice(index, 1);
-          } else {
-            camp.ActionType = 'DELETE';
-          }
-        }
-      });
-
-      document.getElementById('CampsGroup').querySelectorAll('input').forEach(function (e) {
-        e.value = '';
-      });
-
-      Instance.CampName.Clear();
-      Instance.CampsTBData = Instance.Camps.filter(camp => camp.ActionType !== "DELETE");
-    }.bind(this));
 
     document.querySelectorAll('.MImage').forEach(function (MImage) {
       MImage.querySelector('input').addEventListener('change', async function (e) {
@@ -578,66 +479,84 @@ export default {
 
       if (this.$route.meta.Operation == 'ADD') {
         document.getElementById('ID').style.display = 'none';
-        document.getElementById('WorkersCount').style.display = 'none';
         document.getElementById('DeleteBTN').style.display = 'none';
         this.BuildImages();
       }
       if (this.$route.meta.Operation == 'EDIT') {
         this.ID = this.GlobalsStore.MArray['id'];
         document.getElementById('ID').style.display = 'flex';
-        document.getElementById('WorkersCount').style.display = 'flex';
         document.getElementById('DeleteBTN').style.display = 'flex';
-
         document.getElementById('ID').querySelector('input').value = this.GlobalsStore.MArray['id'];
+        this.Attributes.Set(this.GlobalsStore.MArray['attributes'], 'attribute');
         document.getElementById('Name').querySelector('input').value = this.GlobalsStore.MArray['name'];
         document.getElementById('Nationality').querySelector('input').value = this.GlobalsStore.MArray['nationality'];
-        this.IdentificationType.Set(this.GlobalsStore.MArray['identification_type'])
+        document.getElementById('MotherName').querySelector('input').value = this.GlobalsStore.MArray['mother_name'];
         document.getElementById('IdentificationNumber').querySelector('input').value = this.GlobalsStore.MArray['identification_number'];
+        document.getElementById('IdentificationRecord').querySelector('input').value = this.GlobalsStore.MArray['identification_record'];
+        document.getElementById('IdentificationPage').querySelector('input').value = this.GlobalsStore.MArray['identification_page'];
+        document.getElementById('IdentificationIssuingAuthority').querySelector('input').value = this.GlobalsStore.MArray['identification_issuing_authority'];
         document.getElementById('Phone').querySelector('input').value = this.GlobalsStore.MArray['phone'];
+        document.getElementById('Study').querySelector('input').value = this.GlobalsStore.MArray['study'];
+        document.getElementById('WorkType').querySelector('input').value = this.GlobalsStore.MArray['work_type'];
         document.getElementById('WorkPlace').querySelector('input').value = this.GlobalsStore.MArray['work_place'];
         document.getElementById('Address').querySelector('input').value = this.GlobalsStore.MArray['address'];
+        document.getElementById('EMail').querySelector('input').value = this.GlobalsStore.MArray['email'];
         document.getElementById('ContractorContractNo').querySelector('input').value = this.GlobalsStore.MArray['contractor_contract_no'];
-        document.getElementById('WorkersCount').querySelector('input').value = this.GlobalsStore.MArray['workers_count'];
         document.getElementById('EntryPort').querySelector('input').value = this.GlobalsStore.MArray['entry_port'];
-        this.EntryDate.Set(this.GlobalsStore.MArray['entry_date'])
+        document.getElementById('Notes').querySelector('input').value = this.GlobalsStore.MArray['notes'];
+
+        this.Gender.Set(this.GlobalsStore.MArray['gender']);
+        this.BirthDate.Set(this.GlobalsStore.MArray['birth']);
+        this.IdentificationType.Set(this.GlobalsStore.MArray['identification_type']);
+        this.IdentificationIssuingDate.Set(this.GlobalsStore.MArray['identification_issuing_date']);
+        this.EntryDate.Set(this.GlobalsStore.MArray['entry_date']);
+        setTimeout(function () {
+          this.SelectedAttributes = this.Attributes.GetValue().split(' | ') ?? [];
+        }.bind(this), 100);
 
         this.Images = this.GlobalsStore.MArray['images'];
-        this.Camps = this.GlobalsStore.MArray['camps'];
-        this.CampsTBData = this.GlobalsStore.MArray['camps'];
         this.BuildImages();
       }
     },
     Save() {
       window.ShowLoading();
-
-      var Operation = this.$route.meta.Operation;
-
       var Parameters = new FormData();
 
       Parameters.append('id', this.ID);
       Parameters.append('name', document.getElementById('Name').querySelector('input').value);
+      Parameters.append('gender', this.Gender.GetValue());
+      Parameters.append('birth', this.BirthDate.Get());
       Parameters.append('nationality', document.getElementById('Nationality').querySelector('input').value);
-      Parameters.append('identification_type', this.IdentificationType.Get()[0]['MCBIName']);
+      Parameters.append('mother_name', document.getElementById('MotherName').querySelector('input').value);
+      Parameters.append('identification_type', this.IdentificationType.GetValue());
       Parameters.append('identification_number', document.getElementById('IdentificationNumber').querySelector('input').value);
+      Parameters.append('identification_record', document.getElementById('IdentificationRecord').querySelector('input').value);
+      Parameters.append('identification_page', document.getElementById('IdentificationPage').querySelector('input').value);
+      Parameters.append('identification_issuing_authority', document.getElementById('IdentificationIssuingAuthority').querySelector('input').value);
+      Parameters.append('identification_issuing_date', this.IdentificationIssuingDate.Get());
       Parameters.append('phone', document.getElementById('Phone').querySelector('input').value);
+      Parameters.append('study', document.getElementById('Study').querySelector('input').value);
+      Parameters.append('work_type', document.getElementById('WorkType').querySelector('input').value);
       Parameters.append('work_place', document.getElementById('WorkPlace').querySelector('input').value);
       Parameters.append('address', document.getElementById('Address').querySelector('input').value);
+      Parameters.append('email', document.getElementById('EMail').querySelector('input').value);
       Parameters.append('contractor_contract_no', document.getElementById('ContractorContractNo').querySelector('input').value);
       Parameters.append('entry_port', document.getElementById('EntryPort').querySelector('input').value);
       Parameters.append('entry_date', this.EntryDate.Get());
+      Parameters.append('notes', document.getElementById('Notes').querySelector('input').value);
 
+      Parameters.append('Attributes', JSON.stringify(this.Attributes.GetValue().split(' | ')));
       Parameters.append('Images', JSON.stringify(this.Images));
-      Parameters.append('Camps', JSON.stringify(this.Camps));
 
-      if (Operation == 'ADD') {
-        api.post('AddContractor', Parameters, {
+      if (this.Operation == 'ADD') {
+        api.post('AddPerson', Parameters, {
           headers: {
             'Content-Type': 'multipart/form-data',
           }
         }).then(response => {
           if (response.data == 'تمت العملية بنجاح') {
             window.HideLoading();
-            this.$router.push({ name: 'CampsConractors' });
+            this.$router.push({ name: 'Persons' });
           } else {
             window.HideLoading();
             window.ShowMessage(response.data)
@@ -648,8 +567,8 @@ export default {
         });
       }
 
-      if (Operation == 'EDIT') {
-        api.post('EditContractor', Parameters, {
+      if (this.Operation == 'EDIT') {
+        api.post('EditPerson', Parameters, {
           headers: {
             'Content-Type': 'multipart/form-data',
           }
@@ -760,6 +679,9 @@ export default {
 
       // Return the compressed image as a base64 data URL
       return canvas.toDataURL("image/jpeg", 0.7); // Adjust quality if needed
+    },
+    CheckAttributes(values) {
+      return this.SelectedAttributes.some(value => values.includes(value));
     }
   }
 }

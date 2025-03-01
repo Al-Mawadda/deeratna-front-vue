@@ -295,7 +295,7 @@ export default {
         items: [
           {
             text: 'معلومات الافراد',
-            route: '/information/add',
+            route: '/persons',
             permission: 'ads_video_view',
           },
         ],

@@ -18,7 +18,7 @@
       </div>
       <MComboBox ref='IdentificationType' :Name="'IdentificationType'" :Label="'نوع المستمسك'"
         :Items="IdentificationTypeItems"></MComboBox>
-      <div class="MField" id="IdentificationNo">
+      <div class="MField" id="IdentificationNumber">
         <input type="text" required>
         <label>رقم المستمسك</label>
         <div class="MFieldBG"></div>
@@ -169,7 +169,7 @@ export default {
   },
   mounted() {
     this.ServerPath = GetServerPath();
-    this.IdentificationTypeItems = this.GlobalsStore.ComboBoxes['CampsIdentificationType'];
+    this.IdentificationTypeItems = this.GlobalsStore.ComboBoxes['IdentificationType'];
     this.ComponentLoad();
     let Instance = this;
 
@@ -252,12 +252,12 @@ export default {
         document.getElementById('ID').style.display = 'flex';
         document.getElementById('DeleteBTN').style.display = 'flex';
 
-        this.ContractorID = this.GlobalsStore.MArray['contractor_id'];
+        this.ContractorID = this.GlobalsStore.MArray['pid'];
         document.getElementById('ID').querySelector('input').value = this.GlobalsStore.MArray['id'];
         document.getElementById('Name').querySelector('input').value = this.GlobalsStore.MArray['name'];
         document.getElementById('Nationality').querySelector('input').value = this.GlobalsStore.MArray['nationality'];
         this.IdentificationType.Set(this.GlobalsStore.MArray['identification_type'])
-        document.getElementById('IdentificationNo').querySelector('input').value = this.GlobalsStore.MArray['identification_no'];
+        document.getElementById('IdentificationNumber').querySelector('input').value = this.GlobalsStore.MArray['identification_number'];
         document.getElementById('Address').querySelector('input').value = this.GlobalsStore.MArray['address'];
         document.getElementById('EntryPort').querySelector('input').value = this.GlobalsStore.MArray['entry_port'];
         this.EntryDate.Set(this.GlobalsStore.MArray['entry_date'])
@@ -275,12 +275,12 @@ export default {
       var Parameters = new FormData();
 
       Parameters.append('id', this.ID);
-      Parameters.append('contractor_id', document.getElementById('ContractorID').querySelector('input').value);
+      Parameters.append('pid', document.getElementById('ContractorID').querySelector('input').value);
       Parameters.append('camp_id', this.Camp.Get()[0]['id']);
       Parameters.append('name', document.getElementById('Name').querySelector('input').value);
       Parameters.append('nationality', document.getElementById('Nationality').querySelector('input').value);
       Parameters.append('identification_type', this.IdentificationType.Get()[0]['MCBIName']);
-      Parameters.append('identification_no', document.getElementById('IdentificationNo').querySelector('input').value);
+      Parameters.append('identification_number', document.getElementById('IdentificationNumber').querySelector('input').value);
       Parameters.append('address', document.getElementById('Address').querySelector('input').value);
       Parameters.append('entry_port', document.getElementById('EntryPort').querySelector('input').value);
       Parameters.append('entry_date', this.EntryDate.Get());

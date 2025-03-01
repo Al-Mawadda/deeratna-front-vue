@@ -204,12 +204,12 @@ const groupedPermissions = ref(
     ],
   },
 ].map(group => ({
-  ...group,
-  items: group.items.map(item => ({
-    ...item,
-    val: item.val.trim()
-  }))
-)
+    ...group,
+    items: group.items.map(item => ({
+        ...item,
+        val: item.val.trim()
+    }))
+})))
 
 const showUserDialog = ref(false)
 const editMode = ref(false)

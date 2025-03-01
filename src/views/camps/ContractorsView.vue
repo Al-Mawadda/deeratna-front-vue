@@ -3,7 +3,7 @@
     <RouterLink to="/camps/contractors/add" class="MButton" id="AddContractorBTN">اضافة متعهد</RouterLink>
     <div class="MButton" id="ReloadContractorsBTN">اعادة تحميل البيانات</div>
     <MTable ref="ContractorsTB" :Name="'ContractorsTB'" :DataArray="ContractorsTBData" :HeadersArray="ContractorsTBHeaders"
-      :TotalsArray="ContractorsTBTotals" :DisplayColumnsArray="ContractorsTBDisplayColumns" :GetDataFunction="GetCampsContractorsData"
+      :TotalsArray="ContractorsTBTotals" :DisplayColumnsArray="ContractorsTBDisplayColumns" :GetDataFunction="GetContractors"
       :RowsCount="ContractorsTBRowsCount" :RowsPerPage="10">
       <template v-slot:options>
         <div class="MTableOption" OptionEventName="ViewItem">
@@ -71,7 +71,7 @@ export default {
       ContractorsTB: ref(null),
       ContractorsTBData: ref([]),
       ContractorsTBHeaders: ref(['#', 'الاسم', 'الجنسية', 'نوع المستمسك', 'رقم المستمسك', 'رقم الهاتف', 'الكمبات']),
-      ContractorsTBDisplayColumns: ref(['id', 'name', 'nationality', 'identification_type', 'identification_no', 'phone', 'camps.camp_full_name']),
+      ContractorsTBDisplayColumns: ref(['id', 'name', 'nationality', 'identification_type', 'identification_number', 'phone', 'camps.camp_full_name']),
       ContractorsTBTotals: ref(['Count', '', '', '', '', '', '']),
       ContractorsTBRowsCount: ref(0),
     };
@@ -91,13 +91,13 @@ export default {
       var YesFunction = function () {
         window.ShowLoading();
 
-        api.post("DeleteCampsContractor", null, {
+        api.post("DeleteContractor", null, {
           params: {
             id: data.detail.RowData['id'],
           }
         }).then(response => {
           if (response.data == 'تمت العملية بنجاح') {
-            this.GetCampsContractorsData();
+            this.GetContractors();
             window.HideLoading();
             window.HideChoose();
           } else {
@@ -118,8 +118,8 @@ export default {
     }.bind(this));
   },
   methods: {
-    GetCampsContractorsData(PageNo = 1, FilterArray = {}, SortArray = {}, RowsPerPage = 10) {
-      api.get('GetCampsContractors', {
+    GetContractors(PageNo = 1, FilterArray = {}, SortArray = {}, RowsPerPage = 10) {
+      api.get('GetContractors', {
         params: {
           PageNo: PageNo,
           FilterArray: FilterArray,

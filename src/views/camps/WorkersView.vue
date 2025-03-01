@@ -71,7 +71,7 @@ export default {
       WorkersTB: ref(null),
       WorkersTBData: ref([]),
       WorkersTBHeaders: ref(['#', 'الاسم', 'الجنسية', 'نوع المستمسك', 'رقم المستمسك', 'اسم المتعهد', 'اسم الكمب', 'رقم الغرفة']),
-      WorkersTBDisplayColumns: ref(['id', 'name', 'nationality', 'identification_type', 'identification_no', 'contractor_name', 'camp_name', 'room_no']),
+      WorkersTBDisplayColumns: ref(['id', 'name', 'nationality', 'identification_type', 'identification_number', 'contractor_name', 'camp_name', 'room_no']),
       WorkersTBTotals: ref(['Count', '', '', '', '', '', '', '']),
       WorkersTBRowsCount: ref(0),
     };

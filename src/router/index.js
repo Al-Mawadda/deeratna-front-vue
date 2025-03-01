@@ -23,10 +23,22 @@ const router = createRouter({
     },
     // Information
     {
-      path: '/information/add',
-      component: () => import('../views/information/PersonsInformation.vue'),
-      name: 'PersonsInformation',
-      meta: { requiresAuth: true, HeaderTitle: 'بيانات الاشخاص' },
+      path: '/persons',
+      component: () => import('../views/information/PersonsView.vue'),
+      name: 'Persons',
+      meta: { requiresAuth: true, HeaderTitle: 'معلومات الافراد' },
+    },
+    {
+      path: '/persons/add',
+      component: () => import('../views/information/PersonsDetailsView.vue'),
+      name: 'AddPerson',
+      meta: { requiresAuth: true, Operation: 'ADD', HeaderTitle: 'اضافة فرد' },
+    },
+    {
+      path: '/persons/edit',
+      component: () => import('../views/information/PersonsDetailsView.vue'),
+      name: 'EditPerson',
+      meta: { requiresAuth: true, Operation: 'EDIT', HeaderTitle: 'تعديل الفرد' },
     },
     // Internet
     {
