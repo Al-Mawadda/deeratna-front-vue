@@ -512,7 +512,7 @@ export default {
       }
     },
     Get() {
-      return this.SelectedItems
+      return this.SelectedItems ?? []
     },
     GetValue() {
       return document

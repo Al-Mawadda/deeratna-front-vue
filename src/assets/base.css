@@ -45,11 +45,17 @@
   --MFieldDisabled: #777;
   /* #endregion */
 
+  /* #region MImage */
+  --MImageBG: rgba(0, 0, 0, 0.1);
+  --MImageColor: #000;
+  /* #endregion */
+
   /* #region RequestDetailsTable */
   --RequestDetailsTableColor1: rgba(0, 0, 0, 0.05);
   --RequestDetailsTableColor2: rgba(0, 0, 0, 0.1);
   --RequestDetailsTableColor3: rgba(0, 0, 0, 0.4);
   /* #endregion */
+
   /* #region MStepper */
   --MStepperheaderHoverBG: rgba(0, 0, 0, 0.05);
   --MStepperContentBG: rgba(0, 0, 0, 0.05);
@@ -95,11 +101,17 @@
   --AttachmentBorder: #666;
   /* #endregion */
 
+  /* #region MImage */
+  --MImageBG: rgba(255, 255, 255, 0.1);
+  --MImageColor: #fff;
+  /* #endregion */
+
   /* #region RequestDetailsTable */
   --RequestDetailsTableColor1: rgba(255, 255, 255, 0.05);
   --RequestDetailsTableColor2: rgba(255, 255, 255, 0.1);
   --RequestDetailsTableColor3: rgba(255, 255, 255, 0.4);
   /* #endregion */
+
   /* #region MStepper */
   --MStepperheaderHoverBG: rgba(255, 255, 255, 0.05);
   --MStepperContentBG: rgba(255, 255, 255, 0.05);

@@ -122,7 +122,7 @@ export default {
     padding-top: 10px;
     width: calc(100% - 280px);
     transition-duration: 0.3s;
-    z-index: 3;
+    z-index: 10;
 }
 
 .FullMHeader {
