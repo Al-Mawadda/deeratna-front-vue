@@ -891,7 +891,6 @@ export default {
       InformationRequestsTBTotals: ref(['Count', '', '', '', '', '', '']),
       InformationRequestsTBRowsCount: ref(0),
       InformationRequestsFromDate: ref(null),
-      InformationRequestsToDate: ref(null),
       selectedRowData: ref([]),
       ServerPath: GetServerPath(),
     }
@@ -1007,3 +1006,8 @@ export default {
   },
 }
 </script>
+<style scoped>
+#InformationRequestsFromDate {
+  max-width: 400px;
+}
+</style>

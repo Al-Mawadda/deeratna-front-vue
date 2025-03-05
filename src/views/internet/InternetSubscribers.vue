@@ -141,6 +141,10 @@
         </div>
       </template>
     </MTable>
+    <div class="MGroup">
+      <div class="MlabelText">مجموع المبالغ =</div>
+      <div class="MlabelNumber" id="TotalSubscriptions"></div>
+    </div>
   </div>
 </template>
 
@@ -200,7 +204,20 @@ export default {
         'created_at',
         'notes',
       ]),
-      InternetSubscribersTBTotals: ref(['Count', '', '', '', '', '', '']),
+      InternetSubscribersTBTotals: ref([
+        'Count',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        'Sum',
+        '',
+        '',
+      ]),
       InternetSubscribersTBRowsCount: ref(0),
       InternetSubscribersFromDate: ref(null),
       InternetSubscribersToDate: ref(null),
@@ -239,6 +256,7 @@ export default {
         this.SubscriptionTypeItems = CompanyProfiles
       }.bind(this)
     )
+
     document.getElementById('SubscriptionType').addEventListener(
       'MCBValueChange',
       function () {
@@ -318,8 +336,13 @@ export default {
           },
         })
         .then(response => {
-          this.InternetSubscribersTBRowsCount = response.data.total
-          this.InternetSubscribersTBData = response.data.data
+          this.InternetSubscribersTBRowsCount =
+            response.data.paginated_data.total
+          this.InternetSubscribersTBData = response.data.paginated_data.data
+          document.getElementById('TotalSubscriptions').innerHTML =
+            new Intl.NumberFormat('en-US').format(
+              response.data.total_payment_amount
+            )
         })
         .catch(error => {
           ShowMessage(error)

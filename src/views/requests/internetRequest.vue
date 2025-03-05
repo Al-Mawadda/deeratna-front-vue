@@ -239,12 +239,9 @@
       <MDate
         ref="InternetRequestsFromDate"
         :Name="'InternetRequestsFromDate'"
-        :Label="'تاريخ من'"
-      ></MDate>
-      <MDate
-        ref="InternetRequestsToDate"
-        :Name="'InternetRequestsToDate'"
-        :Label="'تاريخ الى'"
+        :Label="'التاريخ'"
+        :Range="true"
+        :Clearable="true"
       ></MDate>
     </div>
     <MTable
@@ -283,6 +280,10 @@
         </div>
       </template>
     </MTable>
+    <div class="MGroup">
+      <div class="MlabelText">مجموع المبالغ =</div>
+      <div class="MlabelNumber" id="InternetTotal"></div>
+    </div>
   </div>
 </template>
 
@@ -349,10 +350,25 @@ export default {
         'request_status',
         'created_at',
       ]),
-      InternetRequestsTBTotals: ref(['Count', '', '', '', '', '', '']),
+      InternetRequestsTBTotals: ref([
+        'Count',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        'Sum',
+        '',
+        '',
+        '',
+      ]),
       InternetRequestsTBRowsCount: ref(0),
       InternetRequestsFromDate: ref(null),
-      InternetRequestsToDate: ref(null),
       selectedRowData: ref([]),
       ServerPath: GetServerPath(),
     }
@@ -456,13 +472,17 @@ export default {
             PageNo: PageNo,
             FilterArray: FilterArray,
             SortArray: SortArray,
-            InternetRequestFrom: this.InternetRequestsFromDate.Get(),
-            InternetRequestTo: this.InternetRequestsToDate.Get(),
+            InternetRequestFrom: this.InternetRequestsFromDate.Get()[0],
+            InternetRequestTo: this.InternetRequestsFromDate.Get()[1],
           },
         })
         .then(response => {
-          this.InternetRequestsTBRowsCount = response.data.total
-          this.InternetRequestsTBData = response.data.data
+          this.InternetRequestsTBRowsCount = response.data.paginated_data.total
+          this.InternetRequestsTBData = response.data.paginated_data.data
+          document.getElementById('InternetTotal').innerHTML =
+            new Intl.NumberFormat('en-US').format(
+              response.data.total_payment_amount
+            )
         })
         .catch(error => {
           ShowMessage(error)
@@ -487,6 +507,7 @@ export default {
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append('pid', this.selectedRowData.pid)
       Parameters.append('uid', this.selectedRowData.uid)
+      Parameters.append('name', this.selectedRowData.name)
 
       if (this.selectedRowData.request_type == 'تجديد') {
         Parameters.append('request_status', 'تم')
@@ -623,3 +644,15 @@ export default {
   },
 }
 </script>
+<style scoped>
+#InternetRequestsFromDate {
+  max-width: 400px;
+}
+#RejectBTN {
+  background-color: red;
+}
+#RejectBTN:hover {
+  color: red;
+  background-color: var(--MButtonBG);
+}
+</style>
