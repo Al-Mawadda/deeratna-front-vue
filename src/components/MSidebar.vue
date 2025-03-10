@@ -434,7 +434,7 @@ export default {
           },
         ],
       },
-      
+
       //==================================
       {
         text: 'المستخدمين',
@@ -448,8 +448,18 @@ export default {
         text: 'خطار',
         permission: 'qr_security' || 'qr_managment',
         items: [
-          { text: 'تطبيق خطار الامنية', route: '/qr-security', permission: 'qr_security' },
-          { text: 'تطبيق خطار الادارة المحلية', route: '/qr-management', permission: 'qr_managment' },
+          {
+            text: 'الاشعارات',
+            route: '/qr-security', permission: 'qr_security'
+          },
+          {
+            text: 'معلومات المشتركين',
+            route: '/qr-management', permission: 'qr_managment'
+          },
+          {
+            text: 'بيانات ال QR',
+            route: '/qr-management', permission: 'qr_managment'
+          },
         ],
       },
 

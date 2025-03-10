@@ -239,7 +239,10 @@ const groupedPermissions = ref(
   {
     label: 'الكمب',
     items: [
-      { val: 'camps', label: 'الكمب' },
+      {
+        val: 'camps',
+        label: 'الكمب'
+      },
     ],
   },
 ].map(group => ({
