@@ -14,7 +14,6 @@
       :RowsPerPage="10"
     >
       <template v-slot:options>
-        <!-- View Videosdffhroif Option -->
         <div class="MTableOption" OptionEventName="EditItem">
           <div class="MTableOptionIcon">
             <svg viewBox="0 0 1000 1000">
@@ -46,16 +45,12 @@
 <script>
 import { ref } from 'vue'
 import axios from 'axios'
-import { useGlobalsStore } from '../../stores/Globals.js'
 import { ShowMessage} from '@/MJS.js'
 
 export default {
   setup() {
 
     return {
-
-      ID: ref(''),
-      GlobalsStore: ref(useGlobalsStore()),
 
       qrdata: ref(null),
       qrdataData: ref([]),
@@ -65,7 +60,6 @@ export default {
         'العنوان',
         'اسم الساكن',
         'رقم الهاتف',
-        'تاريخ',
       ]),
       qrdataDisplayColumns: ref([
         'id',
@@ -73,7 +67,6 @@ export default {
         'address',
         'name',
         'phone',
-        'created_at',
       ]),
       qrdataTotals: ref(['Count', '', '', '', '', '', '']),
       qrdataRowsCount: ref(0),
@@ -83,9 +76,33 @@ export default {
   },
   mounted() {
     this.GetInternetProfilesData()
+    this.qrdata.LoadMTable()
+    // document.getElementById('qrdata').addEventListener(
+    //   'click',
+    //   function () {
+    //     this.qrdata.LoadMTable()
+    //   }.bind(this)
+    // )
+    document.getElementById('qrdata').addEventListener(
+      'EditItem',
+      function (data) {
+        window.ShowLoading()
+        axios
+          .get(this.ServerPath+'cus-reset/'+data.detail.RowData.id)
+          .then(response => {
+            window.HideLoading()
+            ShowMessage(response.data.message)
+            this.qrdata.LoadMTable()
+          })
+          .catch(error => {
+            window.HideLoading()
+            ShowMessage(error)
+          })
+
+      }.bind(this)
+    )
   },
   methods: {
-    //load data from table to table and combo companyName
     GetInternetProfilesData(PageNo = 1, FilterArray = {}, SortArray = {}) {
       axios
         .get(this.ServerPath+'cus-data-deeratna', {
@@ -107,3 +124,8 @@ export default {
   },
 }
 </script>
+
+
+
+
+<!-- cus-reset/{id} -->

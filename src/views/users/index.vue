@@ -347,7 +347,7 @@ const getPermissionLabel = perm =>
     .flatMap(group => group.items)
     .find(item => item.val === perm)?.label || perm
 
-onMounted(fetchUsers())
+onMounted(fetchUsers)
 </script>
 
 

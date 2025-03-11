@@ -200,16 +200,22 @@ const router = createRouter({
 
     // QR خطار
     {
+      path: '/qr-data',
+      component: () => import('../views/qr/manage.vue'),
+      name: 'qr-data',
+      meta: { requiresAuth: true, HeaderTitle: 'بيانات الـ QR' },
+    },
+    {
       path: '/qr-security',
       component: () => import('../views/qr/index.vue'),
       name: 'qr-security',
-      meta: { requiresAuth: true, HeaderTitle: 'تطبيق خطار الامنية' },
+      meta: { requiresAuth: true, HeaderTitle: 'الاشعارات' },
     },
     {
-      path: '/qr-management',
-      component: () => import('../views/qr/manage.vue'),
+      path: '/qr-customers',
+      component: () => import('../views/qr/customers.vue'),
       name: 'qr-management',
-      meta: { requiresAuth: true, HeaderTitle: 'تطبيق خطار الادارة المحلية' },
+      meta: { requiresAuth: true, HeaderTitle: 'بيانات المشتركين' },
     },
 
 

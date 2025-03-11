@@ -454,11 +454,11 @@ export default {
           },
           {
             text: 'معلومات المشتركين',
-            route: '/qr-management', permission: 'qr_managment'
+            route: '/qr-customers', permission: 'qr_managment'
           },
           {
             text: 'بيانات ال QR',
-            route: '/qr-management', permission: 'qr_managment'
+            route: '/qr-data', permission: 'qr_security'
           },
         ],
       },
