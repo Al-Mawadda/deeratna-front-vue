@@ -294,7 +294,7 @@ export default {
         permission: 'ads_view_all',
         items: [
           {
-            text: 'معلومات الافراد',
+            text: 'معلومات الاشخاص',
             route: '/persons',
             permission: 'ads_video_view',
           },

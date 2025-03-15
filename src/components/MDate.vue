@@ -845,7 +845,6 @@ export default {
   flex: 1;
   min-width: min-content;
   box-sizing: border-box;
-  z-index: 7;
   flex-wrap: nowrap;
   padding: 5px;
   justify-content: space-between;
@@ -895,6 +894,7 @@ export default {
   outline: 0;
   font-family: 'MFontR';
   font-size: 15px;
+  z-index: 5;
   color: var(--TextColor);
 }
 
@@ -908,7 +908,6 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  z-index: -1;
   transition-duration: 0.3s;
   box-sizing: border-box;
 }
@@ -922,6 +921,7 @@ export default {
   flex: 1;
   justify-content: center;
   padding: 0 5px;
+  z-index: 5;
 }
 
 .MDateInputSeperator {
@@ -931,6 +931,7 @@ export default {
   flex: 1;
   justify-content: center;
   padding: 0 1px;
+  z-index: 5;
 }
 
 .MDate[focus] .MDateSeperator,
@@ -1010,6 +1011,7 @@ export default {
   align-items: center;
   cursor: pointer;
   opacity: 0;
+  z-index: 5;
 }
 
 .MDateClearBTN svg {
@@ -1038,6 +1040,7 @@ export default {
   transition-duration: 0.3s;
   padding-right: 1px;
   margin-right: 5px;
+  z-index: 5;
 }
 
 .MDatePickerBTN svg {
@@ -1065,7 +1068,7 @@ export default {
   background-color: var(--MDatePickerBG);
   box-shadow: 0 2px 5px 1px var(--MDatePickerShadow);
   border-radius: 5px;
-  z-index: 5;
+  z-index: 7;
   outline: none;
   width: min-content;
   top: -41px;

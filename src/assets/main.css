@@ -118,6 +118,15 @@ body {
   padding: 5px;
 }
 
+.MGroupSeperator {
+  display: flex;
+  width: calc(100% - 10px);
+  justify-content: center;
+  height: 1px;
+  margin: 20px 0;
+  background-color: #777;
+}
+
 /* #endregion */
 
 /* #region MField */

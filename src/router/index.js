@@ -26,19 +26,19 @@ const router = createRouter({
       path: '/persons',
       component: () => import('../views/information/PersonsView.vue'),
       name: 'Persons',
-      meta: { requiresAuth: true, HeaderTitle: 'معلومات الافراد' },
+      meta: { requiresAuth: true, HeaderTitle: 'معلومات الاشخاص' },
     },
     {
       path: '/persons/add',
       component: () => import('../views/information/PersonsDetailsView.vue'),
       name: 'AddPerson',
-      meta: { requiresAuth: true, Operation: 'ADD', HeaderTitle: 'اضافة فرد' },
+      meta: { requiresAuth: true, Operation: 'ADD', HeaderTitle: 'اضافة شخص' },
     },
     {
       path: '/persons/edit',
       component: () => import('../views/information/PersonsDetailsView.vue'),
       name: 'EditPerson',
-      meta: { requiresAuth: true, Operation: 'EDIT', HeaderTitle: 'تعديل الفرد' },
+      meta: { requiresAuth: true, Operation: 'EDIT', HeaderTitle: 'تعديل الشخص' },
     },
     // Internet
     {
