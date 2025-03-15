@@ -38,14 +38,18 @@ const router = createRouter({
       path: '/persons/edit',
       component: () => import('../views/information/PersonsDetailsView.vue'),
       name: 'EditPerson',
-      meta: { requiresAuth: true, Operation: 'EDIT', HeaderTitle: 'تعديل الفرد' },
+      meta: {
+        requiresAuth: true,
+        Operation: 'EDIT',
+        HeaderTitle: 'تعديل الفرد',
+      },
     },
     // Internet
     {
       path: '/internet/subscribers',
       component: () => import('../views/internet/InternetSubscribers.vue'),
       name: 'SubscribersInformation',
-      meta: { requiresAuth: true, HeaderTitle: 'بيانات المشتركين' },
+      meta: { requiresAuth: true, HeaderTitle: 'الانترنيت - بيانات المشتركين' },
     },
     {
       path: '/internet/profile',
@@ -161,13 +165,21 @@ const router = createRouter({
       path: '/camps/contractors/add',
       component: () => import('../views/camps/ContractorDetailsView.vue'),
       name: 'AddCampsContractor',
-      meta: { requiresAuth: true, Operation: 'ADD', HeaderTitle: 'اضافة متعهد' },
+      meta: {
+        requiresAuth: true,
+        Operation: 'ADD',
+        HeaderTitle: 'اضافة متعهد',
+      },
     },
     {
       path: '/camps/contractors/edit',
       component: () => import('../views/camps/ContractorDetailsView.vue'),
       name: 'EditCampsContractor',
-      meta: { requiresAuth: true, Operation: 'EDIT', HeaderTitle: 'تعديل المتعهد' },
+      meta: {
+        requiresAuth: true,
+        Operation: 'EDIT',
+        HeaderTitle: 'تعديل المتعهد',
+      },
     },
 
     // Camps Workers
@@ -187,7 +199,11 @@ const router = createRouter({
       path: '/camps/workers/edit',
       component: () => import('../views/camps/WorkerDetailsView.vue'),
       name: 'EditCampsWorker',
-      meta: { requiresAuth: true, Operation: 'EDIT', HeaderTitle: 'تعديل العامل' },
+      meta: {
+        requiresAuth: true,
+        Operation: 'EDIT',
+        HeaderTitle: 'تعديل العامل',
+      },
     },
 
     // USERS

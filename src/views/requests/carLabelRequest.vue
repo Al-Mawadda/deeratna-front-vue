@@ -196,12 +196,9 @@
       <MDate
         ref="CarLabelRequestsFromDate"
         :Name="'CarLabelRequestsFromDate'"
-        :Label="'تاريخ من'"
-      ></MDate>
-      <MDate
-        ref="CarLabelRequestsToDate"
-        :Name="'CarLabelRequestsToDate'"
-        :Label="'تاريخ الى'"
+        :Label="'التاريخ'"
+        :Range="true"
+        :Clearable="true"
       ></MDate>
     </div>
 
@@ -287,7 +284,6 @@ export default {
       CarLabelRequestsTBTotals: ref(['Count', '', '', '', '', '', '']),
       CarLabelRequestsTBRowsCount: ref(0),
       CarLabelRequestsFromDate: ref(null),
-      CarLabelRequestsToDate: ref(null),
       selectedRowData: ref([]),
       LabelCode: ref(''),
       LabelIssue: ref(null),
@@ -346,8 +342,8 @@ export default {
             PageNo: PageNo,
             FilterArray: FilterArray,
             SortArray: SortArray,
-            carLabelRequestFrom: this.CarLabelRequestsFromDate.Get(),
-            carLabelRequestTo: this.CarLabelRequestsToDate.Get(),
+            carLabelRequestFrom: this.CarLabelRequestsFromDate.Get()[0],
+            carLabelRequestTo: this.CarLabelRequestsFromDate.Get()[1],
           },
         })
         .then(response => {
@@ -444,9 +440,8 @@ export default {
 </script>
 
 <style scoped>
-#CarLabelRequestsFromDate,
-#CarLabelRequestsToDate {
-  max-width: 300px;
+#CarLabelRequestsFromDate {
+  max-width: 400px;
 }
 #RejectBTN {
   background-color: red;
