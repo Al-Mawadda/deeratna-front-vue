@@ -434,7 +434,7 @@ export default {
           },
         ],
       },
-      
+
       //==================================
       {
         text: 'المستخدمين',
@@ -443,6 +443,26 @@ export default {
           { text: 'المستخدمين', route: '/users', permission: 'users_view' },
         ],
       },
+      //==================================
+      {
+        text: 'خطار',
+        permission: 'qr_security' || 'qr_managment',
+        items: [
+          {
+            text: 'الاشعارات',
+            route: '/qr-security', permission: 'qr_security'
+          },
+          {
+            text: 'معلومات المشتركين',
+            route: '/qr-customers', permission: 'qr_managment'
+          },
+          {
+            text: 'بيانات ال QR',
+            route: '/qr-data', permission: 'qr_security'
+          },
+        ],
+      },
+
     ])
 
     const hasPermission = permission => {

@@ -1,6 +1,6 @@
 <template>
   <div class="ComponentWrapper">
-    <!-- =============== add subsc Model========= -->
+    <!-- ===============  add subsc Model  ========= -->
     <MModal
       ref="AddSubscriberModal"
       :Name="'AddSubscriberModal'"
@@ -141,6 +141,10 @@
         </div>
       </template>
     </MTable>
+    <div class="MGroup">
+      <div class="MlabelText">مجموع المبالغ =</div>
+      <div class="MlabelNumber" id="TotalSubscriptions"></div>
+    </div>
   </div>
 </template>
 
@@ -200,7 +204,20 @@ export default {
         'created_at',
         'notes',
       ]),
-      InternetSubscribersTBTotals: ref(['Count', '', '', '', '', '', '']),
+      InternetSubscribersTBTotals: ref([
+        'Count',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        'Sum',
+        '',
+        '',
+      ]),
       InternetSubscribersTBRowsCount: ref(0),
       InternetSubscribersFromDate: ref(null),
       InternetSubscribersToDate: ref(null),
@@ -212,12 +229,14 @@ export default {
     this.CompoundsItems = this.GlobalsStore.ComboBoxes['Compounds']
     this.GetInternetProfilesData()
     this.InternetSubscribersTB.LoadMTable()
+    //ReLoad table
     document.getElementById('GetInternetSubscribersBTN').addEventListener(
       'click',
       function () {
         this.InternetSubscribersTB.LoadMTable()
       }.bind(this)
     )
+    //Add new sub
     document.getElementById('AddInternetSubscribersBTN').addEventListener(
       'click',
       function () {
@@ -226,6 +245,7 @@ export default {
         this.clearFields()
       }.bind(this)
     )
+
     document.getElementById('CompanyName').addEventListener(
       'MCBValueChange',
       function () {
@@ -236,6 +256,7 @@ export default {
         this.SubscriptionTypeItems = CompanyProfiles
       }.bind(this)
     )
+
     document.getElementById('SubscriptionType').addEventListener(
       'MCBValueChange',
       function () {
@@ -315,8 +336,13 @@ export default {
           },
         })
         .then(response => {
-          this.InternetSubscribersTBRowsCount = response.data.total
-          this.InternetSubscribersTBData = response.data.data
+          this.InternetSubscribersTBRowsCount =
+            response.data.paginated_data.total
+          this.InternetSubscribersTBData = response.data.paginated_data.data
+          document.getElementById('TotalSubscriptions').innerHTML =
+            new Intl.NumberFormat('en-US').format(
+              response.data.total_payment_amount
+            )
         })
         .catch(error => {
           ShowMessage(error)
@@ -327,23 +353,13 @@ export default {
         .get('internetprofiles')
         .then(response => {
           this.CompanyNameItems = response.data.data
-          const CompanysName = response.data.data.map(item => item.company_name) // Assuming 'job_type' is the relevant field
+          const CompanysName = response.data.data.map(item => item.company_name) // Assuming '' is the relevant field
           this.CompanyNamesItems = [...new Set(CompanysName)] // Using Set to remove duplicates
         })
         .catch(error => {
           ShowMessage(error)
         })
     },
-    // GetInternetProfilesData() {
-    //   api
-    //     .get('internetprofiles')
-    //     .then(response => {
-    //       this.CompanyNameItems = response.data.data
-    //     })
-    //     .catch(error => {
-    //       ShowMessage(error)
-    //     })
-    // },
     //==============Save  person=========================
     SavePerson() {
       ShowLoading()

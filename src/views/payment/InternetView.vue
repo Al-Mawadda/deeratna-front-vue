@@ -5,13 +5,13 @@
     </div>
     <div class="MGroup">
       <MDate
-        ref="ElectricitysFromDate"
-        :Name="'ElectricitysFromDate'"
+        ref="InternetTransactionsFromDate"
+        :Name="'InternetTransactionsFromDate'"
         :Label="'تاريخ من'"
       ></MDate>
       <MDate
-        ref="ElectricitysToDate"
-        :Name="'ElectricitysToDate'"
+        ref="InternetTransactionsToDate"
+        :Name="'InternetTransactionsToDate'"
         :Label="'تاريخ الى'"
       ></MDate>
     </div>
@@ -94,8 +94,8 @@ export default {
       ]),
       ElectricitysTBTotals: ref(['Count', '', '', '', '', '', '']),
       ElectricitysTBRowsCount: ref(0),
-      ElectricitysFromDate: ref(null),
-      ElectricitysToDate: ref(null),
+      InternetTransactionsFromDate: ref(null),
+      InternetTransactionsToDate: ref(null),
     }
   },
   mounted() {
@@ -117,8 +117,8 @@ export default {
             PageNo: PageNo,
             FilterArray: FilterArray,
             SortArray: SortArray,
-            electricityFrom: this.ElectricitysFromDate.Get(),
-            electricityTo: this.ElectricitysToDate.Get(),
+            InternetTransactionsFrom: this.InternetTransactionsFromDate.Get(),
+            InternetTransactionsTo: this.InternetTransactionsToDate.Get(),
           },
         })
         .then(response => {
@@ -138,8 +138,8 @@ export default {
 </script>
 
 <style scoped>
-#ElectricitysFromDate,
-#ElectricitysToDate {
+#InternetTransactionsFromDate,
+#InternetTransactionsToDate {
   max-width: 300px;
 }
 </style>

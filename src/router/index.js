@@ -45,7 +45,7 @@ const router = createRouter({
       path: '/internet/subscribers',
       component: () => import('../views/internet/InternetSubscribers.vue'),
       name: 'SubscribersInformation',
-      meta: { requiresAuth: true, HeaderTitle: 'بيانات المشتركين' },
+      meta: { requiresAuth: true, HeaderTitle: 'الانترنيت - بيانات المشتركين' },
     },
     {
       path: '/internet/profile',
@@ -161,13 +161,21 @@ const router = createRouter({
       path: '/camps/contractors/add',
       component: () => import('../views/camps/ContractorDetailsView.vue'),
       name: 'AddCampsContractor',
-      meta: { requiresAuth: true, Operation: 'ADD', HeaderTitle: 'اضافة متعهد' },
+      meta: {
+        requiresAuth: true,
+        Operation: 'ADD',
+        HeaderTitle: 'اضافة متعهد',
+      },
     },
     {
       path: '/camps/contractors/edit',
       component: () => import('../views/camps/ContractorDetailsView.vue'),
       name: 'EditCampsContractor',
-      meta: { requiresAuth: true, Operation: 'EDIT', HeaderTitle: 'تعديل المتعهد' },
+      meta: {
+        requiresAuth: true,
+        Operation: 'EDIT',
+        HeaderTitle: 'تعديل المتعهد',
+      },
     },
 
     // Camps Workers
@@ -187,7 +195,11 @@ const router = createRouter({
       path: '/camps/workers/edit',
       component: () => import('../views/camps/WorkerDetailsView.vue'),
       name: 'EditCampsWorker',
-      meta: { requiresAuth: true, Operation: 'EDIT', HeaderTitle: 'تعديل العامل' },
+      meta: {
+        requiresAuth: true,
+        Operation: 'EDIT',
+        HeaderTitle: 'تعديل العامل',
+      },
     },
 
     // USERS
@@ -197,6 +209,28 @@ const router = createRouter({
       name: 'users',
       meta: { requiresAuth: true, HeaderTitle: 'ادارة المستخدمين' },
     },
+
+    // QR خطار
+    {
+      path: '/qr-data',
+      component: () => import('../views/qr/manage.vue'),
+      name: 'qr-data',
+      meta: { requiresAuth: true, HeaderTitle: 'بيانات الـ QR' },
+    },
+    {
+      path: '/qr-security',
+      component: () => import('../views/qr/index.vue'),
+      name: 'qr-security',
+      meta: { requiresAuth: true, HeaderTitle: 'الاشعارات' },
+    },
+    {
+      path: '/qr-customers',
+      component: () => import('../views/qr/customers.vue'),
+      name: 'qr-management',
+      meta: { requiresAuth: true, HeaderTitle: 'بيانات المشتركين' },
+    },
+
+
     {
       path: '/login',
       name: 'Login',

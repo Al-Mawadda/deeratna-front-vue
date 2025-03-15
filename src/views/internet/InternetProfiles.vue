@@ -205,13 +205,7 @@ export default {
     document.getElementById('InternetProfilesTB').addEventListener(
       'DeleteItem',
       function (data) {
-        this.selectedRowData = this.InternetProfilesTBData.filter(function (
-          item
-        ) {
-          if (item['id'] == data.detail.RowID) {
-            return item
-          }
-        })[0]
+        this.selectedRowData = data.detail.RowData
         this.ID = this.selectedRowData.id
         api
           .delete(`internetprofiles/` + this.ID)

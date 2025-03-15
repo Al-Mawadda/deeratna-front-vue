@@ -187,12 +187,9 @@
       <MDate
         ref="NfcCardRequestsFromDate"
         :Name="'NfcCardRequestsFromDate'"
-        :Label="'تاريخ من'"
-      ></MDate>
-      <MDate
-        ref="NfcCardRequestsToDate"
-        :Name="'NfcCardRequestsToDate'"
-        :Label="'تاريخ الى'"
+        :Label="'التاريخ'"
+        :Range="true"
+        :Clearable="true"
       ></MDate>
     </div>
 
@@ -281,7 +278,6 @@ export default {
       NfcCardRequestsTBTotals: ref(['Count', '', '', '', '', '', '']),
       NfcCardRequestsTBRowsCount: ref(0),
       NfcCardRequestsFromDate: ref(null),
-      NfcCardRequestsToDate: ref(null),
       selectedRowData: ref([]),
       CardCode: ref(''),
       CardExpire: ref(null),
@@ -338,8 +334,8 @@ export default {
             PageNo: PageNo,
             FilterArray: FilterArray,
             SortArray: SortArray,
-            nfcCardRequestFrom: this.NfcCardRequestsFromDate.Get(),
-            nfcCardRequestTo: this.NfcCardRequestsToDate.Get(),
+            nfcCardRequestFrom: this.NfcCardRequestsFromDate.Get()[0],
+            nfcCardRequestTo: this.NfcCardRequestsFromDate.Get()[1],
           },
         })
         .then(response => {
@@ -438,9 +434,8 @@ export default {
 </script>
 
 <style scoped>
-#NfcCardRequestsFromDate,
-#NfcCardRequestsToDate {
-  max-width: 300px;
+#NfcCardRequestsFromDate {
+  max-width: 400px;
 }
 #RejectBTN {
   background-color: red;
