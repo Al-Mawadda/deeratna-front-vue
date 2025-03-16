@@ -279,7 +279,7 @@ export default {
       Parameters.append('camp_id', this.Camp.Get()[0]['id']);
       Parameters.append('name', document.getElementById('Name').querySelector('input').value);
       Parameters.append('nationality', document.getElementById('Nationality').querySelector('input').value);
-      Parameters.append('identification_type', this.IdentificationType.Get()[0]['MCBIName']);
+      Parameters.append('identification_type', this.IdentificationType.GetValue());
       Parameters.append('identification_number', document.getElementById('IdentificationNumber').querySelector('input').value);
       Parameters.append('address', document.getElementById('Address').querySelector('input').value);
       Parameters.append('entry_port', document.getElementById('EntryPort').querySelector('input').value);
