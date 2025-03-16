@@ -100,7 +100,7 @@ export default {
           this.PersonsTBData = response.data.data
         })
         .catch(error => {
-          this.ShowMessage('حدث خطا', error)
+          window.ShowMessage('حدث خطا', error)
         })
     },
   },

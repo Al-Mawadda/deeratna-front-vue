@@ -172,7 +172,7 @@ export default {
     this.IdentificationTypeItems = this.GlobalsStore.ComboBoxes['IdentificationType'];
     this.ComponentLoad();
     let Instance = this;
-
+ 
     document.getElementById('ContractorID').querySelector('.MFieldBTN').addEventListener('click', function () {
       Instance.GetCampsContractor();
     });

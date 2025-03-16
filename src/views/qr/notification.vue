@@ -69,9 +69,9 @@ export default {
       qrdataDisplayColumns: ref([
         'id',
         'content',
-        "updated_at",
-        "period",
-        "created_at",
+        "updated_at_12_hour",
+        "periods",
+        "created_at_12_hour",
       ]),
       qrdataTotals: ref(['Count', '', '', '', '', '', '']),
       qrdataRowsCount: ref(0),

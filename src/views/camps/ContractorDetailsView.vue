@@ -617,7 +617,7 @@ export default {
       Parameters.append('id', this.ID);
       Parameters.append('name', document.getElementById('Name').querySelector('input').value);
       Parameters.append('nationality', document.getElementById('Nationality').querySelector('input').value);
-      Parameters.append('identification_type', this.IdentificationType.Get()[0]['MCBIName']);
+      Parameters.append('identification_type', this.IdentificationType.GetValue());
       Parameters.append('identification_number', document.getElementById('IdentificationNumber').querySelector('input').value);
       Parameters.append('phone', document.getElementById('Phone').querySelector('input').value);
       Parameters.append('work_place', document.getElementById('WorkPlace').querySelector('input').value);

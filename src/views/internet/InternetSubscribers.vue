@@ -1,6 +1,6 @@
 <template>
   <div class="ComponentWrapper">
-    <!-- =============== add subsc Model========= -->
+    <!-- ===============  add subsc Model  ========= -->
     <MModal
       ref="AddSubscriberModal"
       :Name="'AddSubscriberModal'"

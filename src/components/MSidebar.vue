@@ -294,7 +294,7 @@ export default {
         permission: 'ads_view_all',
         items: [
           {
-            text: 'معلومات الافراد',
+            text: 'معلومات الاشخاص',
             route: '/persons',
             permission: 'ads_video_view',
           },
@@ -446,15 +446,15 @@ export default {
       //==================================
       {
         text: 'خطار',
-        permission: 'qr_security' || 'qr_managment',
+        permission: 'qr_security' || 'qr_customers'|| 'qr_notification',
         items: [
           {
             text: 'الاشعارات',
-            route: '/qr-notification', permission: 'qr_security'
+            route: '/qr-notification', permission: 'qr_notification'
           },
           {
             text: 'معلومات المشتركين',
-            route: '/qr-customers', permission: 'qr_managment'
+            route: '/qr-customers', permission: 'qr_customers'
           },
           {
             text: 'بيانات ال QR',

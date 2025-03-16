@@ -2,8 +2,9 @@ import axios from 'axios'
 import { useAuthStore } from './stores/auth'
 
 const api = axios.create({
-  //baseURL: 'http://localhost:8000/api/',
-  baseURL: 'https://app.deeratna.net/public/api/',
+  // baseURL: 'http://localhost:8000/api/',
+  // baseURL: 'https://app.deeratna.net/public/api/',
+  baseURL: 'https://test.deeratna.net/backend/public/api/',
   headers: {
     'Content-Type': 'application/json',
   },
