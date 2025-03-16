@@ -450,7 +450,7 @@ export default {
         items: [
           {
             text: 'الاشعارات',
-            route: '/qr-security', permission: 'qr_security'
+            route: '/qr-notification', permission: 'qr_security'
           },
           {
             text: 'معلومات المشتركين',
@@ -472,16 +472,6 @@ export default {
     const toggleGroup = index => {
       activeGroup.value = activeGroup.value === index ? null : index
     }
-
-    // watch(
-    //   () => authStore.user.permissions??[],
-    //   () => {
-    //     nextTick(() => {
-    //       console.log('Permissions updated');
-    //     });
-    //   },
-    //   { immediate: true }
-    // );
 
     return {
       groups,

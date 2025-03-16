@@ -61,23 +61,21 @@ export default {
       qrdataData: ref([]),
       qrdataHeaders: ref([
         '#',
-        'المجمع',
-        'العنوان',
-        'اسم الساكن',
-        'رقم الهاتف',
-        'تاريخ',
+        'الاشعار',
+        "وقت الدخول",
+        "مدة الزيارة",
+        "تاريخ الاشعار",
       ]),
       qrdataDisplayColumns: ref([
         'id',
-        'city',
-        'address',
-        'name',
-        'phone',
-        'created_at',
+        'content',
+        "updated_at",
+        "period",
+        "created_at",
       ]),
       qrdataTotals: ref(['Count', '', '', '', '', '', '']),
       qrdataRowsCount: ref(0),
-      ServerPath: "http://almawadda-online.com/qrcode/public/api/",
+      ServerPath: "https://almawadda-online.com/qrcode/public/api/",
 
     }
   },
@@ -88,7 +86,7 @@ export default {
     //load data from table to table and combo companyName
     GetInternetProfilesData(PageNo = 1, FilterArray = {}, SortArray = {}) {
       axios
-        .get(this.ServerPath+'cus-data-deeratna', {
+        .get(this.ServerPath+'api-noti', {
           params: {
             PageNo: PageNo,
             FilterArray: FilterArray,

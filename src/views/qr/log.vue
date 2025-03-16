@@ -101,7 +101,7 @@ export default {
       ]),
       qrdataTotals: ref(['Count', '', '', '', '', '', '']),
       qrdataRowsCount: ref(0),
-      ServerPath: "http://almawadda-online.com/qrcode/public/api/",
+      ServerPath: "https://almawadda-online.com/qrcode/public/api/",
 
     }
   },
