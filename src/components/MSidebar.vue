@@ -446,23 +446,25 @@ export default {
       //==================================
       {
         text: 'خطار',
-        permission: 'qr_security' || 'qr_customers'|| 'qr_notification',
+        permission: 'qr_security' || 'qr_customers' || 'qr_notification',
         items: [
           {
             text: 'الاشعارات',
-            route: '/qr-notification', permission: 'qr_notification'
+            route: '/qr-notification',
+            permission: 'qr_notification',
           },
           {
             text: 'معلومات المشتركين',
-            route: '/qr-customers', permission: 'qr_customers'
+            route: '/qr-customers',
+            permission: 'qr_customers',
           },
           {
             text: 'بيانات ال QR',
-            route: '/qr-data', permission: 'qr_security'
+            route: '/qr-data',
+            permission: 'qr_security',
           },
         ],
       },
-
     ])
 
     const hasPermission = permission => {

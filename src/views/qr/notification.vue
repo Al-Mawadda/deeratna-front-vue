@@ -54,20 +54,8 @@ export default {
 
       qrdata: ref(null),
       qrdataData: ref([]),
-      qrdataHeaders: ref([
-        '#',
-        'الاشعار',
-        // 'وقت الدخول',
-        'مدة الزيارة',
-        'تاريخ الاشعار',
-      ]),
-      qrdataDisplayColumns: ref([
-        'id',
-        'content',
-        //'updated_at_12_hour',
-        'periods',
-        'created_at_12_hour',
-      ]),
+      qrdataHeaders: ref(['#', 'الاشعار', 'تاريخ الاشعار']),
+      qrdataDisplayColumns: ref(['id', 'content', 'created_at']),
       qrdataTotals: ref(['Count', '', '', '', '', '', '']),
       qrdataRowsCount: ref(0),
       ServerPath: 'https://almawadda-online.com/qrcode/public/api/',
