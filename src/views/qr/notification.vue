@@ -1,7 +1,5 @@
 <template>
   <div class="ComponentWrapper">
-
-
     <MTable
       ref="qrdata"
       :Name="'qrdata'"
@@ -15,7 +13,7 @@
     >
       <template v-slot:options>
         <!-- View Videosdffhroif Option -->
-        <div class="MTableOption" OptionEventName="EditItem">
+        <!-- <div class="MTableOption" OptionEventName="EditItem">
           <div class="MTableOptionIcon">
             <svg viewBox="0 0 1000 1000">
               <path
@@ -35,8 +33,7 @@
             </svg>
           </div>
           <div class="MTableOptionName">اعادة تفعيل الحساب</div>
-        </div>
-
+        </div> -->
       </template>
     </MTable>
   </div>
@@ -47,13 +44,11 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import { useGlobalsStore } from '../../stores/Globals.js'
-import { ShowMessage} from '@/MJS.js'
+import { ShowMessage } from '@/MJS.js'
 
 export default {
   setup() {
-
     return {
-
       ID: ref(''),
       GlobalsStore: ref(useGlobalsStore()),
 
@@ -62,21 +57,20 @@ export default {
       qrdataHeaders: ref([
         '#',
         'الاشعار',
-        "وقت الدخول",
-        "مدة الزيارة",
-        "تاريخ الاشعار",
+        // 'وقت الدخول',
+        'مدة الزيارة',
+        'تاريخ الاشعار',
       ]),
       qrdataDisplayColumns: ref([
         'id',
         'content',
-        "updated_at_12_hour",
-        "periods",
-        "created_at_12_hour",
+        //'updated_at_12_hour',
+        'periods',
+        'created_at_12_hour',
       ]),
       qrdataTotals: ref(['Count', '', '', '', '', '', '']),
       qrdataRowsCount: ref(0),
-      ServerPath: "https://almawadda-online.com/qrcode/public/api/",
-
+      ServerPath: 'https://almawadda-online.com/qrcode/public/api/',
     }
   },
   mounted() {
@@ -86,7 +80,7 @@ export default {
     //load data from table to table and combo companyName
     GetInternetProfilesData(PageNo = 1, FilterArray = {}, SortArray = {}) {
       axios
-        .get(this.ServerPath+'api-noti', {
+        .get(this.ServerPath + 'qrNotification-deeratna', {
           params: {
             PageNo: PageNo,
             FilterArray: FilterArray,
@@ -96,7 +90,6 @@ export default {
         .then(response => {
           this.qrdataRowsCount = response.data.total
           this.qrdataData = response.data.data
-
         })
         .catch(error => {
           ShowMessage(error)

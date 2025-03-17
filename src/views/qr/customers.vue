@@ -1,7 +1,5 @@
 <template>
   <div class="ComponentWrapper">
-
-
     <MTable
       ref="qrdata"
       :Name="'qrdata'"
@@ -35,7 +33,6 @@
           </div>
           <div class="MTableOptionName">اعادة تفعيل الحساب</div>
         </div>
-
       </template>
     </MTable>
   </div>
@@ -45,13 +42,11 @@
 <script>
 import { ref } from 'vue'
 import axios from 'axios'
-import { ShowMessage} from '@/MJS.js'
+import { ShowMessage } from '@/MJS.js'
 
 export default {
   setup() {
-
     return {
-
       qrdata: ref(null),
       qrdataData: ref([]),
       qrdataHeaders: ref([
@@ -60,6 +55,7 @@ export default {
         'العنوان',
         'اسم الساكن',
         'رقم الهاتف',
+        'حالة التفعيل',
       ]),
       qrdataDisplayColumns: ref([
         'id',
@@ -67,11 +63,11 @@ export default {
         'address',
         'name',
         'phone',
+        'login_status',
       ]),
       qrdataTotals: ref(['Count', '', '', '', '', '', '']),
       qrdataRowsCount: ref(0),
-      ServerPath: "https://almawadda-online.com/qrcode/public/api/",
-
+      ServerPath: 'https://almawadda-online.com/qrcode/public/api/',
     }
   },
   mounted() {
@@ -88,7 +84,7 @@ export default {
       function (data) {
         window.ShowLoading()
         axios
-          .get(this.ServerPath+'cus-reset/'+data.detail.RowData.id)
+          .get(this.ServerPath + 'cus-reset/' + data.detail.RowData.id)
           .then(response => {
             window.HideLoading()
             ShowMessage(response.data.message)
@@ -98,14 +94,13 @@ export default {
             window.HideLoading()
             ShowMessage(error)
           })
-
       }.bind(this)
     )
   },
   methods: {
     GetInternetProfilesData(PageNo = 1, FilterArray = {}, SortArray = {}) {
       axios
-        .get(this.ServerPath+'cus-data-deeratna', {
+        .get(this.ServerPath + 'qrCustomers-deeratna', {
           params: {
             PageNo: PageNo,
             FilterArray: FilterArray,
@@ -115,7 +110,6 @@ export default {
         .then(response => {
           this.qrdataRowsCount = response.data.total
           this.qrdataData = response.data.data
-
         })
         .catch(error => {
           ShowMessage(error)
