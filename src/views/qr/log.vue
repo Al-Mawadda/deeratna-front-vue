@@ -1,7 +1,5 @@
 <template>
   <div class="ComponentWrapper">
-
-
     <MTable
       ref="qrdata"
       :Name="'qrdata'"
@@ -15,7 +13,7 @@
     >
       <template v-slot:options>
         <!-- View Videosdffhroif Option -->
-        <div class="MTableOption" OptionEventName="EditItem">
+        <!-- <div class="MTableOption" OptionEventName="EditItem">
           <div class="MTableOptionIcon">
             <svg viewBox="0 0 1000 1000">
               <path
@@ -34,9 +32,8 @@
               />
             </svg>
           </div>
-          <div class="MTableOptionName">اعادة تفعيل الحساب</div>
-        </div>
-
+          <div class="MTableOptionName">تعديل</div>
+        </div> -->
       </template>
     </MTable>
   </div>
@@ -47,13 +44,11 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import { useGlobalsStore } from '../../stores/Globals.js'
-import { ShowMessage} from '@/MJS.js'
+import { ShowMessage } from '@/MJS.js'
 
 export default {
   setup() {
-
     return {
-
       ID: ref(''),
       GlobalsStore: ref(useGlobalsStore()),
 
@@ -64,21 +59,30 @@ export default {
         'المجمع',
         'العنوان',
         'اسم الساكن',
+        'اسم الزائر',
         'رقم الهاتف',
-        'تاريخ',
+        'مدة الزيارة',
+        'وقت الانشاء',
+        'وقت الدخول',
+        'وقت الخروج',
+        'الصورة',
       ]),
       qrdataDisplayColumns: ref([
         'id',
-        'city',
+        'compound',
         'address',
         'name',
+        'visitor_name',
         'phone',
-        'created_at',
+        'period',
+        'created_qr',
+        'created_at_12_hour',
+        'out_date',
+        'img',
       ]),
       qrdataTotals: ref(['Count', '', '', '', '', '', '']),
       qrdataRowsCount: ref(0),
-      ServerPath: "http://almawadda-online.com/qrcode/public/api/",
-
+      ServerPath: 'https://almawadda-online.com/qrcode/public/api/',
     }
   },
   mounted() {
@@ -88,7 +92,7 @@ export default {
     //load data from table to table and combo companyName
     GetInternetProfilesData(PageNo = 1, FilterArray = {}, SortArray = {}) {
       axios
-        .get(this.ServerPath+'cus-data-deeratna', {
+        .get(this.ServerPath + 'qrlog-deeratna', {
           params: {
             PageNo: PageNo,
             FilterArray: FilterArray,
@@ -98,7 +102,6 @@ export default {
         .then(response => {
           this.qrdataRowsCount = response.data.total
           this.qrdataData = response.data.data
-
         })
         .catch(error => {
           ShowMessage(error)

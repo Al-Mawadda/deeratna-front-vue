@@ -446,15 +446,15 @@ export default {
       //==================================
       {
         text: 'خطار',
-        permission: 'qr_security' || 'qr_managment',
+        permission: 'qr_security' || 'qr_customers'|| 'qr_notification',
         items: [
           {
             text: 'الاشعارات',
-            route: '/qr-security', permission: 'qr_security'
+            route: '/qr-notification', permission: 'qr_notification'
           },
           {
             text: 'معلومات المشتركين',
-            route: '/qr-customers', permission: 'qr_managment'
+            route: '/qr-customers', permission: 'qr_customers'
           },
           {
             text: 'بيانات ال QR',
@@ -472,16 +472,6 @@ export default {
     const toggleGroup = index => {
       activeGroup.value = activeGroup.value === index ? null : index
     }
-
-    // watch(
-    //   () => authStore.user.permissions??[],
-    //   () => {
-    //     nextTick(() => {
-    //       console.log('Permissions updated');
-    //     });
-    //   },
-    //   { immediate: true }
-    // );
 
     return {
       groups,
