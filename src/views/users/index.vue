@@ -166,6 +166,12 @@ const hasPermission = permission => {
 //const UserTypeItems = ref([])
 const groupedPermissions = ref(
   [
+  {
+      label: 'المعلومات',
+      items: [
+        { val: 'information', label: 'معلومات الاشخاص' },
+      ],
+    },
     {
       label: 'الطلبات',
       items: [
