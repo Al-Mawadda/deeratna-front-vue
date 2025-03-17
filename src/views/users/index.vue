@@ -167,6 +167,10 @@ const hasPermission = permission => {
 const groupedPermissions = ref(
   [
     {
+      label: 'المعلومات',
+      items: [{ val: 'information', label: 'معلومات الاشخاص' }],
+    },
+    {
       label: 'الطلبات',
       items: [
         { val: 'request_view', label: 'عرض الطلبات' },
@@ -233,25 +237,36 @@ const groupedPermissions = ref(
 
         { val: 'subscribers_view', label: 'عرض بيانات المشتركين' },
 
-      { val: 'profile_view', label: 'عرض الاشتراكات' },
-    ],
-  },
-  {
-    label: 'الكمب',
-    items: [
-      {
-        val: 'camps',
-        label: 'الكمب'
-      },
-    ],
-  },
-].map(group => ({
+        { val: 'profile_view', label: 'عرض الاشتراكات' },
+      ],
+    },
+    {
+      label: 'الكمب',
+      items: [
+        {
+          val: 'camps',
+          label: 'الكمب',
+        },
+      ],
+    },
+    {
+      label: 'خطار',
+      items: [
+        { val: 'qr_customers', label: 'بيانات المستخدمين' },
+
+        { val: 'qr_security', label: 'بيانات الدخول ' },
+
+        { val: 'qr_notification', label: 'الاشعارات' },
+      ],
+    },
+  ].map(group => ({
     ...group,
     items: group.items.map(item => ({
-        ...item,
-        val: item.val.trim()
-    }))
-})))
+      ...item,
+      val: item.val.trim(),
+    })),
+  }))
+)
 
 const showUserDialog = ref(false)
 const editMode = ref(false)

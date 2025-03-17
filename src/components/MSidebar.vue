@@ -291,12 +291,12 @@ export default {
       //  =========== المعلومات ============
       {
         text: 'المعلومات',
-        permission: 'ads_view_all',
+        permission: 'information',
         items: [
           {
             text: 'معلومات الاشخاص',
             route: '/persons',
-            permission: 'ads_video_view',
+            permission: 'information',
           },
         ],
       },

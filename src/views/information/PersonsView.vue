@@ -1,6 +1,6 @@
 <template>
   <div class="ComponentWrapper">
-    <RouterLink to="/persons/add" class="MButton" id="AddPersonBTN">اضافة فرد</RouterLink>
+    <RouterLink to="/persons/add" class="MButton" id="AddPersonBTN">اضافة شخص</RouterLink>
     <div class="MButton" id="ReloadPersonsBTN">اعادة تحميل البيانات</div>
     <MTable ref="PersonsTB" :Name="'PersonsTB'" :DataArray="PersonsTBData" :HeadersArray="PersonsTBHeaders"
       :TotalsArray="PersonsTBTotals" :DisplayColumnsArray="PersonsTBDisplayColumns" :GetDataFunction="GetPersonsData"
