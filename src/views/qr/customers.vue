@@ -73,27 +73,34 @@ export default {
   mounted() {
     this.GetInternetProfilesData()
     this.qrdata.LoadMTable()
-    // document.getElementById('qrdata').addEventListener(
-    //   'click',
-    //   function () {
-    //     this.qrdata.LoadMTable()
-    //   }.bind(this)
-    // )
+
     document.getElementById('qrdata').addEventListener(
       'EditItem',
       function (data) {
-        window.ShowLoading()
-        axios
-          .get(this.ServerPath + 'cus-reset/' + data.detail.RowData.id)
-          .then(response => {
-            window.HideLoading()
-            ShowMessage(response.data.message)
-            this.qrdata.LoadMTable()
-          })
-          .catch(error => {
-            window.HideLoading()
-            ShowMessage(error)
-          })
+        var YesFunction = function () {
+          window.ShowLoading()
+          axios
+            .get(this.ServerPath + 'cus-reset/' + data.detail.RowData.id)
+            .then(response => {
+              window.HideLoading()
+              window.HideChoose()
+              console.log(response.data.message)
+              this.qrdata.LoadMTable()
+            })
+            .catch(error => {
+              window.HideLoading()
+              window.HideChoose()
+              ShowMessage(error)
+            })
+        }.bind(this)
+        var NoFunction = function () {
+          window.HideChoose()
+        }
+        window.ShowChoose(
+          'هل انت متاكد من عملية اعادة التفعيل ؟',
+          YesFunction,
+          NoFunction
+        )
       }.bind(this)
     )
   },

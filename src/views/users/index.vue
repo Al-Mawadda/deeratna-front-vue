@@ -252,9 +252,9 @@ const groupedPermissions = ref(
     {
       label: 'خطار',
       items: [
-        { val: 'qr_customers', label: 'بيانات المستخدمين' },
+        { val: 'qr_customers', label: 'بيانات المشتركين' },
 
-        { val: 'qr_security', label: 'بيانات الدخول ' },
+        { val: 'qr_security', label: 'بيانات ال QR' },
 
         { val: 'qr_notification', label: 'الاشعارات' },
       ],

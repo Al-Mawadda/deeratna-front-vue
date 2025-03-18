@@ -434,25 +434,11 @@ export default {
           },
         ],
       },
-
-      //==================================
-      {
-        text: 'المستخدمين',
-        permission: 'users_view',
-        items: [
-          { text: 'المستخدمين', route: '/users', permission: 'users_view' },
-        ],
-      },
       //==================================
       {
         text: 'خطار',
         permission: 'qr_security' || 'qr_customers' || 'qr_notification',
         items: [
-          {
-            text: 'الاشعارات',
-            route: '/qr-notification',
-            permission: 'qr_notification',
-          },
           {
             text: 'معلومات المشتركين',
             route: '/qr-customers',
@@ -463,6 +449,19 @@ export default {
             route: '/qr-data',
             permission: 'qr_security',
           },
+          {
+            text: 'الاشعارات',
+            route: '/qr-notification',
+            permission: 'qr_notification',
+          },
+        ],
+      },
+      //==================================
+      {
+        text: 'المستخدمين',
+        permission: 'users_view',
+        items: [
+          { text: 'المستخدمين', route: '/users', permission: 'users_view' },
         ],
       },
     ])
