@@ -276,7 +276,7 @@ export default {
     const activeGroup = ref(null)
 
     const groups = ref([
-      //  =========== التسويق ============
+      //============= التسويق ===============
       {
         text: 'العقود',
         permission: 'ads_view_all',
@@ -288,7 +288,7 @@ export default {
           },
         ],
       },
-      //  =========== المعلومات ============
+      //============= المعلومات =============
       {
         text: 'المعلومات',
         permission: 'information',
@@ -300,7 +300,7 @@ export default {
           },
         ],
       },
-      //  =========== الانترنت ============
+      //============= الانترنت ===============
       {
         text: 'الانترنت',
         permission: 'internet_view_all',
@@ -317,7 +317,7 @@ export default {
           },
         ],
       },
-      //  =========== الاعلانات ============
+      //============= الاعلانات ===============
       {
         text: 'الاعلانات',
         permission: 'ads_view_all',
@@ -349,8 +349,7 @@ export default {
           },
         ],
       },
-
-      //  =========== الطلبات ============
+      //============= الطلبات ===============
       {
         text: 'الطلبات',
         permission: 'request_view',
@@ -377,8 +376,7 @@ export default {
           },
         ],
       },
-
-      //  =========== الدفع الالكتروني' ============
+      //============= الدفع الالكتروني' ======
       {
         text: 'الدفع الالكتروني',
         permission: 'on_pay_view',
@@ -413,11 +411,11 @@ export default {
           {
             text: 'الانترنيت',
             route: '/internet-payment',
-            permission: 'on_pay_carrenew',
+            permission: 'on_pay_internet',
           },
         ],
       },
-      //  =========== الكمب ============
+      //============= الكمب =================
       {
         text: 'الكمب',
         permission: 'camps',
@@ -434,10 +432,10 @@ export default {
           },
         ],
       },
-      //==================================
+      //============= خطار ==================
       {
         text: 'خطار',
-        permission: 'qr_security' || 'qr_customers' || 'qr_notification',
+        permission: 'qr_view',
         items: [
           {
             text: 'معلومات المشتركين',
@@ -456,7 +454,7 @@ export default {
           },
         ],
       },
-      //==================================
+      //============= المستخدمين=============
       {
         text: 'المستخدمين',
         permission: 'users_view',
