@@ -208,7 +208,6 @@
       :DataArray="CarLabelRequestsTBData"
       :Columns="CarLabelRequestsTBColumns"
       :Sums="CarLabelRequestsTBSums"
-      :DisplayColumnsArray="CarLabelRequestsTBDisplayColumns"
       :GetDataFunction="GetCarLabelRequestsData"
       :RowsCount="CarLabelRequestsTBRowsCount"
       :RowsPerPage="10"

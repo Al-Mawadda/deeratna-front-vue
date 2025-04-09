@@ -248,10 +248,9 @@
     <MTable
       ref="InternetRequestsTB"
       :Name="'InternetRequestsTB'"
-      :DataArray="InternetRequesTBData"
-      :Columns="InternetRequesTBColumns"
-      :Sums="InternetRequesTBSums"
-      :DisplayColumnsArray="InternetRequestsTBDisplayColumns"
+      :DataArray="InternetRequestsTBData"
+      :Columns="InternetRequestsTBColumns"
+      :Sums="InternetRequestsTBSums"
       :GetDataFunction="GetInternetRequestsData"
       :RowsCount="InternetRequestsTBRowsCount"
       :RowsPerPage="10"
@@ -314,8 +313,7 @@ export default {
       CompanyNamesItems: ref([]),
       InternetRequestsTB: ref(null),
       InternetRequestsTBData: ref([]),
-
-      InternetRequesTBColumns: [
+      InternetRequestsTBColumns: [
         {
           name: 'id',
           label: '#',
@@ -382,8 +380,8 @@ export default {
           filter: 'date',
         },
       ],
-      InternetRequesTBSums: ref([]),
-
+      InternetRequestsTBSums: ref([]),
+      InternetRequestsTBRowsCount: ref(0),
       InternetRequestsFromDate: ref(null),
       selectedRowData: ref([]),
       ServerPath: GetServerPath(),
@@ -491,9 +489,9 @@ export default {
           },
         })
         .then(response => {
-          this.InternetRequesTBRowsCount = response.data.total
-          this.InternetRequesTBData = response.data.data
-          this.InternetRequesTBSums = response.data.sums
+          this.InternetRequestsTBRowsCount = response.data.total
+          this.InternetRequestsTBData = response.data.data
+          this.InternetRequestsTBSums = response.data.sums
         })
         .catch(error => {
           ShowMessage(error)

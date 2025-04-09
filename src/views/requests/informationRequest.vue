@@ -809,7 +809,6 @@
       :DataArray="InformationRequestsTBData"
       :Columns="InformationRequestsTBColumns"
       :Sums="InformationRequestsTBSums"
-      :DisplayColumnsArray="InformationRequestsTBDisplayColumns"
       :GetDataFunction="GetInformationRequestsData"
       :RowsCount="InformationRequestsTBRowsCount"
       :RowsPerPage="10"

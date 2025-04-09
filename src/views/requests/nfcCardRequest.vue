@@ -199,7 +199,6 @@
       :DataArray="NfcCardRequestsTBData"
       :Columns="NfcCardRequestsTBColumns"
       :Sums="NfcCardRequestsTBSums"
-      :DisplayColumnsArray="NfcCardRequestsTBDisplayColumns"
       :GetDataFunction="GetNfcCardRequestsData"
       :RowsCount="NfcCardRequestsTBRowsCount"
       :RowsPerPage="10"
