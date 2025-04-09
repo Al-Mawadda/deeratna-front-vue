@@ -9,7 +9,7 @@ export default {
   props: {
     Name: { type: String, required: true },
     Label: { type: String, required: true },
-    Items: { type: Array, required: true },
+    Items: { type: Array, default: () => [], required: true },
     ItemsName: { type: String, default: null },
     MultipleSelections: { type: Boolean, default: false },
     AllowInput: { type: Boolean, default: false },
@@ -36,7 +36,7 @@ export default {
     Items: {
       handler(newValue) {
         nextTick(() => {
-          if (this.Items && this.Items.length > 0) {
+          if (this.Items) {
             var Element = document.getElementById(this.Name)
             this.MComboBox = this.MComboBoxBuild(
               Element,
@@ -51,6 +51,7 @@ export default {
           }
         })
       },
+      deep: true,
     },
   },
   mounted() {

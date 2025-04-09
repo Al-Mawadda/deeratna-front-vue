@@ -2,9 +2,8 @@
   <div class="ComponentWrapper">
     <RouterLink to="/camps/contractors/add" class="MButton" id="AddContractorBTN">اضافة متعهد</RouterLink>
     <div class="MButton" id="ReloadContractorsBTN">اعادة تحميل البيانات</div>
-    <MTable ref="ContractorsTB" :Name="'ContractorsTB'" :DataArray="ContractorsTBData" :HeadersArray="ContractorsTBHeaders"
-      :TotalsArray="ContractorsTBTotals" :DisplayColumnsArray="ContractorsTBDisplayColumns" :GetDataFunction="GetContractors"
-      :RowsCount="ContractorsTBRowsCount" :RowsPerPage="10">
+    <MTable ref="ContractorsTB" :Name="'ContractorsTB'" :DataArray="ContractorsTBData" :Columns="ContractorsTBColumns"
+      :Sums="ContractorsTBSums" :GetDataFunction="GetContractors" :RowsCount="ContractorsTBRowsCount" :RowsPerPage="10">
       <template v-slot:options>
         <div class="MTableOption" OptionEventName="ViewItem">
           <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
@@ -23,7 +22,6 @@
         </div>
         <div class="MTableOption" OptionEventName="DeleteItem">
           <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
-
               <path
                 d="M906.1,242.4c-4.5-16.8-18.9-26-40.5-26c-89.9,0-179.8,0-269.8,0l-103.4,0v-0.2l-70.2,0c-65.9,0-131.8,0-197.8,0
 	c-6.8,0-13.5,0-20.3,0c-24.2,0-49.1,0-73.7,0.3c-12.9,0.2-24.3,5.5-31.2,14.5c-6.3,8.3-8.3,18.8-5.5,29.6
@@ -70,9 +68,33 @@ export default {
 
       ContractorsTB: ref(null),
       ContractorsTBData: ref([]),
-      ContractorsTBHeaders: ref(['#', 'الاسم', 'الجنسية', 'نوع المستمسك', 'رقم المستمسك', 'رقم الهاتف', 'الكمبات']),
-      ContractorsTBDisplayColumns: ref(['id', 'name', 'nationality', 'identification_type', 'identification_number', 'phone', 'camps.camp_full_name']),
-      ContractorsTBTotals: ref(['Count', '', '', '', '', '', '']),
+      ContractorsTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+        {
+          name: 'name',
+          label: 'الاسم',
+        },
+        {
+          name: 'identification_type',
+          label: 'نوع المستمسك',
+        },
+        {
+          name: 'identification_number',
+          label: 'رقم المستمسك',
+        },
+        {
+          name: 'phone',
+          label: 'رقم الهاتف',
+        },
+        {
+          name: 'camps.camp_full_name',
+          label: 'الكمبات',
+        }
+      ],
+      ContractorsTBSums: ref([]),
       ContractorsTBRowsCount: ref(0),
     };
   },
@@ -97,7 +119,7 @@ export default {
           }
         }).then(response => {
           if (response.data == 'تمت العملية بنجاح') {
-            this.GetContractors();
+            this.ContractorsTB.LoadMTable();
             window.HideLoading();
             window.HideChoose();
           } else {
@@ -114,21 +136,19 @@ export default {
       var NoFunction = function () {
         window.HideChoose();
       }
-       window.ShowChoose('هل انت متاكد من عملية الحذف؟', YesFunction, NoFunction);
+      window.ShowChoose('هل انت متاكد من عملية الحذف؟', YesFunction, NoFunction);
     }.bind(this));
   },
   methods: {
-    GetContractors(PageNo = 1, FilterArray = {}, SortArray = {}, RowsPerPage = 10) {
+    GetContractors(MTable) {
       api.get('GetContractors', {
         params: {
-          PageNo: PageNo,
-          FilterArray: FilterArray,
-          SortArray: SortArray,
-          RowsPerPage: RowsPerPage,
+          MTable: MTable,
         }
       }).then(response => {
-        this.ContractorsTBRowsCount = response.data.total;
-        this.ContractorsTBData = response.data.data;
+        this.ContractorsTBData = response.data.data
+        this.ContractorsTBRowsCount = response.data.total
+        this.ContractorsTBSums = response.data.sums
       }).catch(error => {
         window.ShowMessage('حدث خطا', error);
       });

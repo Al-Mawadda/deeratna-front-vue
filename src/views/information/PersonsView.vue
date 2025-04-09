@@ -2,9 +2,8 @@
   <div class="ComponentWrapper">
     <RouterLink to="/persons/add" class="MButton" id="AddPersonBTN">اضافة شخص</RouterLink>
     <div class="MButton" id="ReloadPersonsBTN">اعادة تحميل البيانات</div>
-    <MTable ref="PersonsTB" :Name="'PersonsTB'" :DataArray="PersonsTBData" :HeadersArray="PersonsTBHeaders"
-      :TotalsArray="PersonsTBTotals" :DisplayColumnsArray="PersonsTBDisplayColumns" :GetDataFunction="GetPersonsData"
-      :RowsCount="PersonsTBRowsCount" :RowsPerPage="10">
+    <MTable ref="PersonsTB" :Name="'PersonsTB'" :DataArray="PersonsTBData" :Columns="PersonsTBColumns"
+      :Sums="PersonsTBSums" :GetDataFunction="GetPersonsData" :RowsCount="PersonsTBRowsCount" :RowsPerPage="10">
       <template v-slot:options>
         <div class="MTableOption" OptionEventName="ViewItem">
           <div class="MTableOptionIcon">
@@ -49,25 +48,36 @@ export default {
       identificationIssuingDate: ref(null),
       ContractDate: ref(null),
       SaleDate: ref(null),
+
       PersonsTB: ref(null),
       PersonsTBData: ref([]),
-      PersonsTBHeaders: ref([
-        '#',
-        'الاسم',
-        'نوع المستمسك',
-        'رقم المستمسك',
-        'رقم الهاتف',
-        'الصفة'
-      ]),
-      PersonsTBDisplayColumns: ref([
-        'id',
-        'name',
-        'identification_type',
-        'identification_number',
-        'phone',
-        'attributes.attribute'
-      ]),
-      PersonsTBTotals: ref(['Count', '', '', '', '', '']),
+      PersonsTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+        {
+          name: 'name',
+          label: 'الاسم',
+        },
+        {
+          name: 'identification_type',
+          label: 'نوع المستمسك',
+        },
+        {
+          name: 'identification_number',
+          label: 'رقم المستمسك',
+        },
+        {
+          name: 'phone',
+          label: 'رقم الهاتف',
+        },
+        {
+          name: 'attributes.attribute',
+          label: 'الصفة',
+        }
+      ],
+      PersonsTBSums: ref([]),
       PersonsTBRowsCount: ref(0),
     }
   },
@@ -85,19 +95,17 @@ export default {
     });
   },
   methods: {
-    GetPersonsData(PageNo = 1, FilterArray = {}, SortArray = {}, RowsPerPage = 10) {
+    GetPersonsData(MTable) {
       api
         .get('GetPersonsData', {
           params: {
-            PageNo: PageNo,
-            FilterArray: FilterArray,
-            SortArray: SortArray,
-            RowsPerPage: RowsPerPage,
+            MTable: MTable,
           },
         })
         .then(response => {
-          this.PersonsTBRowsCount = response.data.total
           this.PersonsTBData = response.data.data
+          this.PersonsTBRowsCount = response.data.total
+          this.PersonsTBSums = response.data.sums
         })
         .catch(error => {
           window.ShowMessage('حدث خطا', error)

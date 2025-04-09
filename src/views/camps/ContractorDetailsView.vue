@@ -68,9 +68,8 @@
         <div class="MButton" id="SaveCamp">حفظ</div>
         <div class="MButton" id="CancelCamp">الغاء</div>
       </div>
-      <MTable ref="CampsTB" :Name="'CampsTB'" :DataArray="CampsTBData" :HeadersArray="CampsTBHeaders"
-        :TotalsArray="CampsTBTotals" :DisplayColumnsArray="CampsTBDisplayColumns" :ShowFilterRow="false"
-        :RowsPerPage="999">
+      <MTable ref="CampsTB" :Name="'CampsTB'" :DataArray="CampsTBData" :Columns="CampsTBColumns"
+      :Sums="CampsTBSums" :ShowFilterRow="false" :RowsPerPage="1000">
         <template v-slot:options>
           <div class="MTableOption" OptionEventName="EditItem">
             <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
@@ -411,9 +410,17 @@ export default {
       CampCounter: ref(1),
       CampsTB: ref(null),
       CampsTBData: ref([]),
-      CampsTBHeaders: ref(['اسم الكمب', 'رقم الغرفة']),
-      CampsTBTotals: ref(['', '']),
-      CampsTBDisplayColumns: ref(['camp_name', 'room_no']),
+      CampsTBColumns: [
+        {
+          name: 'camp_name',
+          label: 'اسم الكمب',
+        },
+        {
+          name: 'room_no',
+          label: 'رقم الغرفة',
+        },
+      ],
+      CampsTBSums: ref([]),
     };
   },
   mounted() {

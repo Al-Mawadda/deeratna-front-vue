@@ -17,7 +17,7 @@
         v-show="CheckAttributes(['مالك', 'مستاجر'])"></MComboBox>
       <MDate ref="BirthDate" :Name="'BirthDate'" :Label="'المواليد'" v-show="CheckAttributes(['مالك', 'مستاجر'])">
       </MDate>
-      <div class="MField" id="Nationality" v-show="CheckAttributes(['متعهد'])">
+      <div class="MField" id="Nationality" v-show="CheckAttributes(['متعهد', 'عامل'])">
         <input type="text" required>
         <label>الجنسية</label>
         <div class="MFieldBG"></div>
@@ -28,8 +28,8 @@
         <div class="MFieldBG"></div>
       </div>
       <MComboBox ref='IdentificationType' :Name="'IdentificationType'" :Label="'نوع المستمسك'"
-        :Items="IdentificationTypeItems" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد'])"></MComboBox>
-      <div class="MField" id="IdentificationNumber" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد'])">
+        :Items="IdentificationTypeItems" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'عامل'])"></MComboBox>
+      <div class="MField" id="IdentificationNumber" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'عامل'])">
         <input type="text" required>
         <label>رقم المستمسك</label>
         <div class="MFieldBG"></div>
@@ -51,7 +51,7 @@
       </div>
       <MDate ref="IdentificationIssuingDate" :Name="'IdentificationIssuingDate'" :Label="'تاريخ الاصدار'"
         v-show="CheckAttributes(['مالك', 'مستاجر'])"></MDate>
-      <div class="MField" id="Phone" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد'])">
+      <div class="MField" id="Phone" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر'])">
         <input type="text" required>
         <label>رقم الهاتف</label>
         <div class="MFieldBG"></div>
@@ -61,19 +61,29 @@
         <label>التحصيل الدراسي</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="WorkType" v-show="CheckAttributes(['مالك', 'مستاجر'])">
+      <div class="MField" id="WorkType" v-show="CheckAttributes(['مالك', 'مستاجر', 'كادر'])">
         <input type="text" required />
         <label>نوع العمل</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="WorkPlace" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد'])">
+      <div class="MField" id="WorkPlace" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر'])">
         <input type="text" required />
         <label>موقع العمل</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="Address" v-show="CheckAttributes(['متعهد'])">
+      <div class="MField" id="Address" v-show="CheckAttributes(['متعهد', 'كادر', 'عامل'])">
         <input type="text" required />
         <label>العنوان</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="CarNumber" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر'])">
+        <input type="text" required>
+        <label>رقم العجلة</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="CarDetails" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر'])">
+        <input type="text" required>
+        <label>تفاصيل العجلة</label>
         <div class="MFieldBG"></div>
       </div>
       <div class="MField" id="EMail" v-show="CheckAttributes(['مالك', 'مستاجر'])">
@@ -86,12 +96,12 @@
         <label>رقم عقد العمل</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="EntryPort" v-show="CheckAttributes(['متعهد'])">
+      <div class="MField" id="EntryPort" v-show="CheckAttributes(['متعهد', 'عامل'])">
         <input type="text" required />
         <label>منفذ الدخول</label>
         <div class="MFieldBG"></div>
       </div>
-      <MDate ref="EntryDate" :Name="'EntryDate'" :Label="'تاريخ الدخول'" v-show="CheckAttributes(['متعهد'])"></MDate>
+      <MDate ref="EntryDate" :Name="'EntryDate'" :Label="'تاريخ الدخول'" v-show="CheckAttributes(['متعهد', 'عامل'])"></MDate>
       <div class="MField" id="Notes">
         <input type="text" required />
         <label>الملاحظات</label>
@@ -125,7 +135,7 @@
       </div>
       <div class="MGroupTitle" id="GatesTitle">البوابات</div>
       <div id="Gates">
-        <MCheckBox :Name="'Amal1-1'" :Label="'الامل  1 - البوابة 1'"></MCheckBox>
+        <MCheckBox :Name="'Amal1-1'" :Label="'الامل 1 - البوابة 1'"></MCheckBox>
         <MCheckBox :Name="'Amal1-2'" :Label="'الامل 1 - البوابة 2'"></MCheckBox>
         <MCheckBox :Name="'Amal2-1'" :Label="'الامل 2 - البوابة 1'"></MCheckBox>
         <MCheckBox :Name="'Amal2-2'" :Label="'الامل 2 - البوابة 2'"></MCheckBox>
@@ -645,6 +655,8 @@ export default {
         document.getElementById('WorkType').querySelector('input').value = this.GlobalsStore.MArray['work_type'];
         document.getElementById('WorkPlace').querySelector('input').value = this.GlobalsStore.MArray['work_place'];
         document.getElementById('Address').querySelector('input').value = this.GlobalsStore.MArray['address'];
+        document.getElementById('CarNumber').querySelector('input').value = this.GlobalsStore.MArray['car_number'];
+        document.getElementById('CarDetails').querySelector('input').value = this.GlobalsStore.MArray['car_details'];
         document.getElementById('EMail').querySelector('input').value = this.GlobalsStore.MArray['email'];
         document.getElementById('ContractorContractNo').querySelector('input').value = this.GlobalsStore.MArray['contractor_contract_no'];
         document.getElementById('EntryPort').querySelector('input').value = this.GlobalsStore.MArray['entry_port'];
@@ -719,6 +731,8 @@ export default {
       Parameters.append('work_type', document.getElementById('WorkType').querySelector('input').value);
       Parameters.append('work_place', document.getElementById('WorkPlace').querySelector('input').value);
       Parameters.append('address', document.getElementById('Address').querySelector('input').value);
+      Parameters.append('car_number', document.getElementById('CarNumber').querySelector('input').value);
+      Parameters.append('car_details', document.getElementById('CarDetails').querySelector('input').value);
       Parameters.append('email', document.getElementById('EMail').querySelector('input').value);
       Parameters.append('contractor_contract_no', document.getElementById('ContractorContractNo').querySelector('input').value);
       Parameters.append('entry_port', document.getElementById('EntryPort').querySelector('input').value);

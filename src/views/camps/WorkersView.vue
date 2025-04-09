@@ -2,9 +2,8 @@
   <div class="ComponentWrapper">
     <RouterLink to="/camps/workers/add" class="MButton" id="AddWorkerBTN">اضافة عامل</RouterLink>
     <div class="MButton" id="ReloadWorkersBTN">اعادة تحميل البيانات</div>
-    <MTable ref="WorkersTB" :Name="'WorkersTB'" :DataArray="WorkersTBData" :HeadersArray="WorkersTBHeaders"
-      :TotalsArray="WorkersTBTotals" :DisplayColumnsArray="WorkersTBDisplayColumns"
-      :GetDataFunction="GetCampsWorkersData" :RowsCount="WorkersTBRowsCount" :RowsPerPage="10">
+    <MTable ref="WorkersTB" :Name="'WorkersTB'" :DataArray="WorkersTBData" :Columns="WorkersTBColumns"
+      :Sums="WorkersTBSums" :GetDataFunction="GetWorkers" :RowsCount="WorkersTBRowsCount" :RowsPerPage="10">
       <template v-slot:options>
         <div class="MTableOption" OptionEventName="ViewItem">
           <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
@@ -67,12 +66,43 @@ export default {
   setup() {
     return {
       GlobalsStore: ref(useGlobalsStore()),
-
       WorkersTB: ref(null),
       WorkersTBData: ref([]),
-      WorkersTBHeaders: ref(['#', 'الاسم', 'الجنسية', 'نوع المستمسك', 'رقم المستمسك', 'اسم المتعهد', 'اسم الكمب', 'رقم الغرفة']),
-      WorkersTBDisplayColumns: ref(['id', 'name', 'nationality', 'identification_type', 'identification_number', 'contractor_name', 'camp_name', 'room_no']),
-      WorkersTBTotals: ref(['Count', '', '', '', '', '', '', '']),
+      WorkersTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+        {
+          name: 'name',
+          label: 'الاسم',
+        },
+        {
+          name: 'nationality',
+          label: 'الجنسية',
+        },
+        {
+          name: 'identification_type',
+          label: 'نوع المستمسك',
+        },
+        {
+          name: 'identification_number',
+          label: 'رقم المستمسك',
+        },
+        {
+          name: 'contractor_name',
+          label: 'اسم المتعهد',
+        },
+        {
+          name: 'camp_name',
+          label: 'اسم الكمب',
+        },
+        {
+          name: 'room_no',
+          label: 'رقم الغرفة',
+        }
+      ],
+      WorkersTBSums: ref([]),
       WorkersTBRowsCount: ref(0),
     };
   },
@@ -92,13 +122,13 @@ export default {
       var YesFunction = function () {
         window.ShowLoading();
 
-        api.post("DeleteCampsWorker", null, {
+        api.post("DeleteWorker", null, {
           params: {
             id: data.detail.RowData['id'],
           }
         }).then(response => {
           if (response.data == 'تمت العملية بنجاح') {
-            this.GetCampsWorkersData();
+            this.WorkersTB.LoadMTable();
             window.HideLoading();
             window.HideChoose();
           } else {
@@ -119,17 +149,15 @@ export default {
     }.bind(this));
   },
   methods: {
-    GetCampsWorkersData(PageNo = 1, FilterArray = {}, SortArray = {}, RowsPerPage = 10) {
-      api.get('GetCampsWorkers', {
+    GetWorkers(MTable) {
+      api.get('GetWorkers', {
         params: {
-          PageNo: PageNo,
-          FilterArray: FilterArray,
-          SortArray: SortArray,
-          RowsPerPage: RowsPerPage,
+          MTable: MTable,
         }
       }).then(response => {
-        this.WorkersTBRowsCount = response.data.total;
-        this.WorkersTBData = response.data.data;
+        this.WorkersTBData = response.data.data
+        this.WorkersTBRowsCount = response.data.total
+        this.WorkersTBSums = response.data.sums
       }).catch(error => {
         window.ShowMessage('حدث خطا', error);
       });
