@@ -20,64 +20,85 @@
       ref="CarLabelsTB"
       :Name="'CarLabelsTB'"
       :DataArray="CarLabelsTBData"
-      :HeadersArray="CarLabelsTBHeaders"
-      :TotalsArray="CarLabelsTBTotals"
-      :DisplayColumnsArray="CarLabelsTBDisplayColumns"
+      :Columns="CarLabelsTBColumns"
+      :Sums="CarLabelsTBSums"
       :GetDataFunction="GetCarLabelsData"
       :RowsCount="CarLabelsTBRowsCount"
       :RowsPerPage="10"
     >
-
     </MTable>
-
-    <div class="MGroup">
-      <div class="MlabelText">مجموع المبالغ =</div>
-      <div class="MlabelNumber" id="CarLabelsTotal"></div>
-    </div>
   </div>
 </template>
 <script>
 import { ref } from 'vue'
 import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
+import { useGlobalsStore } from '../../stores/Globals.js'
 
 export default {
   setup() {
     const authStore = useAuthStore()
     const hasPermission = permission =>
       authStore.user && authStore.user.permissions.includes(permission)
+    const GlobalsStore = ref(useGlobalsStore())
 
     return {
       hasPermission,
       CarLabelsTB: ref(null),
       CarLabelsTBData: ref([]),
-      CarLabelsTBHeaders: ref([
-        '#',
-        'المجمع',
-        'اسم الساكن',
-        'العنوان',
-        'رقم الهاتف',
-        'نوع العملية',
-        'المبلغ',
-        'الحالة',
-        'الية الدفع',
-        'التاريخ',
-        'معرف المعاملة',
-      ]),
-      CarLabelsTBDisplayColumns: ref([
-        'id',
-        'compound',
-        'person_name',
-        'address',
-        'phone',
-        'payment_name',
-        'payment_amount',
-        'transaction_status',
-        'payment_method',
-        'created_at',
-        'transaction_id',
-      ]),
-      CarLabelsTBTotals: ref(['Count', '', '', '', '', '', '']),
+      CarLabelsTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+        {
+          name: 'compound',
+          label: 'المدينة',
+          filter: 'combo',
+          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
+        },
+        {
+          name: 'person_name',
+          label: 'اسم الساكن',
+        },
+        {
+          name: 'address',
+          label: 'العنوان',
+        },
+        {
+          name: 'phone',
+          label: 'رقم الهاتف',
+        },
+        {
+          name: 'payment_name',
+          label: 'نوع العملية',
+        },
+        {
+          name: 'payment_amount',
+          label: 'المبلغ',
+          sum: true,
+          type: 'currency',
+        },
+        {
+          name: 'transaction_status',
+          label: 'الحالة',
+        },
+        {
+          name: 'payment_method',
+          label: 'الية الدفع',
+        },
+        {
+          name: 'created_at',
+          label: 'التاريخ',
+          filter: 'date',
+        },
+        {
+          name: 'transaction_id',
+          label: 'معرف المعاملة',
+        },
+      ],
+      CarLabelsTBSums: ref([]),
+
       CarLabelsTBRowsCount: ref(0),
       CarLabelsFromDate: ref(null),
       CarLabelsToDate: ref(null),
@@ -91,28 +112,23 @@ export default {
         'click',
         function () {
           this.CarLabelsTB.LoadMTable()
-        }.bind(this),
+        }.bind(this)
       )
   },
   methods: {
-    GetCarLabelsData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetCarLabelsData(MTable) {
       api
         .get('GetCarLabelsTransactions', {
           params: {
-            PageNo: PageNo,
-            FilterArray: FilterArray,
-            SortArray: SortArray,
+            MTable: MTable,
             carLabelFrom: this.CarLabelsFromDate.Get(),
             carLabelTo: this.CarLabelsToDate.Get(),
           },
         })
         .then(response => {
-          this.CarLabelsTBRowsCount = response.data.paginated_data.total
-          this.CarLabelsTBData = response.data.paginated_data.data
-          document.getElementById('CarLabelsTotal').innerHTML =
-            new Intl.NumberFormat('en-US').format(
-              response.data.total_payment_amount,
-            )
+          this.CarLabelsTBData = response.data.data
+          this.CarLabelsTBRowsCount = response.data.total
+          this.CarLabelsTBSums = response.data.sums
         })
         .catch(error => {
           this.ShowMessage('حدث خطا', error)

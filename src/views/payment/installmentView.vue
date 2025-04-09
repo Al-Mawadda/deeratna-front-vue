@@ -20,9 +20,8 @@
       ref="InstallmentsTB"
       :Name="'InstallmentsTB'"
       :DataArray="InstallmentsTBData"
-      :HeadersArray="InstallmentsTBHeaders"
-      :TotalsArray="InstallmentsTBTotals"
-      :DisplayColumnsArray="InstallmentsTBDisplayColumns"
+      :Columns="InstallmentsTBColumns"
+      :Sums="InstallmentsTBSums"
       :GetDataFunction="GetInstallmentsData"
       :RowsCount="InstallmentsTBRowsCount"
       :RowsPerPage="10"
@@ -58,41 +57,68 @@ import { ref } from 'vue'
 import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
 import { ShowMessage } from '@/MJS.js'
+import { useGlobalsStore } from '../../stores/Globals.js'
+
 export default {
   setup() {
     const authStore = useAuthStore()
     const hasPermission = permission =>
       authStore.user && authStore.user.permissions.includes(permission)
+    const GlobalsStore = ref(useGlobalsStore())
 
     return {
       hasPermission,
       InstallmentsTB: ref(null),
       InstallmentsTBData: ref([]),
-      InstallmentsTBHeaders: ref([
-        '#',
-        'المجمع',
-        'اسم الساكن',
-        'العنوان',
-        'رقم الهاتف',
-        'المبلغ',
-        'الحالة',
-        'الية الدفع',
-        'التاريخ',
-        'معرف المعاملة',
-      ]),
-      InstallmentsTBDisplayColumns: ref([
-        'id',
-        'compound',
-        'person_name',
-        'address',
-        'phone',
-        'payment_amount',
-        'transaction_status',
-        'payment_method',
-        'created_at',
-        'transaction_id',
-      ]),
-      InstallmentsTBTotals: ref(['Count', '', '', '', '', '', '']),
+      InstallmentsTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+        {
+          name: 'compound',
+          label: 'المدينة',
+          filter: 'combo',
+          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
+        },
+        {
+          name: 'person_name',
+          label: 'اسم الساكن',
+        },
+        {
+          name: 'address',
+          label: 'العنوان',
+        },
+        {
+          name: 'phone',
+          label: 'رقم الهاتف',
+        },
+        {
+          name: 'payment_amount',
+          label: 'المبلغ',
+          sum: true,
+          type: 'currency',
+        },
+        {
+          name: 'transaction_status',
+          label: 'الحالة',
+        },
+        {
+          name: 'payment_method',
+          label: 'الية الدفع',
+        },
+        {
+          name: 'created_at',
+          label: 'التاريخ',
+          filter: 'date',
+        },
+        {
+          name: 'transaction_id',
+          label: 'معرف المعاملة',
+        },
+      ],
+      InstallmentsTBSums: ref([]),
+
       InstallmentsTBRowsCount: ref(0),
       InstallmentsFromDate: ref(null),
       InstallmentsToDate: ref(null),
@@ -110,24 +136,19 @@ export default {
       )
   },
   methods: {
-    GetInstallmentsData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetInstallmentsData(MTable) {
       api
         .get('GetInstallmentsTransactions', {
           params: {
-            PageNo: PageNo,
-            FilterArray: FilterArray,
-            SortArray: SortArray,
+            MTable: MTable,
             installmentFrom: this.InstallmentsFromDate.Get(),
             installmentTo: this.InstallmentsToDate.Get(),
           },
         })
         .then(response => {
-          this.InstallmentsTBRowsCount = response.data.paginated_data.total
-          this.InstallmentsTBData = response.data.paginated_data.data
-          document.getElementById('InstallmentsTotal').innerHTML =
-            new Intl.NumberFormat('en-US').format(
-              response.data.total_payment_amount
-            )
+          this.InstallmentsTBData = response.data.data
+          this.InstallmentsTBRowsCount = response.data.total
+          this.InstallmentsTBSums = response.data.sums
         })
         .catch(error => {
           ShowMessage('حدث خطا', error)

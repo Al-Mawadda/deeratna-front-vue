@@ -4,9 +4,8 @@
       ref="qrdata"
       :Name="'qrdata'"
       :DataArray="qrdataData"
-      :HeadersArray="qrdataHeaders"
-      :TotalsArray="qrdataTotals"
-      :DisplayColumnsArray="qrdataDisplayColumns"
+      :Columns="qrdataTBColumns"
+      :Sums="qrdataTBSums"
       :GetDataFunction="GetInternetProfilesData"
       :RowsCount="qrdataRowsCount"
       :RowsPerPage="10"
@@ -43,35 +42,56 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import { ShowMessage } from '@/MJS.js'
+import { useGlobalsStore } from '../../stores/Globals.js'
 
 export default {
   setup() {
+    const GlobalsStore = ref(useGlobalsStore())
+
     return {
       qrdata: ref(null),
       qrdataData: ref([]),
-      qrdataHeaders: ref([
-        '#',
-        'المجمع',
-        'العنوان',
-        'اسم الساكن',
-        'رقم الهاتف',
-        'حالة التفعيل',
-      ]),
-      qrdataDisplayColumns: ref([
-        'id',
-        'city',
-        'address',
-        'name',
-        'phone',
-        'login_status',
-      ]),
-      qrdataTotals: ref(['Count', '', '', '', '', '', '']),
+
+      qrdataTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+        {
+          name: 'city',
+          label: 'المدينة',
+          filter: 'combo',
+          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
+        },
+        {
+          name: 'name',
+          label: 'اسم الساكن',
+        },
+        {
+          name: 'address',
+          label: 'العنوان',
+        },
+        {
+          name: 'phone',
+          label: 'رقم الهاتف',
+        },
+
+        {
+          name: 'login_status',
+          label: 'حالة التفعيل',
+        },
+        {
+          name: 'created_at',
+          label: 'التاريخ',
+          filter: 'date',
+        },
+      ],
+      qrdataTBSums: ref([]),
       qrdataRowsCount: ref(0),
       ServerPath: 'https://almawadda-online.com/qrcode/public/api/',
     }
   },
   mounted() {
-    this.GetInternetProfilesData()
     this.qrdata.LoadMTable()
 
     document.getElementById('qrdata').addEventListener(
@@ -105,18 +125,17 @@ export default {
     )
   },
   methods: {
-    GetInternetProfilesData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetInternetProfilesData(MTable) {
       axios
         .get(this.ServerPath + 'qrCustomers-deeratna', {
           params: {
-            PageNo: PageNo,
-            FilterArray: FilterArray,
-            SortArray: SortArray,
+            MTable: MTable,
           },
         })
         .then(response => {
-          this.qrdataRowsCount = response.data.total
           this.qrdataData = response.data.data
+          this.qrdataRowsCount = response.data.total
+          this.qrdataTBSums = response.data.sums
         })
         .catch(error => {
           ShowMessage(error)

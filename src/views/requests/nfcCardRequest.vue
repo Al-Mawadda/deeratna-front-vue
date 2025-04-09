@@ -197,8 +197,8 @@
       ref="NfcCardRequestsTB"
       :Name="'NfcCardRequestsTB'"
       :DataArray="NfcCardRequestsTBData"
-      :HeadersArray="NfcCardRequestsTBHeaders"
-      :TotalsArray="NfcCardRequestsTBTotals"
+      :Columns="NfcCardRequestsTBColumns"
+      :Sums="NfcCardRequestsTBSums"
       :DisplayColumnsArray="NfcCardRequestsTBDisplayColumns"
       :GetDataFunction="GetNfcCardRequestsData"
       :RowsCount="NfcCardRequestsTBRowsCount"
@@ -236,12 +236,14 @@ import { ref } from 'vue'
 import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
 import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
+import { useGlobalsStore } from '../../stores/Globals.js'
 
 export default {
   setup() {
     const authStore = useAuthStore()
     const hasPermission = permission =>
       authStore.user && authStore.user.permissions.includes(permission)
+    const GlobalsStore = ref(useGlobalsStore())
 
     return {
       hasPermission,
@@ -249,33 +251,58 @@ export default {
       NfcCardRequestRejectModal: ref(null),
       NfcCardRequestsTB: ref(null),
       NfcCardRequestsTBData: ref([]),
-      NfcCardRequestsTBHeaders: ref([
-        '#',
-        'الرقم',
-        'المجمع',
-        'الاسم',
-        'اسم الكفيل',
-        'العنوان',
-        'رقم الهاتف',
-        'الصفة',
-        'العملية',
-        'حالة الطلب',
-        'تاريخ الطلب',
-      ]),
-      NfcCardRequestsTBDisplayColumns: ref([
-        'id',
-        'pid',
-        'compound',
-        'name',
-        'guarantorname',
-        'address',
-        'phone',
-        'person_type',
-        'request_type',
-        'request_status',
-        'created_at',
-      ]),
-      NfcCardRequestsTBTotals: ref(['Count', '', '', '', '', '', '']),
+
+      NfcCardRequestsTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+        {
+          name: 'pid',
+          label: 'الرقم',
+        },
+        {
+          name: 'compound',
+          label: 'المدينة',
+          filter: 'combo',
+          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
+        },
+        {
+          name: 'name',
+          label: 'الاسم',
+        },
+        {
+          name: 'guarantorname',
+          label: 'اسم الكفيل',
+        },
+        {
+          name: 'address',
+          label: 'العنوان',
+        },
+        {
+          name: 'phone',
+          label: 'رقم الهاتف',
+        },
+        {
+          name: 'person_type',
+          label: 'الصفة',
+        },
+        {
+          name: 'request_type',
+          label: 'العملية',
+        },
+        {
+          name: 'request_status',
+          label: 'حالة الطلب',
+        },
+        {
+          name: 'created_at',
+          label: 'التاريخ',
+          filter: 'date',
+        },
+      ],
+      NfcCardRequestsTBSums: ref([]),
+
       NfcCardRequestsTBRowsCount: ref(0),
       NfcCardRequestsFromDate: ref(null),
       selectedRowData: ref([]),
@@ -327,13 +354,11 @@ export default {
   },
 
   methods: {
-    GetNfcCardRequestsData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetNfcCardRequestsData(MTable) {
       api
         .get('GetNFCCardRequests', {
           params: {
-            PageNo: PageNo,
-            FilterArray: FilterArray,
-            SortArray: SortArray,
+            MTable: MTable,
             nfcCardRequestFrom: this.NfcCardRequestsFromDate.Get()[0],
             nfcCardRequestTo: this.NfcCardRequestsFromDate.Get()[1],
           },
@@ -341,6 +366,7 @@ export default {
         .then(response => {
           this.NfcCardRequestsTBRowsCount = response.data.total
           this.NfcCardRequestsTBData = response.data.data
+          this.NfcCardRequestsTBSums = response.data.sums
         })
         .catch(error => {
           ShowMessage(error)

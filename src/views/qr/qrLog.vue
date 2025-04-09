@@ -14,9 +14,8 @@
       ref="qrLogTB"
       :Name="'qrLogTB'"
       :DataArray="qrLogTBData"
-      :HeadersArray="qrLogTBHeaders"
-      :TotalsArray="qrLogTBTotals"
-      :DisplayColumnsArray="qrLogTBDisplayColumns"
+      :Columns="qrLogTBColumns"
+      :Sums="qrLogTBSums"
       :GetDataFunction="GetqrLogData"
       :RowsCount="qrLogTBRowsCount"
       :RowsPerPage="10"
@@ -34,39 +33,69 @@ import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 
 export default {
   setup() {
+    const GlobalsStore = ref(useGlobalsStore())
+
     return {
       ID: ref(''),
       GlobalsStore: ref(useGlobalsStore()),
       QrLogFromDate: ref(null),
       qrLogTB: ref(null),
       qrLogTBData: ref([]),
-      qrLogTBHeaders: ref([
-        '#',
-        'المجمع',
-        'العنوان',
-        'اسم الساكن',
-        'اسم الزائر',
-        'رقم الهاتف',
-        'مدة الزيارة',
-        'وقت الانشاء',
-        'وقت الدخول',
-        'وقت الخروج',
-        'الصورة',
-      ]),
-      qrLogTBDisplayColumns: ref([
-        'id',
-        'compound',
-        'address',
-        'name',
-        'visitor_name',
-        'phone',
-        'period',
-        'created_qr',
-        'entry_date',
-        'out_date',
-        'img',
-      ]),
-      qrLogTBTotals: ref(['Count', '', '', '', '', '', '', '', '', '', '', '']),
+
+      qrLogTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+        {
+          name: 'compound',
+          label: 'المدينة',
+          filter: 'combo',
+          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
+        },
+        {
+          name: 'address',
+          label: 'العنوان',
+        },
+        {
+          name: 'name',
+          label: 'اسم الساكن',
+        },
+        {
+          name: 'visitor_name',
+          label: 'اسم الزائر',
+        },
+        {
+          name: 'phone',
+          label: 'رقم الهاتف',
+        },
+        {
+          name: 'period',
+          label: 'مدة الزيارة',
+        },
+        {
+          name: 'created_qr',
+          label: 'وقت الانشاء',
+        },
+        {
+          name: 'entry_date',
+          label: 'وقت الدخول',
+        },
+        {
+          name: 'out_date',
+          label: 'وقت الخروج',
+        },
+        {
+          name: 'gate_name',
+          label: 'بوابة الدخول',
+        },
+        {
+          name: 'img',
+          label: 'صورة',
+        },
+      ],
+      qrLogTBSums: ref([]),
+
       qrLogTBRowsCount: ref(0),
       qrLogFromDate: ref(null),
       selectedRowData: ref([]),
@@ -85,20 +114,19 @@ export default {
     )
   },
   methods: {
-    GetqrLogData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetqrLogData(MTable) {
       axios
         .get(this.ServerPath + 'qrlog-deeratna', {
           params: {
-            PageNo: PageNo,
-            FilterArray: FilterArray,
-            SortArray: SortArray,
+            MTable: MTable,
             QrLogFrom: this.QrLogFromDate.Get()[0],
             QrLogTo: this.QrLogFromDate.Get()[1],
           },
         })
         .then(response => {
-          this.qrLogTBRowsCount = response.data.total
           this.qrLogTBData = response.data.data
+          this.qrLogTBRowsCount = response.data.total
+          this.qrLogTBSums = response.data.sums
         })
         .catch(error => {
           ShowMessage(error)

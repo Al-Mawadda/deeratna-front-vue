@@ -213,19 +213,19 @@ const router = createRouter({
     // QR خطار
     {
       path: '/qr-data',
-      component: () => import('../views/qr/log.vue'),
+      component: () => import('../views/qr/qrLog.vue'),
       name: 'qr-data',
       meta: { requiresAuth: true, HeaderTitle: 'بيانات الـ QR' },
     },
     {
       path: '/qr-notification',
-      component: () => import('../views/qr/notification.vue'),
+      component: () => import('../views/qr/qrNotification.vue'),
       name: 'qr-security',
       meta: { requiresAuth: true, HeaderTitle: 'الاشعارات' },
     },
     {
       path: '/qr-customers',
-      component: () => import('../views/qr/customers.vue'),
+      component: () => import('../views/qr/qrCustomers.vue'),
       name: 'qr-management',
       meta: { requiresAuth: true, HeaderTitle: 'بيانات المشتركين' },
     },
