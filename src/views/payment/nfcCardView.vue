@@ -20,9 +20,8 @@
       ref="NfcCardsTB"
       :Name="'NfcCardsTB'"
       :DataArray="NfcCardsTBData"
-      :HeadersArray="NfcCardsTBHeaders"
-      :TotalsArray="NfcCardsTBTotals"
-      :DisplayColumnsArray="NfcCardsTBDisplayColumns"
+      :Columns="NfcCardsTBColumns"
+      :Sums="NfcCardsTBSums"
       :GetDataFunction="GetNfcCardsData"
       :RowsCount="NfcCardsTBRowsCount"
       :RowsPerPage="10"
@@ -46,11 +45,6 @@
         </div>
       </template> -->
     </MTable>
-
-    <div class="MGroup">
-      <div class="MlabelText">مجموع المبالغ =</div>
-      <div class="MlabelNumber" id="NfcCardsTotal"></div>
-    </div>
   </div>
 </template>
 <script>
@@ -58,43 +52,72 @@ import { ref } from 'vue'
 import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
 import { ShowMessage } from '@/MJS.js'
+import { useGlobalsStore } from '../../stores/Globals.js'
+
 export default {
   setup() {
     const authStore = useAuthStore()
     const hasPermission = permission =>
       authStore.user && authStore.user.permissions.includes(permission)
+    const GlobalsStore = ref(useGlobalsStore())
 
     return {
       hasPermission,
       NfcCardsTB: ref(null),
       NfcCardsTBData: ref([]),
-      NfcCardsTBHeaders: ref([
-        '#',
-        'المجمع',
-        'اسم الساكن',
-        'العنوان',
-        'رقم الهاتف',
-        'نوع العملية',
-        'المبلغ',
-        'الحالة',
-        'الية الدفع',
-        'التاريخ',
-        'معرف المعاملة',
-      ]),
-      NfcCardsTBDisplayColumns: ref([
-        'id',
-        'compound',
-        'person_name',
-        'address',
-        'phone',
-        'payment_name',
-        'payment_amount',
-        'transaction_status',
-        'payment_method',
-        'created_at',
-        'transaction_id',
-      ]),
-      NfcCardsTBTotals: ref(['Count', '', '', '', '', '', '']),
+      NfcCardsTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+        {
+          name: 'compound',
+          label: 'المدينة',
+          filter: 'combo',
+          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
+        },
+        {
+          name: 'person_name',
+          label: 'اسم الساكن',
+        },
+        {
+          name: 'address',
+          label: 'العنوان',
+        },
+        {
+          name: 'phone',
+          label: 'رقم الهاتف',
+        },
+        {
+          name: 'payment_name',
+          label: 'نوع العملية',
+        },
+        {
+          name: 'payment_amount',
+          label: 'المبلغ',
+          sum: true,
+          type: 'currency',
+        },
+        {
+          name: 'transaction_status',
+          label: 'الحالة',
+        },
+        {
+          name: 'payment_method',
+          label: 'الية الدفع',
+        },
+        {
+          name: 'created_at',
+          label: 'التاريخ',
+          filter: 'date',
+        },
+        {
+          name: 'transaction_id',
+          label: 'معرف المعاملة',
+        },
+      ],
+      NfcCardsTBSums: ref([]),
+
       NfcCardsTBRowsCount: ref(0),
       NfcCardsFromDate: ref(null),
       NfcCardsToDate: ref(null),
@@ -108,28 +131,23 @@ export default {
         'click',
         function () {
           this.NfcCardsTB.LoadMTable()
-        }.bind(this),
+        }.bind(this)
       )
   },
   methods: {
-    GetNfcCardsData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetNfcCardsData(MTable) {
       api
         .get('GetNfcCardsTransactions', {
           params: {
-            PageNo: PageNo,
-            FilterArray: FilterArray,
-            SortArray: SortArray,
+            MTable: MTable,
             nfcCardFrom: this.NfcCardsFromDate.Get(),
             nfcCardTo: this.NfcCardsToDate.Get(),
           },
         })
         .then(response => {
-          this.NfcCardsTBRowsCount = response.data.paginated_data.total
-          this.NfcCardsTBData = response.data.paginated_data.data
-          document.getElementById('NfcCardsTotal').innerHTML =
-            new Intl.NumberFormat('en-US').format(
-              response.data.total_payment_amount,
-            )
+          this.NfcCardsTBData = response.data.data
+          this.NfcCardsTBRowsCount = response.data.total
+          this.NfcCardsTBSums = response.data.sums
         })
         .catch(error => {
           ShowMessage('حدث خطا', error)

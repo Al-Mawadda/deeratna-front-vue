@@ -4,16 +4,14 @@
       ref="qrdata"
       :Name="'qrdata'"
       :DataArray="qrdataData"
-      :HeadersArray="qrdataHeaders"
-      :TotalsArray="qrdataTotals"
-      :DisplayColumnsArray="qrdataDisplayColumns"
+      :Columns="qrdataTBColumns"
+      :Sums="qrdataTBSums"
       :GetDataFunction="GetInternetProfilesData"
       :RowsCount="qrdataRowsCount"
       :RowsPerPage="10"
     >
       <template v-slot:options>
-        <!-- View Videosdffhroif Option -->
-        <!-- <div class="MTableOption" OptionEventName="EditItem">
+        <div class="MTableOption" OptionEventName="EditItem">
           <div class="MTableOptionIcon">
             <svg viewBox="0 0 1000 1000">
               <path
@@ -33,7 +31,7 @@
             </svg>
           </div>
           <div class="MTableOptionName">اعادة تفعيل الحساب</div>
-        </div> -->
+        </div>
       </template>
     </MTable>
   </div>
@@ -43,53 +41,101 @@
 <script>
 import { ref } from 'vue'
 import axios from 'axios'
-import { useGlobalsStore } from '../../stores/Globals.js'
 import { ShowMessage } from '@/MJS.js'
+import { useGlobalsStore } from '../../stores/Globals.js'
 
 export default {
   setup() {
-    return {
-      ID: ref(''),
-      GlobalsStore: ref(useGlobalsStore()),
+    const GlobalsStore = ref(useGlobalsStore())
 
+    return {
       qrdata: ref(null),
       qrdataData: ref([]),
-      qrdataHeaders: ref([
-        '#',
-        'الاشعار',
-        // 'وقت الدخول',
-        'مدة الزيارة',
-        'تاريخ الاشعار',
-      ]),
-      qrdataDisplayColumns: ref([
-        'id',
-        'content',
-        //'updated_at_12_hour',
-        'periods',
-        'created_at_12_hour',
-      ]),
-      qrdataTotals: ref(['Count', '', '', '', '', '', '']),
+
+      qrdataTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+        {
+          name: 'city',
+          label: 'المدينة',
+          filter: 'combo',
+          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
+        },
+        {
+          name: 'name',
+          label: 'اسم الساكن',
+        },
+        {
+          name: 'address',
+          label: 'العنوان',
+        },
+        {
+          name: 'phone',
+          label: 'رقم الهاتف',
+        },
+
+        {
+          name: 'login_status',
+          label: 'حالة التفعيل',
+        },
+        {
+          name: 'created_at',
+          label: 'التاريخ',
+          filter: 'date',
+        },
+      ],
+      qrdataTBSums: ref([]),
       qrdataRowsCount: ref(0),
       ServerPath: 'https://almawadda-online.com/qrcode/public/api/',
     }
   },
   mounted() {
-    this.GetInternetProfilesData()
+    this.qrdata.LoadMTable()
+
+    document.getElementById('qrdata').addEventListener(
+      'EditItem',
+      function (data) {
+        var YesFunction = function () {
+          window.ShowLoading()
+          axios
+            .get(this.ServerPath + 'cus-reset/' + data.detail.RowData.id)
+            .then(response => {
+              window.HideLoading()
+              window.HideChoose()
+              console.log(response.data.message)
+              this.qrdata.LoadMTable()
+            })
+            .catch(error => {
+              window.HideLoading()
+              window.HideChoose()
+              ShowMessage(error)
+            })
+        }.bind(this)
+        var NoFunction = function () {
+          window.HideChoose()
+        }
+        window.ShowChoose(
+          'هل انت متاكد من عملية اعادة التفعيل ؟',
+          YesFunction,
+          NoFunction
+        )
+      }.bind(this)
+    )
   },
   methods: {
-    //load data from table to table and combo companyName
-    GetInternetProfilesData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetInternetProfilesData(MTable) {
       axios
-        .get(this.ServerPath + 'qrNotification-deeratna', {
+        .get(this.ServerPath + 'qrCustomers-deeratna', {
           params: {
-            PageNo: PageNo,
-            FilterArray: FilterArray,
-            SortArray: SortArray,
+            MTable: MTable,
           },
         })
         .then(response => {
-          this.qrdataRowsCount = response.data.total
           this.qrdataData = response.data.data
+          this.qrdataRowsCount = response.data.total
+          this.qrdataTBSums = response.data.sums
         })
         .catch(error => {
           ShowMessage(error)
@@ -98,3 +144,8 @@ export default {
   },
 }
 </script>
+
+
+
+
+<!-- cus-reset/{id} -->

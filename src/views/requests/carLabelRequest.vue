@@ -206,8 +206,8 @@
       ref="CarLabelRequestsTB"
       :Name="'CarLabelRequestsTB'"
       :DataArray="CarLabelRequestsTBData"
-      :HeadersArray="CarLabelRequestsTBHeaders"
-      :TotalsArray="CarLabelRequestsTBTotals"
+      :Columns="CarLabelRequestsTBColumns"
+      :Sums="CarLabelRequestsTBSums"
       :DisplayColumnsArray="CarLabelRequestsTBDisplayColumns"
       :GetDataFunction="GetCarLabelRequestsData"
       :RowsCount="CarLabelRequestsTBRowsCount"
@@ -245,11 +245,14 @@ import { ref } from 'vue'
 import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
 import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
+import { useGlobalsStore } from '../../stores/Globals.js'
+
 export default {
   setup() {
     const authStore = useAuthStore()
     const hasPermission = permission =>
       authStore.user && authStore.user.permissions.includes(permission)
+    const GlobalsStore = ref(useGlobalsStore())
 
     return {
       hasPermission,
@@ -257,31 +260,54 @@ export default {
       CarLableRequestRejectModal: ref(null),
       CarLabelRequestsTB: ref(null),
       CarLabelRequestsTBData: ref([]),
-      CarLabelRequestsTBHeaders: ref([
-        '#',
-        'الرقم',
-        'المجمع',
-        'الاسم',
-        'العنوان',
-        'رقم الهاتف',
-        'الصفة',
-        'العملية',
-        'حالة الطلب',
-        'تاريخ الطلب',
-      ]),
-      CarLabelRequestsTBDisplayColumns: ref([
-        'id',
-        'pid',
-        'compound',
-        'name',
-        'address',
-        'phone',
-        'person_type',
-        'request_type',
-        'request_status',
-        'created_at',
-      ]),
-      CarLabelRequestsTBTotals: ref(['Count', '', '', '', '', '', '']),
+
+      CarLabelRequestsTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+        {
+          name: 'pid',
+          label: 'الرقم',
+        },
+        {
+          name: 'compound',
+          label: 'المدينة',
+          filter: 'combo',
+          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
+        },
+        {
+          name: 'name',
+          label: 'الاسم',
+        },
+        {
+          name: 'address',
+          label: 'العنوان',
+        },
+        {
+          name: 'phone',
+          label: 'رقم الهاتف',
+        },
+        {
+          name: 'person_type',
+          label: 'الصفة',
+        },
+        {
+          name: 'request_type',
+          label: 'العملية',
+        },
+        {
+          name: 'request_status',
+          label: 'حالة الطلب',
+        },
+        {
+          name: 'created_at',
+          label: 'التاريخ',
+          filter: 'date',
+        },
+      ],
+      CarLabelRequestsTBSums: ref([]),
+
       CarLabelRequestsTBRowsCount: ref(0),
       CarLabelRequestsFromDate: ref(null),
       selectedRowData: ref([]),
@@ -335,13 +361,11 @@ export default {
   },
 
   methods: {
-    GetCarLabelRequestsData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetCarLabelRequestsData(MTable) {
       api
         .get('GetCarsLabelRequests', {
           params: {
-            PageNo: PageNo,
-            FilterArray: FilterArray,
-            SortArray: SortArray,
+            MTable: MTable,
             carLabelRequestFrom: this.CarLabelRequestsFromDate.Get()[0],
             carLabelRequestTo: this.CarLabelRequestsFromDate.Get()[1],
           },
@@ -349,6 +373,7 @@ export default {
         .then(response => {
           this.CarLabelRequestsTBRowsCount = response.data.total
           this.CarLabelRequestsTBData = response.data.data
+          this.CarLabelRequestsTBSums = response.data.sums
         })
         .catch(error => {
           ShowMessage(error)

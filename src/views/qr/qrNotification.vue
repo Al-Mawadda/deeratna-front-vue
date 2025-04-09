@@ -4,9 +4,8 @@
       ref="qrdata"
       :Name="'qrdata'"
       :DataArray="qrdataData"
-      :HeadersArray="qrdataHeaders"
-      :TotalsArray="qrdataTotals"
-      :DisplayColumnsArray="qrdataDisplayColumns"
+      :Columns="qrdataTBColumns"
+      :Sums="qrdataTBSums"
       :GetDataFunction="GetInternetProfilesData"
       :RowsCount="qrdataRowsCount"
       :RowsPerPage="10"
@@ -32,7 +31,7 @@
               />
             </svg>
           </div>
-          <div class="MTableOptionName">تعديل</div>
+          <div class="MTableOptionName">اعادة تفعيل الحساب</div>
         </div> -->
       </template>
     </MTable>
@@ -54,54 +53,49 @@ export default {
 
       qrdata: ref(null),
       qrdataData: ref([]),
-      qrdataHeaders: ref([
-        '#',
-        'المجمع',
-        'العنوان',
-        'اسم الساكن',
-        'اسم الزائر',
-        'رقم الهاتف',
-        'مدة الزيارة',
-        'وقت الانشاء',
-        'وقت الدخول',
-        'وقت الخروج',
-        'الصورة',
-      ]),
-      qrdataDisplayColumns: ref([
-        'id',
-        'compound',
-        'address',
-        'name',
-        'visitor_name',
-        'phone',
-        'period',
-        'created_qr',
-        'created_at_12_hour',
-        'out_date',
-        'img',
-      ]),
-      qrdataTotals: ref(['Count', '', '', '', '', '', '']),
+
+      qrdataTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+
+        {
+          name: 'content',
+          label: 'الاشعار',
+        },
+        {
+          name: 'periods',
+          label: 'مدة الزيارة',
+        },
+        {
+          name: 'created_at',
+          label: 'التاريخ',
+          filter: 'date',
+        },
+      ],
+      qrdataTBSums: ref([]),
+
       qrdataRowsCount: ref(0),
       ServerPath: 'https://almawadda-online.com/qrcode/public/api/',
     }
   },
   mounted() {
-    this.GetInternetProfilesData()
+    this.qrdata.LoadMTable()
   },
   methods: {
     //load data from table to table and combo companyName
-    GetInternetProfilesData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetInternetProfilesData(MTable) {
       axios
-        .get(this.ServerPath + 'qrlog-deeratna', {
+        .get(this.ServerPath + 'qrNotification-deeratna', {
           params: {
-            PageNo: PageNo,
-            FilterArray: FilterArray,
-            SortArray: SortArray,
+            MTable: MTable,
           },
         })
         .then(response => {
-          this.qrdataRowsCount = response.data.total
           this.qrdataData = response.data.data
+          this.qrdataRowsCount = response.data.total
+          this.qrdataTBSums = response.data.sums
         })
         .catch(error => {
           ShowMessage(error)

@@ -88,9 +88,8 @@
       ref="InternetSubscribersTB"
       :Name="'InternetSubscribersTB'"
       :DataArray="InternetSubscribersTBData"
-      :HeadersArray="InternetSubscribersTBHeaders"
-      :TotalsArray="InternetSubscribersTBTotals"
-      :DisplayColumnsArray="InternetSubscribersTBDisplayColumns"
+      :Columns="InternetSubscribersTBColumns"
+      :Sums="InternetSubscribersTBSums"
       :GetDataFunction="GetInternetSubscribersData"
       :RowsCount="InternetSubscribersTBRowsCount"
       :RowsPerPage="10"
@@ -141,10 +140,6 @@
         </div>
       </template>
     </MTable>
-    <div class="MGroup">
-      <div class="MlabelText">مجموع المبالغ =</div>
-      <div class="MlabelNumber" id="TotalSubscriptions"></div>
-    </div>
   </div>
 </template>
 
@@ -161,6 +156,7 @@ export default {
     const authStore = useAuthStore()
     const hasPermission = permission =>
       authStore.user && authStore.user.permissions.includes(permission)
+    const GlobalsStore = ref(useGlobalsStore())
 
     return {
       hasPermission,
@@ -176,49 +172,65 @@ export default {
       SubscriptionTypeItems: ref([]),
       InternetSubscribersTB: ref(null),
       InternetSubscribersTBData: ref([]),
-      InternetSubscribersTBHeaders: ref([
-        '#',
-        'المجمع',
-        'اسم المستخدم',
-        'اسم المشترك',
-        'العنوان',
-        'رقم هاتف المالك',
-        'رقم هاتف الاشتراك',
-        'الشركة',
-        'نوع الاشتراك',
-        'السعر',
-        'تاريخ',
-        'الملاحظات',
-      ]),
-      InternetSubscribersTBDisplayColumns: ref([
-        'id',
-        'compound',
-        'name',
-        'subscriber_name',
-        'address',
-        'phone',
-        'subscriber_phone',
-        'company_name',
-        'subscription_type',
-        'price',
-        'created_at',
-        'notes',
-      ]),
-      InternetSubscribersTBTotals: ref([
-        'Count',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        'Sum',
-        '',
-        '',
-      ]),
       InternetSubscribersTBRowsCount: ref(0),
+
+      InternetSubscribersTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+        {
+          name: 'compound',
+          label: 'المدينة',
+          filter: 'combo',
+          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
+        },
+        {
+          name: 'name',
+          label: 'الاسم',
+        },
+        {
+          name: 'subscriber_name',
+          label: 'اسم المشترك',
+        },
+        {
+          name: 'address',
+          label: 'العنوان',
+        },
+        {
+          name: 'phone',
+          label: 'رقم الهاتف',
+        },
+        {
+          name: 'subscriber_phone',
+          label: 'رقم هاتف الاشتراك',
+        },
+        {
+          name: 'company_name',
+          label: 'الشركة',
+        },
+        {
+          name: 'subscription_type',
+          label: 'نوع الاشتراك',
+        },
+        {
+          name: 'price',
+          label: 'المبلغ',
+          sum: true,
+          type: 'currency',
+        },
+        {
+          name: 'created_at',
+          label: 'التاريخ',
+          filter: 'date',
+        },
+        {
+          name: 'notes',
+          label: 'ملاحظات',
+        },
+      ],
+      InternetSubscribersTBSums: ref([]),
+
       InternetSubscribersFromDate: ref(null),
       InternetSubscribersToDate: ref(null),
       selectedRowData: ref([]),
@@ -324,25 +336,19 @@ export default {
     )
   },
   methods: {
-    GetInternetSubscribersData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetInternetSubscribersData(MTable) {
       api
         .get('InternetSubscribers', {
           params: {
-            PageNo: PageNo,
-            FilterArray: FilterArray,
-            SortArray: SortArray,
-            InternetRequestFrom: this.InternetSubscribersFromDate.Get(),
-            InternetRequestTo: this.InternetSubscribersToDate.Get(),
+            MTable: MTable,
+            InternetSubscribersFrom: this.InternetSubscribersFromDate.Get(),
+            InternetSubscribersTo: this.InternetSubscribersToDate.Get(),
           },
         })
         .then(response => {
-          this.InternetSubscribersTBRowsCount =
-            response.data.paginated_data.total
-          this.InternetSubscribersTBData = response.data.paginated_data.data
-          document.getElementById('TotalSubscriptions').innerHTML =
-            new Intl.NumberFormat('en-US').format(
-              response.data.total_payment_amount
-            )
+          this.InternetSubscribersTBData = response.data.data
+          this.InternetSubscribersTBRowsCount = response.data.total
+          this.InternetSubscribersTBSums = response.data.sums
         })
         .catch(error => {
           ShowMessage(error)
