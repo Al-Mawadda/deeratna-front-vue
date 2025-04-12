@@ -51,14 +51,19 @@
       </div>
       <MDate ref="IdentificationIssuingDate" :Name="'IdentificationIssuingDate'" :Label="'تاريخ الاصدار'"
         v-show="CheckAttributes(['مالك', 'مستاجر'])"></MDate>
-      <div class="MField" id="Phone" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر'])">
+      <div class="MField" id="Phone" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف'])">
         <input type="text" required>
         <label>رقم الهاتف</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="Study" v-show="CheckAttributes(['مالك', 'مستاجر'])">
+      <div class="MField" id="Study" v-show="CheckAttributes(['مالك', 'مستاجر', 'موظف'])">
         <input type="text" required />
         <label>التحصيل الدراسي</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="EducationCertificate" v-show="CheckAttributes(['موظف'])">
+        <input type="text" required />
+        <label>الشهادة</label>
         <div class="MFieldBG"></div>
       </div>
       <div class="MField" id="WorkType" v-show="CheckAttributes(['مالك', 'مستاجر', 'كادر'])">
@@ -66,26 +71,63 @@
         <label>نوع العمل</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="WorkPlace" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر'])">
+      <div class="MField" id="WorkPlace" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف'])">
         <input type="text" required />
         <label>موقع العمل</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="Address" v-show="CheckAttributes(['متعهد', 'كادر', 'عامل'])">
+      <div class="MField" id="EmployeeCompany" v-show="CheckAttributes(['موظف'])">
+        <input type="text" required />
+        <label>الشركة</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="EmployeeDepartment" v-show="CheckAttributes(['موظف'])">
+        <input type="text" required />
+        <label>القسم</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="JobTitle" v-show="CheckAttributes(['موظف'])">
+        <input type="text" required />
+        <label>العنوان الوظيفي</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <MDate ref="EmployeeStartDate" :Name="'EmployeeStartDate'" :Label="'تاريخ المباشرة'"
+        v-show="CheckAttributes(['موظف'])"></MDate>
+      <div class="MField" id="Address" v-show="CheckAttributes(['متعهد', 'كادر', 'عامل', 'موظف'])">
         <input type="text" required />
         <label>العنوان</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="CarNumber" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر'])">
+      <div class="MField" id="CarNumber" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف'])">
         <input type="text" required>
         <label>رقم العجلة</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="CarDetails" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر'])">
+      <div class="MField" id="CarDetails" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف'])">
         <input type="text" required>
         <label>تفاصيل العجلة</label>
         <div class="MFieldBG"></div>
       </div>
+      <MComboBox ref='GuarantorCompound' :Name="'GuarantorCompound'" :Label="'مدينة الكفيل'"
+        :Items="GuarantorCompoundItems" v-show="CheckAttributes(['زائر', 'سائق'])"></MComboBox>
+      <div class="MField" id="GuarantorAddress" v-show="CheckAttributes(['زائر', 'سائق'])">
+        <input type="text" v-model="GuarantorAddress" required>
+        <label>عنوان الكفيل</label>
+        <div class="MFieldBG"></div>
+        <div v-show="GuarantorAddress && GuarantorCompound.Get().length > 0" class="MButton MFieldBTN">
+          <svg viewBox="0 0 1000 1000">
+            <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
+	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
+	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
+	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
+	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
+	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
+	C553.9,663.3,657.6,553.1,656.9,424.3z" />
+          </svg>
+        </div>
+      </div>
+      <MComboBox ref='Guarantor' :Name="'Guarantor'" :Label="'الكفيل'" :Items="GuarantorItems"
+        v-show="CheckAttributes(['زائر', 'سائق'])"></MComboBox>
       <div class="MField" id="EMail" v-show="CheckAttributes(['مالك', 'مستاجر'])">
         <input type="text" required />
         <label>بريد الكتروني</label>
@@ -101,10 +143,16 @@
         <label>منفذ الدخول</label>
         <div class="MFieldBG"></div>
       </div>
-      <MDate ref="EntryDate" :Name="'EntryDate'" :Label="'تاريخ الدخول'" v-show="CheckAttributes(['متعهد', 'عامل'])"></MDate>
+      <MDate ref="EntryDate" :Name="'EntryDate'" :Label="'تاريخ الدخول'" v-show="CheckAttributes(['متعهد', 'عامل'])">
+      </MDate>
       <div class="MField" id="Notes">
         <input type="text" required />
         <label>الملاحظات</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="MField" id="InputDate" v-show="Operation == 'EDIT'">
+        <input type="text" disabled required>
+        <label>تاريخ الادخال</label>
         <div class="MFieldBG"></div>
       </div>
     </div>
@@ -454,6 +502,43 @@
           <input id="DriverLicenceImageBack" type="file" accept=".jpg" />
         </div>
       </div>
+      <div class="MImage" :required="CheckAttributes(['موظف'])" v-show="CheckAttributes(['موظف'])">
+        <div class="MImagePreview">
+          <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
+          <div class="MImageButtons">
+            <div class="MImageBTN ShowMImage">
+              <svg viewBox="0 0 1000 1000">
+                <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
+	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
+	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
+	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
+	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
+	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
+	C553.9,663.3,657.6,553.1,656.9,424.3z" />
+              </svg>
+            </div>
+            <div class="MImageBTN DeleteMImage">
+              <svg viewBox="0 0 1000 1000">
+                <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
+	c15.3-15.2,23.8-28.8,27.3-43.8v-25.9c-5.5-21.4-16.3-36.2-34-46.4c-9.8-5.6-21.2-8.6-32.9-8.6h0h0c-16.4,0-32,5.7-43.9,15.9
+	c-3.4,2.9-6.9,6.2-11.4,10.8C705.4,199,646.3,258.1,589.2,315.2l-60,60c-6.6,6.6-14.9,14.9-28.9,14.9c-13.9,0-22.2-8.2-28.8-14.9
+	c-21-21-42.1-42.1-63.1-63.1C351.6,255.3,292.8,196.5,235,138.6c-16.5-16.5-33.9-24.2-54.7-24.2c-1,0-2,0-3,0.1
+	c-15.1,0.5-30.8,7.8-43,20c-12.2,12.2-19.5,27.9-20,43c-0.7,22.2,6.9,40.5,24.2,57.7c57.5,57.2,115.8,115.6,172.1,172
+	c21.3,21.3,42.6,42.6,63.9,64c6.8,6.8,15.3,15.3,15.3,29.5c0,14.1-8.5,22.6-15.4,29.4c-21,21-41.9,41.9-62.9,62.9
+	C255,649.5,196.3,708.2,138.5,765.8c-16.6,16.6-24.3,33.6-24.1,53.6c0.3,30,20.5,56.5,49.1,64.6c2.1,0.6,4.2,1.2,6.2,1.7h25.4
+	c15.1-3.6,28.7-12.1,43.8-27.3c57.4-57.8,115.9-116.3,172.5-172.8c20.1-20.1,40.2-40.2,60.3-60.3c6.2-6.2,14.7-14.7,28.6-14.7
+	c13.9,0,22.4,8.5,28.6,14.7c20.1,20.1,40.2,40.2,60.4,60.3c56.6,56.5,115.1,115,172.5,172.8c15.1,15.2,28.7,23.8,43.8,27.3h26
+	c21.4-5.4,36.2-16.3,46.6-34.2c3.3-5.6,5.4-12.8,7.6-20.4v-25.5c-3.6-15-12.1-28.7-27.3-43.8c-57.8-57.4-116.3-116-172.9-172.6
+	c-20.1-20.1-40.1-40.2-60.2-60.2C619.1,522.8,610.6,514.3,610.6,500.4z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="MImagePicker">
+          <label class="MButton" for="EmploymentOrder">امر التعيين</label>
+          <input id="EmploymentOrder" type="file" accept=".jpg" />
+        </div>
+      </div>
     </div>
     <div class="MGroup" id="AttacmentsGroup">
       <div class="MGroupTitle">المرفقات</div>
@@ -503,9 +588,15 @@ export default {
       GenderItems: ref([]),
       BirthDate: ref(null),
       IdentificationIssuingDate: ref(null),
+      EmployeeStartDate: ref(null),
       SelectedAttributes: ref([]),
       CardExpire: ref(null),
       CardStatus: ref(null),
+      GuarantorCompound: ref(null),
+      GuarantorCompoundItems: ref([]),
+      GuarantorAddress: ref(''),
+      Guarantor: ref(null),
+      GuarantorItems: ref([]),
       CardStatusItems: ref([]),
       NFCID: ref(''),
       Gates: ref(''),
@@ -519,6 +610,7 @@ export default {
     this.AttributesItems = this.GlobalsStore.ComboBoxes['Attributes'];
     this.CampNameItems = this.GlobalsStore.ComboBoxes['Camps'];
     this.CardStatusItems = this.GlobalsStore.ComboBoxes['NFCCardStatus'];
+    this.GuarantorCompoundItems = this.GlobalsStore.ComboBoxes['Compounds'];
     this.Operation = this.$route.meta.Operation;
 
     this.ComponentLoad();
@@ -623,6 +715,10 @@ export default {
         e.target.value = '';
       }
     }.bind(this));
+
+    document.getElementById('GuarantorAddress').querySelector('.MFieldBTN').addEventListener('click', function () {
+      Instance.GetGuarantors();
+    });
   },
   methods: {
     ComponentLoad() {
@@ -652,8 +748,12 @@ export default {
         document.getElementById('IdentificationIssuingAuthority').querySelector('input').value = this.GlobalsStore.MArray['identification_issuing_authority'];
         document.getElementById('Phone').querySelector('input').value = this.GlobalsStore.MArray['phone'];
         document.getElementById('Study').querySelector('input').value = this.GlobalsStore.MArray['study'];
+        document.getElementById('EducationCertificate').querySelector('input').value = this.GlobalsStore.MArray['education_certificate'];
         document.getElementById('WorkType').querySelector('input').value = this.GlobalsStore.MArray['work_type'];
         document.getElementById('WorkPlace').querySelector('input').value = this.GlobalsStore.MArray['work_place'];
+        document.getElementById('EmployeeCompany').querySelector('input').value = this.GlobalsStore.MArray['employee_company'];
+        document.getElementById('EmployeeDepartment').querySelector('input').value = this.GlobalsStore.MArray['employee_department'];
+        document.getElementById('JobTitle').querySelector('input').value = this.GlobalsStore.MArray['job_title'];
         document.getElementById('Address').querySelector('input').value = this.GlobalsStore.MArray['address'];
         document.getElementById('CarNumber').querySelector('input').value = this.GlobalsStore.MArray['car_number'];
         document.getElementById('CarDetails').querySelector('input').value = this.GlobalsStore.MArray['car_details'];
@@ -661,12 +761,14 @@ export default {
         document.getElementById('ContractorContractNo').querySelector('input').value = this.GlobalsStore.MArray['contractor_contract_no'];
         document.getElementById('EntryPort').querySelector('input').value = this.GlobalsStore.MArray['entry_port'];
         document.getElementById('Notes').querySelector('input').value = this.GlobalsStore.MArray['notes'];
+        document.getElementById('InputDate').querySelector('input').value = this.GlobalsStore.MArray['created_at'];
 
         this.Gender.Set(this.GlobalsStore.MArray['gender']);
         this.BirthDate.Set(this.GlobalsStore.MArray['birth']);
         this.IdentificationType.Set(this.GlobalsStore.MArray['identification_type']);
         this.IdentificationIssuingDate.Set(this.GlobalsStore.MArray['identification_issuing_date']);
         this.EntryDate.Set(this.GlobalsStore.MArray['entry_date']);
+        this.EmployeeStartDate.Set(this.GlobalsStore.MArray['employee_start_date']);
         setTimeout(function () {
           this.SelectedAttributes = this.Attributes.GetValue().split(' | ') ?? [];
         }.bind(this), 100);
@@ -728,8 +830,13 @@ export default {
       Parameters.append('identification_issuing_date', this.IdentificationIssuingDate.Get());
       Parameters.append('phone', document.getElementById('Phone').querySelector('input').value);
       Parameters.append('study', document.getElementById('Study').querySelector('input').value);
+      Parameters.append('education_certificate', document.getElementById('EducationCertificate').querySelector('input').value);
       Parameters.append('work_type', document.getElementById('WorkType').querySelector('input').value);
       Parameters.append('work_place', document.getElementById('WorkPlace').querySelector('input').value);
+      Parameters.append('employee_company', document.getElementById('EmployeeCompany').querySelector('input').value);
+      Parameters.append('employee_department', document.getElementById('EmployeeDepartment').querySelector('input').value);
+      Parameters.append('job_title', document.getElementById('JobTitle').querySelector('input').value);
+      Parameters.append('employee_start_date', this.EmployeeStartDate.Get());
       Parameters.append('address', document.getElementById('Address').querySelector('input').value);
       Parameters.append('car_number', document.getElementById('CarNumber').querySelector('input').value);
       Parameters.append('car_details', document.getElementById('CarDetails').querySelector('input').value);
@@ -980,6 +1087,29 @@ export default {
 
         }.bind(this));
       }.bind(this));
+    },
+    GetGuarantors() {
+      window.ShowLoading();          
+      this.Guarantor.Clear();
+      api.get('GetGuarantors', {
+        params: {
+          compound: this.GuarantorCompound.GetValue(),
+          address: this.GuarantorAddress,
+        }
+      }).then(response => {
+        if (response.data) {
+          window.HideLoading();
+          this.GuarantorItems = response.data.camps
+        } else {
+          this.GuarantorItems = [];
+          window.HideLoading();
+          window.ShowMessage(response.data);
+        }
+      }).catch(() => {
+        this.GuarantorItems = [];
+        window.HideLoading();
+        window.ShowMessage('حدث خطا');
+      });
     },
     async CompressImage(ImageFile, MaxSize) {
       // Wrap FileReader in a Promise to read the file as a Data URL

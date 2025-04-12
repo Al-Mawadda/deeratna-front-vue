@@ -15,8 +15,7 @@
 
 <!-- ======================================== -->
 <script>
-import { ref } from 'vue'
-import { api, GetServerPath } from '../../axios'
+import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
 import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 
