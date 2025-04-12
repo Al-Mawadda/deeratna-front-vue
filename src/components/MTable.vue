@@ -1422,7 +1422,7 @@ export default {
 
 .MTable ::-webkit-scrollbar {
   width: 5px;
-  height: 5px;
+  height: 10px;
 }
 
 .MTable ::-webkit-scrollbar-track {
