@@ -92,6 +92,7 @@ export default {
         {
           name: 'img',
           label: 'صورة',
+          type: 'image',
         },
       ],
       qrLogTBSums: ref([]),
