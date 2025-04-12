@@ -1,6 +1,17 @@
 <template>
   <div class="ComponentWrapper">
 
+    <div class="MButton" id="notiDataBtn">عرض البيانات</div>
+    <div class="MGroup">
+      <MDate
+        ref="notiData"
+        :Name="'notiData'"
+        :Label="'التاريخ'"
+        :Range="true"
+        :Clearable="true"
+      ></MDate>
+    </div>
+
 
     <MTable
       ref="qrdata"
@@ -36,7 +47,6 @@
           </div>
           <div class="MTableOptionName">اعادة تفعيل الحساب</div>
         </div>
-
       </template>
     </MTable>
   </div>
@@ -58,6 +68,7 @@ export default {
       GlobalsStore: ref(useGlobalsStore()),
 
       qrdata: ref(null),
+      notiData: ref(null),
       qrdataData: ref([]),
       qrdataHeaders: ref([
         '#',
@@ -69,7 +80,7 @@ export default {
       qrdataDisplayColumns: ref([
         'id',
         'content',
-        "updated_at_12_hour",
+        "entry_date",
         "periods",
         "created_at_12_hour",
       ]),
@@ -80,9 +91,18 @@ export default {
     }
   },
   mounted() {
+
     this.GetInternetProfilesData()
+    document.getElementById('notiDataBtn').addEventListener(
+      'click',
+      function () {
+        this.qrdata.LoadMTable()
+      }.bind(this)
+    )
   },
   methods: {
+
+
     //load data from table to table and combo companyName
     GetInternetProfilesData(PageNo = 1, FilterArray = {}, SortArray = {}) {
       axios

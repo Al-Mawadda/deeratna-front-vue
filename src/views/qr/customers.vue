@@ -1,6 +1,16 @@
 <template>
   <div class="ComponentWrapper">
 
+    <div class="MButton" id="GetCarLabelRequestsBTN">عرض البيانات</div>
+    <div class="MGroup">
+      <MDate
+        ref="CarLabelRequestsFromDate"
+        :Name="'CarLabelRequestsFromDate'"
+        :Label="'التاريخ'"
+        :Range="true"
+        :Clearable="true"
+      ></MDate>
+    </div>
 
     <MTable
       ref="qrdata"
