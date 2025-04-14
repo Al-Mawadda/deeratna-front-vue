@@ -452,6 +452,11 @@ export default {
             route: '/qr-notification',
             permission: 'qr_notification',
           },
+          {
+            text: 'ارسال اشعار',
+            route: '/send-qr-notification',
+            permission: 'send-qr-notification',
+          },
         ],
       },
       //============= المستخدمين=============

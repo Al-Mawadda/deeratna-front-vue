@@ -38,7 +38,11 @@ const router = createRouter({
       path: '/persons/edit',
       component: () => import('../views/information/PersonsDetailsView.vue'),
       name: 'EditPerson',
-      meta: { requiresAuth: true, Operation: 'EDIT', HeaderTitle: 'تعديل الشخص' },
+      meta: {
+        requiresAuth: true,
+        Operation: 'EDIT',
+        HeaderTitle: 'تعديل الشخص',
+      },
     },
     // Internet
     {
@@ -229,7 +233,12 @@ const router = createRouter({
       name: 'qr-management',
       meta: { requiresAuth: true, HeaderTitle: 'بيانات المشتركين' },
     },
-
+    {
+      path: '/send-qr-notification',
+      component: () => import('../views/qr/qrNotificationSend.vue'),
+      name: 'send-qr-notification',
+      meta: { requiresAuth: true, HeaderTitle: 'ارسال اشعار كيو ار' },
+    },
 
     {
       path: '/login',

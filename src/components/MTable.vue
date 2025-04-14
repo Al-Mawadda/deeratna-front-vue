@@ -16,7 +16,7 @@ export default {
     Sums: Object,
     RowsCount: Number,
     RowsPerPage: Number,
-    MTableMaxHeight: { type: Number, default: 510 },
+    MTableMaxHeight: { type: Number, default: 600 },
   },
   created() {
     for (var i = 0; i < this.Columns.length; i++) {
@@ -138,7 +138,7 @@ export default {
 		    c-93.3,38.5-186.6,38.1-278.9-3.7C204,705.9,151.2,656.2,114.1,590c-23.8-42.3-37.8-87.8-41.8-136.3c-0.2-2.7-1-5.4-1.5-8.1
 		    C70.8,430.6,70.8,415.5,70.8,400.4z M183,423c0.3,129.1,105.7,234,234.5,233.6c128.9-0.5,233.3-104.9,233.6-233.7
 		    c0.3-128.5-105.5-234.2-234.2-234C287.7,189.1,182.6,294.3,183,423z"/>
-        </svg>`;
+        </svg>`
 
       var ClearIcon = `<svg viewBox="0 0 1000 1000">
 	      <path d="M922.1,147.7c0.5,14.9-10.1,31.1-24.9,45.8C800.4,290,703.8,386.8,607.1,483.5c-16.5,16.5-16.5,16.5,0.5,33.4
@@ -148,7 +148,7 @@ export default {
 		    C297.3,387.5,199.3,289.3,101,191.4c-20.2-20.1-29.1-43-19.9-70.8c15-45.2,70.8-57.9,106.2-23.7c33.9,32.7,66.7,66.4,100,99.7
 		    c67.3,67.3,134.7,134.4,201.6,202c8.7,8.8,13.2,9.2,22.1,0.2c98.9-99.4,198.4-198.2,297.5-297.4c13.6-13.7,28.8-23,48.6-23.3
 		    C893.3,77.6,921.6,104.9,922.1,147.7z"/>
-        </svg>`;
+        </svg>`
 
       // Set Max MTable Height
       Element.style.maxHeight = MaxTableHeight + 'px'
@@ -172,12 +172,14 @@ export default {
       FilterCodeBlock = '<div class="MTableRow MTableFilterRow">'
       for (let j = 0; j < Columns.length; j++) {
         if (Columns[j]['filter'] == 'combo') {
-          let ComboItems = ``;
+          let ComboItems = ``
           for (let k = 0; k < Columns[j]['filter_items'].length; k++) {
-            ComboItems += '<div class="MTableFilterComboItem" tabindex="-1">' + Columns[j]['filter_items'][k] + '</div>';
+            ComboItems +=
+              '<div class="MTableFilterComboItem" tabindex="-1">' +
+              Columns[j]['filter_items'][k] +
+              '</div>'
           }
-          FilterCodeBlock +=
-            `<div class="MTableCell" filtername="${Columns[j]['name']}">
+          FilterCodeBlock += `<div class="MTableCell" filtername="${Columns[j]['name']}">
                 <div class="MTableFilterContent">
                   <input class="MTableFilterInput" readonly type="text" placeholder="" />
                   <div class="MTableFilterBTN">
@@ -192,8 +194,7 @@ export default {
               </div>
             </div>`
         } else if (Columns[j]['filter'] == 'date') {
-          FilterCodeBlock +=
-            `<div class="MTableCell" filtername="${Columns[j]['name']}">
+          FilterCodeBlock += `<div class="MTableCell" filtername="${Columns[j]['name']}">
                 <div class="MTableFilterContent">
                   <input class="MTableFilterInput" type="text" placeholder="" />
                   <input class="MTableFilterDate" type="date" maxlength="10"/>
@@ -206,8 +207,7 @@ export default {
               </div>
             </div>`
         } else {
-          FilterCodeBlock +=
-            `<div class="MTableCell" filtername="${Columns[j]['name']}">
+          FilterCodeBlock += `<div class="MTableCell" filtername="${Columns[j]['name']}">
                 <div class="MTableFilterContent">
                   <input class="MTableFilterInput" type="text" placeholder="" />
                   <div class="MTableFilterBTN">
@@ -219,7 +219,6 @@ export default {
               </div>
             </div>`
         }
-
       }
       FilterCodeBlock += '<div class="MTableRowOptionsPadding"></div></div>'
 
@@ -250,32 +249,33 @@ export default {
         '</div><div class="MTableExtensionSpace"></div><div class="MTablePageButtons"></div></div>'
       Element.innerHTML = MTableCode
 
-      Element.querySelectorAll('.MTableOption').forEach(function (e) {
-        e.removeEventListener('click', null)
-        e.addEventListener(
-          'click',
-          function () {
-            MTableOptions.forEach(function (d) {
-              if (
-                d['name'] == e.querySelector('.MTableOptionName').innerHTML
-              ) {
-                Element.dispatchEvent(
-                  new CustomEvent(d['event'], {
-                    detail: {
-                      RowData:
-                        DataArray[
-                        e
-                          .closest('.MTableOptions')
-                          .getAttribute('MTableRowID')
-                        ],
-                    },
-                  })
-                )
-              }
-            })
-          }.bind(this)
-        )
-      }.bind(this)
+      Element.querySelectorAll('.MTableOption').forEach(
+        function (e) {
+          e.removeEventListener('click', null)
+          e.addEventListener(
+            'click',
+            function () {
+              MTableOptions.forEach(function (d) {
+                if (
+                  d['name'] == e.querySelector('.MTableOptionName').innerHTML
+                ) {
+                  Element.dispatchEvent(
+                    new CustomEvent(d['event'], {
+                      detail: {
+                        RowData:
+                          DataArray[
+                            e
+                              .closest('.MTableOptions')
+                              .getAttribute('MTableRowID')
+                          ],
+                      },
+                    })
+                  )
+                }
+              })
+            }.bind(this)
+          )
+        }.bind(this)
       )
 
       // Hide Summary If Its Empty
@@ -302,83 +302,178 @@ export default {
 
       // Fill The Filter Rows
       for (var F = 0; F < Columns.length; F++) {
-        let FilterCell = Element.querySelector('.MTableFilterRow .MTableCell[filtername="' + Columns[F]['name'] + '"]');
-        FilterCell.querySelector('.MTableFilterInput').value = FilterDataArray[Columns[F]['name']];
+        let FilterCell = Element.querySelector(
+          '.MTableFilterRow .MTableCell[filtername="' +
+            Columns[F]['name'] +
+            '"]'
+        )
+        FilterCell.querySelector('.MTableFilterInput').value =
+          FilterDataArray[Columns[F]['name']]
         if (Columns[F]['filter'] && Columns[F]['filter'] == 'combo') {
-          let ComboItems = FilterDataArray[Columns[F]['name']].split(',');
+          let ComboItems = FilterDataArray[Columns[F]['name']].split(',')
           ComboItems.forEach(function (e) {
-            FilterCell.querySelectorAll('.MTableFilterComboItem').forEach(function (d) {
-              if (e == d.innerHTML) {
-                d.classList.add('SelectedMTableFilterComboItem');
+            FilterCell.querySelectorAll('.MTableFilterComboItem').forEach(
+              function (d) {
+                if (e == d.innerHTML) {
+                  d.classList.add('SelectedMTableFilterComboItem')
+                }
               }
-            });
+            )
           })
         }
       }
 
       // Show/Hide Clear Filter Button
-      Element.querySelectorAll('.MTableFilterRow .MTableCell').forEach(function (e) {
-        if (e.querySelector('input').value != '') {
-          e.querySelector('.MTableClearBTN').style.display = 'flex'
-        }
-
-        e.removeEventListener('focusout', null)
-        e.addEventListener('focusout', function (d) {
-          if (!d.relatedTarget || !d.relatedTarget.classList.contains('MTableFilterComboItem')) {
-            HideCombo();
+      Element.querySelectorAll('.MTableFilterRow .MTableCell').forEach(
+        function (e) {
+          if (e.querySelector('input').value != '') {
+            e.querySelector('.MTableClearBTN').style.display = 'flex'
           }
-        })
 
-        if (e.querySelector('.MTableFilterDate')) {
-          e.querySelector('.MTableFilterDate').addEventListener('change', function (d) {
-            e.querySelector('.MTableFilterInput').value = d.target.value;
-            e.querySelector('.MTableFilterBTN').style.display = 'none'
-            if (d.value == FilterDataArray[e.getAttribute('filtername')]) {
-              e.querySelector('.MTableFilterBTN').style.display = 'none'
-              if (d.value != '') {
-                e.querySelector('.MTableClearBTN').style.display = 'flex'
-              }
-            } else {
-              e.querySelector('.MTableFilterBTN').style.display = 'flex'
-              e.querySelector('.MTableClearBTN').style.display = 'none'
+          e.removeEventListener('focusout', null)
+          e.addEventListener('focusout', function (d) {
+            if (
+              !d.relatedTarget ||
+              !d.relatedTarget.classList.contains('MTableFilterComboItem')
+            ) {
+              HideCombo()
             }
-          });
+          })
+
+          if (e.querySelector('.MTableFilterDate')) {
+            e.querySelector('.MTableFilterDate').addEventListener(
+              'change',
+              function (d) {
+                e.querySelector('.MTableFilterInput').value = d.target.value
+                e.querySelector('.MTableFilterBTN').style.display = 'none'
+                if (d.value == FilterDataArray[e.getAttribute('filtername')]) {
+                  e.querySelector('.MTableFilterBTN').style.display = 'none'
+                  if (d.value != '') {
+                    e.querySelector('.MTableClearBTN').style.display = 'flex'
+                  }
+                } else {
+                  e.querySelector('.MTableFilterBTN').style.display = 'flex'
+                  e.querySelector('.MTableClearBTN').style.display = 'none'
+                }
+              }
+            )
+          }
         }
-      })
+      )
 
       // Filter Rows Code
-      Element.querySelectorAll('.MTableFilterRow .MTableFilterInput').forEach(function (e) {
-        e.removeEventListener('keyup', null)
-        e.addEventListener('keyup', function () {
-          e.closest('.MTableCell').querySelector('.MTableFilterBTN').style.display = 'none'
-          if (e.value == FilterDataArray[e.closest('.MTableCell').getAttribute('filtername')]) {
-            e.closest('.MTableCell').querySelector('.MTableFilterBTN').style.display = 'none'
-            if (e.value != '') {
-              e.closest('.MTableCell').querySelector('.MTableClearBTN').style.display = 'flex'
+      Element.querySelectorAll('.MTableFilterRow .MTableFilterInput').forEach(
+        function (e) {
+          e.removeEventListener('keyup', null)
+          e.addEventListener('keyup', function () {
+            e
+              .closest('.MTableCell')
+              .querySelector('.MTableFilterBTN').style.display = 'none'
+            if (
+              e.value ==
+              FilterDataArray[
+                e.closest('.MTableCell').getAttribute('filtername')
+              ]
+            ) {
+              e
+                .closest('.MTableCell')
+                .querySelector('.MTableFilterBTN').style.display = 'none'
+              if (e.value != '') {
+                e
+                  .closest('.MTableCell')
+                  .querySelector('.MTableClearBTN').style.display = 'flex'
+              }
+            } else {
+              e
+                .closest('.MTableCell')
+                .querySelector('.MTableFilterBTN').style.display = 'flex'
+              e
+                .closest('.MTableCell')
+                .querySelector('.MTableClearBTN').style.display = 'none'
             }
-          } else {
-            e.closest('.MTableCell').querySelector('.MTableFilterBTN').style.display = 'flex'
-            e.closest('.MTableCell').querySelector('.MTableClearBTN').style.display = 'none'
-          }
-          for (let i = 0; i < Columns.length; i++) {
-            if (Columns[i]['name'] == e.closest('.MTableCell').getAttribute('filtername')) {
-              if (Columns[i]['filter'] == 'date') {
-                e.closest('.MTableCell').querySelector(".MTableFilterDate").value = e.value;
+            for (let i = 0; i < Columns.length; i++) {
+              if (
+                Columns[i]['name'] ==
+                e.closest('.MTableCell').getAttribute('filtername')
+              ) {
+                if (Columns[i]['filter'] == 'date') {
+                  e
+                    .closest('.MTableCell')
+                    .querySelector('.MTableFilterDate').value = e.value
+                }
               }
             }
-            
-          }
-        })
+          })
 
-        e.removeEventListener('keypress', null)
-        e.addEventListener('keypress', function (event) {
-          if (event.key === 'Enter') {
-            event.preventDefault()
+          e.removeEventListener('keypress', null)
+          e.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+              event.preventDefault()
+              for (var i = 0; i < Columns.length; i++) {
+                var FilterRowInput = Element.querySelector(
+                  '.MTableFilterRow .MTableCell[filtername="' +
+                    Columns[i]['name'] +
+                    '"] .MTableFilterInput'
+                )
+                FilterDataArray[Columns[i]['name']] = FilterRowInput.value
+              }
+
+              Element.querySelector('.MTableLoader').style.display = 'flex'
+
+              Element.querySelectorAll('.MTableFilterRow input').forEach(
+                function (e) {
+                  e.disabled = true
+                }
+              )
+              Element.querySelectorAll(
+                '.MTableFilterRow .MTableFilterBTN'
+              ).forEach(function (e) {
+                e.style.display = 'none'
+              })
+              Element.querySelectorAll('.MTableHeaderRow .MTableCell').forEach(
+                function (e) {
+                  e.style.pointerEvents = 'none'
+                }
+              )
+              Element.querySelector(
+                '.MTableBodyContainer'
+              ).style.pointerEvents = 'none'
+              Element.querySelectorAll(
+                '.MTablePageButtons .MTablePageButton'
+              ).forEach(function (e) {
+                e.style.pointerEvents = 'none'
+              })
+
+              if (GetDataFunction) {
+                Instance.PageNo = 1
+                GetDataFunction({
+                  PageNo: Instance.PageNo,
+                  Filters: FilterDataArray,
+                  Sorts: SortDataArray,
+                  Sums: Instance.SumsColumns,
+                  RowsPerPage: Instance.RowsPerPage,
+                  Columns: Instance.Columns,
+                })
+              }
+            }
+          })
+
+          e.removeEventListener('focus', null)
+          e.addEventListener('focus', function (event) {
+            ShowCombo(event.target)
+          })
+        }
+      )
+
+      Element.querySelectorAll('.MTableFilterRow .MTableFilterBTN').forEach(
+        function (e) {
+          e.removeEventListener('click', null)
+          e.addEventListener('click', function () {
             for (var i = 0; i < Columns.length; i++) {
               var FilterRowInput = Element.querySelector(
                 '.MTableFilterRow .MTableCell[filtername="' +
-                Columns[i]['name'] +
-                '"] .MTableFilterInput'
+                  Columns[i]['name'] +
+                  '"] .MTableFilterInput'
               )
               FilterDataArray[Columns[i]['name']] = FilterRowInput.value
             }
@@ -400,86 +495,27 @@ export default {
                 e.style.pointerEvents = 'none'
               }
             )
-            Element.querySelector(
-              '.MTableBodyContainer'
-            ).style.pointerEvents = 'none'
+            Element.querySelector('.MTableBodyContainer').style.pointerEvents =
+              'none'
             Element.querySelectorAll(
               '.MTablePageButtons .MTablePageButton'
             ).forEach(function (e) {
               e.style.pointerEvents = 'none'
             })
-
             if (GetDataFunction) {
               Instance.PageNo = 1
               GetDataFunction({
-                'PageNo': Instance.PageNo,
-                'Filters': FilterDataArray,
-                'Sorts': SortDataArray,
-                'Sums': Instance.SumsColumns,
-                'RowsPerPage': Instance.RowsPerPage,
-                'Columns': Instance.Columns,
+                PageNo: Instance.PageNo,
+                Filters: FilterDataArray,
+                Sorts: SortDataArray,
+                Sums: Instance.SumsColumns,
+                RowsPerPage: Instance.RowsPerPage,
+                Columns: Instance.Columns,
               })
             }
-          }
-        })
-
-        e.removeEventListener('focus', null)
-        e.addEventListener('focus', function (event) {
-          ShowCombo(event.target);
-        });
-
-
-      })
-
-      Element.querySelectorAll('.MTableFilterRow .MTableFilterBTN').forEach(function (e) {
-        e.removeEventListener('click', null)
-        e.addEventListener('click', function () {
-          for (var i = 0; i < Columns.length; i++) {
-            var FilterRowInput = Element.querySelector(
-              '.MTableFilterRow .MTableCell[filtername="' +
-              Columns[i]['name'] +
-              '"] .MTableFilterInput'
-            )
-            FilterDataArray[Columns[i]['name']] = FilterRowInput.value
-          }
-
-          Element.querySelector('.MTableLoader').style.display = 'flex'
-
-          Element.querySelectorAll('.MTableFilterRow input').forEach(
-            function (e) {
-              e.disabled = true
-            }
-          )
-          Element.querySelectorAll(
-            '.MTableFilterRow .MTableFilterBTN'
-          ).forEach(function (e) {
-            e.style.display = 'none'
           })
-          Element.querySelectorAll('.MTableHeaderRow .MTableCell').forEach(
-            function (e) {
-              e.style.pointerEvents = 'none'
-            }
-          )
-          Element.querySelector('.MTableBodyContainer').style.pointerEvents =
-            'none'
-          Element.querySelectorAll(
-            '.MTablePageButtons .MTablePageButton'
-          ).forEach(function (e) {
-            e.style.pointerEvents = 'none'
-          })
-          if (GetDataFunction) {
-            Instance.PageNo = 1
-            GetDataFunction({
-              'PageNo': Instance.PageNo,
-              'Filters': FilterDataArray,
-              'Sorts': SortDataArray,
-              'Sums': Instance.SumsColumns,
-              'RowsPerPage': Instance.RowsPerPage,
-              'Columns': Instance.Columns,
-            })
-          }
-        })
-      })
+        }
+      )
 
       Element.querySelectorAll('.MTableFilterRow .MTableClearBTN').forEach(
         function (e) {
@@ -489,8 +525,8 @@ export default {
             for (var i = 0; i < Columns.length; i++) {
               var FilterRowInput = Element.querySelector(
                 '.MTableFilterRow .MTableCell[filtername="' +
-                Columns[i]['name'] +
-                '"] .MTableFilterInput'
+                  Columns[i]['name'] +
+                  '"] .MTableFilterInput'
               )
               FilterDataArray[Columns[i]['name']] = FilterRowInput.value
             }
@@ -523,12 +559,12 @@ export default {
             if (GetDataFunction) {
               Instance.PageNo = 1
               GetDataFunction({
-                'PageNo': Instance.PageNo,
-                'Filters': FilterDataArray,
-                'Sorts': SortDataArray,
-                'Sums': Instance.SumsColumns,
-                'RowsPerPage': Instance.RowsPerPage,
-                'Columns': Instance.Columns,
+                PageNo: Instance.PageNo,
+                Filters: FilterDataArray,
+                Sorts: SortDataArray,
+                Sums: Instance.SumsColumns,
+                RowsPerPage: Instance.RowsPerPage,
+                Columns: Instance.Columns,
               })
             }
           })
@@ -546,14 +582,13 @@ export default {
         e.removeEventListener('click', null)
         e.addEventListener('click', function () {
           if (e.classList.contains('SelectedMTableFilterComboItem')) {
-            e.classList.remove('SelectedMTableFilterComboItem');
+            e.classList.remove('SelectedMTableFilterComboItem')
           } else {
-            e.classList.add('SelectedMTableFilterComboItem');
+            e.classList.add('SelectedMTableFilterComboItem')
           }
           PopulateCombo(e.closest('.MTableCell'))
-        });
+        })
       })
-
 
       // Set Max TBody Height
       var UsedHeights = 190
@@ -579,8 +614,7 @@ export default {
               /^([a-zA-Z_]\w*)\.([a-zA-Z_]\w*)$/
             )
             if (TheValue) {
-              DisplayArrayColumnsObject[Columns[i]['name']] =
-                item[TheValue[1]]
+              DisplayArrayColumnsObject[Columns[i]['name']] = item[TheValue[1]]
             } else {
               DisplayArrayColumnsObject[Columns[i]['name']] =
                 item[Columns[i]['name']]
@@ -598,10 +632,10 @@ export default {
         }
 
         // Get Sums Columns
-        Instance.SumsColumns = [];
+        Instance.SumsColumns = []
         for (let S = 0; S < Columns.length; S++) {
           if (Columns[S]['sum'] == true) {
-            Instance.SumsColumns.push(Columns[S]['name']);
+            Instance.SumsColumns.push(Columns[S]['name'])
           }
         }
 
@@ -609,7 +643,9 @@ export default {
         for (let x = 0; x < DisplayArray.length; x++) {
           var ArrayCounter = 0
           ContentCodeBlock +=
-            '<div class="MTableRow MTableDataRow" tabindex="-1" MTableRowID="' + x + '">'
+            '<div class="MTableRow MTableDataRow" tabindex="-1" MTableRowID="' +
+            x +
+            '">'
           for (var y in DisplayArray[x]) {
             // MTable Sub Arrays
             if (y != 'id') {
@@ -634,25 +670,29 @@ export default {
               } else {
                 // Calculating The Columns Sizes Array
                 if (Columns[ArrayCounter]['type'] == 'image') {
-                  CurrentColumnSize = 100;
+                  CurrentColumnSize = 100
                 } else {
                   ColumnSize.font = '16px MFontR'
-                  CurrentColumnSize = Math.ceil(ColumnSize.measureText(DisplayArray[x][y]).width)
+                  CurrentColumnSize = Math.ceil(
+                    ColumnSize.measureText(DisplayArray[x][y]).width
+                  )
                 }
 
                 if (Columns[ArrayCounter]['filter'] == 'date') {
-                  CurrentColumnSize = 100;
+                  CurrentColumnSize = 100
                 }
               }
             } else {
               // Calculating The Columns Sizes Array
               if (Columns[ArrayCounter]['type'] == 'image') {
-                CurrentColumnSize = Element.querySelector('.MTableCellImage').style.width;
+                CurrentColumnSize =
+                  Element.querySelector('.MTableCellImage').style.width
               } else {
                 ColumnSize.font = '16px MFontR'
-                CurrentColumnSize = Math.ceil(ColumnSize.measureText(DisplayArray[x][y]).width)
+                CurrentColumnSize = Math.ceil(
+                  ColumnSize.measureText(DisplayArray[x][y]).width
+                )
               }
-
             }
 
             // Column Width Limit
@@ -666,36 +706,53 @@ export default {
             }
 
             // Check The Column Type
-            if (!Columns[ArrayCounter]['type'] || Columns[ArrayCounter]['type'] == 'text') {
+            if (
+              !Columns[ArrayCounter]['type'] ||
+              Columns[ArrayCounter]['type'] == 'text'
+            ) {
               ContentCodeBlock +=
                 '<div class="MTableCell"><div class="MTableData">' +
                 DisplayArray[x][y] +
-                '</div></div>';
+                '</div></div>'
             }
             if (Columns[ArrayCounter]['type'] == 'currency') {
               ContentCodeBlock +=
                 '<div class="MTableCell"><div class="MTableData">' +
                 new Intl.NumberFormat('en-US').format(DisplayArray[x][y]) +
-                '</div></div>';
+                '</div></div>'
             }
             if (Columns[ArrayCounter]['type'] == 'image') {
-              ContentCodeBlock += '<div class="MTableCell"><div class="MTableData MTableCellImage"><div class="MTableCellImageZoom">' + SearchIcon + '</div><img src="' + DisplayArray[x][y] + '"/></div></div>';
+              ContentCodeBlock +=
+                '<div class="MTableCell"><div class="MTableData MTableCellImage"><div class="MTableCellImageZoom">' +
+                SearchIcon +
+                '</div><img src="' +
+                DisplayArray[x][y] +
+                '"/></div></div>'
             }
 
             //Build Totals Array
             if (Columns[ArrayCounter]['sum'] == true) {
               if (Instance.Sums[Columns[ArrayCounter]['name']]) {
-                TotalResultArray[ArrayCounter] = Instance.Sums[Columns[ArrayCounter]['name']];
+                TotalResultArray[ArrayCounter] =
+                  Instance.Sums[Columns[ArrayCounter]['name']]
               } else {
                 if (TotalResultArray[ArrayCounter] == null) {
-                  TotalResultArray[ArrayCounter] = parseFloat(DisplayArray[x][y]);
+                  TotalResultArray[ArrayCounter] = parseFloat(
+                    DisplayArray[x][y]
+                  )
                 } else {
-                  TotalResultArray[ArrayCounter] = parseFloat(TotalResultArray[ArrayCounter]) + parseFloat(DisplayArray[x][y]);
+                  TotalResultArray[ArrayCounter] =
+                    parseFloat(TotalResultArray[ArrayCounter]) +
+                    parseFloat(DisplayArray[x][y])
                 }
-                TotalResultArray[ArrayCounter] = Number.isInteger(TotalResultArray[ArrayCounter]) ? TotalResultArray[ArrayCounter] : TotalResultArray[ArrayCounter].toFixed(2);
+                TotalResultArray[ArrayCounter] = Number.isInteger(
+                  TotalResultArray[ArrayCounter]
+                )
+                  ? TotalResultArray[ArrayCounter]
+                  : TotalResultArray[ArrayCounter].toFixed(2)
               }
             } else {
-              TotalResultArray[ArrayCounter] = '';
+              TotalResultArray[ArrayCounter] = ''
             }
             ArrayCounter++
           }
@@ -738,9 +795,13 @@ export default {
           TotalCodeBlock += ' <div class="MTableRow MTableTotalsRow">'
           for (let k = 0; k <= TotalResultArray.length - 1; k++) {
             if (Columns[k]['type'] == 'currency') {
-              TotalCodeBlock += '<div class="MTableCell">' + new Intl.NumberFormat('en-US').format(TotalResultArray[k]) + '</div>'
+              TotalCodeBlock +=
+                '<div class="MTableCell">' +
+                new Intl.NumberFormat('en-US').format(TotalResultArray[k]) +
+                '</div>'
             } else {
-              TotalCodeBlock += '<div class="MTableCell">' + TotalResultArray[k] + '</div>'
+              TotalCodeBlock +=
+                '<div class="MTableCell">' + TotalResultArray[k] + '</div>'
             }
           }
           TotalCodeBlock += '<div class="MTableRowOptionsPadding"></div></div>'
@@ -750,8 +811,13 @@ export default {
           //Get Totals Column Max Size
           for (var FW = 0; FW <= TotalResultArray.length - 1; FW++) {
             ColumnSize.font = '16px MFontB'
-            if (MTableColumnsSizes[FW] <= Math.ceil(ColumnSize.measureText(TotalResultArray[FW]).width)) {
-              MTableColumnsSizes[FW] = Math.ceil(ColumnSize.measureText(TotalResultArray[FW]).width)
+            if (
+              MTableColumnsSizes[FW] <=
+              Math.ceil(ColumnSize.measureText(TotalResultArray[FW]).width)
+            ) {
+              MTableColumnsSizes[FW] = Math.ceil(
+                ColumnSize.measureText(TotalResultArray[FW]).width
+              )
             }
           }
         }
@@ -798,31 +864,35 @@ export default {
         }, 0)
 
         // Set Events
-        Element.querySelectorAll('.MTableBodyContainer .MTableRow').forEach(function (e) {
-          e.removeEventListener('contextmenu', null)
-          e.addEventListener('contextmenu', event => {
-            event.preventDefault()
-            if (MTableOptions.length == 1) {
-              Element.dispatchEvent(
-                new CustomEvent(MTableOptions[0]['event'], {
-                  detail: {
-                    RowData: DataArray[e.getAttribute('MTableRowID')],
-                  },
-                })
-              )
-            } else {
-              ShowMTableOptions(event)
-            }
-          });
+        Element.querySelectorAll('.MTableBodyContainer .MTableRow').forEach(
+          function (e) {
+            e.removeEventListener('contextmenu', null)
+            e.addEventListener('contextmenu', event => {
+              event.preventDefault()
+              if (MTableOptions.length == 1) {
+                Element.dispatchEvent(
+                  new CustomEvent(MTableOptions[0]['event'], {
+                    detail: {
+                      RowData: DataArray[e.getAttribute('MTableRowID')],
+                    },
+                  })
+                )
+              } else {
+                ShowMTableOptions(event)
+              }
+            })
 
-          // Hide Options
-          e.removeEventListener('focusout', null)
-          e.addEventListener('focusout', function (e) {
-            HideMTableOptions(e);
-          })
-        })
+            // Hide Options
+            e.removeEventListener('focusout', null)
+            e.addEventListener('focusout', function (e) {
+              HideMTableOptions(e)
+            })
+          }
+        )
 
-        Element.querySelectorAll('.MTableBodyContainer .MTableRow .MTableRowOptions').forEach(function (e) {
+        Element.querySelectorAll(
+          '.MTableBodyContainer .MTableRow .MTableRowOptions'
+        ).forEach(function (e) {
           e.removeEventListener('click', null)
           e.addEventListener('click', function (event) {
             if (MTableOptions.length == 1) {
@@ -837,30 +907,39 @@ export default {
           })
         })
 
-        Element.querySelector('.MTableBodyContainer').addEventListener("scroll", () => {
-          HideMTableOptions();
-        });
+        Element.querySelector('.MTableBodyContainer').addEventListener(
+          'scroll',
+          () => {
+            HideMTableOptions()
+          }
+        )
 
         Element.querySelectorAll('.MTableCellImage').forEach(function (e) {
-          e.querySelector('.MTableCellImageZoom svg').removeEventListener('click', null)
-          e.querySelector('.MTableCellImageZoom svg').addEventListener('click', function () {
-            var Image = e.querySelector('img').getAttribute('src');
-            if (Image.startsWith("data:image")) {
-              var byteCharacters = atob(Image.split(',')[1]);
-              var byteNumbers = new Array(byteCharacters.length);
-              for (var i = 0; i < byteCharacters.length; i++) {
-                byteNumbers[i] = byteCharacters.charCodeAt(i);
-              }
-              var byteArray = new Uint8Array(byteNumbers);
-              var blob = new Blob([byteArray], { type: "image/png" });
+          e.querySelector('.MTableCellImageZoom svg').removeEventListener(
+            'click',
+            null
+          )
+          e.querySelector('.MTableCellImageZoom svg').addEventListener(
+            'click',
+            function () {
+              var Image = e.querySelector('img').getAttribute('src')
+              if (Image.startsWith('data:image')) {
+                var byteCharacters = atob(Image.split(',')[1])
+                var byteNumbers = new Array(byteCharacters.length)
+                for (var i = 0; i < byteCharacters.length; i++) {
+                  byteNumbers[i] = byteCharacters.charCodeAt(i)
+                }
+                var byteArray = new Uint8Array(byteNumbers)
+                var blob = new Blob([byteArray], { type: 'image/png' })
 
-              var blobUrl = URL.createObjectURL(blob);
-              window.open(blobUrl);
-            } else {
-              window.open(Image);
+                var blobUrl = URL.createObjectURL(blob)
+                window.open(blobUrl)
+              } else {
+                window.open(Image)
+              }
             }
-          });
-        });
+          )
+        })
 
         // Sorting
         Element.querySelectorAll('.MTableHeaderRow .MTableCell').forEach(
@@ -914,12 +993,12 @@ export default {
               if (GetDataFunction) {
                 Instance.PageNo = 1
                 GetDataFunction({
-                  'PageNo': Instance.PageNo,
-                  'Filters': FilterDataArray,
-                  'Sorts': SortDataArray,
-                  'Sums': Instance.SumsColumns,
-                  'RowsPerPage': Instance.RowsPerPage,
-                  'Columns': Instance.Columns,
+                  PageNo: Instance.PageNo,
+                  Filters: FilterDataArray,
+                  Sorts: SortDataArray,
+                  Sums: Instance.SumsColumns,
+                  RowsPerPage: Instance.RowsPerPage,
+                  Columns: Instance.Columns,
                 })
               }
             })
@@ -935,14 +1014,14 @@ export default {
               if (SortDataArray[1] == 'ASC') {
                 Element.querySelector(
                   '.MTableHeaderRow .MTableCell:nth-child(' +
-                  (SA + 1) +
-                  ') .MTableSortArrow'
+                    (SA + 1) +
+                    ') .MTableSortArrow'
                 ).style.transform = 'rotate(0)'
               } else {
                 Element.querySelector(
                   '.MTableHeaderRow .MTableCell:nth-child(' +
-                  (SA + 1) +
-                  ') .MTableSortArrow'
+                    (SA + 1) +
+                    ') .MTableSortArrow'
                 ).style.transform = 'rotate(180deg)'
               }
             }
@@ -962,17 +1041,30 @@ export default {
 
         function MTableCellResize() {
           // Set Loader Top
-          Element.querySelector('.MTableLoader').style.top = Element.querySelector('.MTableBodyContainer').getBoundingClientRect().top - Element.getBoundingClientRect().top - 2 + 'px'
+          Element.querySelector('.MTableLoader').style.top =
+            Element.querySelector(
+              '.MTableBodyContainer'
+            ).getBoundingClientRect().top -
+            Element.getBoundingClientRect().top -
+            2 +
+            'px'
 
           var MTableDataRows = Element.querySelectorAll('.MTableDataRow')
-          var MTableHeaderRows = Element.querySelectorAll('.MTableHeaderRow .MTableCell')
-          var MTableFilterRows = Element.querySelectorAll('.MTableFilterRow .MTableCell')
-          var MTableTotalsRow = Element.querySelectorAll('.MTableTotalsRow .MTableCell')
+          var MTableHeaderRows = Element.querySelectorAll(
+            '.MTableHeaderRow .MTableCell'
+          )
+          var MTableFilterRows = Element.querySelectorAll(
+            '.MTableFilterRow .MTableCell'
+          )
+          var MTableTotalsRow = Element.querySelectorAll(
+            '.MTableTotalsRow .MTableCell'
+          )
 
           if (Element.clientWidth > MaxMTableColumnsSizes) {
             for (var l = 0; l < MTableColumnsSizes.length; l++) {
-              var MTableColumnSizePercentage = (MTableColumnsSizes[l] / MaxMTableColumnsSizes) * 100;
-              var MTableColumnSizePixel = MTableColumnsSizes[l];
+              var MTableColumnSizePercentage =
+                (MTableColumnsSizes[l] / MaxMTableColumnsSizes) * 100
+              var MTableColumnSizePixel = MTableColumnsSizes[l]
 
               if (MTableHeaderRows.length != 0) {
                 Element.querySelector(
@@ -1006,10 +1098,10 @@ export default {
               if (MTableTotalsRow.length != 0) {
                 Element.querySelector(
                   '.MTableTotalsRow .MTableCell:nth-child(' + (l + 1) + ')'
-                ).style.width = MTableColumnSizePercentage + '%';
+                ).style.width = MTableColumnSizePercentage + '%'
                 Element.querySelector(
                   '.MTableTotalsRow .MTableCell:nth-child(' + (l + 1) + ')'
-                ).style.minWidth = MTableColumnSizePixel + 'px';
+                ).style.minWidth = MTableColumnSizePixel + 'px'
               }
             }
           } else {
@@ -1107,20 +1199,25 @@ export default {
         contextMenu.style.display = 'flex'
       }
       function HideMTableOptions(event = null) {
-        Element.querySelectorAll('.MTableBodyContainer .MTableRow').forEach(function (e) {
-          e.style.backgroundColor = '';
-        });
+        Element.querySelectorAll('.MTableBodyContainer .MTableRow').forEach(
+          function (e) {
+            e.style.backgroundColor = ''
+          }
+        )
         if (document.querySelector('.MTableOptions')) {
           if (event != null) {
-            if (event.relatedTarget && event.relatedTarget.classList.contains('MTableOptions')) {
+            if (
+              event.relatedTarget &&
+              event.relatedTarget.classList.contains('MTableOptions')
+            ) {
               setTimeout(function () {
-                document.querySelector('.MTableOptions').style.display = 'none';
-              }, 100);
+                document.querySelector('.MTableOptions').style.display = 'none'
+              }, 100)
             } else {
-              document.querySelector('.MTableOptions').style.display = 'none';
+              document.querySelector('.MTableOptions').style.display = 'none'
             }
           } else {
-            document.querySelector('.MTableOptions').style.display = 'none';
+            document.querySelector('.MTableOptions').style.display = 'none'
           }
         }
       }
@@ -1230,25 +1327,30 @@ export default {
             if (GetDataFunction) {
               Instance.PageNo = parseInt(this.getAttribute('id'))
               GetDataFunction({
-                'PageNo': Instance.PageNo,
-                'Filters': FilterDataArray,
-                'Sorts': SortDataArray,
-                'Sums': Instance.SumsColumns,
-                'RowsPerPage': Instance.RowsPerPage,
-                'Columns': Instance.Columns,
+                PageNo: Instance.PageNo,
+                Filters: FilterDataArray,
+                Sorts: SortDataArray,
+                Sums: Instance.SumsColumns,
+                RowsPerPage: Instance.RowsPerPage,
+                Columns: Instance.Columns,
               })
             }
           })
         })
       }
       function ShowCombo(Filter) {
-        const targetDiv = Filter.closest('.MTableCell').querySelector('.MTableFilterCombo')
-        const referenceDiv = Filter.closest('.MTableCell').querySelector('.MTableFilterContent');
+        const targetDiv =
+          Filter.closest('.MTableCell').querySelector('.MTableFilterCombo')
+        const referenceDiv = Filter.closest('.MTableCell').querySelector(
+          '.MTableFilterContent'
+        )
         const offset = 0
         const referenceRect = referenceDiv.getBoundingClientRect()
 
         if (referenceDiv && targetDiv) {
-          targetDiv.style.width = parseFloat(referenceDiv.getBoundingClientRect().width.toFixed(2)) + 'px';
+          targetDiv.style.width =
+            parseFloat(referenceDiv.getBoundingClientRect().width.toFixed(2)) +
+            'px'
           targetDiv.style.display = 'flex'
           let newTop = referenceRect.bottom + 5
           let newLeft = referenceRect.left
@@ -1270,32 +1372,39 @@ export default {
           targetDiv.style.top = `${newTop}px`
           targetDiv.style.left = `${newLeft}px`
         }
-
       }
       function HideCombo() {
         Element.querySelectorAll('.MTableFilterCombo').forEach(function (e) {
-          e.style.display = 'none';
+          e.style.display = 'none'
         })
       }
       function PopulateCombo(Filter) {
-        Filter.querySelector('.MTableFilterInput').value = '';
-        Filter.querySelectorAll('.SelectedMTableFilterComboItem').forEach(function (e) {
-          if (Filter.querySelector('.MTableFilterInput').value == '') {
-            Filter.querySelector('.MTableFilterInput').value += e.innerHTML
-          } else {
-            Filter.querySelector('.MTableFilterInput').value += ',' + e.innerHTML
+        Filter.querySelector('.MTableFilterInput').value = ''
+        Filter.querySelectorAll('.SelectedMTableFilterComboItem').forEach(
+          function (e) {
+            if (Filter.querySelector('.MTableFilterInput').value == '') {
+              Filter.querySelector('.MTableFilterInput').value += e.innerHTML
+            } else {
+              Filter.querySelector('.MTableFilterInput').value +=
+                ',' + e.innerHTML
+            }
           }
-        });
+        )
 
         //Show/Hide The Search/Clear Button
-        if (Filter.querySelector('.MTableFilterInput').value == FilterDataArray[Filter.getAttribute('filtername')]) {
+        if (
+          Filter.querySelector('.MTableFilterInput').value ==
+          FilterDataArray[Filter.getAttribute('filtername')]
+        ) {
           Filter.querySelector('.MTableFilterBTN').style.display = 'none'
           if (Filter.querySelector('.MTableFilterInput').value != '') {
             Filter.querySelector('.MTableClearBTN').style.display = 'flex'
           }
         } else {
           Filter.querySelector('.MTableFilterBTN').style.display = 'flex'
-          Filter.closest('.MTableCell').querySelector('.MTableClearBTN').style.display = 'none'
+          Filter.closest('.MTableCell').querySelector(
+            '.MTableClearBTN'
+          ).style.display = 'none'
         }
       }
     },
@@ -1312,7 +1421,9 @@ export default {
 
       this.Element.querySelector('.MTableLoader').style.display = 'flex'
 
-      this.Element.querySelectorAll('.MTableFilterRow input').forEach(function (e) {
+      this.Element.querySelectorAll('.MTableFilterRow input').forEach(function (
+        e
+      ) {
         e.disabled = true
       })
       this.Element.querySelectorAll(
@@ -1335,12 +1446,12 @@ export default {
 
       if (this.GetDataFunction) {
         this.GetDataFunction({
-          'PageNo': this.PageNo,
-          'Filters': FilterDataArray,
-          'Sorts': SortDataArray,
-          'Sums': this.SumsColumns,
-          'RowsPerPage': this.RowsPerPage,
-          'Columns': this.Columns,
+          PageNo: this.PageNo,
+          Filters: FilterDataArray,
+          Sorts: SortDataArray,
+          Sums: this.SumsColumns,
+          RowsPerPage: this.RowsPerPage,
+          Columns: this.Columns,
         })
       }
     },
@@ -1589,8 +1700,6 @@ export default {
   border-radius: 5px;
   position: relative;
 }
-
-
 
 .MTableCellImageZoom {
   display: flex;
@@ -1981,7 +2090,6 @@ export default {
 
 .MTableFilterComboItem:first-child {
   margin-top: 6px;
-  ;
 }
 
 .MTableFilterComboItem:last-child {
