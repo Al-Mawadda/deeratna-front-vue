@@ -184,7 +184,8 @@
       <div class="ModalButtons">
         <div
           v-show="
-            selectedRowData.request_type == 'نصب' ||
+            (selectedRowData.request_type == 'نصب' &&
+              selectedRowData.request_status == 'قيد المراجعة') ||
             (selectedRowData.request_type == 'تجديد' &&
               selectedRowData.request_status != 'تم')
           "
@@ -248,9 +249,8 @@
       ref="InternetRequestsTB"
       :Name="'InternetRequestsTB'"
       :DataArray="InternetRequestsTBData"
-      :HeadersArray="InternetRequestsTBHeaders"
-      :TotalsArray="InternetRequestsTBTotals"
-      :DisplayColumnsArray="InternetRequestsTBDisplayColumns"
+      :Columns="InternetRequestsTBColumns"
+      :Sums="InternetRequestsTBSums"
       :GetDataFunction="GetInternetRequestsData"
       :RowsCount="InternetRequestsTBRowsCount"
       :RowsPerPage="10"
@@ -280,10 +280,6 @@
         </div>
       </template>
     </MTable>
-    <div class="MGroup">
-      <div class="MlabelText">مجموع المبالغ =</div>
-      <div class="MlabelNumber" id="InternetTotal"></div>
-    </div>
   </div>
 </template>
 
@@ -292,7 +288,7 @@
 import { ref } from 'vue'
 import { api, GetServerPath } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
-
+import { useGlobalsStore } from '../../stores/Globals.js'
 import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 
 export default {
@@ -300,6 +296,7 @@ export default {
     const authStore = useAuthStore()
     const hasPermission = permission =>
       authStore.user && authStore.user.permissions.includes(permission)
+    const GlobalsStore = ref(useGlobalsStore())
 
     return {
       hasPermission,
@@ -316,57 +313,74 @@ export default {
       CompanyNamesItems: ref([]),
       InternetRequestsTB: ref(null),
       InternetRequestsTBData: ref([]),
-      InternetRequestsTBHeaders: ref([
-        '#',
-        'رقم الساكن',
-        'المجمع',
-        'اسم المستخدم',
-        'اسم المشترك',
-        'نوع السكن',
-        'العنوان',
-        'رقم هاتف المالك',
-        'رقم هاتف الاشتراك',
-        'الشركة',
-        'نوع الاشتراك',
-        'السعر',
-        'نوع الطلب',
-        'حالة الطلب',
-        'تاريخ الطلب',
-      ]),
-      InternetRequestsTBDisplayColumns: ref([
-        'id',
-        'pid',
-        'compound',
-        'name',
-        'subscriber_name',
-        'person_type',
-        'address',
-        'phone',
-        'subscriber_phone',
-        'company_name',
-        'subscription_type',
-        'price',
-        'request_type',
-        'request_status',
-        'created_at',
-      ]),
-      InternetRequestsTBTotals: ref([
-        'Count',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        'Sum',
-        '',
-        '',
-        '',
-      ]),
+      InternetRequestsTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+        {
+          name: 'pid',
+          label: 'الرقم',
+        },
+        {
+          name: 'compound',
+          label: 'المدينة',
+          filter: 'combo',
+          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
+        },
+        {
+          name: 'name',
+          label: 'الاسم',
+        },
+        {
+          name: 'subscriber_name',
+          label: 'اسم المشترك',
+        },
+        {
+          name: 'person_type',
+          label: 'الصفة',
+        },
+        {
+          name: 'address',
+          label: 'العنوان',
+        },
+        {
+          name: 'phone',
+          label: 'رقم الهاتف',
+        },
+        {
+          name: 'subscriber_phone',
+          label: 'رقم هاتف الاشتراك',
+        },
+        {
+          name: 'company_name',
+          label: 'الشركة',
+        },
+        {
+          name: 'subscription_type',
+          label: 'نوع الاشتراك',
+        },
+        {
+          name: 'price',
+          label: 'المبلغ',
+          sum: true,
+          type: 'currency',
+        },
+        {
+          name: 'request_type',
+          label: 'نوع الطلب',
+        },
+        {
+          name: 'request_status',
+          label: 'حالة الطلب',
+        },
+        {
+          name: 'created_at',
+          label: 'التاريخ',
+          filter: 'date',
+        },
+      ],
+      InternetRequestsTBSums: ref([]),
       InternetRequestsTBRowsCount: ref(0),
       InternetRequestsFromDate: ref(null),
       selectedRowData: ref([]),
@@ -465,24 +479,19 @@ export default {
     )
   },
   methods: {
-    GetInternetRequestsData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetInternetRequestsData(MTable) {
       api
         .get('GetInternetRequests', {
           params: {
-            PageNo: PageNo,
-            FilterArray: FilterArray,
-            SortArray: SortArray,
+            MTable: MTable,
             InternetRequestFrom: this.InternetRequestsFromDate.Get()[0],
             InternetRequestTo: this.InternetRequestsFromDate.Get()[1],
           },
         })
         .then(response => {
-          this.InternetRequestsTBRowsCount = response.data.paginated_data.total
-          this.InternetRequestsTBData = response.data.paginated_data.data
-          document.getElementById('InternetTotal').innerHTML =
-            new Intl.NumberFormat('en-US').format(
-              response.data.total_payment_amount
-            )
+          this.InternetRequestsTBRowsCount = response.data.total
+          this.InternetRequestsTBData = response.data.data
+          this.InternetRequestsTBSums = response.data.sums
         })
         .catch(error => {
           ShowMessage(error)
@@ -508,6 +517,7 @@ export default {
       Parameters.append('pid', this.selectedRowData.pid)
       Parameters.append('uid', this.selectedRowData.uid)
       Parameters.append('name', this.selectedRowData.name)
+      Parameters.append('request_type', this.selectedRowData.request_type)
 
       if (this.selectedRowData.request_type == 'تجديد') {
         Parameters.append('request_status', 'تم')
@@ -562,6 +572,7 @@ export default {
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append('pid', this.selectedRowData.pid)
       Parameters.append('uid', this.selectedRowData.uid)
+      Parameters.append('name', this.selectedRowData.name)
       Parameters.append('request_status', 'تم')
       Parameters.append(
         'subscriber_name',

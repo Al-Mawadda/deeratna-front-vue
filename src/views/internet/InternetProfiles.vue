@@ -52,9 +52,8 @@
       ref="InternetProfilesTB"
       :Name="'InternetProfilesTB'"
       :DataArray="InternetProfilesTBData"
-      :HeadersArray="InternetProfilesTBHeaders"
-      :TotalsArray="InternetProfilesTBTotals"
-      :DisplayColumnsArray="InternetProfilesTBDisplayColumns"
+      :Columns="InternetProfilesTBColumns"
+      :Sums="InternetProfilesTBSums"
       :GetDataFunction="GetInternetProfilesData"
       :RowsCount="InternetProfilesTBRowsCount"
       :RowsPerPage="10"
@@ -136,25 +135,40 @@ export default {
       SubscriptionTypeItems: ref([]),
       InternetProfilesTB: ref(null),
       InternetProfilesTBData: ref([]),
-      InternetProfilesTBHeaders: ref([
-        '#',
-        'الشركة',
-        'نوع الاشتراك',
-        'سعر الشركة',
-        'سعر المكتب',
-        'حالة الاشتراك',
-        'تاريخ',
-      ]),
-      InternetProfilesTBDisplayColumns: ref([
-        'id',
-        'company_name',
-        'subscription_type',
-        'price_company',
-        'price',
-        'status',
-        'created_at',
-      ]),
-      InternetProfilesTBTotals: ref(['Count', '', '', '', '', '', '']),
+
+      InternetProfilesTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+        {
+          name: 'company_name',
+          label: 'الشركة',
+        },
+        {
+          name: 'subscription_type',
+          label: 'نوع الاشتراك',
+        },
+        {
+          name: 'price_company',
+          label: 'سعر الشركة',
+        },
+        {
+          name: 'price',
+          label: 'سعر المكتب',
+        },
+        {
+          name: 'status',
+          label: 'حالة الاشتراك',
+        },
+        {
+          name: 'created_at',
+          label: 'التاريخ',
+          filter: 'date',
+        },
+      ],
+      InternetProfilesTBSums: ref([]),
+
       InternetProfilesTBRowsCount: ref(0),
       InternetProfilesFromDate: ref(null),
       InternetProfilesToDate: ref(null),
@@ -164,7 +178,8 @@ export default {
   },
   mounted() {
     this.StatusItems = this.GlobalsStore.ComboBoxes['Status']
-    this.GetInternetProfilesData()
+    this.InternetProfilesTB.LoadMTable()
+    //this.GetInternetProfilesData()
     this.GetInternetCompanise()
     //Reload Data
     document.getElementById('GetInternetProfilesBTN').addEventListener(
@@ -231,21 +246,17 @@ export default {
   },
   methods: {
     //load data from table to table and combo companyName
-    GetInternetProfilesData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetInternetProfilesData(MTable) {
       api
         .get('internetprofiles', {
           params: {
-            PageNo: PageNo,
-            FilterArray: FilterArray,
-            SortArray: SortArray,
+            MTable: MTable,
           },
         })
         .then(response => {
-          this.InternetProfilesTBRowsCount = response.data.total
           this.InternetProfilesTBData = response.data.data
-          // this.CompanyNameItems = response.data.data
-          // const companyName = response.data.data.map(item => item.company_name) // Assuming 'company_name' is the relevant field
-          // this.CompanyNameItems = [...new Set(companyName)] // Using Set to remove duplicates
+          this.InternetProfilesTBRowsCount = response.data.total
+          this.InternetProfilesTBSums = response.data.sums
         })
         .catch(error => {
           ShowMessage(error)

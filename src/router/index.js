@@ -38,7 +38,11 @@ const router = createRouter({
       path: '/persons/edit',
       component: () => import('../views/information/PersonsDetailsView.vue'),
       name: 'EditPerson',
-      meta: { requiresAuth: true, Operation: 'EDIT', HeaderTitle: 'تعديل الشخص' },
+      meta: {
+        requiresAuth: true,
+        Operation: 'EDIT',
+        HeaderTitle: 'تعديل الشخص',
+      },
     },
     // Internet
     {
@@ -213,23 +217,28 @@ const router = createRouter({
     // QR خطار
     {
       path: '/qr-data',
-      component: () => import('../views/qr/log.vue'),
+      component: () => import('../views/qr/qrLog.vue'),
       name: 'qr-data',
       meta: { requiresAuth: true, HeaderTitle: 'بيانات الـ QR' },
     },
     {
       path: '/qr-notification',
-      component: () => import('../views/qr/notification.vue'),
+      component: () => import('../views/qr/qrNotification.vue'),
       name: 'qr-security',
       meta: { requiresAuth: true, HeaderTitle: 'الاشعارات' },
     },
     {
       path: '/qr-customers',
-      component: () => import('../views/qr/customers.vue'),
+      component: () => import('../views/qr/qrCustomers.vue'),
       name: 'qr-management',
       meta: { requiresAuth: true, HeaderTitle: 'بيانات المشتركين' },
     },
-
+    {
+      path: '/send-qr-notification',
+      component: () => import('../views/qr/qrNotificationSend.vue'),
+      name: 'send-qr-notification',
+      meta: { requiresAuth: true, HeaderTitle: 'ارسال اشعار كيو ار' },
+    },
 
     {
       path: '/login',

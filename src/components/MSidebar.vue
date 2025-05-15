@@ -276,7 +276,7 @@ export default {
     const activeGroup = ref(null)
 
     const groups = ref([
-      //  =========== التسويق ============
+      //============= التسويق ===============
       {
         text: 'العقود',
         permission: 'ads_view_all',
@@ -288,19 +288,19 @@ export default {
           },
         ],
       },
-      //  =========== المعلومات ============
+      //============= المعلومات =============
       {
         text: 'المعلومات',
-        permission: 'ads_view_all',
+        permission: 'information',
         items: [
           {
             text: 'معلومات الاشخاص',
             route: '/persons',
-            permission: 'ads_video_view',
+            permission: 'information',
           },
         ],
       },
-      //  =========== الانترنت ============
+      //============= الانترنت ===============
       {
         text: 'الانترنت',
         permission: 'internet_view_all',
@@ -317,7 +317,7 @@ export default {
           },
         ],
       },
-      //  =========== الاعلانات ============
+      //============= الاعلانات ===============
       {
         text: 'الاعلانات',
         permission: 'ads_view_all',
@@ -349,8 +349,7 @@ export default {
           },
         ],
       },
-
-      //  =========== الطلبات ============
+      //============= الطلبات ===============
       {
         text: 'الطلبات',
         permission: 'request_view',
@@ -377,8 +376,7 @@ export default {
           },
         ],
       },
-
-      //  =========== الدفع الالكتروني' ============
+      //============= الدفع الالكتروني' ======
       {
         text: 'الدفع الالكتروني',
         permission: 'on_pay_view',
@@ -413,11 +411,11 @@ export default {
           {
             text: 'الانترنيت',
             route: '/internet-payment',
-            permission: 'on_pay_carrenew',
+            permission: 'on_pay_internet',
           },
         ],
       },
-      //  =========== الكمب ============
+      //============= الكمب =================
       {
         text: 'الكمب',
         permission: 'camps',
@@ -434,8 +432,34 @@ export default {
           },
         ],
       },
-
-      //==================================
+      //============= خطار ==================
+      {
+        text: 'خطار',
+        permission: 'qr_view',
+        items: [
+          {
+            text: 'معلومات المشتركين',
+            route: '/qr-customers',
+            permission: 'qr_customers',
+          },
+          {
+            text: 'بيانات ال QR',
+            route: '/qr-data',
+            permission: 'qr_security',
+          },
+          {
+            text: 'الاشعارات',
+            route: '/qr-notification',
+            permission: 'qr_notification',
+          },
+          {
+            text: 'ارسال اشعار',
+            route: '/send-qr-notification',
+            permission: 'send-qr-notification',
+          },
+        ],
+      },
+      //============= المستخدمين=============
       {
         text: 'المستخدمين',
         permission: 'users_view',
@@ -443,26 +467,6 @@ export default {
           { text: 'المستخدمين', route: '/users', permission: 'users_view' },
         ],
       },
-      //==================================
-      {
-        text: 'خطار',
-        permission: 'qr_security' || 'qr_customers'|| 'qr_notification',
-        items: [
-          {
-            text: 'الاشعارات',
-            route: '/qr-notification', permission: 'qr_notification'
-          },
-          {
-            text: 'معلومات المشتركين',
-            route: '/qr-customers', permission: 'qr_customers'
-          },
-          {
-            text: 'بيانات ال QR',
-            route: '/qr-data', permission: 'qr_security'
-          },
-        ],
-      },
-
     ])
 
     const hasPermission = permission => {

@@ -172,9 +172,9 @@ export default {
     this.IdentificationTypeItems = this.GlobalsStore.ComboBoxes['IdentificationType'];
     this.ComponentLoad();
     let Instance = this;
- 
+
     document.getElementById('ContractorID').querySelector('.MFieldBTN').addEventListener('click', function () {
-      Instance.GetCampsContractor();
+      Instance.GetContractor();
     });
 
     document.getElementById('ContractorID').querySelector('input').addEventListener('keypress', function () {
@@ -252,7 +252,7 @@ export default {
         document.getElementById('ID').style.display = 'flex';
         document.getElementById('DeleteBTN').style.display = 'flex';
 
-        this.ContractorID = this.GlobalsStore.MArray['pid'];
+        this.ContractorID = this.GlobalsStore.MArray['worker_contractor_id'];
         document.getElementById('ID').querySelector('input').value = this.GlobalsStore.MArray['id'];
         document.getElementById('Name').querySelector('input').value = this.GlobalsStore.MArray['name'];
         document.getElementById('Nationality').querySelector('input').value = this.GlobalsStore.MArray['nationality'];
@@ -263,8 +263,19 @@ export default {
         this.EntryDate.Set(this.GlobalsStore.MArray['entry_date'])
 
         this.Images = this.GlobalsStore.MArray['images'];
+
+        if (this.GlobalsStore.MArray['worker_contractor']) {
+          document.getElementById('ContractorName').querySelector('input').value = this.GlobalsStore.MArray['contractor_name'];
+          this.CampItems = this.GlobalsStore.MArray['worker_contractor']['camps'];
+          this.Camp.Set(this.GlobalsStore.MArray['camp_id'], 'id');
+        } else {
+          this.CampItems = [];
+          this.Camp.Clear();
+          document.getElementById('ContractorName').querySelector('input').value = '';
+          window.ShowMessage('لا يوجد متعهد');
+        }
+        
         this.BuildImages();
-        this.GetCampsContractor();
       }
     },
     Save() {
@@ -273,10 +284,16 @@ export default {
       var Operation = this.$route.meta.Operation;
 
       var Parameters = new FormData();
+      var CampID = '';
+      if (this.Camp.Get() && this.Camp.Get().length > 0) {
+        CampID = this.Camp.Get()[0]['id']
+      }
+
 
       Parameters.append('id', this.ID);
-      Parameters.append('pid', document.getElementById('ContractorID').querySelector('input').value);
-      Parameters.append('camp_id', this.Camp.Get()[0]['id']);
+      Parameters.append('worker_contractor_id', document.getElementById('ContractorID').querySelector('input').value);
+      
+      Parameters.append('camp_id', CampID);
       Parameters.append('name', document.getElementById('Name').querySelector('input').value);
       Parameters.append('nationality', document.getElementById('Nationality').querySelector('input').value);
       Parameters.append('identification_type', this.IdentificationType.GetValue());
@@ -288,7 +305,7 @@ export default {
       Parameters.append('Images', JSON.stringify(this.Images));
 
       if (Operation == 'ADD') {
-        api.post('AddCampsWorker', Parameters, {
+        api.post('AddWorker', Parameters, {
           headers: {
             'Content-Type': 'multipart/form-data',
           }
@@ -307,7 +324,7 @@ export default {
       }
 
       if (Operation == 'EDIT') {
-        api.post('EditCampsWorker', Parameters, {
+        api.post('EditWorker', Parameters, {
           headers: {
             'Content-Type': 'multipart/form-data',
           }
@@ -328,7 +345,7 @@ export default {
     Delete() {
       var YesFunction = function () {
         window.ShowLoading();
-        api.post("DeleteCampsWorker", null, {
+        api.post("DeleteWorker", null, {
           params: {
             id: this.ID,
           }
@@ -352,32 +369,6 @@ export default {
       }
       window.ShowChoose('هل انت متاكد من عملية الحذف؟', YesFunction, NoFunction);
     },
-    GetCampsContractor() {
-      window.ShowLoading();
-
-      api.get('GetCampsContractor', {
-        params: {
-          id: this.ContractorID,
-        }
-      }).then(response => {
-        if (response.data) {
-          document.getElementById('ContractorName').querySelector('input').value = response.data['name'];
-          window.HideLoading();
-          this.CampItems = response.data.camps
-          this.Camp.Set(this.GlobalsStore.MArray['camp_id'], 'id');
-        } else {
-          this.CampItems = [];
-          this.Camp.Clear();
-          document.getElementById('ContractorName').querySelector('input').value = '';
-          window.HideLoading();
-          window.ShowMessage('لا يوجد متعهد');
-        }
-      }).catch(() => {
-        document.getElementById('ContractorName').querySelector('input').value = '';
-        window.HideLoading();
-        window.ShowMessage('حدث خطا');
-      });
-    },
     BuildImages() {
       let Instance = this;
       //Empty All MImages
@@ -400,6 +391,33 @@ export default {
           }
         });
       }
+    },
+    GetContractor() {
+      window.ShowLoading();
+
+      api.get('GetContractor', {
+        params: {
+          id: this.ContractorID,
+        }
+      }).then(response => {
+        if (response.data) {
+          document.getElementById('ContractorName').querySelector('input').value = response.data['name'];
+          window.HideLoading();
+          this.CampItems = response.data.camps
+        } else {
+          this.CampItems = [];
+          this.Camp.Clear();
+          document.getElementById('ContractorName').querySelector('input').value = '';
+          window.HideLoading();
+          window.ShowMessage('لا يوجد متعهد');
+        }
+      }).catch(() => {
+        this.CampItems = [];
+        this.Camp.Clear();
+        document.getElementById('ContractorName').querySelector('input').value = '';
+        window.HideLoading();
+        window.ShowMessage('حدث خطا');
+      });
     },
     async CompressImage(ImageFile, MaxSize) {
       // Wrap FileReader in a Promise to read the file as a Data URL

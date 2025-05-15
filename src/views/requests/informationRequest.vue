@@ -807,9 +807,8 @@
       ref="InformationRequestsTB"
       :Name="'InformationRequestsTB'"
       :DataArray="InformationRequestsTBData"
-      :HeadersArray="InformationRequestsTBHeaders"
-      :TotalsArray="InformationRequestsTBTotals"
-      :DisplayColumnsArray="InformationRequestsTBDisplayColumns"
+      :Columns="InformationRequestsTBColumns"
+      :Sums="InformationRequestsTBSums"
       :GetDataFunction="GetInformationRequestsData"
       :RowsCount="InformationRequestsTBRowsCount"
       :RowsPerPage="10"
@@ -848,12 +847,14 @@ import { ref } from 'vue'
 import { api, GetServerPath } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
 import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
+import { useGlobalsStore } from '../../stores/Globals.js'
 
 export default {
   setup() {
     const authStore = useAuthStore()
     const hasPermission = permission =>
       authStore.user && authStore.user.permissions.includes(permission)
+    const GlobalsStore = ref(useGlobalsStore())
 
     return {
       hasPermission,
@@ -862,33 +863,58 @@ export default {
       AddOwnerRealEstateModal: ref(null),
       InformationRequestsTB: ref(null),
       InformationRequestsTBData: ref([]),
-      InformationRequestsTBHeaders: ref([
-        '#',
-        'الرقم',
-        'المجمع',
-        'اسم المستخدم',
-        'الاسم',
-        'العنوان',
-        'رقم الهاتف',
-        'الصفة',
-        'العملية',
-        'حالة الطلب',
-        'تاريخ الطلب',
-      ]),
-      InformationRequestsTBDisplayColumns: ref([
-        'id',
-        'pid',
-        'compound',
-        'resident_name',
-        'name',
-        'address',
-        'phone',
-        'person_type',
-        'request_type',
-        'request_status',
-        'created_at',
-      ]),
-      InformationRequestsTBTotals: ref(['Count', '', '', '', '', '', '']),
+
+      InformationRequestsTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+        {
+          name: 'pid',
+          label: 'الرقم',
+        },
+        {
+          name: 'compound',
+          label: 'المدينة',
+          filter: 'combo',
+          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
+        },
+        {
+          name: 'resident_name',
+          label: 'اسم الساكن',
+        },
+        {
+          name: 'name',
+          label: 'الاسم',
+        },
+        {
+          name: 'address',
+          label: 'العنوان',
+        },
+        {
+          name: 'phone',
+          label: 'رقم الهاتف',
+        },
+        {
+          name: 'person_type',
+          label: 'الصفة',
+        },
+        {
+          name: 'request_type',
+          label: 'العملية',
+        },
+        {
+          name: 'request_status',
+          label: 'حالة الطلب',
+        },
+        {
+          name: 'created_at',
+          label: 'التاريخ',
+          filter: 'date',
+        },
+      ],
+      InformationRequestsTBSums: ref([]),
+
       InformationRequestsTBRowsCount: ref(0),
       InformationRequestsFromDate: ref(null),
       selectedRowData: ref([]),
@@ -918,20 +944,19 @@ export default {
     )
   },
   methods: {
-    GetInformationRequestsData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetInformationRequestsData(MTable) {
       api
         .get('GetInformationRequests', {
           params: {
-            PageNo: PageNo,
-            FilterArray: FilterArray,
-            SortArray: SortArray,
+            MTable: MTable,
             InformationRequestFrom: this.InformationRequestsFromDate.Get()[0],
             InformationRequestTo: this.InformationRequestsFromDate.Get()[1],
           },
         })
         .then(response => {
-          this.InformationRequestsTBRowsCount = response.data.total
           this.InformationRequestsTBData = response.data.data
+          this.InformationRequestsTBRowsCount = response.data.total
+          this.InformationRequestsTBSums = response.data.sums
         })
         .catch(error => {
           ShowMessage(error)

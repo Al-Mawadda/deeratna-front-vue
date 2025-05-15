@@ -167,6 +167,10 @@ const hasPermission = permission => {
 const groupedPermissions = ref(
   [
     {
+      label: 'المعلومات',
+      items: [{ val: 'information', label: 'معلومات الاشخاص' }],
+    },
+    {
       label: 'الطلبات',
       items: [
         { val: 'request_view', label: 'عرض الطلبات' },
@@ -179,7 +183,7 @@ const groupedPermissions = ref(
         { val: 'car_label_view', label: 'عرض ملصق السيارة' },
         { val: 'car_label_accept', label: 'قبول طلب ملصق السيارة' },
         { val: 'car_label_reject', label: 'رفض طلب ملصق السيارة' },
-        { val: 'internet_requests_view', label: 'عرض طلبات الانترنيت' },
+        { val: 'internet_requests_view', label: 'عرض طلبات الانترنت' },
       ],
     },
     {
@@ -193,6 +197,7 @@ const groupedPermissions = ref(
         { val: 'on_pay_nfcrenew', label: 'عرض دفعات تجديد بطاقات الدخول' },
         { val: 'on_pay_caradd', label: 'عرض دفعات ملصق السيارة' },
         { val: 'on_pay_carrenew', label: 'عرض دفعات تجديد ملصق السيارة' },
+        { val: 'on_pay_internet', label: 'عرض تجديد اشتراكات الانترنت' },
       ],
     },
     {
@@ -230,28 +235,37 @@ const groupedPermissions = ref(
       label: 'الانترنت',
       items: [
         { val: 'internet_view_all', label: 'الانترنت' },
-
         { val: 'subscribers_view', label: 'عرض بيانات المشتركين' },
-
-      { val: 'profile_view', label: 'عرض الاشتراكات' },
-    ],
-  },
-  {
-    label: 'الكمب',
-    items: [
-      {
-        val: 'camps',
-        label: 'الكمب'
-      },
-    ],
-  },
-].map(group => ({
+        { val: 'profile_view', label: 'عرض الاشتراكات' },
+      ],
+    },
+    {
+      label: 'الكمب',
+      items: [
+        {
+          val: 'camps',
+          label: 'الكمب',
+        },
+      ],
+    },
+    {
+      label: 'خطار',
+      items: [
+        { val: 'qr_view', label: 'عرض خطار' },
+        { val: 'qr_customers', label: 'بيانات المشتركين' },
+        { val: 'qr_security', label: 'بيانات ال QR' },
+        { val: 'qr_notification', label: 'الاشعارات' },
+        { val: 'send-qr-notification', label: 'ارسال اشعارات كيو ار' },
+      ],
+    },
+  ].map(group => ({
     ...group,
     items: group.items.map(item => ({
-        ...item,
-        val: item.val.trim()
-    }))
-})))
+      ...item,
+      val: item.val.trim(),
+    })),
+  }))
+)
 
 const showUserDialog = ref(false)
 const editMode = ref(false)

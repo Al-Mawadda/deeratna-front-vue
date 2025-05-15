@@ -20,9 +20,8 @@
       ref="ElectricitysTB"
       :Name="'ElectricitysTB'"
       :DataArray="ElectricitysTBData"
-      :HeadersArray="ElectricitysTBHeaders"
-      :TotalsArray="ElectricitysTBTotals"
-      :DisplayColumnsArray="ElectricitysTBDisplayColumns"
+      :Columns="ElectricitysTBColumns"
+      :Sums="ElectricitysTBSums"
       :GetDataFunction="GetElectricitysData"
       :RowsCount="ElectricitysTBRowsCount"
       :RowsPerPage="10"
@@ -46,11 +45,6 @@
         </div>
       </template> -->
     </MTable>
-
-    <div class="MGroup">
-      <div class="MlabelText">مجموع المبالغ =</div>
-      <div class="MlabelNumber" id="ElectricitysTotal"></div>
-    </div>
   </div>
 </template>
 <script>
@@ -58,41 +52,68 @@ import { ref } from 'vue'
 import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
 import { ShowMessage } from '@/MJS.js'
+import { useGlobalsStore } from '../../stores/Globals.js'
+
 export default {
   setup() {
     const authStore = useAuthStore()
     const hasPermission = permission =>
       authStore.user && authStore.user.permissions.includes(permission)
+    const GlobalsStore = ref(useGlobalsStore())
 
     return {
       hasPermission,
       ElectricitysTB: ref(null),
       ElectricitysTBData: ref([]),
-      ElectricitysTBHeaders: ref([
-        '#',
-        'المجمع',
-        'اسم الساكن',
-        'العنوان',
-        'رقم الهاتف',
-        'المبلغ',
-        'الحالة',
-        'الية الدفع',
-        'التاريخ',
-        'معرف المعاملة',
-      ]),
-      ElectricitysTBDisplayColumns: ref([
-        'id',
-        'compound',
-        'person_name',
-        'address',
-        'phone',
-        'payment_amount',
-        'transaction_status',
-        'payment_method',
-        'created_at',
-        'transaction_id',
-      ]),
-      ElectricitysTBTotals: ref(['Count', '', '', '', '', '', '']),
+      ElectricitysTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+        {
+          name: 'compound',
+          label: 'المدينة',
+          filter: 'combo',
+          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
+        },
+        {
+          name: 'person_name',
+          label: 'اسم الساكن',
+        },
+        {
+          name: 'address',
+          label: 'العنوان',
+        },
+        {
+          name: 'phone',
+          label: 'رقم الهاتف',
+        },
+        {
+          name: 'payment_amount',
+          label: 'المبلغ',
+          sum: true,
+          type: 'currency',
+        },
+        {
+          name: 'transaction_status',
+          label: 'الحالة',
+        },
+        {
+          name: 'payment_method',
+          label: 'الية الدفع',
+        },
+        {
+          name: 'created_at',
+          label: 'التاريخ',
+          filter: 'date',
+        },
+        {
+          name: 'transaction_id',
+          label: 'معرف المعاملة',
+        },
+      ],
+      ElectricitysTBSums: ref([]),
+
       ElectricitysTBRowsCount: ref(0),
       ElectricitysFromDate: ref(null),
       ElectricitysToDate: ref(null),
@@ -106,28 +127,23 @@ export default {
         'click',
         function () {
           this.ElectricitysTB.LoadMTable()
-        }.bind(this),
+        }.bind(this)
       )
   },
   methods: {
-    GetElectricitysData(PageNo = 1, FilterArray = {}, SortArray = {}) {
+    GetElectricitysData(MTable) {
       api
         .get('GetElectricityTransactions', {
           params: {
-            PageNo: PageNo,
-            FilterArray: FilterArray,
-            SortArray: SortArray,
+            MTable: MTable,
             electricityFrom: this.ElectricitysFromDate.Get(),
             electricityTo: this.ElectricitysToDate.Get(),
           },
         })
         .then(response => {
-          this.ElectricitysTBRowsCount = response.data.paginated_data.total
-          this.ElectricitysTBData = response.data.paginated_data.data
-          document.getElementById('ElectricitysTotal').innerHTML =
-            new Intl.NumberFormat('en-US').format(
-              response.data.total_payment_amount,
-            )
+          this.ElectricitysTBData = response.data.data
+          this.ElectricitysTBRowsCount = response.data.total
+          this.ElectricitysTBSums = response.data.sums
         })
         .catch(error => {
           ShowMessage('حدث خطا', error)
