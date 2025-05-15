@@ -51,7 +51,8 @@
       </div>
       <MDate ref="IdentificationIssuingDate" :Name="'IdentificationIssuingDate'" :Label="'تاريخ الاصدار'"
         v-show="CheckAttributes(['مالك', 'مستاجر'])"></MDate>
-      <div class="MField" id="Phone" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف'])">
+      <div class="MField" id="Phone"
+        v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])">
         <input type="text" required>
         <label>رقم الهاتف</label>
         <div class="MFieldBG"></div>
@@ -93,17 +94,19 @@
       </div>
       <MDate ref="EmployeeStartDate" :Name="'EmployeeStartDate'" :Label="'تاريخ المباشرة'"
         v-show="CheckAttributes(['موظف'])"></MDate>
-      <div class="MField" id="Address" v-show="CheckAttributes(['متعهد', 'كادر', 'عامل', 'موظف'])">
+      <div class="MField" id="Address" v-show="CheckAttributes(['متعهد', 'كادر', 'عامل', 'موظف', 'زائر', 'سائق'])">
         <input type="text" required />
         <label>العنوان</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="CarNumber" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف'])">
+      <div class="MField" id="CarNumber"
+        v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])">
         <input type="text" required>
         <label>رقم العجلة</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="CarDetails" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف'])">
+      <div class="MField" id="CarDetails"
+        v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])">
         <input type="text" required>
         <label>تفاصيل العجلة</label>
         <div class="MFieldBG"></div>
@@ -126,7 +129,7 @@
           </svg>
         </div>
       </div>
-      <MComboBox ref='Guarantor' :Name="'Guarantor'" :Label="'الكفيل'" :Items="GuarantorItems"
+      <MComboBox ref='Guarantor' :Name="'Guarantor'" :ItemsName="'name'" :Label="'الكفيل'" :Items="GuarantorItems"
         v-show="CheckAttributes(['زائر', 'سائق'])"></MComboBox>
       <div class="MField" id="EMail" v-show="CheckAttributes(['مالك', 'مستاجر'])">
         <input type="text" required />
@@ -765,6 +768,8 @@ export default {
 
         this.Gender.Set(this.GlobalsStore.MArray['gender']);
         this.BirthDate.Set(this.GlobalsStore.MArray['birth']);
+        this.GuarantorCompound.Set(this.GlobalsStore.MArray['guarantor_compound']);
+        this.GuarantorAddress = this.GlobalsStore.MArray['guarantor_address'];
         this.IdentificationType.Set(this.GlobalsStore.MArray['identification_type']);
         this.IdentificationIssuingDate.Set(this.GlobalsStore.MArray['identification_issuing_date']);
         this.EntryDate.Set(this.GlobalsStore.MArray['entry_date']);
@@ -797,7 +802,11 @@ export default {
 
         //Attachments
         this.Attachments = this.GlobalsStore.MArray['attachments'];
-
+        if (this.GlobalsStore.MArray['guarantor_address'] != '' && this.GlobalsStore.MArray['guarantor_compound'] != '') {
+          setTimeout(function () {
+            this.GetGuarantors();
+          }.bind(this), 100);
+        }
         this.BuildImages();
         this.BuildAttachments();
       }
@@ -837,6 +846,9 @@ export default {
       Parameters.append('employee_department', document.getElementById('EmployeeDepartment').querySelector('input').value);
       Parameters.append('job_title', document.getElementById('JobTitle').querySelector('input').value);
       Parameters.append('employee_start_date', this.EmployeeStartDate.Get());
+      Parameters.append('guarantor_compound', this.GuarantorCompound.GetValue());
+      Parameters.append('guarantor_address', document.getElementById('GuarantorAddress').querySelector('input').value);
+      Parameters.append('guarantor_id', this.Guarantor.Get()[0]['gid']);
       Parameters.append('address', document.getElementById('Address').querySelector('input').value);
       Parameters.append('car_number', document.getElementById('CarNumber').querySelector('input').value);
       Parameters.append('car_details', document.getElementById('CarDetails').querySelector('input').value);
@@ -1089,7 +1101,7 @@ export default {
       }.bind(this));
     },
     GetGuarantors() {
-      window.ShowLoading();          
+      window.ShowLoading();
       this.Guarantor.Clear();
       api.get('GetGuarantors', {
         params: {
@@ -1099,7 +1111,10 @@ export default {
       }).then(response => {
         if (response.data) {
           window.HideLoading();
-          this.GuarantorItems = response.data.camps
+          this.GuarantorItems = response.data;
+          if (this.$route.meta.Operation == 'EDIT') {
+            this.Guarantor.Set(this.GlobalsStore.MArray['guarantor_id'], 'gid');
+          }
         } else {
           this.GuarantorItems = [];
           window.HideLoading();
