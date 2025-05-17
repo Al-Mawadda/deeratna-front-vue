@@ -229,6 +229,8 @@ const groupedPermissions = ref(
         { val: 'ads_ene_view', label: 'عرض اعلانات المولد' },
         { val: 'ads_ene_create', label: 'انشاء اعلانات المولد' },
         { val: 'ads_ene_delete', label: 'حذف اعلانات المولد' },
+
+        { val: 'send-deeratna-notification', label: 'ارسال اشعارات ديرتنا' },
       ],
     },
     {

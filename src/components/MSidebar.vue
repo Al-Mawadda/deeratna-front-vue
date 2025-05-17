@@ -347,6 +347,11 @@ export default {
             route: '/ads/Home-secondVideo',
             permission: 'ads_ene_view',
           },
+          {
+            text: 'ارسال اشعار',
+            route: '/ads/send-deeratna-notification',
+            permission: 'send-deeratna-notification',
+          },
         ],
       },
       //============= الطلبات ===============
