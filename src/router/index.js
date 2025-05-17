@@ -205,7 +205,6 @@ const router = createRouter({
         HeaderTitle: 'تعديل العامل',
       },
     },
-
     // USERS
     {
       path: '/users',
@@ -239,6 +238,37 @@ const router = createRouter({
       name: 'send-qr-notification',
       meta: { requiresAuth: true, HeaderTitle: 'ارسال اشعار كيو ار' },
     },
+
+
+
+
+
+
+    {
+      path: '/tracking',
+      component: () => import('../views/tracking/index.vue'),
+      name: 'tracking',
+      name: '',
+      meta: { requiresAuth: true, HeaderTitle: 'المتابعة' },
+    },
+    {
+      path: '/send-qr-notification',
+      component: () => import('../views/qr/qrNotificationSend.vue'),
+      name: 'send-qr-notification',
+      meta: { requiresAuth: true, HeaderTitle: 'ارسال اشعار كيو ار' },
+    },
+
+
+
+
+
+
+
+
+
+
+
+
 
     {
       path: '/login',

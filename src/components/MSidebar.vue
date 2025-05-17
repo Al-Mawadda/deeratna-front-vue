@@ -459,6 +459,24 @@ export default {
           },
         ],
       },
+
+
+
+      {
+        text: 'المتابعة',
+        permission: 'users_view',
+        items: [
+          { text: 'اضافة متعهد', route: '/tracking', permission: 'users_view' },
+        ],
+      },
+
+
+
+
+
+
+
+
       //============= المستخدمين=============
       {
         text: 'المستخدمين',
