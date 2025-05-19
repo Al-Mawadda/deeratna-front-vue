@@ -431,19 +431,19 @@ export default {
 
         if (this.selectedRowData.request_type != 'تجديد') {
           this.IDImage =
-            'https://www.app.deeratna.net/public/storage/internet_images/id/' +
+            'https://www.app.deeratna.net/backend/public/storage/internet_images/id/' +
             this.selectedRowData.id +
             '.jpg'
           this.IDImageBack =
-            'https://www.app.deeratna.net/public/storage/internet_images/id_back/' +
+            'https://www.app.deeratna.net/backend/public/storage/internet_images/id_back/' +
             this.selectedRowData.id +
             '.jpg'
           this.HousingImage =
-            'https://www.app.deeratna.net/public/storage/internet_images/housing/' +
+            'https://www.app.deeratna.net/backend/public/storage/internet_images/housing/' +
             this.selectedRowData.id +
             '.jpg'
           this.HousingImageBack =
-            'https://www.app.deeratna.net/public/storage/internet_images/housing_back/' +
+            'https://www.app.deeratna.net/backend/public/storage/internet_images/housing_back/' +
             this.selectedRowData.id +
             '.jpg'
         }

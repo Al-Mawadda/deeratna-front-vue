@@ -115,6 +115,12 @@ const router = createRouter({
       name: 'Ads-secondVideo',
       meta: { requiresAuth: true },
     },
+    {
+      path: '/ads/send-deeratna-notification',
+      component: () => import('../views/ads/deeratnaNotificationSend.vue'),
+      name: 'send-deeratna-notification',
+      meta: { requiresAuth: true, HeaderTitle: 'ارسال اشعار ديرتنا ' },
+    },
 
     //Requests
 
