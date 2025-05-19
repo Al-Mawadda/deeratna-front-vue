@@ -1,9 +1,9 @@
 <template>
   <div class="ComponentWrapper">
-    <RouterLink to="/persons/add" class="MButton" id="AddPersonBTN">اضافة شخص</RouterLink>
-    <div class="MButton" id="ReloadPersonsBTN">اعادة تحميل البيانات</div>
-    <MTable ref="PersonsTB" :Name="'PersonsTB'" :DataArray="PersonsTBData" :Columns="PersonsTBColumns"
-      :Sums="PersonsTBSums" :GetDataFunction="GetPersonsData" :RowsCount="PersonsTBRowsCount" :RowsPerPage="10">
+    <RouterLink to="/real_estates/add" class="MButton" id="AddRealEstateBTN">اضافة عقار</RouterLink>
+    <div class="MButton" id="ReloadRealEstatesBTN">اعادة تحميل البيانات</div>
+    <MTable ref="RealEstatesTB" :Name="'RealEstatesTB'" :DataArray="RealEstatesTBData" :Columns="RealEstatesTBColumns"
+      :Sums="RealEstatesTBSums" :GetDataFunction="GetRealEstatesData" :RowsCount="RealEstatesTBRowsCount" :RowsPerPage="10">
       <template v-slot:options>
         <div class="MTableOption" OptionEventName="ViewItem">
           <div class="MTableOptionIcon">
@@ -45,86 +45,54 @@ export default {
       GlobalsStore,
 
       hasPermission,
-      Birth: ref(null),
-      identificationIssuingDate: ref(null),
-      ContractDate: ref(null),
-      SaleDate: ref(null),
 
-      PersonsTB: ref(null),
-      PersonsTBData: ref([]),
-      PersonsTBColumns: [
+      RealEstatesTB: ref(null),
+      RealEstatesTBData: ref([]),
+      RealEstatesTBColumns: [
         {
           name: 'id',
           label: '#',
         },
         {
-          name: 'name',
-          label: 'الاسم',
-        },
-        {
-          name: 'identification_type',
-          label: 'نوع المستمسك',
-        },
-        {
-          name: 'identification_number',
-          label: 'رقم المستمسك',
-        },
-        {
-          name: 'car_number',
-          label: 'رقم العجلة',
-        },
-        {
-          name: 'phone',
-          label: 'رقم الهاتف',
+          name: 'compound',
+          label: 'المدينة',
+          filter: 'combo',
+          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
         },
         {
           name: 'address',
           label: 'العنوان',
         },
-        {
-          name: 'study',
-          label: 'التحصيل الدراسي',
-        },
-        {
-          name: 'relations.guardian_name',
-          label: 'اسم صاحب العقار',
-        },
-        {
-          name: 'attributes.attribute',
-          label: 'الصفة',
-          filter: 'combo',
-          filter_items: GlobalsStore.value.ComboBoxes?.Attributes || [],
-        }
       ],
-      PersonsTBSums: ref([]),
-      PersonsTBRowsCount: ref(0),
+      RealEstatesTBSums: ref([]),
+      RealEstatesTBRowsCount: ref(0),
     }
   },
   mounted() {
-    this.PersonsTB.LoadMTable()
+    this.RealEstatesTB.LoadMTable()
 
     let Instance = this;
 
-    document.getElementById('ReloadPersonsBTN').addEventListener('click', function () {
-      Instance.PersonsTB.LoadMTable();
+    document.getElementById('ReloadRealEstatesBTN').addEventListener('click', function () {
+      Instance.RealEstatesTB.LoadMTable();
     });
-    document.getElementById('PersonsTB').addEventListener('ViewItem', function (data) {
+    document.getElementById('RealEstatesTB').addEventListener('ViewItem', function (data) {
       Instance.GlobalsStore.setMArray(data.detail.RowData);
-      Instance.$router.push({ name: 'EditPerson' });
+      Instance.$router.push({ name: 'EditRealEstate' });
     });
   },
   methods: {
-    GetPersonsData(MTable) {
+    GetRealEstatesData(MTable) {
       api
-        .get('GetPersonsData', {
+        .get('GetRealEstatesData', {
           params: {
             MTable: MTable,
           },
         })
         .then(response => {
-          this.PersonsTBData = response.data.data
-          this.PersonsTBRowsCount = response.data.total
-          this.PersonsTBSums = response.data.sums
+          this.RealEstatesTBData = response.data.data
+          this.RealEstatesTBRowsCount = response.data.total
+          this.RealEstatesTBSums = response.data.sums
         })
         .catch(error => {
           window.ShowMessage('حدث خطا', error)

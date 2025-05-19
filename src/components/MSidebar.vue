@@ -286,6 +286,11 @@ export default {
             route: '/contracts/add',
             permission: 'ads_video_view',
           },
+          {
+            text: 'العقارات',
+            route: '/real_estates',
+            permission: 'information',
+          },
         ],
       },
       //============= المعلومات =============
@@ -420,6 +425,11 @@ export default {
         text: 'الكمب',
         permission: 'camps',
         items: [
+        {
+            text: 'الكمبات',
+            route: '/camps',
+            permission: 'camps',
+          },
           {
             text: 'المتعهدين',
             route: '/camps/contractors',
