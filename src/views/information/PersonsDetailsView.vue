@@ -72,11 +72,13 @@
         <label>نوع العمل</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="WorkPlace" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف'])">
+      <div class="MField" id="WorkPlace" v-show="CheckAttributes(['مالك', 'مستاجر', 'كادر', 'موظف'])">
         <input type="text" required />
         <label>موقع العمل</label>
         <div class="MFieldBG"></div>
       </div>
+      <MComboBox ref='ContractorWorkPlace' :Name="'ContractorWorkPlace'" :Label="'موقع العمل'"
+        :Items="ContractorWorkPlaceItems" v-show="CheckAttributes(['متعهد'])"></MComboBox>
       <div class="MField" id="EmployeeCompany" v-show="CheckAttributes(['موظف'])">
         <input type="text" required />
         <label>الشركة</label>
@@ -111,26 +113,6 @@
         <label>تفاصيل العجلة</label>
         <div class="MFieldBG"></div>
       </div>
-      <MComboBox ref='GuarantorCompound' :Name="'GuarantorCompound'" :Label="'مدينة الكفيل'"
-        :Items="GuarantorCompoundItems" v-show="CheckAttributes(['زائر', 'سائق'])"></MComboBox>
-      <div class="MField" id="GuarantorAddress" v-show="CheckAttributes(['زائر', 'سائق'])">
-        <input type="text" v-model="GuarantorAddress" required>
-        <label>عنوان الكفيل</label>
-        <div class="MFieldBG"></div>
-        <div v-show="GuarantorAddress && GuarantorCompound.Get().length > 0" class="MButton MFieldBTN">
-          <svg viewBox="0 0 1000 1000">
-            <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
-	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
-	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
-	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
-	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
-	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
-	C553.9,663.3,657.6,553.1,656.9,424.3z" />
-          </svg>
-        </div>
-      </div>
-      <MComboBox ref='Guarantor' :Name="'Guarantor'" :ItemsName="'name'" :Label="'الكفيل'" :Items="GuarantorItems"
-        v-show="CheckAttributes(['زائر', 'سائق'])"></MComboBox>
       <div class="MField" id="EMail" v-show="CheckAttributes(['مالك', 'مستاجر'])">
         <input type="text" required />
         <label>بريد الكتروني</label>
@@ -159,6 +141,165 @@
         <div class="MFieldBG"></div>
       </div>
     </div>
+
+    <div class="MGroup" ref="PersonsRelationsGroup" id="PersonsRelationsGroup"
+      v-show="CheckAttributes(['مالك', 'مستاجر', 'سائق', 'زائر'])">
+      <div class="MGroupTitle">العلاقات</div>
+
+      <div class="MField" id="GuardianID">
+        <input type="text" v-model="GuardianID" required>
+        <label>رمز صاحب العقار</label>
+        <div class="MFieldBG"></div>
+        <div v-show="GuardianID" class="MButton MFieldBTN">
+          <svg viewBox="0 0 1000 1000">
+            <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
+	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
+	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
+	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
+	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
+	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
+	C553.9,663.3,657.6,553.1,656.9,424.3z" />
+          </svg>
+        </div>
+      </div>
+      <div class="MField" id="GuardianName">
+        <input type="text" disabled required>
+        <label>اسم صاحب العقار</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <MComboBox ref='Relation' :Name="'Relation'" :Label="'العلاقة'" :Items="RelationItems"></MComboBox>
+      <MComboBox ref='RelationAddress' :Name="'RelationAddress'" :ItemsName="'full_address'" :Label="'العنوان'"
+        :Items="RelationAddressItems"></MComboBox>
+      <div class="MGroupButtons">
+        <div class="MButton" id="AddRelation"
+          v-show="PersonsRelationsGroup && !PersonsRelationsGroup.hasAttribute('RelationID') && GuardianID != '' && Relation && Relation.Get().length > 0 && RelationAddress && RelationAddress.Get().length > 0">
+          اضافة</div>
+        <div class="MButton" id="SaveRelation">حفظ</div>
+        <div class="MButton" id="CancelRelation">الغاء</div>
+      </div>
+      <MTable ref="RelationsTB" :Name="'RelationsTB'" :DataArray="RelationsTBData" :Columns="RelationsTBColumns"
+        :Sums="RelationsTBSums" :ShowFilterRow="false" :RowsPerPage="1000">
+        <template v-slot:options>
+          <div class="MTableOption" OptionEventName="EditItem">
+            <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
+                <path d="M500.2,249.6c124.1,1.1,233.2,42.7,328.2,122.1c39.6,33,72.3,72.7,106.8,110.6c9,9.9,8.7,25.5-0.8,36.4
+	c-53.9,62.1-109.3,122.5-182.1,163.7c-66,37.4-136.2,60.8-212,66.4C399.6,759.2,276.4,716.6,169,626.3
+	C130.9,594.3,99.2,556,66,519.3c-10-11-10.5-26-0.9-37.1c53.3-61.5,107.9-121.4,179.6-162.7c66.8-38.5,138-62.1,215.1-68.3
+	C473.2,250.2,486.7,250.1,500.2,249.6z M504.7,308.1c-19.4,0.8-34.9,0.7-50.4,2.2c-61.5,6.1-119,24.8-173,54.6
+	c-59.2,32.7-106.2,79.4-150.3,129.6c-4.1,4.7-3.1,8.1,0.7,12.1c21.3,22.2,40.9,45.9,63.9,66.5c86.2,77.3,186.4,118.2,302.7,118.9
+	c68.3,0.4,133-14.2,194.7-43.2c70.8-33.3,126.2-85.4,176.6-143.7c4-4.6,2-7.9-1.3-11.3c-21.3-22.2-40.9-45.9-63.8-66.6
+	C718.1,349.4,617.3,308.9,504.7,308.1z" />
+                <path d="M392.3,499.7c0.2-59,49.3-108.3,108.1-107.4c60.6,0.9,107.4,47.4,107.2,108c-0.2,60.9-47.5,106.9-107.8,107.4
+	C440.8,608.1,392.1,558.6,392.3,499.7z M500.2,556.5c30.5,0,56.4-25.9,56.4-56.4c0-30.6-25.7-56.5-56.2-56.6
+	c-31-0.1-56.9,25.8-56.8,56.8C443.8,530.8,469.7,556.6,500.2,556.5z" />
+              </svg></div>
+            <div class="MTableOptionName">تعديل</div>
+          </div>
+          <div class="MTableOption" OptionEventName="DeleteItem">
+            <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
+                <path
+                  d="M906.1,242.4c-4.5-16.8-18.9-26-40.5-26c-89.9,0-179.8,0-269.8,0l-103.4,0v-0.2l-70.2,0c-65.9,0-131.8,0-197.8,0
+	c-6.8,0-13.5,0-20.3,0c-24.2,0-49.1,0-73.7,0.3c-12.9,0.2-24.3,5.5-31.2,14.5c-6.3,8.3-8.3,18.8-5.5,29.6
+	c4.1,16,18.4,26.1,37.3,26.4c14.2,0.2,28.7,0.1,42.7,0.1c5.9,0,11.9,0,17.8,0c0.8,0,1.6,0,2.5,0c8.9,0,14.2,0,18.3,4.2
+	c4,4.1,4,9.5,4,18.4l0,149.7c0,103.7,0,207.3,0,311c0,13,0.4,23.9,1.2,34.2c6.4,79,75.7,143.7,154.5,144.2
+	c68.3,0.4,137.8,0.3,205,0.2c17,0,34-0.1,51-0.1c15.5,0,31.3-2.8,46.9-8.3c67-23.6,108.6-82.9,108.7-154.7
+	c0.1-108.3,0.1-218.5,0.1-325c0-51,0-102.1,0-153.1c0-7.7,0-12.8,3.8-16.7c3.8-3.9,8.9-3.9,16.6-3.9c7.3,0,14.8,0,22,0.1
+	c14.4,0.1,29.3,0.1,43.8-0.2c12.9-0.3,24.2-5.7,31-14.8C907.1,263.7,909,253.1,906.1,242.4z M686.4,852.8
+	c-17.2,17.3-40.4,26.5-67.2,26.5c0,0,0,0,0,0c-23.8,0-47.6,0-71.5,0c-22.7,0-45.7,0-68.9,0c-32.7,0-65.6,0-98.2-0.1
+	c-46.8-0.1-82.1-27.4-92.1-71.2c-1.7-7.4-1.6-14.6-1.6-21.5c0-1.1,0-2.2,0-3.3c0-60.2,0-120.3,0-180.5l0-51.2l0-58.7
+	c0-61.5,0-123.1,0-184.6c0-7.9,0-13.1,3.9-17c3.9-3.9,8.8-3.9,17-3.9c128,0,256,0,383.9,0c8.2,0,13.2,0,17,3.8
+	c3.9,3.9,3.9,9.1,3.9,17c0,44.2,0,89.1-0.1,132.6c-0.1,112.9-0.2,229.6,0.5,344.4C713.5,810.7,703.7,835.4,686.4,852.8z" />
+                <path class="st1" d="M712.8,440.7c0-43.4,0.1-88.4,0.1-132.6c0-7.9,0-13.1-3.9-17c-3.9-3.8-8.8-3.8-17-3.8c-128,0-256,0-383.9,0
+	c-8.2,0-13.1,0-17,3.9c-3.9,3.9-3.9,9.1-3.9,17c0,61.5,0,123.1,0,184.6l0,58.7l0,51.2c0,60.2,0,120.3,0,180.5c0,1.1,0,2.2,0,3.3
+	c0,6.9-0.1,14.1,1.6,21.5c10,43.8,45.2,71.1,92.1,71.2c32.6,0.1,65.5,0.1,98.2,0.1c23.2,0,46.2,0,68.9,0c23.8,0,47.6,0,71.5,0
+	c0,0,0,0,0,0c26.8,0,50-9.1,67.2-26.5c17.3-17.4,27.1-42.1,26.9-67.8C712.6,670.3,712.7,553.5,712.8,440.7z M619.3,864.3
+	c-23.8,0-47.6,0-71.5,0c-54.7,0-111.3,0.1-167-0.1c-40.1-0.1-69-22.4-77.5-59.5c-1.3-5.7-1.3-11.7-1.2-18.1c0-1.1,0-2.3,0-3.4
+	c0-60.2,0-120.3,0-180.5l0-51.2l0-58.7c0-61.5,0-123.1,0-184.6c0-2,0-4.2,0.1-5.8c1.6-0.1,3.8-0.1,5.9-0.1c128,0,256,0,383.9,0
+	c2.1,0,4.3,0,5.9,0.1c0.1,1.5,0.1,3.7,0.1,5.7c0,44.2,0,89.1-0.1,132.5c-0.1,112.9-0.2,229.7,0.5,344.5c0.1,21.7-8.1,42.5-22.5,57.1
+	C661.5,856.6,641.9,864.3,619.3,864.3z" />
+                <path d="M382.7,86.6c0.1,19.9,14.7,33.9,35.5,34c18.8,0.1,38,0.1,56.5,0c8.3,0,16.6,0,24.9,0c8.1,0,16.3,0,24.4,0c18.7,0,38,0,57,0
+	c21.6-0.1,36.2-13.8,36.2-34.2c0.1-20.4-14.9-35.2-35.5-35.3C553.9,51,526.4,51,499.4,51c-27.8,0-55,0.1-81.4,0.2
+	c-10,0-19.1,3.6-25.5,10.1C386.1,67.7,382.6,76.7,382.7,86.6z" />
+                <path d="M535.3,423.2c0-4.8-0.5-9.4-1.4-13.8c-3.5-16-17.1-26.7-33.9-26.7c0,0,0,0-0.1,0c-16.9,0-30.2,10.6-33.9,27
+	c-1.2,5.4-1.4,10.9-1.4,15.7c0,40.2,0,80.4,0,120.6l0,70.1c0,40.4,0,82.2,0.1,123.3c0,5.8,0.4,10.7,1.2,15c3,16,14.4,26.5,31.4,28.8
+	c12.7,1.7,27.5-6.7,33.8-19.1c3-5.9,4.3-12.7,4.3-22l0-84.7C535.4,580.7,535.4,501.3,535.3,423.2z" />
+              </svg></div>
+            <div class="MTableOptionName">حذف</div>
+          </div>
+        </template>
+      </MTable>
+    </div>
+
+    <div class="MGroup" ref="PersonsRealEstatesGroup" id="PersonsRealEstatesGroup"
+      v-show="CheckAttributes(['مالك', 'مستاجر'])">
+      <div class="MGroupTitle">العقارات</div>
+      <MComboBox ref='RECompound' :Name="'RECompound'" :Label="'المدينة'" :Items="RECompoundItems"></MComboBox>
+      <MComboBox ref='REAddress' :Name="'REAddress'" :ItemsName="'address'" :Label="'العنوان'" :Items="REAddressItems">
+      </MComboBox>
+      <MComboBox ref='REOccupancy' :Name="'REOccupancy'" :Label="'نوع السكن'" :Items="REOccupancyItems"></MComboBox>
+      <MComboBox ref='REHousingStatus' :Name="'REHousingStatus'" :Label="'حالة السكن'" :Items="REHousingStatusItems"
+        v-show="REOccupancyValue && REOccupancyValue == 'ملك'"></MComboBox>
+
+      <div class="MGroupButtons">
+        <div class="MButton" id="AddRealEstate"
+          v-show="RECompound && RECompound.Get().length > 0 && REAddress && REAddress.Get().length > 0 && REOccupancy && REOccupancy.Get().length > 0 && REHousingStatus && REHousingStatus.Get().length > 0">
+          اضافة</div>
+        <div class="MButton" id="SaveRealEstate">حفظ</div>
+        <div class="MButton" id="CancelRealEstate">الغاء</div>
+      </div>
+      <MTable ref="RealEstatesTB" :Name="'RealEstatesTB'" :DataArray="RealEstatesTBData" :Columns="RealEstatesTBColumns"
+        :Sums="RealEstatesTBSums" :ShowFilterRow="false" :RowsPerPage="1000">
+        <template v-slot:options>
+          <div class="MTableOption" OptionEventName="EditItem">
+            <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
+                <path d="M500.2,249.6c124.1,1.1,233.2,42.7,328.2,122.1c39.6,33,72.3,72.7,106.8,110.6c9,9.9,8.7,25.5-0.8,36.4
+	c-53.9,62.1-109.3,122.5-182.1,163.7c-66,37.4-136.2,60.8-212,66.4C399.6,759.2,276.4,716.6,169,626.3
+	C130.9,594.3,99.2,556,66,519.3c-10-11-10.5-26-0.9-37.1c53.3-61.5,107.9-121.4,179.6-162.7c66.8-38.5,138-62.1,215.1-68.3
+	C473.2,250.2,486.7,250.1,500.2,249.6z M504.7,308.1c-19.4,0.8-34.9,0.7-50.4,2.2c-61.5,6.1-119,24.8-173,54.6
+	c-59.2,32.7-106.2,79.4-150.3,129.6c-4.1,4.7-3.1,8.1,0.7,12.1c21.3,22.2,40.9,45.9,63.9,66.5c86.2,77.3,186.4,118.2,302.7,118.9
+	c68.3,0.4,133-14.2,194.7-43.2c70.8-33.3,126.2-85.4,176.6-143.7c4-4.6,2-7.9-1.3-11.3c-21.3-22.2-40.9-45.9-63.8-66.6
+	C718.1,349.4,617.3,308.9,504.7,308.1z" />
+                <path d="M392.3,499.7c0.2-59,49.3-108.3,108.1-107.4c60.6,0.9,107.4,47.4,107.2,108c-0.2,60.9-47.5,106.9-107.8,107.4
+	C440.8,608.1,392.1,558.6,392.3,499.7z M500.2,556.5c30.5,0,56.4-25.9,56.4-56.4c0-30.6-25.7-56.5-56.2-56.6
+	c-31-0.1-56.9,25.8-56.8,56.8C443.8,530.8,469.7,556.6,500.2,556.5z" />
+              </svg></div>
+            <div class="MTableOptionName">تعديل</div>
+          </div>
+          <div class="MTableOption" OptionEventName="DeleteItem">
+            <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
+                <path
+                  d="M906.1,242.4c-4.5-16.8-18.9-26-40.5-26c-89.9,0-179.8,0-269.8,0l-103.4,0v-0.2l-70.2,0c-65.9,0-131.8,0-197.8,0
+	c-6.8,0-13.5,0-20.3,0c-24.2,0-49.1,0-73.7,0.3c-12.9,0.2-24.3,5.5-31.2,14.5c-6.3,8.3-8.3,18.8-5.5,29.6
+	c4.1,16,18.4,26.1,37.3,26.4c14.2,0.2,28.7,0.1,42.7,0.1c5.9,0,11.9,0,17.8,0c0.8,0,1.6,0,2.5,0c8.9,0,14.2,0,18.3,4.2
+	c4,4.1,4,9.5,4,18.4l0,149.7c0,103.7,0,207.3,0,311c0,13,0.4,23.9,1.2,34.2c6.4,79,75.7,143.7,154.5,144.2
+	c68.3,0.4,137.8,0.3,205,0.2c17,0,34-0.1,51-0.1c15.5,0,31.3-2.8,46.9-8.3c67-23.6,108.6-82.9,108.7-154.7
+	c0.1-108.3,0.1-218.5,0.1-325c0-51,0-102.1,0-153.1c0-7.7,0-12.8,3.8-16.7c3.8-3.9,8.9-3.9,16.6-3.9c7.3,0,14.8,0,22,0.1
+	c14.4,0.1,29.3,0.1,43.8-0.2c12.9-0.3,24.2-5.7,31-14.8C907.1,263.7,909,253.1,906.1,242.4z M686.4,852.8
+	c-17.2,17.3-40.4,26.5-67.2,26.5c0,0,0,0,0,0c-23.8,0-47.6,0-71.5,0c-22.7,0-45.7,0-68.9,0c-32.7,0-65.6,0-98.2-0.1
+	c-46.8-0.1-82.1-27.4-92.1-71.2c-1.7-7.4-1.6-14.6-1.6-21.5c0-1.1,0-2.2,0-3.3c0-60.2,0-120.3,0-180.5l0-51.2l0-58.7
+	c0-61.5,0-123.1,0-184.6c0-7.9,0-13.1,3.9-17c3.9-3.9,8.8-3.9,17-3.9c128,0,256,0,383.9,0c8.2,0,13.2,0,17,3.8
+	c3.9,3.9,3.9,9.1,3.9,17c0,44.2,0,89.1-0.1,132.6c-0.1,112.9-0.2,229.6,0.5,344.4C713.5,810.7,703.7,835.4,686.4,852.8z" />
+                <path class="st1" d="M712.8,440.7c0-43.4,0.1-88.4,0.1-132.6c0-7.9,0-13.1-3.9-17c-3.9-3.8-8.8-3.8-17-3.8c-128,0-256,0-383.9,0
+	c-8.2,0-13.1,0-17,3.9c-3.9,3.9-3.9,9.1-3.9,17c0,61.5,0,123.1,0,184.6l0,58.7l0,51.2c0,60.2,0,120.3,0,180.5c0,1.1,0,2.2,0,3.3
+	c0,6.9-0.1,14.1,1.6,21.5c10,43.8,45.2,71.1,92.1,71.2c32.6,0.1,65.5,0.1,98.2,0.1c23.2,0,46.2,0,68.9,0c23.8,0,47.6,0,71.5,0
+	c0,0,0,0,0,0c26.8,0,50-9.1,67.2-26.5c17.3-17.4,27.1-42.1,26.9-67.8C712.6,670.3,712.7,553.5,712.8,440.7z M619.3,864.3
+	c-23.8,0-47.6,0-71.5,0c-54.7,0-111.3,0.1-167-0.1c-40.1-0.1-69-22.4-77.5-59.5c-1.3-5.7-1.3-11.7-1.2-18.1c0-1.1,0-2.3,0-3.4
+	c0-60.2,0-120.3,0-180.5l0-51.2l0-58.7c0-61.5,0-123.1,0-184.6c0-2,0-4.2,0.1-5.8c1.6-0.1,3.8-0.1,5.9-0.1c128,0,256,0,383.9,0
+	c2.1,0,4.3,0,5.9,0.1c0.1,1.5,0.1,3.7,0.1,5.7c0,44.2,0,89.1-0.1,132.5c-0.1,112.9-0.2,229.7,0.5,344.5c0.1,21.7-8.1,42.5-22.5,57.1
+	C661.5,856.6,641.9,864.3,619.3,864.3z" />
+                <path d="M382.7,86.6c0.1,19.9,14.7,33.9,35.5,34c18.8,0.1,38,0.1,56.5,0c8.3,0,16.6,0,24.9,0c8.1,0,16.3,0,24.4,0c18.7,0,38,0,57,0
+	c21.6-0.1,36.2-13.8,36.2-34.2c0.1-20.4-14.9-35.2-35.5-35.3C553.9,51,526.4,51,499.4,51c-27.8,0-55,0.1-81.4,0.2
+	c-10,0-19.1,3.6-25.5,10.1C386.1,67.7,382.6,76.7,382.7,86.6z" />
+                <path d="M535.3,423.2c0-4.8-0.5-9.4-1.4-13.8c-3.5-16-17.1-26.7-33.9-26.7c0,0,0,0-0.1,0c-16.9,0-30.2,10.6-33.9,27
+	c-1.2,5.4-1.4,10.9-1.4,15.7c0,40.2,0,80.4,0,120.6l0,70.1c0,40.4,0,82.2,0.1,123.3c0,5.8,0.4,10.7,1.2,15c3,16,14.4,26.5,31.4,28.8
+	c12.7,1.7,27.5-6.7,33.8-19.1c3-5.9,4.3-12.7,4.3-22l0-84.7C535.4,580.7,535.4,501.3,535.3,423.2z" />
+              </svg></div>
+            <div class="MTableOptionName">حذف</div>
+          </div>
+        </template>
+      </MTable>
+    </div>
+
     <div class="MGroup" id="NFCCardGroup">
       <div class="MGroupTitle">بطاقة الدخول</div>
       <div class="MField" id="NFCID">
@@ -577,16 +718,7 @@ export default {
       AttributesItems: ref([]),
       IdentificationType: ref(null),
       IdentificationTypeItems: ref([]),
-      CampName: ref(null),
-      CampNameItems: ref([]),
       EntryDate: ref(null),
-      Camps: ref([]),
-      CampCounter: ref(1),
-      CampsTB: ref(null),
-      CampsTBData: ref([]),
-      CampsTBHeaders: ref(['اسم الكمب', 'رقم الغرفة']),
-      CampsTBTotals: ref(['', '']),
-      CampsTBDisplayColumns: ref(['camp_name', 'room_no']),
       Gender: ref(null),
       GenderItems: ref([]),
       BirthDate: ref(null),
@@ -595,26 +727,101 @@ export default {
       SelectedAttributes: ref([]),
       CardExpire: ref(null),
       CardStatus: ref(null),
-      GuarantorCompound: ref(null),
-      GuarantorCompoundItems: ref([]),
-      GuarantorAddress: ref(''),
-      Guarantor: ref(null),
-      GuarantorItems: ref([]),
       CardStatusItems: ref([]),
       NFCID: ref(''),
       Gates: ref(''),
+
+      Relations: ref([]),
+      PersonsRelationsGroup: ref(null),
+      GuardianID: ref(null),
+      Relation: ref(null),
+      RelationItems: ref([]),
+      RelationAddress: ref(null),
+      RelationAddressItems: ref([]),
+      RelationsCount: ref(1),
+
+      RelationsTB: ref(null),
+      RelationsTBData: ref([]),
+      RelationsTBSums: ref([]),
+      RelationsTBColumns: [
+        {
+          name: 'guardian_id',
+          label: 'رمز صاحب العقار',
+        },
+        {
+          name: 'guardian_name',
+          label: 'اسم صاحب العقار',
+        },
+        {
+          name: 'relation',
+          label: 'العلاقة',
+        },
+        {
+          name: 'compound',
+          label: 'المدينة',
+        },
+        {
+          name: 'address',
+          label: 'العنوان',
+        },
+      ],
+
+      RealEstates: ref([]),
+      Occupancies: ref([]),
+      PersonsRealEstatesGroup: ref(null),
+      RECompound: ref(null),
+      RECompoundItems: ref([]),
+      REAddress: ref(null),
+      REAddressItems: ref([]),
+      REOccupancy: ref(null),
+      REOccupancyItems: ref([]),
+      REOccupancyValue: ref(''),
+      REHousingStatus: ref(null),
+      REHousingStatusItems: ref([]),
+      RealEstatesCount: ref(1),
+
+      RealEstatesTB: ref(null),
+      RealEstatesTBData: ref([]),
+      RealEstatesTBSums: ref([]),
+      RealEstatesTBColumns: [
+        {
+          name: 'compound',
+          label: 'المدينة',
+        },
+        {
+          name: 'address',
+          label: 'العنوان',
+        },
+        {
+          name: 'occupancy',
+          label: 'نوع السكن',
+        },
+        {
+          name: 'housing_status',
+          label: 'حالة السكن',
+        },
+      ],
+
       Attachments: ref([]),
+      ContractorWorkPlace: ref(null),
+      ContractorWorkPlaceItems: ref([]),
+      PersonRelationsItems: ref([]),
     };
   },
   mounted() {
     this.ServerPath = GetServerPath();
+
     this.GenderItems = this.GlobalsStore.ComboBoxes['Gender'];
     this.IdentificationTypeItems = this.GlobalsStore.ComboBoxes['IdentificationType'];
     this.AttributesItems = this.GlobalsStore.ComboBoxes['Attributes'];
-    this.CampNameItems = this.GlobalsStore.ComboBoxes['Camps'];
     this.CardStatusItems = this.GlobalsStore.ComboBoxes['NFCCardStatus'];
-    this.GuarantorCompoundItems = this.GlobalsStore.ComboBoxes['Compounds'];
+    this.RECompoundItems = this.GlobalsStore.ComboBoxes['Compounds'];
+    this.PersonRelationsItems = this.GlobalsStore.ComboBoxes['Relations'];
+    this.REHousingStatusItems = this.GlobalsStore.ComboBoxes['HousingStatus'];
     this.Operation = this.$route.meta.Operation;
+    this.ContractorWorkPlaceItems = this.GlobalsStore.ComboBoxes['Compounds'];
+    this.Occupancies = this.GlobalsStore.ComboBoxes['Occupancies'];
+    this.REOccupancyItems = this.Occupancies;
 
     this.ComponentLoad();
     this.NFCCardsDetection();
@@ -625,7 +832,7 @@ export default {
     });
 
     document.getElementById('Attributes').addEventListener('MCBValueChange', function () {
-      Instance.SelectedAttributes = Instance.Attributes.GetValue().split(' | ') ?? [];
+      Instance.OnAttributesChange();
     });
 
     document.querySelectorAll('.MImage').forEach(function (MImage) {
@@ -719,14 +926,269 @@ export default {
       }
     }.bind(this));
 
-    document.getElementById('GuarantorAddress').querySelector('.MFieldBTN').addEventListener('click', function () {
-      Instance.GetGuarantors();
+    //#region Relations
+    document.getElementById('GuardianID').querySelector('.MFieldBTN').addEventListener('click', function () {
+      Instance.GetGuardians();
     });
+
+    document.getElementById('AddRelation').addEventListener('click', function () {
+      let RelationAddressID = '';
+      let RelationAddressCompound = '';
+      let RelationAddressAddress = '';
+      if (Instance.RelationAddress.Get() && Instance.RelationAddress.Get().length) {
+        RelationAddressID = Instance.RelationAddress.Get()[0]['real_estate_id'] ?? '';
+        RelationAddressCompound = Instance.RelationAddress.Get()[0]['compound'] ?? '';
+        RelationAddressAddress = Instance.RelationAddress.Get()[0]['address'] ?? '';
+      }
+
+      let RelationDuplicate = Instance.Relations.filter(TheRelation => TheRelation.ActionType !== 'DELETE' && (TheRelation.guardian_id == Instance.GuardianID || TheRelation.real_estate_id == RelationAddressID));
+      if (RelationDuplicate.length != 0) {
+        window.ShowMessage('يوجد تكرار');
+        return;
+      }
+
+      let Relation = {};
+      Relation['id'] = 'A' + Instance.RelationsCount;
+      Relation['pid'] = Instance.ID;
+      Relation['relation'] = Instance.Relation.GetValue();
+      Relation['guardian_id'] = Instance.GuardianID;
+      Relation['guardian_name'] = document.getElementById('GuardianName').querySelector('input').value;
+      Relation['real_estate_id'] = RelationAddressID;
+      Relation['compound'] = RelationAddressCompound;
+      Relation['address'] = RelationAddressAddress;
+      Relation['ActionType'] = 'ADD';
+      Instance.Relations.push(Relation);
+      Instance.RelationsCount++;
+
+      Instance.GuardianID = '';
+      document.getElementById('GuardianName').querySelector('input').value = '';
+      Instance.Relation.Clear();
+      Instance.RelationAddress.Clear();
+
+      Instance.RelationAddress = [];
+
+      Instance.RelationsTBData = Instance.Relations.filter(TheRelation => TheRelation.ActionType !== "DELETE");
+    });
+    document.getElementById('SaveRelation').addEventListener('click', function () {
+      let IDX = Instance.Relations.findIndex(TheRelation => TheRelation.id == document.getElementById('PersonsRelationsGroup').getAttribute('RelationID'));
+
+      Instance.Relations[IDX]['relation'] = Instance.Relation.GetValue();
+      Instance.Relations[IDX]['real_estate_id'] = Instance.RelationAddress.Get()[0]['real_estate_id'];
+      Instance.Relations[IDX]['compound'] = Instance.RelationAddress.Get()[0]['compound'];
+      Instance.Relations[IDX]['address'] = Instance.RelationAddress.Get()[0]['address'];
+
+      if (Instance.Relations[IDX]['ActionType'] == '') {
+        Instance.Relations[IDX]['ActionType'] = 'EDIT';
+      }
+
+      document.getElementById('SaveRelation').style.display = 'none';
+      document.getElementById('CancelRelation').style.display = 'none';
+
+      document.getElementById('GuardianID').querySelector('input').removeAttribute('disabled');
+      document.getElementById('PersonsRelationsGroup').removeAttribute('RelationID');
+      Instance.GuardianID = '';
+      document.getElementById('GuardianName').querySelector('input').value = '';
+
+      Instance.Relation.Clear();
+      Instance.RelationAddress.Clear();
+
+      Instance.RelationAddressItems = [];
+
+      Instance.RelationsTBData = Instance.Relations.filter(TheRelation => TheRelation.ActionType !== "DELETE");
+    });
+    document.getElementById('CancelRelation').addEventListener('click', function () {
+      document.getElementById('SaveRelation').style.display = 'none';
+      document.getElementById('CancelRelation').style.display = 'none';
+
+      document.getElementById('GuardianID').querySelector('input').removeAttribute('disabled');
+      document.getElementById('PersonsRelationsGroup').removeAttribute('RelationID');
+      Instance.GuardianID = '';
+      document.getElementById('GuardianName').querySelector('input').value = '';
+
+      Instance.Relation.Clear();
+      Instance.RelationAddress.Clear();
+
+      Instance.RelationAddressItems = [];
+    });
+
+    document.getElementById('RelationsTB').addEventListener('EditItem', function (data) {
+      document.getElementById('SaveRelation').style.display = 'flex';
+      document.getElementById('CancelRelation').style.display = 'flex';
+
+      document.getElementById('GuardianID').querySelector('input').setAttribute('disabled', true);
+      document.getElementById('PersonsRelationsGroup').setAttribute('RelationID', data.detail.RowData['id']);
+      Instance.GuardianID = data.detail.RowData['guardian_id'];
+
+      setTimeout(() => {
+        let CallBack = function () {
+          document.getElementById('AddRelation').style.display = 'none';
+          Instance.Relation.Set(data.detail.RowData['relation'])
+          Instance.RelationAddress.Set(data.detail.RowData['real_estate_id'], 'real_estate_id');
+        }
+        Instance.GetGuardians(CallBack);
+      }, 100);
+    });
+    document.getElementById('RelationsTB').addEventListener('DeleteItem', function (data) {
+      document.getElementById('SaveRelation').style.display = 'none';
+      document.getElementById('CancelRelation').style.display = 'none';
+
+      document.getElementById('GuardianID').querySelector('input').removeAttribute('disabled');
+      document.getElementById('PersonsRelationsGroup').removeAttribute('RelationID');
+      Instance.GuardianID = '';
+      document.getElementById('GuardianName').querySelector('input').value = '';
+
+      Instance.Relation.Clear();
+      Instance.RelationAddress.Clear();
+
+      Instance.RelationAddressItems = [];
+
+      for (let i = Instance.Relations.length - 1; i >= 0; i--) {
+        if (Instance.Relations[i]['id'] == data.detail.RowData['id']) {
+          if (Instance.Relations[i]['ActionType'] === 'ADD') {
+            Instance.Relations.splice(i, 1);
+          } else {
+            Instance.Relations[i]['ActionType'] = 'DELETE';
+          }
+          break;
+        }
+      }
+
+      Instance.RelationsTBData = Instance.Relations.filter(TheRelation => TheRelation.ActionType !== "DELETE");
+    });
+    //#endregion
+
+    //#region Real Estates
+    document.getElementById('RECompound').addEventListener('MCBValueChange', function () {
+      Instance.GetCompoundRealEstates();
+    });
+    document.getElementById('REOccupancy').addEventListener('MCBValueChange', function () {
+      if (Instance.REOccupancy.GetValue() == 'ايجار') {
+        Instance.REHousingStatus.Set('ساكن');
+      } else {
+        Instance.REHousingStatus.Clear();
+      }
+      Instance.REOccupancyValue = Instance.REOccupancy.GetValue();
+    });
+
+    document.getElementById('AddRealEstate').addEventListener('click', function () {
+      let RealEstateDuplicate = Instance.RealEstates.filter(TheRealEstate => TheRealEstate.real_estate_id == Instance.REAddress.Get()[0]['id'] && TheRealEstate.ActionType != 'DELETE');
+      if (RealEstateDuplicate.length != 0) {
+        window.ShowMessage('العقار مكرر');
+        return;
+      }
+
+      let HousingStatus = '';
+      if (Instance.REOccupancy.GetValue() == 'ايجار') {
+        HousingStatus = 'ساكن';
+      } else {
+        HousingStatus = Instance.REHousingStatus.GetValue();
+      }
+
+      let RealEstate = {};
+      RealEstate['id'] = 'A' + Instance.RealEstatesCount;
+      RealEstate['pid'] = Instance.ID;
+      RealEstate['real_estate_id'] = Instance.REAddress.Get()[0]['id'];
+      RealEstate['occupancy'] = Instance.REOccupancy.GetValue();
+      RealEstate['compound'] = Instance.RECompound.GetValue();
+      RealEstate['address'] = Instance.REAddress.GetValue();
+      RealEstate['housing_status'] = HousingStatus;
+      RealEstate['ActionType'] = 'ADD';
+      Instance.RealEstates.push(RealEstate);
+      Instance.RealEstatesCount++;
+
+      Instance.RECompound.Clear();
+      Instance.REAddress.Clear();
+      Instance.REOccupancy.Clear();
+      Instance.REHousingStatus.Clear();
+
+      Instance.REAddressItems = [];
+
+      Instance.RealEstatesTBData = Instance.RealEstates.filter(TheRealEstate => TheRealEstate.ActionType !== "DELETE");
+    });
+    document.getElementById('SaveRealEstate').addEventListener('click', function () {
+      let IDX = Instance.RealEstates.findIndex(TheRealEstate => TheRealEstate.id == document.getElementById('PersonsRealEstatesGroup').getAttribute('RealEstateID'));
+
+      Instance.RealEstates[IDX]['occupancy'] = Instance.REOccupancy.GetValue();
+      Instance.RealEstates[IDX]['housing_status'] = Instance.REHousingStatus.GetValue();
+
+      if (Instance.RealEstates[IDX]['ActionType'] == '') {
+        Instance.RealEstates[IDX]['ActionType'] = 'EDIT';
+      }
+
+      document.getElementById('SaveRealEstate').style.display = 'none';
+      document.getElementById('CancelRealEstate').style.display = 'none';
+
+      document.getElementById('PersonsRealEstatesGroup').removeAttribute('RealEstateID');
+
+      Instance.RECompound.Enable();
+
+      Instance.RECompound.Clear();
+      Instance.REAddress.Clear();
+      Instance.REOccupancy.Clear();
+      Instance.REHousingStatus.Clear();
+
+      Instance.RealEstatesTBData = Instance.RealEstates.filter(TheRealEstate => TheRealEstate.ActionType !== "DELETE");
+    });
+    document.getElementById('CancelRealEstate').addEventListener('click', function () {
+      document.getElementById('SaveRealEstate').style.display = 'none';
+      document.getElementById('CancelRealEstate').style.display = 'none';
+      document.getElementById('PersonsRealEstatesGroup').removeAttribute('RealEstateID');
+
+      Instance.RECompound.Enable();
+
+      Instance.RECompound.Clear();
+      Instance.REAddress.Clear();
+      Instance.REOccupancy.Clear();
+      Instance.REHousingStatus.Clear();
+    });
+
+    document.getElementById('RealEstatesTB').addEventListener('EditItem', function (data) {
+      document.getElementById('SaveRealEstate').style.display = 'flex';
+      document.getElementById('CancelRealEstate').style.display = 'flex';
+      document.getElementById('PersonsRealEstatesGroup').setAttribute('RealEstateID', data.detail.RowData['id']);
+
+      Instance.RECompound.SetValue(data.detail.RowData['compound']);
+      Instance.REOccupancy.Set(data.detail.RowData['occupancy']);
+      Instance.REHousingStatus.Set(data.detail.RowData['housing_status']);
+
+      setTimeout(() => {
+        let CallBack = function () {
+          document.getElementById('AddRealEstate').style.display = 'none';
+          Instance.REAddress.Set(data.detail.RowData['address'], 'address');
+
+          setTimeout(() => {
+            Instance.RECompound.Disable();
+            Instance.REAddress.Disable();
+          }, 100);
+        }
+        Instance.GetCompoundRealEstates(CallBack);
+      }, 100);
+    });
+    document.getElementById('RealEstatesTB').addEventListener('DeleteItem', function (data) {
+      Instance.RECompound.Clear();
+      Instance.REAddress.Clear();
+      Instance.REOccupancy.Clear();
+      Instance.REHousingStatus.Clear();
+
+      for (let i = Instance.RealEstates.length - 1; i >= 0; i--) {
+        if (Instance.RealEstates[i]['id'] == data.detail.RowData['id']) {
+          if (Instance.RealEstates[i]['ActionType'] === 'ADD') {
+            Instance.RealEstates.splice(i, 1);
+          } else {
+            Instance.RealEstates[i]['ActionType'] = 'DELETE';
+          }
+          break;
+        }
+      }
+
+      Instance.RealEstatesTBData = Instance.RealEstates.filter(TheRealEstate => TheRealEstate.ActionType !== "DELETE");
+    });
+    //#endregion
+
   },
   methods: {
     ComponentLoad() {
-      this.Images = []
-      this.Camps = []
+      this.Images = [];
       document.querySelectorAll('input').forEach(function (e) {
         e.value = '';
       });
@@ -738,10 +1200,12 @@ export default {
       }
       if (this.$route.meta.Operation == 'EDIT') {
         this.ID = this.GlobalsStore.MArray['id'];
+
         document.getElementById('ID').style.display = 'flex';
         document.getElementById('DeleteBTN').style.display = 'flex';
+
+        //#region Fields
         document.getElementById('ID').querySelector('input').value = this.GlobalsStore.MArray['id'];
-        this.Attributes.Set(this.GlobalsStore.MArray['attributes'], 'attribute');
         document.getElementById('Name').querySelector('input').value = this.GlobalsStore.MArray['name'];
         document.getElementById('Nationality').querySelector('input').value = this.GlobalsStore.MArray['nationality'];
         document.getElementById('MotherName').querySelector('input').value = this.GlobalsStore.MArray['mother_name'];
@@ -768,24 +1232,38 @@ export default {
 
         this.Gender.Set(this.GlobalsStore.MArray['gender']);
         this.BirthDate.Set(this.GlobalsStore.MArray['birth']);
-        this.GuarantorCompound.Set(this.GlobalsStore.MArray['guarantor_compound']);
-        this.GuarantorAddress = this.GlobalsStore.MArray['guarantor_address'];
         this.IdentificationType.Set(this.GlobalsStore.MArray['identification_type']);
         this.IdentificationIssuingDate.Set(this.GlobalsStore.MArray['identification_issuing_date']);
         this.EntryDate.Set(this.GlobalsStore.MArray['entry_date']);
         this.EmployeeStartDate.Set(this.GlobalsStore.MArray['employee_start_date']);
-        setTimeout(function () {
-          this.SelectedAttributes = this.Attributes.GetValue().split(' | ') ?? [];
-        }.bind(this), 100);
+        this.ContractorWorkPlace.Set(this.GlobalsStore.MArray['contractor_work_place']);
+        //#endregion
 
-        //NFC Cards
-        if (this.GlobalsStore.MArray['nfccard']) {
-          this.NFCID = this.GlobalsStore.MArray['nfccard']['nfcid'];
-          this.CardExpire.Set(this.GlobalsStore.MArray['nfccard']['cardexpire']);
-          this.CardStatus.Set(this.GlobalsStore.MArray['nfccard']['cardstatus']);
-          document.getElementById('CardNotes').querySelector('input').value = this.GlobalsStore.MArray['nfccard']['cardnotes'];
+        //#region Relations
+        this.Relations = this.GlobalsStore.MArray['relations'];
+        this.RelationsTBData = this.GlobalsStore.MArray['relations'];
+        //#endregion
+
+        //#region Real Estates
+        this.RealEstates = this.GlobalsStore.MArray['real_estates'];
+        this.RealEstatesTBData = this.GlobalsStore.MArray['real_estates'];
+        //#endregion
+
+        //#region Attributes
+        this.Attributes.Set(this.GlobalsStore.MArray['attributes'], 'attribute');
+        setTimeout(function () {
+          this.OnAttributesChange();
+        }.bind(this), 100);
+        //#endregion
+
+        //#region NFC Cards
+        if (this.GlobalsStore.MArray['nfc_card'] && this.GlobalsStore.MArray['nfc_card'].length != 0) {
+          this.NFCID = this.GlobalsStore.MArray['nfc_card']['nfc_id'];
+          this.CardExpire.Set(this.GlobalsStore.MArray['nfc_card']['card_expire']);
+          this.CardStatus.Set(this.GlobalsStore.MArray['nfc_card']['card_status']);
+          document.getElementById('CardNotes').querySelector('input').value = this.GlobalsStore.MArray['nfc_card']['card_notes'];
           // Populate Gates
-          let TheGates = this.GlobalsStore.MArray['nfccard']['gates'].split('|');
+          let TheGates = this.GlobalsStore.MArray['nfc_card']['gates'].split('|');
           let GatesCheckBoxes = document.getElementById('Gates').querySelectorAll('.MCheckBox');
           for (let i = 0; i < TheGates.length; i++) {
             let GateName = TheGates[i].replaceAll('-', ' - ');
@@ -796,19 +1274,17 @@ export default {
             }
           }
         }
+        //#endregion
 
-        //Images
+        //#region Images
         this.Images = this.GlobalsStore.MArray['images'];
-
-        //Attachments
-        this.Attachments = this.GlobalsStore.MArray['attachments'];
-        if (this.GlobalsStore.MArray['guarantor_address'] != '' && this.GlobalsStore.MArray['guarantor_compound'] != '') {
-          setTimeout(function () {
-            this.GetGuarantors();
-          }.bind(this), 100);
-        }
         this.BuildImages();
+        //#endregion
+
+        //#region Attachments
+        this.Attachments = this.GlobalsStore.MArray['attachments'];
         this.BuildAttachments();
+        //#endregion
       }
     },
     Save() {
@@ -842,13 +1318,11 @@ export default {
       Parameters.append('education_certificate', document.getElementById('EducationCertificate').querySelector('input').value);
       Parameters.append('work_type', document.getElementById('WorkType').querySelector('input').value);
       Parameters.append('work_place', document.getElementById('WorkPlace').querySelector('input').value);
+      Parameters.append('contractor_work_place', this.ContractorWorkPlace.GetValue());
       Parameters.append('employee_company', document.getElementById('EmployeeCompany').querySelector('input').value);
       Parameters.append('employee_department', document.getElementById('EmployeeDepartment').querySelector('input').value);
       Parameters.append('job_title', document.getElementById('JobTitle').querySelector('input').value);
       Parameters.append('employee_start_date', this.EmployeeStartDate.Get());
-      Parameters.append('guarantor_compound', this.GuarantorCompound.GetValue());
-      Parameters.append('guarantor_address', document.getElementById('GuarantorAddress').querySelector('input').value);
-      Parameters.append('guarantor_id', this.Guarantor.Get()[0]['gid']);
       Parameters.append('address', document.getElementById('Address').querySelector('input').value);
       Parameters.append('car_number', document.getElementById('CarNumber').querySelector('input').value);
       Parameters.append('car_details', document.getElementById('CarDetails').querySelector('input').value);
@@ -858,15 +1332,17 @@ export default {
       Parameters.append('entry_date', this.EntryDate.Get());
       Parameters.append('notes', document.getElementById('Notes').querySelector('input').value);
 
+      Parameters.append('Relations', JSON.stringify(this.Relations));
+      Parameters.append('RealEstates', JSON.stringify(this.RealEstates));
       Parameters.append('Attributes', JSON.stringify(this.Attributes.GetValue().split(' | ')));
 
 
       //NFC Card
-      Parameters.append('nfccard', JSON.stringify({
-        nfcid: this.NFCID,
-        cardexpire: this.CardExpire.Get(),
-        cardstatus: this.CardStatus.GetValue(),
-        cardnotes: document.getElementById('CardNotes').querySelector('input').value,
+      Parameters.append('nfc_card', JSON.stringify({
+        nfc_id: this.NFCID,
+        card_expire: this.CardExpire.Get(),
+        card_status: this.CardStatus.GetValue(),
+        card_notes: document.getElementById('CardNotes').querySelector('input').value,
         gates: this.Gates,
       }));
 
@@ -1100,28 +1576,62 @@ export default {
         }.bind(this));
       }.bind(this));
     },
-    GetGuarantors() {
+    GetCompoundRealEstates(CallBack = null) {
       window.ShowLoading();
-      this.Guarantor.Clear();
-      api.get('GetGuarantors', {
+      this.REAddress.Clear();
+      api.get('GetCompoundRealEstates', {
         params: {
-          compound: this.GuarantorCompound.GetValue(),
-          address: this.GuarantorAddress,
+          compound: this.RECompound.GetValue(),
         }
       }).then(response => {
         if (response.data) {
           window.HideLoading();
-          this.GuarantorItems = response.data;
-          if (this.$route.meta.Operation == 'EDIT') {
-            this.Guarantor.Set(this.GlobalsStore.MArray['guarantor_id'], 'gid');
+          this.REAddressItems = response.data;
+          if (CallBack) {
+            CallBack();
           }
         } else {
-          this.GuarantorItems = [];
+          this.REAddressItems = [];
           window.HideLoading();
           window.ShowMessage(response.data);
         }
       }).catch(() => {
-        this.GuarantorItems = [];
+        this.REAddressItems = [];
+        window.HideLoading();
+        window.ShowMessage('حدث خطا');
+      });
+    },
+    GetGuardians(CallBack = null) {
+      window.ShowLoading();
+      api.get('GetGuardians', {
+        params: {
+          id: this.GuardianID,
+          attributes: this.Attributes.GetValue().split(' | ') ?? [],
+        }
+      }).then(response => {
+        window.HideLoading();
+        if (response.data) {
+          if (response.data.length > 0) {
+            document.getElementById('GuardianName').querySelector('input').value = response.data[0]['name'];
+            this.RelationAddressItems = response.data;
+            if (CallBack) {
+              CallBack();
+            }
+          } else {
+            document.getElementById('GuardianName').querySelector('input').value = '';
+            this.Relation.Clear();
+            this.RelationAddressItems = [];
+          }
+        } else {
+          document.getElementById('GuardianName').querySelector('input').value = '';
+          this.Relation.Clear();
+          this.RelationAddressItems = [];
+          window.ShowMessage(response.data);
+        }
+
+      }).catch(() => {
+        this.Relation.Clear();
+        this.RelationAddressItems = [];
         window.HideLoading();
         window.ShowMessage('حدث خطا');
       });
@@ -1173,6 +1683,28 @@ export default {
     CheckAttributes(values) {
       return this.SelectedAttributes.some(value => values.includes(value));
     },
+    OnAttributesChange() {
+      this.SelectedAttributes = this.Attributes.GetValue().split(' | ') ?? [];
+      this.REOccupancyItems = this.Occupancies;
+
+      if (this.SelectedAttributes.includes('مالك') == false) {
+        this.REOccupancyItems = this.REOccupancyItems.filter(Occupancy => Occupancy !== 'ملك');
+      }
+      if (this.SelectedAttributes.includes('مستاجر') == false) {
+        this.REOccupancyItems = this.REOccupancyItems.filter(Occupancy => Occupancy !== 'ايجار');
+      }
+
+      this.RelationItems = this.PersonRelationsItems;
+      if (this.SelectedAttributes.includes('مالك') == false && this.SelectedAttributes.includes('مستاجر') == false) {
+        this.RelationItems = this.RelationItems.filter(TheRelation => TheRelation == 'زائر' || TheRelation == 'سائق');
+      }
+      if (this.SelectedAttributes.includes('زائر') == false) {
+        this.RelationItems = this.RelationItems.filter(TheRelation => TheRelation != 'زائر');
+      }
+      if (this.SelectedAttributes.includes('سائق') == false) {
+        this.RelationItems = this.RelationItems.filter(TheRelation => TheRelation != 'سائق');
+      }
+    },
     async NFCCardsDetection() {
       let Instance = this;
       /* eslint-disable */
@@ -1201,7 +1733,7 @@ export default {
         }, 1000);
       }
       /* eslint-enable */
-    }
+    },
   }
 }
 </script>
@@ -1215,8 +1747,10 @@ export default {
   background-color: red;
 }
 
-#SaveCamp,
-#CancelCamp {
+#SaveRealEstate,
+#CancelRealEstate,
+#SaveRelation,
+#CancelRelation {
   display: none;
 }
 

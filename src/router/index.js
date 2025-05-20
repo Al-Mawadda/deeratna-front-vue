@@ -21,6 +21,31 @@ const router = createRouter({
       name: 'ContractDetails',
       meta: { requiresAuth: true, HeaderTitle: 'ادخال عقد جديد' },
     },
+
+    // Real Estates
+    {
+      path: '/real_estates',
+      component: () => import('../views/contracts/RealEstatesView.vue'),
+      name: 'RealEstates',
+      meta: { requiresAuth: true, HeaderTitle: 'العقارات' },
+    },
+    {
+      path: '/real_estates/add',
+      component: () => import('../views/contracts/RealEstateDetailsView.vue'),
+      name: 'AddRealEstate',
+      meta: { requiresAuth: true, Operation: 'ADD', HeaderTitle: 'اضافة عقار' },
+    },
+    {
+      path: '/real_estates/edit',
+      component: () => import('../views/contracts/RealEstateDetailsView.vue'),
+      name: 'EditRealEstate',
+      meta: {
+        requiresAuth: true,
+        Operation: 'EDIT',
+        HeaderTitle: 'تعديل العقار',
+      },
+    },
+
     // Information
     {
       path: '/persons',
@@ -44,6 +69,7 @@ const router = createRouter({
         HeaderTitle: 'تعديل الشخص',
       },
     },
+
     // Internet
     {
       path: '/internet/subscribers',
@@ -57,6 +83,7 @@ const router = createRouter({
       name: 'InternetProfiles',
       meta: { requiresAuth: true, HeaderTitle: 'الاشتراكات' },
     },
+
     //ADS
     {
       path: '/ads/video',
@@ -160,6 +187,33 @@ const router = createRouter({
       meta: { requiresAuth: true, HeaderTitle: 'دفع الانترنيت' },
     },
 
+    // Camps
+    {
+      path: '/camps',
+      component: () => import('../views/camps/CampsView.vue'),
+      name: 'Camps',
+      meta: { requiresAuth: true, HeaderTitle: 'الكمبات' },
+    },
+    {
+      path: '/camps/add',
+      component: () => import('../views/camps/CampsDetailsView.vue'),
+      name: 'AddCamp',
+      meta: {
+        requiresAuth: true,
+        Operation: 'ADD',
+        HeaderTitle: 'اضافة كمب',
+      },
+    },
+    {
+      path: '/camps/edit',
+      component: () => import('../views/camps/CampsDetailsView.vue'),
+      name: 'EditCamp',
+      meta: {
+        requiresAuth: true,
+        Operation: 'EDIT',
+        HeaderTitle: 'تعديل كمب',
+      },
+    },
     // Camps Contractors
     {
       path: '/camps/contractors',

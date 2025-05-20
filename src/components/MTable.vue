@@ -72,6 +72,7 @@ export default {
       this.PagesCount,
       this.OptionsArray
     )
+    
   },
   watch: {
     DataArray: {
@@ -570,7 +571,9 @@ export default {
           })
         }
       )
-
+      window.addEventListener('scroll', function() {
+        console.log('aaaa');
+      });
       // Show / Hide Filter Row
       if (ShowFilterRow == true) {
         Element.querySelector('.MTableFilterRow').style.display = 'flex'
@@ -885,7 +888,7 @@ export default {
             // Hide Options
             e.removeEventListener('focusout', null)
             e.addEventListener('focusout', function (e) {
-              HideMTableOptions(e)
+              HideMTableOptions(e);
             })
           }
         )
@@ -907,10 +910,8 @@ export default {
           })
         })
 
-        Element.querySelector('.MTableBodyContainer').addEventListener(
-          'scroll',
-          () => {
-            HideMTableOptions()
+        Element.querySelector('.MTableBodyContainer').addEventListener('scroll', function() {
+            HideMTableOptions();
           }
         )
 
@@ -1204,20 +1205,20 @@ export default {
             e.style.backgroundColor = ''
           }
         )
-        if (document.querySelector('.MTableOptions')) {
+        if (Element.querySelector('.MTableOptions')) {
           if (event != null) {
             if (
               event.relatedTarget &&
               event.relatedTarget.classList.contains('MTableOptions')
             ) {
               setTimeout(function () {
-                document.querySelector('.MTableOptions').style.display = 'none'
+                Element.querySelector('.MTableOptions').style.display = 'none'
               }, 100)
             } else {
-              document.querySelector('.MTableOptions').style.display = 'none'
+              Element.querySelector('.MTableOptions').style.display = 'none'
             }
           } else {
-            document.querySelector('.MTableOptions').style.display = 'none'
+            Element.querySelector('.MTableOptions').style.display = 'none'
           }
         }
       }
