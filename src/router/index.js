@@ -88,6 +88,12 @@ const router = createRouter({
       name: 'Ads-secondVideo',
       meta: { requiresAuth: true },
     },
+    {
+      path: '/ads/send-deeratna-notification',
+      component: () => import('../views/ads/deeratnaNotificationSend.vue'),
+      name: 'send-deeratna-notification',
+      meta: { requiresAuth: true, HeaderTitle: 'ارسال اشعار ديرتنا ' },
+    },
 
     //Requests
 
@@ -244,13 +250,7 @@ const router = createRouter({
 
 
 
-    {
-      path: '/tracking',
-      component: () => import('../views/tracking/index.vue'),
-      name: 'tracking',
-      name: '',
-      meta: { requiresAuth: true, HeaderTitle: 'المتابعة' },
-    },
+
     {
       path: '/send-qr-notification',
       component: () => import('../views/qr/qrNotificationSend.vue'),
