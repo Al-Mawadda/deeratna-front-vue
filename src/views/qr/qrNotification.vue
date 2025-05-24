@@ -52,6 +52,7 @@ export default {
       GlobalsStore: ref(useGlobalsStore()),
 
       qrdata: ref(null),
+      notiData: ref(null),
       qrdataData: ref([]),
 
       qrdataTBColumns: [
@@ -84,6 +85,8 @@ export default {
     this.qrdata.LoadMTable()
   },
   methods: {
+
+
     //load data from table to table and combo companyName
     GetInternetProfilesData(MTable) {
       axios
