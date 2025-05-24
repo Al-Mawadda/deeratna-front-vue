@@ -286,11 +286,6 @@ export default {
             route: '/contracts/add',
             permission: 'ads_video_view',
           },
-          {
-            text: 'العقارات',
-            route: '/real_estates',
-            permission: 'information',
-          },
         ],
       },
       //============= المعلومات =============
@@ -301,6 +296,11 @@ export default {
           {
             text: 'معلومات الاشخاص',
             route: '/persons',
+            permission: 'information',
+          },
+          {
+            text: 'العقارات',
+            route: '/real_estates',
             permission: 'information',
           },
         ],

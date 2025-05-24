@@ -1240,8 +1240,8 @@ export default {
         //#endregion
 
         //#region Relations
-        this.Relations = this.GlobalsStore.MArray['relations'];
-        this.RelationsTBData = this.GlobalsStore.MArray['relations'];
+        this.Relations = this.GlobalsStore.MArray['relations'].filter(Relation => Relation.pid !== Relation.guardian_id);
+        this.RelationsTBData = this.Relations;
         //#endregion
 
         //#region Real Estates

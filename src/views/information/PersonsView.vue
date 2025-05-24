@@ -78,6 +78,16 @@ export default {
           label: 'رقم الهاتف',
         },
         {
+          name: 'relations.compound',
+          label: 'مدينة الساكن',
+          filter: 'combo',
+          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
+        },
+        {
+          name: 'relations.address',
+          label: 'عنوان الساكن',
+        },
+        {
           name: 'address',
           label: 'العنوان',
         },
