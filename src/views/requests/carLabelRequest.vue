@@ -191,7 +191,7 @@ export default {
         },
         {
           name: 'guardian_name',
-          label: 'اسم الكفيل',
+          label: 'اسم الساكن',
         },
         {
           name: 'address',

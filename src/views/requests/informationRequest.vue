@@ -31,7 +31,7 @@
           </tr>
 
           <!-- مالك Specific Columns -->
-          <tr v-if="selectedRowData.person_type == 'مالك'">
+          <tr v-if="selectedRowData.attributes == 'مالك'">
             <td>الجنس</td>
             <td>{{ selectedRowData.gender }}</td>
           </tr>
