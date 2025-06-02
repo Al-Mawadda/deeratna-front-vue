@@ -78,6 +78,10 @@ export default {
           label: 'رقم الهاتف',
         },
         {
+          name: 'relations.relation',
+          label: 'العلاقة',
+        },
+        {
           name: 'relations.compound',
           label: 'مدينة الساكن',
           filter: 'combo',
@@ -88,8 +92,8 @@ export default {
           label: 'عنوان الساكن',
         },
         {
-          name: 'address',
-          label: 'العنوان',
+          name: 'outside_address',
+          label: 'العنوان الخارجي',
         },
         {
           name: 'study',

@@ -72,7 +72,7 @@ export default {
       this.PagesCount,
       this.OptionsArray
     )
-    
+
   },
   watch: {
     DataArray: {
@@ -265,9 +265,9 @@ export default {
                       detail: {
                         RowData:
                           DataArray[
-                            e
-                              .closest('.MTableOptions')
-                              .getAttribute('MTableRowID')
+                          e
+                            .closest('.MTableOptions')
+                            .getAttribute('MTableRowID')
                           ],
                       },
                     })
@@ -305,8 +305,8 @@ export default {
       for (var F = 0; F < Columns.length; F++) {
         let FilterCell = Element.querySelector(
           '.MTableFilterRow .MTableCell[filtername="' +
-            Columns[F]['name'] +
-            '"]'
+          Columns[F]['name'] +
+          '"]'
         )
         FilterCell.querySelector('.MTableFilterInput').value =
           FilterDataArray[Columns[F]['name']]
@@ -373,7 +373,7 @@ export default {
             if (
               e.value ==
               FilterDataArray[
-                e.closest('.MTableCell').getAttribute('filtername')
+              e.closest('.MTableCell').getAttribute('filtername')
               ]
             ) {
               e
@@ -413,8 +413,8 @@ export default {
               for (var i = 0; i < Columns.length; i++) {
                 var FilterRowInput = Element.querySelector(
                   '.MTableFilterRow .MTableCell[filtername="' +
-                    Columns[i]['name'] +
-                    '"] .MTableFilterInput'
+                  Columns[i]['name'] +
+                  '"] .MTableFilterInput'
                 )
                 FilterDataArray[Columns[i]['name']] = FilterRowInput.value
               }
@@ -473,8 +473,8 @@ export default {
             for (var i = 0; i < Columns.length; i++) {
               var FilterRowInput = Element.querySelector(
                 '.MTableFilterRow .MTableCell[filtername="' +
-                  Columns[i]['name'] +
-                  '"] .MTableFilterInput'
+                Columns[i]['name'] +
+                '"] .MTableFilterInput'
               )
               FilterDataArray[Columns[i]['name']] = FilterRowInput.value
             }
@@ -526,8 +526,8 @@ export default {
             for (var i = 0; i < Columns.length; i++) {
               var FilterRowInput = Element.querySelector(
                 '.MTableFilterRow .MTableCell[filtername="' +
-                  Columns[i]['name'] +
-                  '"] .MTableFilterInput'
+                Columns[i]['name'] +
+                '"] .MTableFilterInput'
               )
               FilterDataArray[Columns[i]['name']] = FilterRowInput.value
             }
@@ -571,8 +571,8 @@ export default {
           })
         }
       )
-      window.addEventListener('scroll', function() {
-        console.log('aaaa');
+      window.addEventListener('scroll', function () {
+        //console.log('aaaa');
       });
       // Show / Hide Filter Row
       if (ShowFilterRow == true) {
@@ -888,7 +888,9 @@ export default {
             // Hide Options
             e.removeEventListener('focusout', null)
             e.addEventListener('focusout', function (e) {
-              HideMTableOptions(e);
+              setTimeout(() => {
+                HideMTableOptions(e);
+              }, 100);
             })
           }
         )
@@ -910,9 +912,9 @@ export default {
           })
         })
 
-        Element.querySelector('.MTableBodyContainer').addEventListener('scroll', function() {
-            HideMTableOptions();
-          }
+        Element.querySelector('.MTableBodyContainer').addEventListener('scroll', function () {
+          HideMTableOptions();
+        }
         )
 
         Element.querySelectorAll('.MTableCellImage').forEach(function (e) {
@@ -1015,14 +1017,14 @@ export default {
               if (SortDataArray[1] == 'ASC') {
                 Element.querySelector(
                   '.MTableHeaderRow .MTableCell:nth-child(' +
-                    (SA + 1) +
-                    ') .MTableSortArrow'
+                  (SA + 1) +
+                  ') .MTableSortArrow'
                 ).style.transform = 'rotate(0)'
               } else {
                 Element.querySelector(
                   '.MTableHeaderRow .MTableCell:nth-child(' +
-                    (SA + 1) +
-                    ') .MTableSortArrow'
+                  (SA + 1) +
+                  ') .MTableSortArrow'
                 ).style.transform = 'rotate(180deg)'
               }
             }

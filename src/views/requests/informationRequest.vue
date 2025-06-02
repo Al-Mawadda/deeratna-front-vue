@@ -8,7 +8,6 @@
       selectedRowData.name
       ">
       <!-- ============= Add Table =============== -->
-
       <table v-show="selectedRowData.request_type == 'اضافة'" cellpadding="0" cellspacing="0" class="RequestsMTable">
         <thead>
           <tr>
@@ -146,7 +145,6 @@
           </tr>
         </tbody>
       </table>
-
       <!-- ============= Edit Table =============== -->
       <table v-show="selectedRowData.request_type == 'تعديل'" cellpadding="0" cellspacing="0" class="RequestsMTable">
         <thead>
@@ -159,8 +157,8 @@
         <tbody>
           <!-- Shared Columns -->
           <tr :style="selectedRowData.old_name != selectedRowData.name
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>الاسم</td>
             <td>{{ selectedRowData.old_name }}</td>
@@ -169,64 +167,64 @@
 
           <!-- مالك Specific Columns -->
           <tr v-if="selectedRowData.person_type == 'مالك'" :style="selectedRowData.old_gender != selectedRowData.gender
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>الجنس</td>
             <td>{{ selectedRowData.old_gender }}</td>
             <td>{{ selectedRowData.gender }}</td>
           </tr>
           <tr v-if="selectedRowData.person_type == 'مالك'" :style="selectedRowData.old_birth != selectedRowData.birth
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>المواليد</td>
             <td>{{ selectedRowData.old_birth }}</td>
             <td>{{ selectedRowData.birth }}</td>
           </tr>
           <tr v-if="selectedRowData.person_type == 'مالك'" :style="selectedRowData.old_study != selectedRowData.study
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>التحصيل الدراسي</td>
             <td>{{ selectedRowData.old_study }}</td>
             <td>{{ selectedRowData.study }}</td>
           </tr>
           <tr v-if="selectedRowData.person_type == 'مالك'" :style="selectedRowData.old_worktype != selectedRowData.worktype
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>المهنة</td>
             <td>{{ selectedRowData.old_worktype }}</td>
             <td>{{ selectedRowData.worktype }}</td>
           </tr>
           <tr v-if="selectedRowData.person_type == 'مالك'" :style="selectedRowData.old_workplace != selectedRowData.workplace
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>مكان العمل</td>
             <td>{{ selectedRowData.old_workplace }}</td>
             <td>{{ selectedRowData.workplace }}</td>
           </tr>
           <tr v-if="selectedRowData.person_type == 'مالك'" :style="selectedRowData.old_carno != selectedRowData.carno
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>رقم العجلة</td>
             <td>{{ selectedRowData.old_carno }}</td>
             <td>{{ selectedRowData.carno }}</td>
           </tr>
           <tr v-if="selectedRowData.person_type == 'مالك'" :style="selectedRowData.old_cardetails != selectedRowData.cardetails
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>تفاصيل العجلة</td>
             <td>{{ selectedRowData.old_cardetails }}</td>
             <td>{{ selectedRowData.cardetails }}</td>
           </tr>
           <tr v-if="selectedRowData.person_type == 'مالك'" :style="selectedRowData.old_relation != selectedRowData.relation
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>العلاقة بمالك العقار</td>
             <td>{{ selectedRowData.old_relation }}</td>
@@ -245,24 +243,24 @@
 
           <!-- مستاجر Specific Columns -->
           <tr v-if="selectedRowData.person_type == 'مستاجر'" :style="selectedRowData.old_gender != selectedRowData.gender
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>الجنس</td>
             <td>{{ selectedRowData.old_gender }}</td>
             <td>{{ selectedRowData.gender }}</td>
           </tr>
           <tr v-if="selectedRowData.person_type == 'مستاجر'" :style="selectedRowData.old_birth != selectedRowData.birth
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>المواليد</td>
             <td>{{ selectedRowData.old_birth }}</td>
             <td>{{ selectedRowData.birth }}</td>
           </tr>
           <tr v-if="selectedRowData.person_type == 'مستاجر'" :style="selectedRowData.old_relation != selectedRowData.relation
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>العلاقة بمستاجر العقار</td>
             <td>{{ selectedRowData.old_relation }}</td>
@@ -276,33 +274,33 @@
 
           <!-- زائر Specific Columns -->
           <tr v-if="selectedRowData.person_type == 'زائر'" :style="selectedRowData.old_phone != selectedRowData.phone
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>رقم الهاتف</td>
             <td>{{ selectedRowData.old_phone }}</td>
             <td>{{ selectedRowData.phone }}</td>
           </tr>
           <tr v-if="selectedRowData.person_type == 'زائر'" :style="selectedRowData.old_outside_address !=
-              selectedRowData.outside_address
-              ? { color: '#FFAA00' }
-              : null
+            selectedRowData.outside_address
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>العنوان الخارجي</td>
             <td>{{ selectedRowData.old_outside_address }}</td>
             <td>{{ selectedRowData.outside_address }}</td>
           </tr>
           <tr v-if="selectedRowData.person_type == 'زائر'" :style="selectedRowData.old_carno != selectedRowData.carno
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>رقم العجلة</td>
             <td>{{ selectedRowData.old_carno }}</td>
             <td>{{ selectedRowData.carno }}</td>
           </tr>
           <tr v-if="selectedRowData.person_type == 'زائر'" :style="selectedRowData.old_cardetails != selectedRowData.cardetails
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>تفاصيل العجلة</td>
             <td>{{ selectedRowData.old_cardetails }}</td>
@@ -311,33 +309,33 @@
 
           <!-- سائق Specific Columns -->
           <tr v-if="selectedRowData.person_type == 'سائق'" :style="selectedRowData.old_phone != selectedRowData.phone
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>رقم الهاتف</td>
             <td>{{ selectedRowData.old_phone }}</td>
             <td>{{ selectedRowData.phone }}</td>
           </tr>
           <tr v-if="selectedRowData.person_type == 'سائق'" :style="selectedRowData.old_outside_address !=
-              selectedRowData.outside_address
-              ? { color: '#FFAA00' }
-              : null
+            selectedRowData.outside_address
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>العنوان الخارجي</td>
             <td>{{ selectedRowData.old_outside_address }}</td>
             <td>{{ selectedRowData.outside_address }}</td>
           </tr>
           <tr v-if="selectedRowData.person_type == 'سائق'" :style="selectedRowData.old_carno != selectedRowData.carno
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>رقم العجلة</td>
             <td>{{ selectedRowData.old_carno }}</td>
             <td>{{ selectedRowData.carno }}</td>
           </tr>
           <tr v-if="selectedRowData.person_type == 'سائق'" :style="selectedRowData.old_cardetails != selectedRowData.cardetails
-              ? { color: '#FFAA00' }
-              : null
+            ? { color: '#FFAA00' }
+            : null
             ">
             <td>تفاصيل العجلة</td>
             <td>{{ selectedRowData.old_cardetails }}</td>
@@ -561,25 +559,24 @@
             رفض
           </div>
         </div>
-        <div v-show="selectedRowData.person_type == 'مالك' &&
-          selectedRowData.request_type == 'اضافة' &&
+        <div v-show="selectedRowData.request_type == 'اضافة' &&
           selectedRowData.request_status == 'قيد المراجعة'
-          " class="MButton" @click="ShowAddOwnerRealEstateModal">
-          اضافة كعقار
+          " class="MButton" @click="ShowAddPersonRelationModal">
+          اضافة كعلاقة
         </div>
       </div>
     </MModal>
 
     <!-- ========= AddOwner Model======== -->
 
-    <MModal ref="AddOwnerRealEstateModal" :Name="'AddOwnerRealEstateModal'" :Title="'>اضافة عقار للمالك'">
-      <div class="MField" id="OwnerIDValue">
-        <input ref="OwnerIDValue" type="text" required />
-        <label>رقم المالك</label>
+    <MModal ref="AddPersonRelationModal" :Name="'AddPersonRelationModal'" :Title="'اضافة العلاقة'">
+      <div class="MField" id="PersonID">
+        <input ref="PersonID" type="text" required />
+        <label>رمز الشخص الموجود</label>
         <div class="MFieldBG"></div>
       </div>
       <div class="ModalButtons">
-        <div class="MButton" id="SaveOwnerIDBTN" @click="AcceptRequest($refs.OwnerIDValue.value)">
+        <div class="MButton" id="SavePersonRelation" @click="AcceptRequestRelation()">
           حفظ
         </div>
       </div>
@@ -648,7 +645,7 @@ export default {
       hasPermission,
       InformationRequestModal: ref(null),
       InformationRequestRejectModal: ref(null),
-      AddOwnerRealEstateModal: ref(null),
+      AddPersonRelationModal: ref(null),
       InformationRequestsTB: ref(null),
       InformationRequestsTBData: ref([]),
 
@@ -750,12 +747,10 @@ export default {
           ShowMessage(error)
         })
     },
-    AcceptRequest(OwnerID = '') {
+    AcceptRequest() {
       ShowLoading()
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
-      Parameters.append('PID', OwnerID)
-
       api
         .post('AcceptInformationRequest', Parameters, {
           headers: {
@@ -766,7 +761,34 @@ export default {
           HideLoading()
           if (response.data == 'تمت العملية بنجاح') {
             this.InformationRequestModal.Hide()
-            this.AddOwnerRealEstateModal.Hide()
+            this.AddPersonRelationModal.Hide()
+            this.InformationRequestsTB.LoadMTable()
+            HideLoading()
+          } else {
+            ShowMessage(response.data)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          ShowMessage(error)
+        })
+    },
+    AcceptRequestRelation() {
+      ShowLoading()
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id);
+      Parameters.append('pid', document.getElementById('PersonID').querySelector('input').value);
+
+      api.post('AcceptInformationRequestRelation', Parameters, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+        .then(response => {
+          HideLoading()
+          if (response.data == 'تمت العملية بنجاح') {
+            this.InformationRequestModal.Hide()
+            this.AddPersonRelationModal.Hide()
             this.InformationRequestsTB.LoadMTable()
             HideLoading()
           } else {
@@ -809,8 +831,8 @@ export default {
           ShowMessage(error)
         })
     },
-    ShowAddOwnerRealEstateModal() {
-      this.AddOwnerRealEstateModal.Show()
+    ShowAddPersonRelationModal() {
+      this.AddPersonRelationModal.Show()
     },
     ShowImage(ImageName) {
       var ImagePath = this.ServerPath + '/storage/images/' + ImageName
@@ -819,6 +841,7 @@ export default {
   },
 }
 </script>
+
 <style scoped>
 #InformationRequestsFromDate {
   max-width: 400px;

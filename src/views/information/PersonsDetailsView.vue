@@ -28,8 +28,8 @@
         <div class="MFieldBG"></div>
       </div>
       <MComboBox ref='IdentificationType' :Name="'IdentificationType'" :Label="'نوع المستمسك'"
-        :Items="IdentificationTypeItems" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'عامل'])"></MComboBox>
-      <div class="MField" id="IdentificationNumber" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'عامل'])">
+        :Items="IdentificationTypeItems" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])"></MComboBox>
+      <div class="MField" id="IdentificationNumber" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])">
         <input type="text" required>
         <label>رقم المستمسك</label>
         <div class="MFieldBG"></div>
@@ -96,7 +96,7 @@
       </div>
       <MDate ref="EmployeeStartDate" :Name="'EmployeeStartDate'" :Label="'تاريخ المباشرة'"
         v-show="CheckAttributes(['موظف'])"></MDate>
-      <div class="MField" id="Address" v-show="CheckAttributes(['متعهد', 'كادر', 'عامل', 'موظف', 'زائر', 'سائق'])">
+      <div class="MField" id="OutsideAddress" v-show="CheckAttributes(['متعهد', 'كادر', 'عامل', 'موظف', 'زائر', 'سائق'])">
         <input type="text" required />
         <label>العنوان</label>
         <div class="MFieldBG"></div>
@@ -1221,7 +1221,7 @@ export default {
         document.getElementById('EmployeeCompany').querySelector('input').value = this.GlobalsStore.MArray['employee_company'];
         document.getElementById('EmployeeDepartment').querySelector('input').value = this.GlobalsStore.MArray['employee_department'];
         document.getElementById('JobTitle').querySelector('input').value = this.GlobalsStore.MArray['job_title'];
-        document.getElementById('Address').querySelector('input').value = this.GlobalsStore.MArray['address'];
+        document.getElementById('OutsideAddress').querySelector('input').value = this.GlobalsStore.MArray['outside_address'];
         document.getElementById('CarNumber').querySelector('input').value = this.GlobalsStore.MArray['car_number'];
         document.getElementById('CarDetails').querySelector('input').value = this.GlobalsStore.MArray['car_details'];
         document.getElementById('EMail').querySelector('input').value = this.GlobalsStore.MArray['email'];
@@ -1323,7 +1323,7 @@ export default {
       Parameters.append('employee_department', document.getElementById('EmployeeDepartment').querySelector('input').value);
       Parameters.append('job_title', document.getElementById('JobTitle').querySelector('input').value);
       Parameters.append('employee_start_date', this.EmployeeStartDate.Get());
-      Parameters.append('address', document.getElementById('Address').querySelector('input').value);
+      Parameters.append('outside_address', document.getElementById('OutsideAddress').querySelector('input').value);
       Parameters.append('car_number', document.getElementById('CarNumber').querySelector('input').value);
       Parameters.append('car_details', document.getElementById('CarDetails').querySelector('input').value);
       Parameters.append('email', document.getElementById('EMail').querySelector('input').value);
