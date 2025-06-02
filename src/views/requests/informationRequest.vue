@@ -548,14 +548,23 @@
       </div>
       <div class="ModalButtons">
         <div v-if="hasPermission('info_accept')">
-          <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="AcceptBTN"
-            @click="AcceptRequest()">
+          <div
+            v-show="selectedRowData.request_status == 'قيد المراجعة'"
+            class="MButton"
+            id="AcceptBTN"
+            @click="AcceptRequest()"
+          >
             قبول
           </div>
         </div>
-        <div>
-          <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN"
-            @click="RejectRequest" v-if="hasPermission('info_reject')">
+
+        <div v-if="hasPermission('info_accept')">
+          <div
+            v-show="selectedRowData.request_status == 'قيد المراجعة'"
+            class="MButton"
+            id="RejectBTN"
+            @click="RejectRequest"
+          >
             رفض
           </div>
         </div>
@@ -665,7 +674,7 @@ export default {
           filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
         },
         {
-          name: 'resident_name',
+          name: 'guardian_name',
           label: 'اسم الساكن',
         },
         {
@@ -681,7 +690,7 @@ export default {
           label: 'رقم الهاتف',
         },
         {
-          name: 'person_type',
+          name: 'attributes',
           label: 'الصفة',
         },
         {

@@ -190,6 +190,10 @@ export default {
           label: 'الاسم',
         },
         {
+          name: 'guardian_name',
+          label: 'اسم الكفيل',
+        },
+        {
           name: 'address',
           label: 'العنوان',
         },
@@ -198,7 +202,7 @@ export default {
           label: 'رقم الهاتف',
         },
         {
-          name: 'person_type',
+          name: 'attributes',
           label: 'الصفة',
         },
         {
@@ -254,8 +258,25 @@ export default {
 
         document.getElementById('LabelCode').querySelector('input').value =
           this.selectedRowData.label_code
-        this.LabelIssue.Set(this.selectedRowData.label_issue)
-        this.LabelExpire.Set(this.selectedRowData.label_expire)
+
+        if (
+          this.selectedRowData.request_type == 'اضافة' &&
+          this.selectedRowData.request_status == 'قيد المراجعة'
+        ) {
+          const now = new Date()
+          this.LabelIssue.Set(now.toISOString().split('T')[0])
+
+          const nextYear = new Date(
+            now.getFullYear() + 1,
+            now.getMonth(),
+            now.getDate()
+          )
+          this.LabelExpire.Set(nextYear.toISOString().split('T')[0])
+        } else {
+          this.LabelIssue.Set(this.selectedRowData.label_issue)
+          this.LabelExpire.Set(this.selectedRowData.label_expire)
+        }
+
         this.selectedRowData.gates.split('|').forEach(function (e) {
           document.querySelectorAll('.MCheckBox').forEach(function (d) {
             if (e == d.querySelector('.MCheckBoxText').innerHTML) {

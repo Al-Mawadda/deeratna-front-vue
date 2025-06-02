@@ -298,11 +298,6 @@ export default {
             route: '/persons',
             permission: 'information',
           },
-          {
-            text: 'العقارات',
-            route: '/real_estates',
-            permission: 'information',
-          },
         ],
       },
       //============= الانترنت ===============
@@ -430,11 +425,6 @@ export default {
         text: 'الكمب',
         permission: 'camps',
         items: [
-        {
-            text: 'الكمبات',
-            route: '/camps',
-            permission: 'camps',
-          },
           {
             text: 'المتعهدين',
             route: '/camps/contractors',
@@ -474,17 +464,21 @@ export default {
           },
         ],
       },
-
-
-
-
-
       //============= المستخدمين=============
       {
         text: 'المستخدمين',
         permission: 'users_view',
         items: [
-          { text: 'المستخدمين', route: '/users', permission: 'users_view' },
+          {
+            text: 'مستخدمي لوحة التحكم',
+            route: '/users',
+            permission: 'users_view',
+          },
+          {
+            text: 'مستخدمي تطبيق ديرتنا',
+            route: '/deeratna_app_users',
+            permission: 'users_view',
+          },
         ],
       },
     ])
