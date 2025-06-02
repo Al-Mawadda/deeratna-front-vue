@@ -186,7 +186,7 @@ export default {
             !e.relatedTarget ||
             !e.relatedTarget.closest('.MComboBox') ||
             e.relatedTarget.closest('.MComboBox').getAttribute('id') !=
-              Element.getAttribute('id')
+            Element.getAttribute('id')
           ) {
             HideDropDown()
           }
@@ -475,8 +475,8 @@ export default {
           for (let i = 0; i < Instance.SelectedItems.length; i++) {
             Element.querySelector(
               '.MComboBoxItem[MCBIID="' +
-                Instance.SelectedItems[i]['MCBIID'] +
-                '"]',
+              Instance.SelectedItems[i]['MCBIID'] +
+              '"]',
             ).setAttribute('Selected', true)
             if (Element.querySelector('input').value != 0) {
               Element.querySelector('input').value += ' | '
@@ -607,7 +607,7 @@ export default {
             } else {
               console.log(
                 Instance.Name +
-                  ' :Make Sure you SET the data and its column name',
+                ' :Make Sure you SET the data and its column name',
               )
             }
           } else {
@@ -650,10 +650,9 @@ export default {
     },
     SetValue(TheValue) {
       setTimeout(() => {
-        document
-          .getElementById(this.Name)
-          .querySelector('.MComboBoxValueInput').value = TheValue
-      }, 100)
+        document.getElementById(this.Name).querySelector('.MComboBoxValueInput').value = TheValue;
+        document.getElementById(this.Name).setAttribute('valid', true);
+      }, 100);
     },
     SetID(TheValue) {
       setTimeout(() => {
@@ -943,41 +942,41 @@ export default {
   color: var(--PrimaryColor) !important;
 }
 
-.MComboBoxValueInput:focus ~ .MComboBoxBG {
+.MComboBoxValueInput:focus~.MComboBoxBG {
   border: 1px solid var(--PrimaryColor);
 }
 
-.MComboBox[valid] .MComboBoxValueInput:not(:focus) ~ .MComboBoxBG {
+.MComboBox[valid] .MComboBoxValueInput:not(:focus)~.MComboBoxBG {
   border: 1px solid var(--MComboBoxFilled);
 }
 
-.MComboBoxValueInput:focus ~ label {
+.MComboBoxValueInput:focus~label {
   color: var(--PrimaryColor);
   top: -11.5px;
   font-size: 13px;
   font-family: 'MFontR';
 }
 
-.MComboBox[valid] .MComboBoxValueInput:not(:focus) ~ label {
+.MComboBox[valid] .MComboBoxValueInput:not(:focus)~label {
   color: var(--MComboBoxFilled);
   top: -11.5px;
   font-size: 13px;
   font-family: 'MFontR';
 }
 
-.MComboBoxValueInput:focus ~ .MComboBoxChevron {
+.MComboBoxValueInput:focus~.MComboBoxChevron {
   border-color: var(--PrimaryColor);
 }
 
-.MComboBoxValueInput:focus ~ .MComboBoxChevron svg {
+.MComboBoxValueInput:focus~.MComboBoxChevron svg {
   fill: var(--PrimaryColor);
 }
 
-.MComboBox[valid] .MComboBoxValueInput:not(:focus) ~ .MComboBoxChevron {
+.MComboBox[valid] .MComboBoxValueInput:not(:focus)~.MComboBoxChevron {
   border-color: var(--MComboBoxFilled);
 }
 
-.MComboBox[valid] .MComboBoxValueInput:not(:focus) ~ .MComboBoxChevron svg {
+.MComboBox[valid] .MComboBoxValueInput:not(:focus)~.MComboBoxChevron svg {
   fill: var(--MComboBoxFilled);
 }
 
@@ -996,7 +995,12 @@ export default {
 .MComboBox[MCBDisabled] .MComboBoxChevron {
   border-right-style: dashed;
 }
-
+.MComboBox[MCBDisabled] .MComboBoxChevron {
+  border-color: var(--MComboBoxDisabled) !important;
+}
+.MComboBox[MCBDisabled] .MComboBoxChevron svg {
+  fill: var(--MComboBoxDisabled) !important;
+}
 .MComboBox[MCBDisabled] .MComboBoxBG {
   border: 1px dashed var(--MComboBoxDisabled) !important;
 }

@@ -264,9 +264,9 @@ export default {
 
         this.Images = this.GlobalsStore.MArray['images'];
 
-        if (this.GlobalsStore.MArray['worker_contractor']) {
+        if (this.GlobalsStore.MArray['worker_contractor'][0]) {
           document.getElementById('ContractorName').querySelector('input').value = this.GlobalsStore.MArray['contractor_name'];
-          this.CampItems = this.GlobalsStore.MArray['worker_contractor']['camps'];
+          this.CampItems = this.GlobalsStore.MArray['worker_contractor'][0]['camps'];
           this.Camp.Set(this.GlobalsStore.MArray['camp_id'], 'id');
         } else {
           this.CampItems = [];
