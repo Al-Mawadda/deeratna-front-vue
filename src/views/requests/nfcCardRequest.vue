@@ -45,7 +45,7 @@
           </tr>
           <tr>
             <td>الصفة</td>
-            <td>{{ selectedRowData.person_type }}</td>
+            <td>{{ selectedRowData.attributes }}</td>
           </tr>
           <tr v-show="selectedRowData.request_status == 'مرفوض'">
             <td>سبب الرفض</td>
@@ -271,7 +271,7 @@ export default {
           label: 'الاسم',
         },
         {
-          name: 'guarantorname',
+          name: 'guardian_name',
           label: 'اسم الكفيل',
         },
         {
@@ -283,7 +283,7 @@ export default {
           label: 'رقم الهاتف',
         },
         {
-          name: 'person_type',
+          name: 'attributes',
           label: 'الصفة',
         },
         {
@@ -338,8 +338,24 @@ export default {
         })
 
         document.getElementById('CardCode').querySelector('input').value =
-          this.selectedRowData.cardnfcid
-        this.CardExpire.Set(this.selectedRowData.cardexpire)
+          this.selectedRowData.nfc_id
+
+        if (
+          this.selectedRowData.request_type == 'اضافة' &&
+          this.selectedRowData.request_status == 'قيد المراجعة'
+        ) {
+          // Set CardExpire to current date + 1 year
+          const now = new Date()
+          const nextYear = new Date(
+            now.getFullYear() + 1,
+            now.getMonth(),
+            now.getDate()
+          )
+          this.CardExpire.Set(nextYear.toISOString().split('T')[0]) // assuming Set() takes a string in YYYY-MM-DD format
+        } else {
+          this.CardExpire.Set(this.selectedRowData.card_expire)
+        }
+
         this.selectedRowData.gates.split('|').forEach(function (e) {
           document.querySelectorAll('.MCheckBox').forEach(function (d) {
             if (e == d.querySelector('.MCheckBoxText').innerHTML) {

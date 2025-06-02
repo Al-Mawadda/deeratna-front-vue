@@ -4,11 +4,27 @@
       عرض البيانات
     </div>
     <div class="MGroup">
-      <MDate ref="ServicesFromDate" :Name="'ServicesFromDate'" :Label="'تاريخ من'"></MDate>
-      <MDate ref="ServicesToDate" :Name="'ServicesToDate'" :Label="'تاريخ الى'"></MDate>
+      <MDate
+        ref="ServicesFromDate"
+        :Name="'ServicesFromDate'"
+        :Label="'تاريخ من'"
+      ></MDate>
+      <MDate
+        ref="ServicesToDate"
+        :Name="'ServicesToDate'"
+        :Label="'تاريخ الى'"
+      ></MDate>
     </div>
-    <MTable ref="ServicesTB" :Name="'ServicesTB'" :DataArray="ServicesTBData" :Columns="ServiceTBColumns"
-      :Sums="ServicesTBSums" :GetDataFunction="GetServicesData" :RowsCount="ServicesTBRowsCount" :RowsPerPage="10">
+    <MTable
+      ref="ServicesTB"
+      :Name="'ServicesTB'"
+      :DataArray="ServicesTBData"
+      :Columns="ServiceTBColumns"
+      :Sums="ServicesTBSums"
+      :GetDataFunction="GetServicesData"
+      :RowsCount="ServicesTBRowsCount"
+      :RowsPerPage="10"
+    >
     </MTable>
   </div>
 </template>
@@ -17,13 +33,14 @@ import { ref } from 'vue'
 import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
 import { ShowMessage } from '@/MJS.js'
-import { useGlobalsStore } from '../../stores/Globals.js';
+import { useGlobalsStore } from '../../stores/Globals.js'
 
 export default {
   setup() {
     const authStore = useAuthStore()
-    const hasPermission = permission => authStore.user && authStore.user.permissions.includes(permission)
-    const GlobalsStore = ref(useGlobalsStore());
+    const hasPermission = permission =>
+      authStore.user && authStore.user.permissions.includes(permission)
+    const GlobalsStore = ref(useGlobalsStore())
 
     return {
       hasPermission,
@@ -42,7 +59,7 @@ export default {
           filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
         },
         {
-          name: 'person_name',
+          name: 'name',
           label: 'اسم الساكن',
         },
         {
@@ -90,7 +107,7 @@ export default {
         'click',
         function () {
           this.ServicesTB.LoadMTable()
-        }.bind(this),
+        }.bind(this)
       )
   },
   methods: {

@@ -469,7 +469,16 @@ export default {
         text: 'المستخدمين',
         permission: 'users_view',
         items: [
-          { text: 'المستخدمين', route: '/users', permission: 'users_view' },
+          {
+            text: 'مستخدمي لوحة التحكم',
+            route: '/users',
+            permission: 'users_view',
+          },
+          {
+            text: 'مستخدمي تطبيق ديرتنا',
+            route: '/deeratna_app_users',
+            permission: 'users_view',
+          },
         ],
       },
     ])

@@ -207,6 +207,7 @@ const groupedPermissions = ref(
         { val: 'users_create', label: 'إنشاء مستخدم' },
         { val: 'users_update', label: 'تعديل المستخدمين' },
         { val: 'users_delete', label: 'حذف المستخدم' },
+        { val: 'deeratna_app_users', label: 'عرض مستخدمي خطار' },
       ],
     },
     {

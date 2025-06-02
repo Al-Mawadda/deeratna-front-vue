@@ -219,6 +219,12 @@ const router = createRouter({
       name: 'users',
       meta: { requiresAuth: true, HeaderTitle: 'ادارة المستخدمين' },
     },
+    {
+      path: '/deeratna_app_users',
+      component: () => import('../views/users/deeratnaAppUsers.vue'),
+      name: 'deeratna_app_users',
+      meta: { requiresAuth: true, HeaderTitle: 'ادارة مستخدمي ديرتنا' },
+    },
 
     // QR خطار
     {

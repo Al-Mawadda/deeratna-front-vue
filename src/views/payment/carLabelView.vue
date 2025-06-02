@@ -58,7 +58,7 @@ export default {
           filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
         },
         {
-          name: 'person_name',
+          name: 'name',
           label: 'اسم الساكن',
         },
         {
