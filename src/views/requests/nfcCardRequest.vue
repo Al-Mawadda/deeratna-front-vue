@@ -44,7 +44,7 @@
         </tbody>
       </table>
       <div class="MGroup ModalMGroup">
-        <div class="MField" id="CardCode">
+        <div class="MField" id="NFCID">
           <input :disabled="selectedRowData.request_status !== 'قيد المراجعة' ||
             selectedRowData.request_type !== 'اضافة'
             " type="text" required />
@@ -52,7 +52,7 @@
           <div class="MFieldBG"></div>
         </div>
 
-        <MDate :Disabled="selectedRowData.request_status !== 'قيد المراجعة'" :Visible="selectedRowData.request_type == 'اضافة' ||
+        <MDate :Disabled="selectedRowData.request_status !== 'قيد المراجعة'" v-show="selectedRowData.request_type == 'اضافة' ||
           selectedRowData.request_type == 'تمديد'
           " ref="CardExpire" :Name="'CardExpire'" :Label="'تاريخ الانتهاء'"></MDate>
       </div>
@@ -219,7 +219,7 @@ export default {
       NfcCardRequestsTBRowsCount: ref(0),
       NfcCardRequestsFromDate: ref(null),
       selectedRowData: ref([]),
-      CardCode: ref(''),
+      NFCID: ref(''),
       CardExpire: ref(null),
       Gates: ref(''),
     }
@@ -245,13 +245,13 @@ export default {
       'ViewItem',
       function (data) {
         this.selectedRowData = data.detail.RowData
-        document.getElementById('CardCode').querySelector('input').value = ''
+        document.getElementById('NFCID').querySelector('input').value = ''
         this.CardExpire.Clear()
         document.querySelectorAll('.MCheckBox input').forEach(function (e) {
           e.checked = false
         })
 
-        document.getElementById('CardCode').querySelector('input').value =
+        document.getElementById('NFCID').querySelector('input').value =
           this.selectedRowData.nfc_id
 
         if (
@@ -325,7 +325,7 @@ export default {
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append(
         'NFCCardID',
-        document.getElementById('CardCode').querySelector('input').value
+        document.getElementById('NFCID').querySelector('input').value
       )
       Parameters.append('NFCCardExpire', this.CardExpire.Get())
       Parameters.append('Gates', this.Gates)

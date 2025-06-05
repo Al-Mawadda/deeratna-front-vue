@@ -974,17 +974,17 @@ export default {
 }
 
 .MDate[disabled] .MDateBG {
-  border: 1px dashed var(--MDateDisabled);
+  border: 1px dashed var(--MDateDisabled) !important;
 }
 
 .MDate[disabled] label {
-  color: var(--MDateDisabled);
+  color: var(--MDateDisabled) !important;
   top: -13px;
   font-size: 13px;
   font-family: 'MFontR';
 }
 
-.MDate[disabled] .MDateSeperator {
+.MDate[disabled] .MDateInputSeperator {
   color: var(--MDateDisabled);
 }
 
