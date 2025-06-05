@@ -1,6 +1,6 @@
 <template>
   <div class="ComponentWrapper">
-    <MModal ref="CarLableRequestModal" :Name="'CarLableRequestModal'" :Title="'dd'">
+    <MModal ref="CarLableRequestModal" :Name="'CarLableRequestModal'" :Title="' طلب ' + selectedRowData.request_type + ' ملصق ' + selectedRowData.name ">
       <table cellpadding="0" cellspacing="0" class="RequestsMTable" id="CarsLabelRequestsTable">
         <thead>
           <tr>
