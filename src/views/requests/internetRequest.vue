@@ -337,7 +337,7 @@ export default {
           label: 'اسم المشترك',
         },
         {
-          name: 'person_type',
+          name: 'attributes',
           label: 'الصفة',
         },
         {
@@ -515,7 +515,7 @@ export default {
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append('pid', this.selectedRowData.pid)
-      Parameters.append('uid', this.selectedRowData.uid)
+      Parameters.append('customer_id', this.selectedRowData.customer_id)
       Parameters.append('name', this.selectedRowData.name)
       Parameters.append('request_type', this.selectedRowData.request_type)
 
@@ -571,7 +571,7 @@ export default {
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append('pid', this.selectedRowData.pid)
-      Parameters.append('uid', this.selectedRowData.uid)
+      Parameters.append('customer_id', this.selectedRowData.customer_id)
       Parameters.append('name', this.selectedRowData.name)
       Parameters.append('request_status', 'تم')
       Parameters.append(
