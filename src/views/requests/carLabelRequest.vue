@@ -49,7 +49,7 @@
       </table>
       <div class="MGroup ModalMGroup">
         <div class="MField" id="LabelCode">
-          <input :disabled="!(selectedRowData.request_type != 'اضافة' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.label_code == '')" type="text" required />
+          <input :disabled="!(selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.label_code == '')" type="text" required />
           <label>رمز الملصق</label>
           <div class="MFieldBG"></div>
         </div>

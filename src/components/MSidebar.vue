@@ -407,6 +407,18 @@ export default {
           },
         ],
       },
+      //============= السجل =============
+      {
+        text: 'السجل',
+        permission: 'information',
+        items: [
+          {
+            text: 'التحديث التلقائي',
+            route: '/logs/auto_updates',
+            permission: 'information',
+          },
+        ],
+      },
     ])
 
     const hasPermission = permission => {
