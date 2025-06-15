@@ -205,6 +205,10 @@ export default {
           label: 'العملية',
         },
         {
+          name: 'old_card_expire',
+          label: 'تاريخ الانتهاء',
+        },
+        {
           name: 'request_status',
           label: 'حالة الطلب',
         },
@@ -258,7 +262,6 @@ export default {
           this.selectedRowData.request_type == 'اضافة' &&
           this.selectedRowData.request_status == 'قيد المراجعة'
         ) {
-          // Set CardExpire to current date + 1 year
           const now = new Date()
           const nextYear = new Date(
             now.getFullYear() + 1,
@@ -270,6 +273,21 @@ export default {
           this.CardExpire.Set(this.selectedRowData.card_expire)
         }
 
+        if (
+          this.selectedRowData.request_type == 'تمديد' &&
+          this.selectedRowData.request_status == 'قيد المراجعة'
+        ) {
+          // Parse old_CardExpire and add 1 year
+          const oldDate = new Date(this.selectedRowData.old_card_expire)
+          const nextYear = new Date(
+            oldDate.getFullYear() + 1,
+            oldDate.getMonth(),
+            oldDate.getDate()
+          )
+          this.CardExpire.Set(nextYear.toISOString().split('T')[0]) // Format as YYYY-MM-DD
+        } else {
+          this.CardExpire.Set(this.selectedRowData.card_expire)
+        }
         this.selectedRowData.gates.split('|').forEach(function (e) {
           document.querySelectorAll('.MCheckBox').forEach(function (d) {
             if (e == d.querySelector('.MCheckBoxText').innerHTML) {
