@@ -4,6 +4,20 @@ import { useAuthStore } from '../stores/auth'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    
+    //#region Login
+    {
+      path: '/login',
+      name: 'Login',
+      component: () => import('../views/login.vue'),
+      meta: {
+        HeaderTitle: 'تسجيل دخول',
+        Operation: 'EDIT',
+      },
+    },
+    //#endregion
+
+    //#region Home
     {
       path: '/',
       name: 'Home',
@@ -13,16 +27,18 @@ const router = createRouter({
         HeaderTitle: 'الرئيسية',
       },
     },
+    //#endregion
 
-    // Contracts
+    //#region Contracts
     {
       path: '/contracts/add',
       component: () => import('../views/contracts/ContractDetails.vue'),
       name: 'ContractDetails',
       meta: { requiresAuth: true, HeaderTitle: 'ادخال عقد جديد' },
     },
+    //#endregion
 
-    // Real Estates
+    //#region Real Estates
     {
       path: '/real_estates',
       component: () => import('../views/contracts/RealEstatesView.vue'),
@@ -45,8 +61,9 @@ const router = createRouter({
         HeaderTitle: 'تعديل العقار',
       },
     },
+    //#endregion
 
-    // Information
+    //#region Information
     {
       path: '/persons',
       component: () => import('../views/information/PersonsView.vue'),
@@ -69,8 +86,9 @@ const router = createRouter({
         HeaderTitle: 'تعديل الشخص',
       },
     },
+    //#endregion
 
-    // Internet
+    //#region Internet
     {
       path: '/internet/subscribers',
       component: () => import('../views/internet/InternetSubscribers.vue'),
@@ -83,8 +101,9 @@ const router = createRouter({
       name: 'InternetProfiles',
       meta: { requiresAuth: true, HeaderTitle: 'الاشتراكات' },
     },
+    //#endregion
 
-    //ADS
+    //#region ADS
     {
       path: '/ads/video',
       component: () => import('../views/ads/video.vue'),
@@ -121,9 +140,9 @@ const router = createRouter({
       name: 'send-deeratna-notification',
       meta: { requiresAuth: true, HeaderTitle: 'ارسال اشعار ديرتنا ' },
     },
+    //#endregion
 
-    //Requests
-
+    //#region Requests
     {
       path: '/information-requests',
       component: () => import('../views/requests/informationRequest.vue'),
@@ -148,8 +167,9 @@ const router = createRouter({
       name: 'internetRequest',
       meta: { requiresAuth: true, HeaderTitle: 'طلبات الانترنت' },
     },
+    //#endregion
 
-    // PAYMENTS
+    //#region Payments
     {
       path: '/installment-payment',
       component: () => import('../views/payment/installmentView.vue'),
@@ -186,7 +206,9 @@ const router = createRouter({
       name: 'Internet-Payment',
       meta: { requiresAuth: true, HeaderTitle: 'دفع الانترنيت' },
     },
+    //#endregion
 
+    //#region Camps
     // Camps
     {
       path: '/camps',
@@ -214,7 +236,8 @@ const router = createRouter({
         HeaderTitle: 'تعديل كمب',
       },
     },
-    // Camps Contractors
+
+    // Contractors
     {
       path: '/camps/contractors',
       component: () => import('../views/camps/ContractorsView.vue'),
@@ -242,7 +265,7 @@ const router = createRouter({
       },
     },
 
-    // Camps Workers
+    // Workers
     {
       path: '/camps/workers',
       component: () => import('../views/camps/WorkersView.vue'),
@@ -265,7 +288,9 @@ const router = createRouter({
         HeaderTitle: 'تعديل العامل',
       },
     },
-    // USERS
+    //#endregion
+
+    //#region Users
     {
       path: '/users',
       component: () => import('../views/users/index.vue'),
@@ -278,8 +303,9 @@ const router = createRouter({
       name: 'deeratna_app_users',
       meta: { requiresAuth: true, HeaderTitle: 'ادارة مستخدمي ديرتنا' },
     },
+    //#endregion
 
-    // QR خطار
+    //#region QR
     {
       path: '/qr-data',
       component: () => import('../views/qr/qrLog.vue'),
@@ -304,41 +330,22 @@ const router = createRouter({
       name: 'send-qr-notification',
       meta: { requiresAuth: true, HeaderTitle: 'ارسال اشعار كيو ار' },
     },
-
-
-
-
-
-
-
     {
       path: '/send-qr-notification',
       component: () => import('../views/qr/qrNotificationSend.vue'),
       name: 'send-qr-notification',
       meta: { requiresAuth: true, HeaderTitle: 'ارسال اشعار كيو ار' },
     },
+    //#endregion
 
-
-
-
-
-
-
-
-
-
-
-
-
+    //#region Logs
     {
-      path: '/login',
-      name: 'Login',
-      component: () => import('../views/login.vue'),
-      meta: {
-        HeaderTitle: 'تعديل الطلب',
-        Operation: 'EDIT',
-      },
+      path: '/logs/auto_updates',
+      component: () => import('../views/logs/AutoUpdatesView.vue'),
+      name: 'AutoUpdatesLog',
+      meta: { requiresAuth: true, HeaderTitle: 'سجل التحديث التلقائي' },
     },
+    //#endregion
   ],
 })
 

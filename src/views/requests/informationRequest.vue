@@ -2,13 +2,10 @@
   <div class="ComponentWrapper">
     <!-- ========= InformationRequest Model======== -->
 
-    <MModal ref="InformationRequestModal" :Name="'InformationRequestModal'" :Title="' طلب ' +
-      selectedRowData.request_type +
-      ' بيانات ' +
-      selectedRowData.name
-      ">
+    <MModal ref="InformationRequestModal" :Name="'InformationRequestModal'" :Title="' طلب ' + selectedRowData.request_type + ' بيانات ' + selectedRowData.name ">
+      
       <!-- ============= Add Table =============== -->
-      <table v-show="selectedRowData.request_type == 'اضافة'" cellpadding="0" cellspacing="0" class="RequestsMTable">
+      <table v-if="selectedRowData.request_type == 'اضافة'" cellpadding="0" cellspacing="0" class="RequestsMTable">
         <thead>
           <tr>
             <th>الحقل</th>
@@ -16,129 +13,66 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Shared Columns (Always Visible) -->
           <tr>
             <td>الاسم</td>
             <td>{{ selectedRowData.name }}</td>
           </tr>
+          <tr v-if="CheckAttributes(['مالك', 'مستاجر'])">
+            <td>الجنس</td>
+            <td>{{ selectedRowData.gender }}</td>
+          </tr>
+          <tr v-if="CheckAttributes(['مالك', 'مستاجر'])">
+            <td>المواليد</td>
+            <td>{{ selectedRowData.birth }}</td>
+          </tr>
+          <tr v-if="CheckAttributes(['سائق', 'زائر', 'مالك', 'مستاجر'])">
+            <td>نوع المستمسك</td>
+            <td>{{ selectedRowData.identification_type }}</td>
+          </tr>
+          <tr v-if="CheckAttributes(['سائق', 'زائر', 'مالك', 'مستاجر'])">
+            <td>رقم المستمسك</td>
+            <td>{{ selectedRowData.identification_number }}</td>
+          </tr>
+          <tr v-if="CheckAttributes(['مالك', 'مستاجر'])">
+            <td>التحصيل الدراسي</td>
+            <td>{{ selectedRowData.study }}</td>
+          </tr>
+          <tr v-if="CheckAttributes(['مالك', 'مستاجر'])">
+            <td>المهنة</td>
+            <td>{{ selectedRowData.work_type }}</td>
+          </tr>
+          <tr v-if="CheckAttributes(['مالك', 'مستاجر'])">
+            <td>مكان العمل</td>
+            <td>{{ selectedRowData.work_place }}</td>
+          </tr>
+          <tr v-if="CheckAttributes(['سائق', 'زائر', 'مالك', 'مستاجر'])">
+            <td>رقم العجلة</td>
+            <td>{{ selectedRowData.car_number }}</td>
+          </tr>
+          <tr v-if="CheckAttributes(['سائق', 'زائر', 'مالك', 'مستاجر'])">
+            <td>تفاصيل العجلة</td>
+            <td>{{ selectedRowData.car_details }}</td>
+          </tr>
+          <tr v-if="CheckAttributes(['سائق', 'زائر', 'مالك', 'مستاجر'])">
+            <td>العلاقة</td>
+            <td>{{ selectedRowData.relation }}</td>
+          </tr>
           <tr>
-            <td>العنوان</td>
-            <td>{{ selectedRowData.address }}</td>
+            <td>رقم الهاتف</td>
+            <td>{{ selectedRowData.phone }}</td>
           </tr>
           <tr>
             <td>المدينة</td>
             <td>{{ selectedRowData.compound }}</td>
           </tr>
-
-          <!-- مالك Specific Columns -->
-          <tr v-if="selectedRowData.attributes == 'مالك'">
-            <td>الجنس</td>
-            <td>{{ selectedRowData.gender }}</td>
+          <tr>
+            <td>العنوان</td>
+            <td>{{ selectedRowData.address }}</td>
           </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'">
-            <td>المواليد</td>
-            <td>{{ selectedRowData.birth }}</td>
+          <tr v-if="CheckAttributes(['سائق', 'زائر', 'مالك', 'مستاجر'])">
+            <td>اسم صاحب العقار</td>
+            <td>{{ selectedRowData.guardian_name }}</td>
           </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'">
-            <td>التحصيل الدراسي</td>
-            <td>{{ selectedRowData.study }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'">
-            <td>المهنة</td>
-            <td>{{ selectedRowData.worktype }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'">
-            <td>مكان العمل</td>
-            <td>{{ selectedRowData.workplace }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'">
-            <td>رقم العجلة</td>
-            <td>{{ selectedRowData.carno }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'">
-            <td>تفاصيل العجلة</td>
-            <td>{{ selectedRowData.cardetails }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'">
-            <td>العلاقة بمالك العقار</td>
-            <td>{{ selectedRowData.relation }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'">
-            <td>اسم مالك العقار</td>
-            <td>{{ selectedRowData.realestatename }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'">
-            <td>حالة السكن</td>
-            <td>{{ selectedRowData.housingstatus }}</td>
-          </tr>
-
-          <!-- مستاجر Specific Columns -->
-          <tr v-if="selectedRowData.person_type == 'مستاجر'">
-            <td>الجنس</td>
-            <td>{{ selectedRowData.gender }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'مستاجر'">
-            <td>المواليد</td>
-            <td>{{ selectedRowData.birth }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'مستاجر'">
-            <td>العلاقة بمستاجر العقار</td>
-            <td>{{ selectedRowData.relation }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'مستاجر'">
-            <td>اسم مستاجر العقار</td>
-            <td>{{ selectedRowData.realestatename }}</td>
-          </tr>
-
-          <!-- زائر Specific Columns -->
-          <tr v-if="selectedRowData.person_type == 'زائر'">
-            <td>رقم الهاتف</td>
-            <td>{{ selectedRowData.phone }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'زائر'">
-            <td>العنوان الخارجي</td>
-            <td>{{ selectedRowData.outside_address }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'زائر'">
-            <td>رقم العجلة</td>
-            <td>{{ selectedRowData.carno }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'زائر'">
-            <td>تفاصيل العجلة</td>
-            <td>{{ selectedRowData.cardetails }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'زائر'">
-            <td>الكفيل</td>
-            <td>
-              {{ selectedRowData.guarantortype + selectedRowData.guarantorid }}
-            </td>
-          </tr>
-
-          <!-- سائق Specific Columns -->
-          <tr v-show="selectedRowData.person_type == 'سائق'">
-            <td>رقم الهاتف</td>
-            <td>{{ selectedRowData.phone }}</td>
-          </tr>
-          <tr v-show="selectedRowData.person_type == 'سائق'">
-            <td>العنوان الخارجي</td>
-            <td>{{ selectedRowData.outside_address }}</td>
-          </tr>
-          <tr v-show="selectedRowData.person_type == 'سائق'">
-            <td>رقم العجلة</td>
-            <td>{{ selectedRowData.carno }}</td>
-          </tr>
-          <tr v-show="selectedRowData.person_type == 'سائق'">
-            <td>تفاصيل العجلة</td>
-            <td>{{ selectedRowData.cardetails }}</td>
-          </tr>
-          <tr v-show="selectedRowData.person_type == 'سائق'">
-            <td>الكفيل</td>
-            <td>
-              {{ selectedRowData.guarantortype + selectedRowData.guarantorid }}
-            </td>
-          </tr>
-
-          <!-- Rejection Reason -->
           <tr v-if="selectedRowData.rejection_reason != ''">
             <td>سبب الرفض</td>
             <td>{{ selectedRowData.rejection_reason }}</td>
@@ -146,7 +80,7 @@
         </tbody>
       </table>
       <!-- ============= Edit Table =============== -->
-      <table v-show="selectedRowData.request_type == 'تعديل'" cellpadding="0" cellspacing="0" class="RequestsMTable">
+      <table v-if="selectedRowData.request_type == 'تعديل'" cellpadding="0" cellspacing="0" class="RequestsMTable">
         <thead>
           <tr>
             <th>الحقل</th>
@@ -155,7 +89,6 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Shared Columns -->
           <tr :style="selectedRowData.old_name != selectedRowData.name
             ? { color: '#FFAA00' }
             : null
@@ -164,9 +97,7 @@
             <td>{{ selectedRowData.old_name }}</td>
             <td>{{ selectedRowData.name }}</td>
           </tr>
-
-          <!-- مالك Specific Columns -->
-          <tr v-if="selectedRowData.person_type == 'مالك'" :style="selectedRowData.old_gender != selectedRowData.gender
+          <tr v-if="CheckAttributes(['مالك', 'مستاجر'])" :style="selectedRowData.old_gender != selectedRowData.gender
             ? { color: '#FFAA00' }
             : null
             ">
@@ -174,7 +105,7 @@
             <td>{{ selectedRowData.old_gender }}</td>
             <td>{{ selectedRowData.gender }}</td>
           </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'" :style="selectedRowData.old_birth != selectedRowData.birth
+          <tr v-if="CheckAttributes(['مالك', 'مستاجر'])" :style="selectedRowData.old_birth != selectedRowData.birth
             ? { color: '#FFAA00' }
             : null
             ">
@@ -182,7 +113,7 @@
             <td>{{ selectedRowData.old_birth }}</td>
             <td>{{ selectedRowData.birth }}</td>
           </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'" :style="selectedRowData.old_study != selectedRowData.study
+          <tr v-if="CheckAttributes(['مالك', 'مستاجر'])" :style="selectedRowData.old_study != selectedRowData.study
             ? { color: '#FFAA00' }
             : null
             ">
@@ -190,90 +121,47 @@
             <td>{{ selectedRowData.old_study }}</td>
             <td>{{ selectedRowData.study }}</td>
           </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'" :style="selectedRowData.old_worktype != selectedRowData.worktype
+          <tr v-if="CheckAttributes(['مالك', 'مستاجر'])" :style="selectedRowData.old_work_type != selectedRowData.work_type
             ? { color: '#FFAA00' }
             : null
             ">
             <td>المهنة</td>
-            <td>{{ selectedRowData.old_worktype }}</td>
-            <td>{{ selectedRowData.worktype }}</td>
+            <td>{{ selectedRowData.old_work_type }}</td>
+            <td>{{ selectedRowData.work_type }}</td>
           </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'" :style="selectedRowData.old_workplace != selectedRowData.workplace
+          <tr v-ahow="CheckAttributes(['مالك', 'مستاجر'])" :style="selectedRowData.old_work_place != selectedRowData.work_place
             ? { color: '#FFAA00' }
             : null
             ">
             <td>مكان العمل</td>
-            <td>{{ selectedRowData.old_workplace }}</td>
-            <td>{{ selectedRowData.workplace }}</td>
+            <td>{{ selectedRowData.old_work_place }}</td>
+            <td>{{ selectedRowData.work_place }}</td>
           </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'" :style="selectedRowData.old_carno != selectedRowData.carno
+          <tr v-if="CheckAttributes(['سائق', 'زائر', 'مالك', 'مستاجر'])" :style="selectedRowData.old_car_number != selectedRowData.car_number
             ? { color: '#FFAA00' }
             : null
             ">
             <td>رقم العجلة</td>
-            <td>{{ selectedRowData.old_carno }}</td>
-            <td>{{ selectedRowData.carno }}</td>
+            <td>{{ selectedRowData.old_car_number }}</td>
+            <td>{{ selectedRowData.car_number }}</td>
           </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'" :style="selectedRowData.old_cardetails != selectedRowData.cardetails
+          <tr v-if="CheckAttributes(['سائق', 'زائر', 'مالك', 'مستاجر'])" :style="selectedRowData.old_car_details != selectedRowData.car_details
             ? { color: '#FFAA00' }
             : null
             ">
             <td>تفاصيل العجلة</td>
-            <td>{{ selectedRowData.old_cardetails }}</td>
-            <td>{{ selectedRowData.cardetails }}</td>
+            <td>{{ selectedRowData.old_car_details }}</td>
+            <td>{{ selectedRowData.car_details }}</td>
           </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'" :style="selectedRowData.old_relation != selectedRowData.relation
+          <tr v-if="CheckAttributes(['سائق', 'زائر', 'مالك', 'مستاجر'])" :style="selectedRowData.old_relation != selectedRowData.relation
             ? { color: '#FFAA00' }
             : null
             ">
-            <td>العلاقة بمالك العقار</td>
+            <td>العلاقة</td>
             <td>{{ selectedRowData.old_relation }}</td>
             <td>{{ selectedRowData.relation }}</td>
           </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'">
-            <td>اسم مالك العقار</td>
-            <td>{{ selectedRowData.realestatename }}</td>
-            <td>{{ selectedRowData.realestatename }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'">
-            <td>حالة السكن</td>
-            <td>{{ selectedRowData.housingstatus }}</td>
-            <td>{{ selectedRowData.housingstatus }}</td>
-          </tr>
-
-          <!-- مستاجر Specific Columns -->
-          <tr v-if="selectedRowData.person_type == 'مستاجر'" :style="selectedRowData.old_gender != selectedRowData.gender
-            ? { color: '#FFAA00' }
-            : null
-            ">
-            <td>الجنس</td>
-            <td>{{ selectedRowData.old_gender }}</td>
-            <td>{{ selectedRowData.gender }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'مستاجر'" :style="selectedRowData.old_birth != selectedRowData.birth
-            ? { color: '#FFAA00' }
-            : null
-            ">
-            <td>المواليد</td>
-            <td>{{ selectedRowData.old_birth }}</td>
-            <td>{{ selectedRowData.birth }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'مستاجر'" :style="selectedRowData.old_relation != selectedRowData.relation
-            ? { color: '#FFAA00' }
-            : null
-            ">
-            <td>العلاقة بمستاجر العقار</td>
-            <td>{{ selectedRowData.old_relation }}</td>
-            <td>{{ selectedRowData.relation }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'مستاجر'">
-            <td>اسم مستاجر العقار</td>
-            <td>{{ selectedRowData.realestatename }}</td>
-            <td>{{ selectedRowData.realestatename }}</td>
-          </tr>
-
-          <!-- زائر Specific Columns -->
-          <tr v-if="selectedRowData.person_type == 'زائر'" :style="selectedRowData.old_phone != selectedRowData.phone
+          <tr v-if="CheckAttributes(['سائق', 'زائر', 'مالك', 'مستاجر'])" :style="selectedRowData.old_phone != selectedRowData.phone
             ? { color: '#FFAA00' }
             : null
             ">
@@ -281,7 +169,7 @@
             <td>{{ selectedRowData.old_phone }}</td>
             <td>{{ selectedRowData.phone }}</td>
           </tr>
-          <tr v-if="selectedRowData.person_type == 'زائر'" :style="selectedRowData.old_outside_address !=
+          <tr v-if="CheckAttributes(['سائق', 'زائر'])" :style="selectedRowData.old_outside_address !=
             selectedRowData.outside_address
             ? { color: '#FFAA00' }
             : null
@@ -290,59 +178,6 @@
             <td>{{ selectedRowData.old_outside_address }}</td>
             <td>{{ selectedRowData.outside_address }}</td>
           </tr>
-          <tr v-if="selectedRowData.person_type == 'زائر'" :style="selectedRowData.old_carno != selectedRowData.carno
-            ? { color: '#FFAA00' }
-            : null
-            ">
-            <td>رقم العجلة</td>
-            <td>{{ selectedRowData.old_carno }}</td>
-            <td>{{ selectedRowData.carno }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'زائر'" :style="selectedRowData.old_cardetails != selectedRowData.cardetails
-            ? { color: '#FFAA00' }
-            : null
-            ">
-            <td>تفاصيل العجلة</td>
-            <td>{{ selectedRowData.old_cardetails }}</td>
-            <td>{{ selectedRowData.cardetails }}</td>
-          </tr>
-
-          <!-- سائق Specific Columns -->
-          <tr v-if="selectedRowData.person_type == 'سائق'" :style="selectedRowData.old_phone != selectedRowData.phone
-            ? { color: '#FFAA00' }
-            : null
-            ">
-            <td>رقم الهاتف</td>
-            <td>{{ selectedRowData.old_phone }}</td>
-            <td>{{ selectedRowData.phone }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'سائق'" :style="selectedRowData.old_outside_address !=
-            selectedRowData.outside_address
-            ? { color: '#FFAA00' }
-            : null
-            ">
-            <td>العنوان الخارجي</td>
-            <td>{{ selectedRowData.old_outside_address }}</td>
-            <td>{{ selectedRowData.outside_address }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'سائق'" :style="selectedRowData.old_carno != selectedRowData.carno
-            ? { color: '#FFAA00' }
-            : null
-            ">
-            <td>رقم العجلة</td>
-            <td>{{ selectedRowData.old_carno }}</td>
-            <td>{{ selectedRowData.carno }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'سائق'" :style="selectedRowData.old_cardetails != selectedRowData.cardetails
-            ? { color: '#FFAA00' }
-            : null
-            ">
-            <td>تفاصيل العجلة</td>
-            <td>{{ selectedRowData.old_cardetails }}</td>
-            <td>{{ selectedRowData.cardetails }}</td>
-          </tr>
-
-          <!-- Shared Columns -->
           <tr>
             <td>المدينة</td>
             <td>{{ selectedRowData.compound }}</td>
@@ -353,8 +188,11 @@
             <td>{{ selectedRowData.address }}</td>
             <td>{{ selectedRowData.address }}</td>
           </tr>
-
-          <!-- Rejection Reason -->
+          <tr v-if="CheckAttributes(['سائق', 'زائر', 'مالك', 'مستاجر'])">
+            <td>اسم صاحب العقار</td>
+            <td>{{ selectedRowData.guardian_name }}</td>
+            <td>{{ selectedRowData.guardian_name }}</td>
+          </tr>
           <tr v-if="selectedRowData.rejection_reason != ''">
             <td>سبب الرفض</td>
             <td>{{ selectedRowData.rejection_reason }}</td>
@@ -363,7 +201,7 @@
         </tbody>
       </table>
       <!-- ============= Delete Table =============== -->
-      <table v-show="selectedRowData.request_type == 'حذف'" cellpadding="0" cellspacing="0" class="RequestsMTable">
+      <table v-if="selectedRowData.request_type == 'حذف'" cellpadding="0" cellspacing="0" class="RequestsMTable">
         <thead>
           <tr>
             <th>الحقل</th>
@@ -371,69 +209,26 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Shared Columns -->
           <tr>
             <td>الاسم</td>
             <td>{{ selectedRowData.name }}</td>
           </tr>
-
-          <!-- Specific Rows for مالك -->
-          <tr v-if="selectedRowData.person_type == 'مالك'">
+          <tr>
             <td>مدينة</td>
             <td>{{ selectedRowData.compound }}</td>
           </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'">
+          <tr>
             <td>عنوان</td>
             <td>{{ selectedRowData.address }}</td>
           </tr>
-          <tr v-if="selectedRowData.person_type == 'مالك'">
+          <tr>
+            <td>اسم صاحب العقار</td>
+            <td>{{ selectedRowData.guardian_name }}</td>
+          </tr>
+          <tr>
             <td>سبب الحذف</td>
             <td>{{ selectedRowData.deletion_reason }}</td>
           </tr>
-
-          <!-- Specific Rows for مستاجر -->
-          <tr v-if="selectedRowData.person_type == 'مستاجر'">
-            <td>مدينة</td>
-            <td>{{ selectedRowData.compound }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'مستاجر'">
-            <td>عنوان</td>
-            <td>{{ selectedRowData.address }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'مستاجر'">
-            <td>سبب الحذف</td>
-            <td>{{ selectedRowData.deletion_reason }}</td>
-          </tr>
-
-          <!-- Specific Rows for زائر -->
-          <tr v-if="selectedRowData.person_type == 'زائر'">
-            <td>مدينة الساكن</td>
-            <td>{{ selectedRowData.compound }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'زائر'">
-            <td>عنوان الساكن</td>
-            <td>{{ selectedRowData.address }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'زائر'">
-            <td>سبب الحذف</td>
-            <td>{{ selectedRowData.deletion_reason }}</td>
-          </tr>
-
-          <!-- Specific Rows for سائق -->
-          <tr v-if="selectedRowData.person_type == 'سائق'">
-            <td>مدينة الساكن</td>
-            <td>{{ selectedRowData.compound }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'سائق'">
-            <td>عنوان الساكن</td>
-            <td>{{ selectedRowData.address }}</td>
-          </tr>
-          <tr v-if="selectedRowData.person_type == 'سائق'">
-            <td>سبب الحذف</td>
-            <td>{{ selectedRowData.deletion_reason }}</td>
-          </tr>
-
-          <!-- Rejection Reason (Shared for All Types) -->
           <tr v-if="selectedRowData.rejection_reason != ''">
             <td>سبب الرفض</td>
             <td>{{ selectedRowData.rejection_reason }}</td>
@@ -548,23 +343,15 @@
       </div>
       <div class="ModalButtons">
         <div v-if="hasPermission('info_accept')">
-          <div
-            v-show="selectedRowData.request_status == 'قيد المراجعة'"
-            class="MButton"
-            id="AcceptBTN"
-            @click="AcceptRequest()"
-          >
+          <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="AcceptBTN"
+            @click="AcceptRequest()">
             قبول
           </div>
         </div>
 
         <div v-if="hasPermission('info_accept')">
-          <div
-            v-show="selectedRowData.request_status == 'قيد المراجعة'"
-            class="MButton"
-            id="RejectBTN"
-            @click="RejectRequest"
-          >
+          <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN"
+            @click="RejectRequest">
             رفض
           </div>
         </div>
@@ -576,8 +363,7 @@
       </div>
     </MModal>
 
-    <!-- ========= AddOwner Model======== -->
-
+    <!-- ========= Add Relation Model======== -->
     <MModal ref="AddPersonRelationModal" :Name="'AddPersonRelationModal'" :Title="'اضافة العلاقة'">
       <div class="MField" id="PersonID">
         <input ref="PersonID" type="text" required />
@@ -846,6 +632,12 @@ export default {
     ShowImage(ImageName) {
       var ImagePath = this.ServerPath + '/storage/images/' + ImageName
       window.open(ImagePath)
+    },
+    CheckAttributes(values) {
+      if (!this.selectedRowData.attributes) {
+        return false;
+      }
+      return this.selectedRowData.attributes.split(' | ').some(value => values.includes(value));
     },
   },
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="ComponentWrapper">
-    <MModal ref="CarLableRequestModal" :Name="'CarLableRequestModal'" :Title="'dd'">
+    <MModal ref="CarLableRequestModal" :Name="'CarLableRequestModal'" :Title="' طلب ' + selectedRowData.request_type + ' ملصق ' + selectedRowData.name ">
       <table cellpadding="0" cellspacing="0" class="RequestsMTable" id="CarsLabelRequestsTable">
         <thead>
           <tr>
@@ -49,16 +49,14 @@
       </table>
       <div class="MGroup ModalMGroup">
         <div class="MField" id="LabelCode">
-          <input :disabled="selectedRowData.request_status !== 'قيد المراجعة' ||
-            selectedRowData.request_type !== 'اضافة'
-            " type="text" required />
+          <input :disabled="!(selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.label_code == '')" type="text" required />
           <label>رمز الملصق</label>
           <div class="MFieldBG"></div>
         </div>
         <MDate :Disabled="selectedRowData.request_status !== 'قيد المراجعة'"
-          :Visible="selectedRowData.request_type == 'اضافة'" ref="LabelIssue" :Name="'LabelIssue'"
+          v-show="selectedRowData.request_type == 'اضافة'" ref="LabelIssue" :Name="'LabelIssue'"
           :Label="'تاريخ الانشاء'"></MDate>
-        <MDate :Disabled="selectedRowData.request_status !== 'قيد المراجعة'" :Visible="selectedRowData.request_type == 'اضافة' ||
+        <MDate :Disabled="selectedRowData.request_status !== 'قيد المراجعة'" v-show="selectedRowData.request_type == 'اضافة' ||
           selectedRowData.request_type == 'تمديد'
           " ref="LabelExpire" :Name="'LabelExpire'" :Label="'تاريخ الانتهاء'"></MDate>
       </div>
