@@ -245,7 +245,7 @@ export default {
     document.getElementById('GetInternetSubscribersBTN').addEventListener(
       'click',
       function () {
-        this.InternetSubscribersTB.LoadMTable()
+        this.InternetSubscribersTB.ReLoadMTable()
       }.bind(this)
     )
     //Add new sub

@@ -130,7 +130,7 @@ export default {
       .addEventListener(
         'click',
         function () {
-          this.NfcCardsTB.LoadMTable()
+          this.NfcCardsTB.ReLoadMTable()
         }.bind(this)
       )
   },

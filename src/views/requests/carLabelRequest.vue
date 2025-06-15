@@ -233,7 +233,7 @@ export default {
     document.getElementById('GetCarLabelRequestsBTN').addEventListener(
       'click',
       function () {
-        this.CarLabelRequestsTB.LoadMTable()
+        this.CarLabelRequestsTB.ReLoadMTable()
       }.bind(this)
     )
     document.getElementById('RejectBTN').addEventListener(

@@ -395,7 +395,7 @@ export default {
       'click',
       function () {
         ShowLoading()
-        this.InternetRequestsTB.LoadMTable()
+        this.InternetRequestsTB.ReLoadMTable()
         HideLoading()
       }.bind(this)
     )

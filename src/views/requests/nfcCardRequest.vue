@@ -229,7 +229,7 @@ export default {
     document.getElementById('GetNfcCardRequestsBTN').addEventListener(
       'click',
       function () {
-        this.NfcCardRequestsTB.LoadMTable()
+        this.NfcCardRequestsTB.ReLoadMTable()
       }.bind(this)
     )
     document.getElementById('RejectBTN').addEventListener(

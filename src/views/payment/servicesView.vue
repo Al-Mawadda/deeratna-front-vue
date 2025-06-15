@@ -106,7 +106,7 @@ export default {
       .addEventListener(
         'click',
         function () {
-          this.ServicesTB.LoadMTable()
+          this.ServicesTB.ReLoadMTable()
         }.bind(this)
       )
   },

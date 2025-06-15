@@ -253,7 +253,7 @@
         </div>
         <div class="InformationRequestImage" v-if="selectedRowData.id_image != ''">
           <div class="InformationRequestImageTitle">بطاقة موحدة</div>
-          <div class="InformationRequestImagePreview" @click="ShowImage(selectedRowData.personal_image)">
+          <div class="InformationRequestImagePreview" @click="ShowImage(selectedRowData.id_image)">
             <div class="InformationRequestImagePreviewOverlay">
               <svg viewBox="0 0 1000 1000">
                 <path
@@ -266,7 +266,7 @@
         </div>
         <div class="InformationRequestImage" v-if="selectedRowData.id_image_back != ''">
           <div class="InformationRequestImageTitle">ضهر البطاقة الموحدة</div>
-          <div class="InformationRequestImagePreview" @click="ShowImage(selectedRowData.personal_image)">
+          <div class="InformationRequestImagePreview" @click="ShowImage(selectedRowData.id_image_back)">
             <div class="InformationRequestImagePreviewOverlay">
               <svg viewBox="0 0 1000 1000">
                 <path
@@ -280,7 +280,7 @@
         </div>
         <div class="InformationRequestImage" v-if="selectedRowData.housing_image != ''">
           <div class="InformationRequestImageTitle">بطاقة السكن</div>
-          <div class="InformationRequestImagePreview" @click="ShowImage(selectedRowData.personal_image)">
+          <div class="InformationRequestImagePreview" @click="ShowImage(selectedRowData.housing_image)">
             <div class="InformationRequestImagePreviewOverlay">
               <svg viewBox="0 0 1000 1000">
                 <path
@@ -294,7 +294,7 @@
         </div>
         <div class="InformationRequestImage" v-if="selectedRowData.housing_image_back != ''">
           <div class="InformationRequestImageTitle">ضهر بطاقة السكن</div>
-          <div class="InformationRequestImagePreview" @click="ShowImage(selectedRowData.personal_image)">
+          <div class="InformationRequestImagePreview" @click="ShowImage(selectedRowData.housing_image_back)">
             <div class="InformationRequestImagePreviewOverlay">
               <svg viewBox="0 0 1000 1000">
                 <path
@@ -310,7 +310,7 @@
         </div>
         <div class="InformationRequestImage" v-if="selectedRowData.driver_licence_image != ''">
           <div class="InformationRequestImageTitle">اجازة السائق</div>
-          <div class="InformationRequestImagePreview" @click="ShowImage(selectedRowData.personal_image)">
+          <div class="InformationRequestImagePreview" @click="ShowImage(selectedRowData.driver_licence_image)">
             <div class="InformationRequestImagePreviewOverlay">
               <svg viewBox="0 0 1000 1000">
                 <path
@@ -326,7 +326,7 @@
         </div>
         <div class="InformationRequestImage" v-if="selectedRowData.driver_licence_image_back != ''">
           <div class="InformationRequestImageTitle">ضهر اجازة السائق</div>
-          <div class="InformationRequestImagePreview" @click="ShowImage(selectedRowData.personal_image)">
+          <div class="InformationRequestImagePreview" @click="ShowImage(selectedRowData.driver_licence_image_back)">
             <div class="InformationRequestImagePreviewOverlay">
               <svg viewBox="0 0 1000 1000">
                 <path
@@ -506,7 +506,7 @@ export default {
     document.getElementById('GetInformationRequestsBTN').addEventListener(
       'click',
       function () {
-        this.InformationRequestsTB.LoadMTable()
+        this.InformationRequestsTB.ReLoadMTable()
       }.bind(this)
     )
     document.getElementById('InformationRequestsTB').addEventListener(

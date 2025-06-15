@@ -102,7 +102,7 @@ export default {
     this.ContractorsTB.LoadMTable();
 
     document.getElementById('ReloadContractorsBTN').addEventListener('click', function () {
-      this.ContractorsTB.LoadMTable();
+      this.ContractorsTB.ReLoadMTable();
     }.bind(this));
     document.getElementById('ContractorsTB').addEventListener('ViewItem', function (data) {
       this.GlobalsStore.setMArray(data.detail.RowData);
