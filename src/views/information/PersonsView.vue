@@ -120,7 +120,7 @@ export default {
     let Instance = this;
 
     document.getElementById('ReloadPersonsBTN').addEventListener('click', function () {
-      Instance.PersonsTB.LoadMTable();
+      Instance.PersonsTB.ReLoadMTable();
     });
     document.getElementById('PersonsTB').addEventListener('ViewItem', function (data) {
       Instance.GlobalsStore.setMArray(data.detail.RowData);

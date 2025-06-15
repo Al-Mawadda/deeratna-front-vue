@@ -110,7 +110,7 @@ export default {
     this.WorkersTB.LoadMTable();
 
     document.getElementById('ReloadWorkersBTN').addEventListener('click', function () {
-      this.WorkersTB.LoadMTable();
+      this.WorkersTB.ReLoadMTable();
     }.bind(this));
 
     document.getElementById('WorkersTB').addEventListener('ViewItem', function (data) {

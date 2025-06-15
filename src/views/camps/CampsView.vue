@@ -107,7 +107,7 @@ export default {
     let Instance = this;
 
     document.getElementById('ReloadCampsBTN').addEventListener('click', function () {
-      Instance.CampsTB.LoadMTable();
+      Instance.CampsTB.ReLoadMTable();
     });
 
     document.getElementById('CampsTB').addEventListener('ViewItem', function (data) {

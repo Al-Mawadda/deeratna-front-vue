@@ -126,7 +126,7 @@ export default {
       .addEventListener(
         'click',
         function () {
-          this.ElectricitysTB.LoadMTable()
+          this.ElectricitysTB.ReLoadMTable()
         }.bind(this)
       )
   },

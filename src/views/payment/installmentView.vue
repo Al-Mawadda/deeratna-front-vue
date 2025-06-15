@@ -131,7 +131,7 @@ export default {
       .addEventListener(
         'click',
         function () {
-          this.InstallmentsTB.LoadMTable()
+          this.InstallmentsTB.ReLoadMTable()
         }.bind(this)
       )
   },

@@ -3,9 +3,7 @@
 </template>
 
 <script>
-var FilterDataArray = {}
-var SortDataArray = {}
-
+import { useRouter, useRoute } from 'vue-router';
 export default {
   props: {
     Name: { type: String, required: true },
@@ -20,7 +18,7 @@ export default {
   },
   created() {
     for (var i = 0; i < this.Columns.length; i++) {
-      FilterDataArray[this.Columns[i]['name']] = ''
+      this.FilterDataArray[this.Columns[i]['name']] = ''
     }
   },
   data() {
@@ -28,12 +26,16 @@ export default {
       Element: null,
       OptionsArray: [],
       PageNo: 1,
+      FilterDataArray: {},
+      SortDataArray: {},
       PagesCount: 1,
       SumsColumns: [],
+      route: useRoute(),
+      router: useRouter(),
     }
   },
   mounted() {
-    this.Element = document.getElementById(this.Name)
+    this.Element = document.getElementById(this.Name);
 
     // Get The Options
     var slotContent = this.$slots['options'] ? this.$slots['options']() : []
@@ -309,9 +311,9 @@ export default {
           '"]'
         )
         FilterCell.querySelector('.MTableFilterInput').value =
-          FilterDataArray[Columns[F]['name']]
+          Instance.FilterDataArray[Columns[F]['name']]
         if (Columns[F]['filter'] && Columns[F]['filter'] == 'combo') {
-          let ComboItems = FilterDataArray[Columns[F]['name']].split(',')
+          let ComboItems = Instance.FilterDataArray[Columns[F]['name']].split(',')
           ComboItems.forEach(function (e) {
             FilterCell.querySelectorAll('.MTableFilterComboItem').forEach(
               function (d) {
@@ -347,7 +349,7 @@ export default {
               function (d) {
                 e.querySelector('.MTableFilterInput').value = d.target.value
                 e.querySelector('.MTableFilterBTN').style.display = 'none'
-                if (d.value == FilterDataArray[e.getAttribute('filtername')]) {
+                if (d.value == Instance.FilterDataArray[e.getAttribute('filtername')]) {
                   e.querySelector('.MTableFilterBTN').style.display = 'none'
                   if (d.value != '') {
                     e.querySelector('.MTableClearBTN').style.display = 'flex'
@@ -372,7 +374,7 @@ export default {
               .querySelector('.MTableFilterBTN').style.display = 'none'
             if (
               e.value ==
-              FilterDataArray[
+              Instance.FilterDataArray[
               e.closest('.MTableCell').getAttribute('filtername')
               ]
             ) {
@@ -416,7 +418,7 @@ export default {
                   Columns[i]['name'] +
                   '"] .MTableFilterInput'
                 )
-                FilterDataArray[Columns[i]['name']] = FilterRowInput.value
+                Instance.FilterDataArray[Columns[i]['name']] = FilterRowInput.value
               }
 
               Element.querySelector('.MTableLoader').style.display = 'flex'
@@ -446,15 +448,16 @@ export default {
               })
 
               if (GetDataFunction) {
-                Instance.PageNo = 1
+                Instance.PageNo = 1;
                 GetDataFunction({
                   PageNo: Instance.PageNo,
-                  Filters: FilterDataArray,
-                  Sorts: SortDataArray,
+                  Filters: Instance.FilterDataArray,
+                  Sorts: Instance.SortDataArray,
                   Sums: Instance.SumsColumns,
                   RowsPerPage: Instance.RowsPerPage,
                   Columns: Instance.Columns,
-                })
+                });
+                Instance.UpdateRouter(Instance.PageNo, Instance.FilterDataArray, Instance.SortDataArray);
               }
             }
           })
@@ -476,7 +479,7 @@ export default {
                 Columns[i]['name'] +
                 '"] .MTableFilterInput'
               )
-              FilterDataArray[Columns[i]['name']] = FilterRowInput.value
+              Instance.FilterDataArray[Columns[i]['name']] = FilterRowInput.value
             }
 
             Element.querySelector('.MTableLoader').style.display = 'flex'
@@ -507,12 +510,13 @@ export default {
               Instance.PageNo = 1
               GetDataFunction({
                 PageNo: Instance.PageNo,
-                Filters: FilterDataArray,
-                Sorts: SortDataArray,
+                Filters: Instance.FilterDataArray,
+                Sorts: Instance.SortDataArray,
                 Sums: Instance.SumsColumns,
                 RowsPerPage: Instance.RowsPerPage,
                 Columns: Instance.Columns,
               })
+              Instance.UpdateRouter(Instance.PageNo, Instance.FilterDataArray, Instance.SortDataArray);
             }
           })
         }
@@ -529,7 +533,7 @@ export default {
                 Columns[i]['name'] +
                 '"] .MTableFilterInput'
               )
-              FilterDataArray[Columns[i]['name']] = FilterRowInput.value
+              Instance.FilterDataArray[Columns[i]['name']] = FilterRowInput.value
             }
 
             Element.querySelector('.MTableLoader').style.display = 'flex'
@@ -561,12 +565,13 @@ export default {
               Instance.PageNo = 1
               GetDataFunction({
                 PageNo: Instance.PageNo,
-                Filters: FilterDataArray,
-                Sorts: SortDataArray,
+                Filters: Instance.FilterDataArray,
+                Sorts: Instance.SortDataArray,
                 Sums: Instance.SumsColumns,
                 RowsPerPage: Instance.RowsPerPage,
                 Columns: Instance.Columns,
               })
+              Instance.UpdateRouter(Instance.PageNo, Instance.FilterDataArray, Instance.SortDataArray);
             }
           })
         }
@@ -960,13 +965,13 @@ export default {
               }
 
               var SortType = 'ASC'
-              if (SortDataArray == null || SortDataArray[1] == 'DESC') {
+              if (Instance.SortDataArray == null || Instance.SortDataArray[1] == 'DESC') {
                 SortType = 'ASC'
-              } else if (SortDataArray[1] == 'ASC') {
+              } else if (Instance.SortDataArray[1] == 'ASC') {
                 SortType = 'DESC'
               }
 
-              SortDataArray = [SortName, SortType]
+              Instance.SortDataArray = [SortName, SortType]
 
               Element.querySelector('.MTableLoader').style.display = 'flex'
 
@@ -997,24 +1002,25 @@ export default {
                 Instance.PageNo = 1
                 GetDataFunction({
                   PageNo: Instance.PageNo,
-                  Filters: FilterDataArray,
-                  Sorts: SortDataArray,
+                  Filters: Instance.FilterDataArray,
+                  Sorts: Instance.SortDataArray,
                   Sums: Instance.SumsColumns,
                   RowsPerPage: Instance.RowsPerPage,
                   Columns: Instance.Columns,
                 })
+                Instance.UpdateRouter(Instance.PageNo, Instance.FilterDataArray, Instance.SortDataArray);
               }
             })
           }
         )
 
-        if (SortDataArray != null) {
+        if (Instance.SortDataArray != null) {
           for (var SA = 0; SA < Columns.length; SA++) {
-            if (Columns[SA]['name'] == SortDataArray[0]) {
+            if (Columns[SA]['name'] == Instance.SortDataArray[0]) {
               Element.querySelector(
                 '.MTableHeaderRow .MTableCell:nth-child(' + (SA + 1) + ')'
               ).innerHTML += '<div class="MTableSortArrow"></div>'
-              if (SortDataArray[1] == 'ASC') {
+              if (Instance.SortDataArray[1] == 'ASC') {
                 Element.querySelector(
                   '.MTableHeaderRow .MTableCell:nth-child(' +
                   (SA + 1) +
@@ -1331,12 +1337,13 @@ export default {
               Instance.PageNo = parseInt(this.getAttribute('id'))
               GetDataFunction({
                 PageNo: Instance.PageNo,
-                Filters: FilterDataArray,
-                Sorts: SortDataArray,
+                Filters: Instance.FilterDataArray,
+                Sorts: Instance.SortDataArray,
                 Sums: Instance.SumsColumns,
                 RowsPerPage: Instance.RowsPerPage,
                 Columns: Instance.Columns,
               })
+              Instance.UpdateRouter(Instance.PageNo, Instance.FilterDataArray, Instance.SortDataArray);
             }
           })
         })
@@ -1397,7 +1404,7 @@ export default {
         //Show/Hide The Search/Clear Button
         if (
           Filter.querySelector('.MTableFilterInput').value ==
-          FilterDataArray[Filter.getAttribute('filtername')]
+          Instance.FilterDataArray[Filter.getAttribute('filtername')]
         ) {
           Filter.querySelector('.MTableFilterBTN').style.display = 'none'
           if (Filter.querySelector('.MTableFilterInput').value != '') {
@@ -1412,15 +1419,17 @@ export default {
       }
     },
     LoadMTable() {
-      FilterDataArray = {}
+      this.FilterDataArray = {}
+      this.SortDataArray = {}
+
       this.Element.querySelector('.MTableSummary').style.display = 'none'
       this.Element.querySelector('.MTablePageButtons').innerHTML = ''
 
       for (var i = 0; i < this.Columns.length; i++) {
-        FilterDataArray[this.Columns[i]['name']] = ''
+        this.FilterDataArray[this.Columns[i]['name']] = ''
       }
 
-      SortDataArray = {}
+      this.PopulateRouter();
 
       this.Element.querySelector('.MTableLoader').style.display = 'flex'
 
@@ -1450,8 +1459,55 @@ export default {
       if (this.GetDataFunction) {
         this.GetDataFunction({
           PageNo: this.PageNo,
-          Filters: FilterDataArray,
-          Sorts: SortDataArray,
+          Filters: this.FilterDataArray,
+          Sorts: this.SortDataArray,
+          Sums: this.SumsColumns,
+          RowsPerPage: this.RowsPerPage,
+          Columns: this.Columns,
+        })
+      }
+    },
+    ReLoadMTable() {
+      this.FilterDataArray = {}
+      this.SortDataArray = {}
+
+      this.Element.querySelector('.MTableSummary').style.display = 'none'
+      this.Element.querySelector('.MTablePageButtons').innerHTML = ''
+
+      for (var i = 0; i < this.Columns.length; i++) {
+        this.FilterDataArray[this.Columns[i]['name']] = '';
+      }
+      const RouteQuery = {
+        ...this.route.query,
+      };
+      delete RouteQuery.pageno;
+      delete RouteQuery.filter;
+      delete RouteQuery.sort;
+      this.router.replace({ query: RouteQuery });
+
+      this.Element.querySelector('.MTableLoader').style.display = 'flex'
+
+      this.Element.querySelectorAll('.MTableFilterRow input').forEach(function (e) {
+        e.disabled = true
+      })
+      this.Element.querySelectorAll('.MTableFilterRow .MTableFilterBTN').forEach(function (e) {
+        e.style.display = 'none'
+      })
+      this.Element.querySelectorAll('.MTableHeaderRow .MTableCell').forEach(
+        function (e) {
+          e.style.pointerEvents = 'none'
+        }
+      )
+      this.Element.querySelector('.MTableBodyContainer').style.pointerEvents = 'none'
+      this.Element.querySelectorAll('.MTablePageButtons .MTablePageButton').forEach(function (e) {
+        e.style.pointerEvents = 'none'
+      })
+
+      if (this.GetDataFunction) {
+        this.GetDataFunction({
+          PageNo: this.PageNo,
+          Filters: this.FilterDataArray,
+          Sorts: this.SortDataArray,
           Sums: this.SumsColumns,
           RowsPerPage: this.RowsPerPage,
           Columns: this.Columns,
@@ -1478,6 +1534,57 @@ export default {
       html += `</${vnode.type}>`
       return html
     },
+    UpdateRouter(PageNo, FiltersArray, SortArray) {
+      let Filters = '';
+      let Sort = `${SortArray[0]}:${SortArray[1]}`;
+      Object.entries(FiltersArray).forEach(([key, value]) => {
+        if (value != '') {
+          if (Filters != '') {
+            Filters += ',';
+          }
+          Filters += `${key}:${value}`;
+        }
+      });
+
+      const RouteQuery = {
+        ...this.route.query,
+      };
+
+      if (PageNo && PageNo.toString().trim() != '' && PageNo != 1) {
+        RouteQuery.pageno = PageNo.toString();
+      } else {
+        delete RouteQuery.pageno;
+      }
+
+      if (Filters && Filters.trim() != '') {
+        RouteQuery.filter = Filters;
+      } else {
+        delete RouteQuery.filter;
+      }
+
+      if (Object.keys(SortArray).length > 0 && Sort && Sort.trim() != '') {
+        RouteQuery.sort = Sort;
+      } else {
+        delete RouteQuery.sort;
+      }
+
+      this.router.replace({ query: RouteQuery });
+    },
+    PopulateRouter() {
+      if (this.route.query.pageno) {
+        this.PageNo = this.route.query.pageno;
+      }
+      if (this.route.query.filter) {
+        this.route.query.filter.split(',').forEach(pair => {
+          let [key, value] = pair.split(':');
+          this.FilterDataArray[key] = value;
+        });
+      }
+      if (this.route.query.sort) {
+        this.SortDataArray[0] = this.route.query.sort.split(':')[0];
+        this.SortDataArray[1] = this.route.query.sort.split(':')[1];
+      }
+    }
   },
 }
 </script>

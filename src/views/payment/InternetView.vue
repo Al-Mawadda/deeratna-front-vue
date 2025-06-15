@@ -129,7 +129,7 @@ export default {
       .addEventListener(
         'click',
         function () {
-          this.InternetsTB.LoadMTable()
+          this.InternetsTB.ReLoadMTable()
         }.bind(this)
       )
   },

@@ -109,7 +109,7 @@ export default {
       'click',
       function () {
         ShowLoading()
-        this.qrLogTB.LoadMTable()
+        this.qrLogTB.ReLoadMTable()
         HideLoading()
       }.bind(this)
     )

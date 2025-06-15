@@ -74,7 +74,7 @@ export default {
     let Instance = this;
 
     document.getElementById('ReloadRealEstatesBTN').addEventListener('click', function () {
-      Instance.RealEstatesTB.LoadMTable();
+      Instance.RealEstatesTB.ReLoadMTable();
     });
     document.getElementById('RealEstatesTB').addEventListener('ViewItem', function (data) {
       Instance.GlobalsStore.setMArray(data.detail.RowData);

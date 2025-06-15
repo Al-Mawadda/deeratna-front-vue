@@ -185,7 +185,7 @@ export default {
     document.getElementById('GetInternetProfilesBTN').addEventListener(
       'click',
       function () {
-        this.InternetProfilesTB.LoadMTable()
+        this.InternetProfilesTB.ReLoadMTable()
       }.bind(this)
     )
     // ShowModal

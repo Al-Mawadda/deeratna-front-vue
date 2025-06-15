@@ -111,7 +111,7 @@ export default {
       .addEventListener(
         'click',
         function () {
-          this.CarLabelsTB.LoadMTable()
+          this.CarLabelsTB.ReLoadMTable()
         }.bind(this)
       )
   },
