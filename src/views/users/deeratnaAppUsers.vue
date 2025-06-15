@@ -157,6 +157,10 @@ export default {
           label: '#',
         },
         {
+          name: 'uid',
+          label: 'كود المستخدم',
+        },
+        {
           name: 'compound',
           label: 'المدينة',
           filter: 'combo',
