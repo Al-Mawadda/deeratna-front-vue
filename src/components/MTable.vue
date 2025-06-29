@@ -850,7 +850,9 @@ export default {
 
         //Set The Sizes
         const resizeObserver = new ResizeObserver(function () {
-          MTableCellResize()
+          setTimeout(() => {
+            MTableCellResize();
+          }, 0);
         })
         resizeObserver.observe(Element)
 
@@ -1540,7 +1542,7 @@ export default {
       Object.entries(FiltersArray).forEach(([key, value]) => {
         if (value != '') {
           if (Filters != '') {
-            Filters += ',';
+            Filters += '|';
           }
           Filters += `${key}:${value}`;
         }
@@ -1575,7 +1577,7 @@ export default {
         this.PageNo = this.route.query.pageno;
       }
       if (this.route.query.filter) {
-        this.route.query.filter.split(',').forEach(pair => {
+        this.route.query.filter.split('|').forEach(pair => {
           let [key, value] = pair.split(':');
           this.FilterDataArray[key] = value;
         });
@@ -1739,7 +1741,7 @@ export default {
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
-.MGroup .MTableWrapper {
+.MGroup .MTableWrapper, .MStepContent .MTableWrapper{
   border: 1px solid #777;
 }
 

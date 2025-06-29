@@ -215,8 +215,18 @@ export default {
             permission: 'information',
           },
           {
+            text: 'بطاقات الدخول',
+            route: '/nfc_cards',
+            permission: 'information',
+          },
+          {
             text: 'العقارات',
             route: '/real_estates',
+            permission: 'information',
+          },
+          {
+            text: 'المستاجرين',
+            route: '/sales/tenants',
             permission: 'information',
           },
         ],

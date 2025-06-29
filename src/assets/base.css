@@ -55,11 +55,6 @@
   --RequestDetailsTableColor2: rgba(0, 0, 0, 0.1);
   --RequestDetailsTableColor3: rgba(0, 0, 0, 0.4);
   /* #endregion */
-
-  /* #region MStepper */
-  --MStepperheaderHoverBG: rgba(0, 0, 0, 0.05);
-  --MStepperContentBG: rgba(0, 0, 0, 0.05);
-  /* #endregion */
 }
 
 .DarkMode {
@@ -110,10 +105,5 @@
   --RequestDetailsTableColor1: rgba(255, 255, 255, 0.05);
   --RequestDetailsTableColor2: rgba(255, 255, 255, 0.1);
   --RequestDetailsTableColor3: rgba(255, 255, 255, 0.4);
-  /* #endregion */
-
-  /* #region MStepper */
-  --MStepperheaderHoverBG: rgba(255, 255, 255, 0.05);
-  --MStepperContentBG: rgba(255, 255, 255, 0.05);
   /* #endregion */
 }

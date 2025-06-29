@@ -99,6 +99,7 @@ export default {
           name: 'study',
           label: 'التحصيل الدراسي',
         },
+        
         {
           name: 'relations.guardian_name',
           label: 'اسم صاحب العقار',

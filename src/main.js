@@ -18,6 +18,8 @@ import MModal from './components/MModal.vue'
 import MComboBox from './components/MComboBox.vue'
 import MRadioButton from './components/MRadioButton.vue'
 import MCheckBox from './components/MCheckBox.vue'
+import MStepper from './components/MStepper.vue'
+import MTime from './components/MTime.vue'
 
 const app = createApp(App)
 
@@ -29,7 +31,8 @@ app.component('MRadioButton', MRadioButton)
 app.component('MModal', MModal)
 app.component('MTable', MTable)
 app.component('MPrompts', MPrompts)
-
+app.component('MStepper', MStepper)
+app.component('MTime', MTime)
 app.use(createPinia())
 
 app.use(router)
