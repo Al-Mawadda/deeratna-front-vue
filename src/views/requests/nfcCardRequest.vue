@@ -33,6 +33,14 @@
             <td>رقم الهاتف</td>
             <td>{{ selectedRowData.phone }}</td>
           </tr>
+          <tr v-show="selectedRowData.request_type == 'اضافة'">
+            <td>وقت السماح من</td>
+            <td>{{ selectedRowData.allowed_time_from }}</td>
+          </tr>
+          <tr v-show="selectedRowData.request_type == 'اضافة'">
+            <td>وقت السماح الى</td>
+            <td>{{ selectedRowData.allowed_time_to }}</td>
+          </tr>
           <tr>
             <td>الصفة</td>
             <td>{{ selectedRowData.attributes }}</td>

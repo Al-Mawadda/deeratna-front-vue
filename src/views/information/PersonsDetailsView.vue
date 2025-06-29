@@ -855,7 +855,6 @@ export default {
     });
     
     document.getElementById('AllowedTimeTo').addEventListener('MTimeValueChange', function () {
-      console.log(Instance.AllowedTimeTo.Get());
       let AllowedFrom = Instance.AllowedTimeFrom.Get();
       let AllowedTo = Instance.AllowedTimeTo.Get();
       if (AllowedFrom != '' && AllowedTo != '') {
