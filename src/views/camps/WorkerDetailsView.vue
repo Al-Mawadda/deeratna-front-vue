@@ -258,7 +258,7 @@ export default {
         document.getElementById('Nationality').querySelector('input').value = this.GlobalsStore.MArray['nationality'];
         this.IdentificationType.Set(this.GlobalsStore.MArray['identification_type'])
         document.getElementById('IdentificationNumber').querySelector('input').value = this.GlobalsStore.MArray['identification_number'];
-        document.getElementById('Address').querySelector('input').value = this.GlobalsStore.MArray['address'];
+        document.getElementById('Address').querySelector('input').value = this.GlobalsStore.MArray['outside_address'];
         document.getElementById('EntryPort').querySelector('input').value = this.GlobalsStore.MArray['entry_port'];
         this.EntryDate.Set(this.GlobalsStore.MArray['entry_date'])
 
@@ -298,7 +298,7 @@ export default {
       Parameters.append('nationality', document.getElementById('Nationality').querySelector('input').value);
       Parameters.append('identification_type', this.IdentificationType.GetValue());
       Parameters.append('identification_number', document.getElementById('IdentificationNumber').querySelector('input').value);
-      Parameters.append('address', document.getElementById('Address').querySelector('input').value);
+      Parameters.append('outside_address', document.getElementById('Address').querySelector('input').value);
       Parameters.append('entry_port', document.getElementById('EntryPort').querySelector('input').value);
       Parameters.append('entry_date', this.EntryDate.Get());
 

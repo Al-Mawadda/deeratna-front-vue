@@ -1,204 +1,275 @@
 <template>
   <div class="ComponentWrapper">
-    <div class="MGroup">
-      <div class="MField" id="ID" v-show="Operation == 'EDIT'">
-        <input disabled type="text" required>
-        <label>الرمز</label>
-        <div class="MFieldBG"></div>
+    <MStepper ref='PersonStepper' :Name="'PersonStepper'">
+      <div class="MStepContent" :Label="'المعلومات'">
+        <div class="MField" id="ID" v-show="Operation == 'EDIT'">
+          <input disabled type="text" required>
+          <label>الرمز</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="Name">
+          <input type="text" required>
+          <label>الاسم</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <MComboBox ref='Attributes' :MultipleSelections="true" :Name="'Attributes'" :Label="'الصفة'"
+          :Items="AttributesItems"></MComboBox>
+        <MComboBox ref='Gender' :Name="'Gender'" :Label="'الجنس'" :Items="GenderItems"
+          v-show="CheckAttributes(['مالك', 'مستاجر'])"></MComboBox>
+        <MDate ref="BirthDate" :Name="'BirthDate'" :Label="'المواليد'" v-show="CheckAttributes(['مالك', 'مستاجر'])">
+        </MDate>
+        <div class="MField" id="Nationality" v-show="CheckAttributes(['متعهد', 'عامل'])">
+          <input type="text" required>
+          <label>الجنسية</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="MotherName" v-show="CheckAttributes(['مالك', 'مستاجر'])">
+          <input type="text" required>
+          <label>اسم الام</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <MComboBox ref='IdentificationType' :Name="'IdentificationType'" :Label="'نوع المستمسك'"
+          :Items="IdentificationTypeItems"
+          v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])"></MComboBox>
+        <div class="MField" id="IdentificationNumber"
+          v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])">
+          <input type="text" required>
+          <label>رقم المستمسك</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="IdentificationRecord" v-show="CheckAttributes(['مالك', 'مستاجر'])">
+          <input type="text" required>
+          <label>السجل</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="IdentificationPage" v-show="CheckAttributes(['مالك', 'مستاجر'])">
+          <input type="text" required>
+          <label>الصحيفة</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="IdentificationIssuingAuthority" v-show="CheckAttributes(['مالك', 'مستاجر'])">
+          <input type="text" required>
+          <label>جهة الاصدار</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <MDate ref="IdentificationIssuingDate" :Name="'IdentificationIssuingDate'" :Label="'تاريخ الاصدار'"
+          v-show="CheckAttributes(['مالك', 'مستاجر'])"></MDate>
+        <div class="MField" id="Phone"
+          v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])">
+          <input type="text" required>
+          <label>رقم الهاتف</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="Study" v-show="CheckAttributes(['مالك', 'مستاجر', 'موظف'])">
+          <input type="text" required />
+          <label>التحصيل الدراسي</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="EducationCertificate" v-show="CheckAttributes(['موظف'])">
+          <input type="text" required />
+          <label>الشهادة</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="WorkType" v-show="CheckAttributes(['مالك', 'مستاجر', 'كادر'])">
+          <input type="text" required />
+          <label>نوع العمل</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="WorkPlace" v-show="CheckAttributes(['مالك', 'مستاجر', 'كادر', 'موظف'])">
+          <input type="text" required />
+          <label>موقع العمل</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <MComboBox ref='ContractorWorkPlace' :Name="'ContractorWorkPlace'" :Label="'موقع العمل'"
+          :Items="ContractorWorkPlaceItems" v-show="CheckAttributes(['متعهد'])"></MComboBox>
+        <div class="MField" id="EmployeeCompany" v-show="CheckAttributes(['موظف'])">
+          <input type="text" required />
+          <label>الشركة</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="EmployeeDepartment" v-show="CheckAttributes(['موظف'])">
+          <input type="text" required />
+          <label>القسم</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="JobTitle" v-show="CheckAttributes(['موظف'])">
+          <input type="text" required />
+          <label>العنوان الوظيفي</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <MDate ref="EmployeeStartDate" :Name="'EmployeeStartDate'" :Label="'تاريخ المباشرة'"
+          v-show="CheckAttributes(['موظف'])"></MDate>
+        <div class="MField" id="OutsideAddress"
+          v-show="CheckAttributes(['متعهد', 'كادر', 'عامل', 'موظف', 'زائر', 'سائق'])">
+          <input type="text" required />
+          <label>العنوان</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="CarNumber"
+          v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])">
+          <input type="text" required>
+          <label>رقم العجلة</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="CarDetails"
+          v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])">
+          <input type="text" required>
+          <label>تفاصيل العجلة</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="EMail" v-show="CheckAttributes(['مالك', 'مستاجر'])">
+          <input type="text" required />
+          <label>بريد الكتروني</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="ContractorContractNo" v-show="CheckAttributes(['متعهد'])">
+          <input type="text" required />
+          <label>رقم عقد العمل</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="EntryPort" v-show="CheckAttributes(['متعهد', 'عامل'])">
+          <input type="text" required />
+          <label>منفذ الدخول</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <MDate ref="EntryDate" :Name="'EntryDate'" :Label="'تاريخ الدخول'" v-show="CheckAttributes(['متعهد', 'عامل'])">
+        </MDate>
+        <div class="MField" id="Notes">
+          <input type="text" required />
+          <label>الملاحظات</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="InputDate" v-show="Operation == 'EDIT'">
+          <input type="text" disabled required>
+          <label>تاريخ الادخال</label>
+          <div class="MFieldBG"></div>
+        </div>
       </div>
-      <MComboBox ref='Attributes' :MultipleSelections="true" :Name="'Attributes'" :Label="'الصفة'"
-        :Items="AttributesItems"></MComboBox>
-      <div class="MField" id="Name">
-        <input type="text" required>
-        <label>الاسم</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <MComboBox ref='Gender' :Name="'Gender'" :Label="'الجنس'" :Items="GenderItems"
-        v-show="CheckAttributes(['مالك', 'مستاجر'])"></MComboBox>
-      <MDate ref="BirthDate" :Name="'BirthDate'" :Label="'المواليد'" v-show="CheckAttributes(['مالك', 'مستاجر'])">
-      </MDate>
-      <div class="MField" id="Nationality" v-show="CheckAttributes(['متعهد', 'عامل'])">
-        <input type="text" required>
-        <label>الجنسية</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MField" id="MotherName" v-show="CheckAttributes(['مالك', 'مستاجر'])">
-        <input type="text" required>
-        <label>اسم الام</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <MComboBox ref='IdentificationType' :Name="'IdentificationType'" :Label="'نوع المستمسك'"
-        :Items="IdentificationTypeItems" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])"></MComboBox>
-      <div class="MField" id="IdentificationNumber" v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])">
-        <input type="text" required>
-        <label>رقم المستمسك</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MField" id="IdentificationRecord" v-show="CheckAttributes(['مالك', 'مستاجر'])">
-        <input type="text" required>
-        <label>السجل</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MField" id="IdentificationPage" v-show="CheckAttributes(['مالك', 'مستاجر'])">
-        <input type="text" required>
-        <label>الصحيفة</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MField" id="IdentificationIssuingAuthority" v-show="CheckAttributes(['مالك', 'مستاجر'])">
-        <input type="text" required>
-        <label>جهة الاصدار</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <MDate ref="IdentificationIssuingDate" :Name="'IdentificationIssuingDate'" :Label="'تاريخ الاصدار'"
-        v-show="CheckAttributes(['مالك', 'مستاجر'])"></MDate>
-      <div class="MField" id="Phone"
-        v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])">
-        <input type="text" required>
-        <label>رقم الهاتف</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MField" id="Study" v-show="CheckAttributes(['مالك', 'مستاجر', 'موظف'])">
-        <input type="text" required />
-        <label>التحصيل الدراسي</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MField" id="EducationCertificate" v-show="CheckAttributes(['موظف'])">
-        <input type="text" required />
-        <label>الشهادة</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MField" id="WorkType" v-show="CheckAttributes(['مالك', 'مستاجر', 'كادر'])">
-        <input type="text" required />
-        <label>نوع العمل</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MField" id="WorkPlace" v-show="CheckAttributes(['مالك', 'مستاجر', 'كادر', 'موظف'])">
-        <input type="text" required />
-        <label>موقع العمل</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <MComboBox ref='ContractorWorkPlace' :Name="'ContractorWorkPlace'" :Label="'موقع العمل'"
-        :Items="ContractorWorkPlaceItems" v-show="CheckAttributes(['متعهد'])"></MComboBox>
-      <div class="MField" id="EmployeeCompany" v-show="CheckAttributes(['موظف'])">
-        <input type="text" required />
-        <label>الشركة</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MField" id="EmployeeDepartment" v-show="CheckAttributes(['موظف'])">
-        <input type="text" required />
-        <label>القسم</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MField" id="JobTitle" v-show="CheckAttributes(['موظف'])">
-        <input type="text" required />
-        <label>العنوان الوظيفي</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <MDate ref="EmployeeStartDate" :Name="'EmployeeStartDate'" :Label="'تاريخ المباشرة'"
-        v-show="CheckAttributes(['موظف'])"></MDate>
-      <div class="MField" id="OutsideAddress" v-show="CheckAttributes(['متعهد', 'كادر', 'عامل', 'موظف', 'زائر', 'سائق'])">
-        <input type="text" required />
-        <label>العنوان</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MField" id="CarNumber"
-        v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])">
-        <input type="text" required>
-        <label>رقم العجلة</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MField" id="CarDetails"
-        v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])">
-        <input type="text" required>
-        <label>تفاصيل العجلة</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MField" id="EMail" v-show="CheckAttributes(['مالك', 'مستاجر'])">
-        <input type="text" required />
-        <label>بريد الكتروني</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MField" id="ContractorContractNo" v-show="CheckAttributes(['متعهد'])">
-        <input type="text" required />
-        <label>رقم عقد العمل</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MField" id="EntryPort" v-show="CheckAttributes(['متعهد', 'عامل'])">
-        <input type="text" required />
-        <label>منفذ الدخول</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <MDate ref="EntryDate" :Name="'EntryDate'" :Label="'تاريخ الدخول'" v-show="CheckAttributes(['متعهد', 'عامل'])">
-      </MDate>
-      <div class="MField" id="Notes">
-        <input type="text" required />
-        <label>الملاحظات</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MField" id="InputDate" v-show="Operation == 'EDIT'">
-        <input type="text" disabled required>
-        <label>تاريخ الادخال</label>
-        <div class="MFieldBG"></div>
-      </div>
-    </div>
-
-    <div class="MGroup" ref="PersonsRelationsGroup" id="PersonsRelationsGroup"
-      v-show="CheckAttributes(['مالك', 'مستاجر', 'سائق', 'زائر'])">
-      <div class="MGroupTitle">العلاقات</div>
-
-      <div class="MField" id="GuardianID">
-        <input type="text" v-model="GuardianID" required>
-        <label>رمز صاحب العقار</label>
-        <div class="MFieldBG"></div>
-        <div v-show="GuardianID" class="MButton MFieldBTN">
-          <svg viewBox="0 0 1000 1000">
-            <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
+      <div class="MStepContent" :Label="'العلاقات'" :Visible="CheckAttributes(['مستاجر', 'مالك', 'سائق', 'زائر'])">
+        <div class="RelationsSection" ref="PersonsRelationsGroup" id="PersonsRelationsGroup">
+          <div class="MField" id="GuardianID">
+            <input type="text" v-model="GuardianID" required>
+            <label>رمز صاحب العقار</label>
+            <div class="MFieldBG"></div>
+            <div v-show="GuardianID" class="MButton MFieldBTN">
+              <svg viewBox="0 0 1000 1000">
+                <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
 	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
 	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
 	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
 	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
 	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
 	C553.9,663.3,657.6,553.1,656.9,424.3z" />
-          </svg>
+              </svg>
+            </div>
+          </div>
+          <div class="MField" id="GuardianName">
+            <input type="text" disabled required>
+            <label>اسم صاحب العقار</label>
+            <div class="MFieldBG"></div>
+          </div>
+          <MComboBox ref='Relation' :Name="'Relation'" :Label="'العلاقة'" :Items="RelationItems"></MComboBox>
+          <MComboBox ref='RelationAddress' :Name="'RelationAddress'" :ItemsName="'full_address'" :Label="'العنوان'"
+            :Items="RelationAddressItems"></MComboBox>
+          <div class="MGroupButtons">
+            <div class="MButton" id="AddRelation"
+              v-show="PersonsRelationsGroup && !PersonsRelationsGroup.hasAttribute('RelationID') && GuardianID != '' && Relation && Relation.Get().length > 0 && RelationAddress && RelationAddress.Get().length > 0">
+              اضافة</div>
+            <div class="MButton" id="SaveRelation">حفظ</div>
+            <div class="MButton" id="CancelRelation">الغاء</div>
+          </div>
+          <MTable ref="RelationsTB" :Name="'RelationsTB'" :DataArray="RelationsTBData" :Columns="RelationsTBColumns"
+            :Sums="RelationsTBSums" :ShowFilterRow="false" :RowsPerPage="1000">
+            <template v-slot:options>
+              <div class="MTableOption" OptionEventName="EditItem">
+                <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
+                    <path d="M500.2,249.6c124.1,1.1,233.2,42.7,328.2,122.1c39.6,33,72.3,72.7,106.8,110.6c9,9.9,8.7,25.5-0.8,36.4
+	c-53.9,62.1-109.3,122.5-182.1,163.7c-66,37.4-136.2,60.8-212,66.4C399.6,759.2,276.4,716.6,169,626.3
+	C130.9,594.3,99.2,556,66,519.3c-10-11-10.5-26-0.9-37.1c53.3-61.5,107.9-121.4,179.6-162.7c66.8-38.5,138-62.1,215.1-68.3
+	C473.2,250.2,486.7,250.1,500.2,249.6z M504.7,308.1c-19.4,0.8-34.9,0.7-50.4,2.2c-61.5,6.1-119,24.8-173,54.6
+	c-59.2,32.7-106.2,79.4-150.3,129.6c-4.1,4.7-3.1,8.1,0.7,12.1c21.3,22.2,40.9,45.9,63.9,66.5c86.2,77.3,186.4,118.2,302.7,118.9
+	c68.3,0.4,133-14.2,194.7-43.2c70.8-33.3,126.2-85.4,176.6-143.7c4-4.6,2-7.9-1.3-11.3c-21.3-22.2-40.9-45.9-63.8-66.6
+	C718.1,349.4,617.3,308.9,504.7,308.1z" />
+                    <path d="M392.3,499.7c0.2-59,49.3-108.3,108.1-107.4c60.6,0.9,107.4,47.4,107.2,108c-0.2,60.9-47.5,106.9-107.8,107.4
+	C440.8,608.1,392.1,558.6,392.3,499.7z M500.2,556.5c30.5,0,56.4-25.9,56.4-56.4c0-30.6-25.7-56.5-56.2-56.6
+	c-31-0.1-56.9,25.8-56.8,56.8C443.8,530.8,469.7,556.6,500.2,556.5z" />
+                  </svg></div>
+                <div class="MTableOptionName">تعديل</div>
+              </div>
+              <div class="MTableOption" OptionEventName="DeleteItem">
+                <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
+                    <path
+                      d="M906.1,242.4c-4.5-16.8-18.9-26-40.5-26c-89.9,0-179.8,0-269.8,0l-103.4,0v-0.2l-70.2,0c-65.9,0-131.8,0-197.8,0
+	c-6.8,0-13.5,0-20.3,0c-24.2,0-49.1,0-73.7,0.3c-12.9,0.2-24.3,5.5-31.2,14.5c-6.3,8.3-8.3,18.8-5.5,29.6
+	c4.1,16,18.4,26.1,37.3,26.4c14.2,0.2,28.7,0.1,42.7,0.1c5.9,0,11.9,0,17.8,0c0.8,0,1.6,0,2.5,0c8.9,0,14.2,0,18.3,4.2
+	c4,4.1,4,9.5,4,18.4l0,149.7c0,103.7,0,207.3,0,311c0,13,0.4,23.9,1.2,34.2c6.4,79,75.7,143.7,154.5,144.2
+	c68.3,0.4,137.8,0.3,205,0.2c17,0,34-0.1,51-0.1c15.5,0,31.3-2.8,46.9-8.3c67-23.6,108.6-82.9,108.7-154.7
+	c0.1-108.3,0.1-218.5,0.1-325c0-51,0-102.1,0-153.1c0-7.7,0-12.8,3.8-16.7c3.8-3.9,8.9-3.9,16.6-3.9c7.3,0,14.8,0,22,0.1
+	c14.4,0.1,29.3,0.1,43.8-0.2c12.9-0.3,24.2-5.7,31-14.8C907.1,263.7,909,253.1,906.1,242.4z M686.4,852.8
+	c-17.2,17.3-40.4,26.5-67.2,26.5c0,0,0,0,0,0c-23.8,0-47.6,0-71.5,0c-22.7,0-45.7,0-68.9,0c-32.7,0-65.6,0-98.2-0.1
+	c-46.8-0.1-82.1-27.4-92.1-71.2c-1.7-7.4-1.6-14.6-1.6-21.5c0-1.1,0-2.2,0-3.3c0-60.2,0-120.3,0-180.5l0-51.2l0-58.7
+	c0-61.5,0-123.1,0-184.6c0-7.9,0-13.1,3.9-17c3.9-3.9,8.8-3.9,17-3.9c128,0,256,0,383.9,0c8.2,0,13.2,0,17,3.8
+	c3.9,3.9,3.9,9.1,3.9,17c0,44.2,0,89.1-0.1,132.6c-0.1,112.9-0.2,229.6,0.5,344.4C713.5,810.7,703.7,835.4,686.4,852.8z" />
+                    <path class="st1" d="M712.8,440.7c0-43.4,0.1-88.4,0.1-132.6c0-7.9,0-13.1-3.9-17c-3.9-3.8-8.8-3.8-17-3.8c-128,0-256,0-383.9,0
+	c-8.2,0-13.1,0-17,3.9c-3.9,3.9-3.9,9.1-3.9,17c0,61.5,0,123.1,0,184.6l0,58.7l0,51.2c0,60.2,0,120.3,0,180.5c0,1.1,0,2.2,0,3.3
+	c0,6.9-0.1,14.1,1.6,21.5c10,43.8,45.2,71.1,92.1,71.2c32.6,0.1,65.5,0.1,98.2,0.1c23.2,0,46.2,0,68.9,0c23.8,0,47.6,0,71.5,0
+	c0,0,0,0,0,0c26.8,0,50-9.1,67.2-26.5c17.3-17.4,27.1-42.1,26.9-67.8C712.6,670.3,712.7,553.5,712.8,440.7z M619.3,864.3
+	c-23.8,0-47.6,0-71.5,0c-54.7,0-111.3,0.1-167-0.1c-40.1-0.1-69-22.4-77.5-59.5c-1.3-5.7-1.3-11.7-1.2-18.1c0-1.1,0-2.3,0-3.4
+	c0-60.2,0-120.3,0-180.5l0-51.2l0-58.7c0-61.5,0-123.1,0-184.6c0-2,0-4.2,0.1-5.8c1.6-0.1,3.8-0.1,5.9-0.1c128,0,256,0,383.9,0
+	c2.1,0,4.3,0,5.9,0.1c0.1,1.5,0.1,3.7,0.1,5.7c0,44.2,0,89.1-0.1,132.5c-0.1,112.9-0.2,229.7,0.5,344.5c0.1,21.7-8.1,42.5-22.5,57.1
+	C661.5,856.6,641.9,864.3,619.3,864.3z" />
+                    <path d="M382.7,86.6c0.1,19.9,14.7,33.9,35.5,34c18.8,0.1,38,0.1,56.5,0c8.3,0,16.6,0,24.9,0c8.1,0,16.3,0,24.4,0c18.7,0,38,0,57,0
+	c21.6-0.1,36.2-13.8,36.2-34.2c0.1-20.4-14.9-35.2-35.5-35.3C553.9,51,526.4,51,499.4,51c-27.8,0-55,0.1-81.4,0.2
+	c-10,0-19.1,3.6-25.5,10.1C386.1,67.7,382.6,76.7,382.7,86.6z" />
+                    <path d="M535.3,423.2c0-4.8-0.5-9.4-1.4-13.8c-3.5-16-17.1-26.7-33.9-26.7c0,0,0,0-0.1,0c-16.9,0-30.2,10.6-33.9,27
+	c-1.2,5.4-1.4,10.9-1.4,15.7c0,40.2,0,80.4,0,120.6l0,70.1c0,40.4,0,82.2,0.1,123.3c0,5.8,0.4,10.7,1.2,15c3,16,14.4,26.5,31.4,28.8
+	c12.7,1.7,27.5-6.7,33.8-19.1c3-5.9,4.3-12.7,4.3-22l0-84.7C535.4,580.7,535.4,501.3,535.3,423.2z" />
+                  </svg></div>
+                <div class="MTableOptionName">حذف</div>
+              </div>
+            </template>
+          </MTable>
         </div>
       </div>
-      <div class="MField" id="GuardianName">
-        <input type="text" disabled required>
-        <label>اسم صاحب العقار</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <MComboBox ref='Relation' :Name="'Relation'" :Label="'العلاقة'" :Items="RelationItems"></MComboBox>
-      <MComboBox ref='RelationAddress' :Name="'RelationAddress'" :ItemsName="'full_address'" :Label="'العنوان'"
-        :Items="RelationAddressItems"></MComboBox>
-      <div class="MGroupButtons">
-        <div class="MButton" id="AddRelation"
-          v-show="PersonsRelationsGroup && !PersonsRelationsGroup.hasAttribute('RelationID') && GuardianID != '' && Relation && Relation.Get().length > 0 && RelationAddress && RelationAddress.Get().length > 0">
-          اضافة</div>
-        <div class="MButton" id="SaveRelation">حفظ</div>
-        <div class="MButton" id="CancelRelation">الغاء</div>
-      </div>
-      <MTable ref="RelationsTB" :Name="'RelationsTB'" :DataArray="RelationsTBData" :Columns="RelationsTBColumns"
-        :Sums="RelationsTBSums" :ShowFilterRow="false" :RowsPerPage="1000">
-        <template v-slot:options>
-          <div class="MTableOption" OptionEventName="EditItem">
-            <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
-                <path d="M500.2,249.6c124.1,1.1,233.2,42.7,328.2,122.1c39.6,33,72.3,72.7,106.8,110.6c9,9.9,8.7,25.5-0.8,36.4
+      <div class="MStepContent" :Label="'العقارات'" :Visible="CheckAttributes(['مستاجر', 'مالك'])">
+        <div class="RealEstatesSection" ref="PersonsRealEstatesGroup" id="PersonsRealEstatesGroup">
+          <MComboBox ref='RECompound' :Name="'RECompound'" :Label="'المدينة'" :Items="RECompoundItems"></MComboBox>
+          <MComboBox ref='REAddress' :Name="'REAddress'" :ItemsName="'address'" :Label="'العنوان'"
+            :Items="REAddressItems">
+          </MComboBox>
+          <MComboBox ref='REOccupancy' :Name="'REOccupancy'" :Label="'نوع السكن'" :Items="REOccupancyItems"></MComboBox>
+          <MComboBox ref='REHousingStatus' :Name="'REHousingStatus'" :Label="'حالة السكن'" :Items="REHousingStatusItems"
+            v-show="REOccupancyValue && REOccupancyValue == 'ملك'"></MComboBox>
+
+          <div class="MGroupButtons">
+            <div class="MButton" id="AddRealEstate"
+              v-show="RECompound && RECompound.Get().length > 0 && REAddress && REAddress.Get().length > 0 && REOccupancy && REOccupancy.Get().length > 0 && REHousingStatus && REHousingStatus.Get().length > 0">
+              اضافة</div>
+            <div class="MButton" id="SaveRealEstate">حفظ</div>
+            <div class="MButton" id="CancelRealEstate">الغاء</div>
+          </div>
+          <MTable ref="RealEstatesTB" :Name="'RealEstatesTB'" :DataArray="RealEstatesTBData"
+            :Columns="RealEstatesTBColumns" :Sums="RealEstatesTBSums" :ShowFilterRow="false" :RowsPerPage="1000">
+            <template v-slot:options>
+              <div class="MTableOption" OptionEventName="EditItem">
+                <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
+                    <path d="M500.2,249.6c124.1,1.1,233.2,42.7,328.2,122.1c39.6,33,72.3,72.7,106.8,110.6c9,9.9,8.7,25.5-0.8,36.4
 	c-53.9,62.1-109.3,122.5-182.1,163.7c-66,37.4-136.2,60.8-212,66.4C399.6,759.2,276.4,716.6,169,626.3
 	C130.9,594.3,99.2,556,66,519.3c-10-11-10.5-26-0.9-37.1c53.3-61.5,107.9-121.4,179.6-162.7c66.8-38.5,138-62.1,215.1-68.3
 	C473.2,250.2,486.7,250.1,500.2,249.6z M504.7,308.1c-19.4,0.8-34.9,0.7-50.4,2.2c-61.5,6.1-119,24.8-173,54.6
 	c-59.2,32.7-106.2,79.4-150.3,129.6c-4.1,4.7-3.1,8.1,0.7,12.1c21.3,22.2,40.9,45.9,63.9,66.5c86.2,77.3,186.4,118.2,302.7,118.9
 	c68.3,0.4,133-14.2,194.7-43.2c70.8-33.3,126.2-85.4,176.6-143.7c4-4.6,2-7.9-1.3-11.3c-21.3-22.2-40.9-45.9-63.8-66.6
 	C718.1,349.4,617.3,308.9,504.7,308.1z" />
-                <path d="M392.3,499.7c0.2-59,49.3-108.3,108.1-107.4c60.6,0.9,107.4,47.4,107.2,108c-0.2,60.9-47.5,106.9-107.8,107.4
+                    <path d="M392.3,499.7c0.2-59,49.3-108.3,108.1-107.4c60.6,0.9,107.4,47.4,107.2,108c-0.2,60.9-47.5,106.9-107.8,107.4
 	C440.8,608.1,392.1,558.6,392.3,499.7z M500.2,556.5c30.5,0,56.4-25.9,56.4-56.4c0-30.6-25.7-56.5-56.2-56.6
 	c-31-0.1-56.9,25.8-56.8,56.8C443.8,530.8,469.7,556.6,500.2,556.5z" />
-              </svg></div>
-            <div class="MTableOptionName">تعديل</div>
-          </div>
-          <div class="MTableOption" OptionEventName="DeleteItem">
-            <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
-                <path
-                  d="M906.1,242.4c-4.5-16.8-18.9-26-40.5-26c-89.9,0-179.8,0-269.8,0l-103.4,0v-0.2l-70.2,0c-65.9,0-131.8,0-197.8,0
+                  </svg></div>
+                <div class="MTableOptionName">تعديل</div>
+              </div>
+              <div class="MTableOption" OptionEventName="DeleteItem">
+                <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
+                    <path
+                      d="M906.1,242.4c-4.5-16.8-18.9-26-40.5-26c-89.9,0-179.8,0-269.8,0l-103.4,0v-0.2l-70.2,0c-65.9,0-131.8,0-197.8,0
 	c-6.8,0-13.5,0-20.3,0c-24.2,0-49.1,0-73.7,0.3c-12.9,0.2-24.3,5.5-31.2,14.5c-6.3,8.3-8.3,18.8-5.5,29.6
 	c4.1,16,18.4,26.1,37.3,26.4c14.2,0.2,28.7,0.1,42.7,0.1c5.9,0,11.9,0,17.8,0c0.8,0,1.6,0,2.5,0c8.9,0,14.2,0,18.3,4.2
 	c4,4.1,4,9.5,4,18.4l0,149.7c0,103.7,0,207.3,0,311c0,13,0.4,23.9,1.2,34.2c6.4,79,75.7,143.7,154.5,144.2
@@ -209,7 +280,7 @@
 	c-46.8-0.1-82.1-27.4-92.1-71.2c-1.7-7.4-1.6-14.6-1.6-21.5c0-1.1,0-2.2,0-3.3c0-60.2,0-120.3,0-180.5l0-51.2l0-58.7
 	c0-61.5,0-123.1,0-184.6c0-7.9,0-13.1,3.9-17c3.9-3.9,8.8-3.9,17-3.9c128,0,256,0,383.9,0c8.2,0,13.2,0,17,3.8
 	c3.9,3.9,3.9,9.1,3.9,17c0,44.2,0,89.1-0.1,132.6c-0.1,112.9-0.2,229.6,0.5,344.4C713.5,810.7,703.7,835.4,686.4,852.8z" />
-                <path class="st1" d="M712.8,440.7c0-43.4,0.1-88.4,0.1-132.6c0-7.9,0-13.1-3.9-17c-3.9-3.8-8.8-3.8-17-3.8c-128,0-256,0-383.9,0
+                    <path class="st1" d="M712.8,440.7c0-43.4,0.1-88.4,0.1-132.6c0-7.9,0-13.1-3.9-17c-3.9-3.8-8.8-3.8-17-3.8c-128,0-256,0-383.9,0
 	c-8.2,0-13.1,0-17,3.9c-3.9,3.9-3.9,9.1-3.9,17c0,61.5,0,123.1,0,184.6l0,58.7l0,51.2c0,60.2,0,120.3,0,180.5c0,1.1,0,2.2,0,3.3
 	c0,6.9-0.1,14.1,1.6,21.5c10,43.8,45.2,71.1,92.1,71.2c32.6,0.1,65.5,0.1,98.2,0.1c23.2,0,46.2,0,68.9,0c23.8,0,47.6,0,71.5,0
 	c0,0,0,0,0,0c26.8,0,50-9.1,67.2-26.5c17.3-17.4,27.1-42.1,26.9-67.8C712.6,670.3,712.7,553.5,712.8,440.7z M619.3,864.3
@@ -217,154 +288,87 @@
 	c0-60.2,0-120.3,0-180.5l0-51.2l0-58.7c0-61.5,0-123.1,0-184.6c0-2,0-4.2,0.1-5.8c1.6-0.1,3.8-0.1,5.9-0.1c128,0,256,0,383.9,0
 	c2.1,0,4.3,0,5.9,0.1c0.1,1.5,0.1,3.7,0.1,5.7c0,44.2,0,89.1-0.1,132.5c-0.1,112.9-0.2,229.7,0.5,344.5c0.1,21.7-8.1,42.5-22.5,57.1
 	C661.5,856.6,641.9,864.3,619.3,864.3z" />
-                <path d="M382.7,86.6c0.1,19.9,14.7,33.9,35.5,34c18.8,0.1,38,0.1,56.5,0c8.3,0,16.6,0,24.9,0c8.1,0,16.3,0,24.4,0c18.7,0,38,0,57,0
+                    <path d="M382.7,86.6c0.1,19.9,14.7,33.9,35.5,34c18.8,0.1,38,0.1,56.5,0c8.3,0,16.6,0,24.9,0c8.1,0,16.3,0,24.4,0c18.7,0,38,0,57,0
 	c21.6-0.1,36.2-13.8,36.2-34.2c0.1-20.4-14.9-35.2-35.5-35.3C553.9,51,526.4,51,499.4,51c-27.8,0-55,0.1-81.4,0.2
 	c-10,0-19.1,3.6-25.5,10.1C386.1,67.7,382.6,76.7,382.7,86.6z" />
-                <path d="M535.3,423.2c0-4.8-0.5-9.4-1.4-13.8c-3.5-16-17.1-26.7-33.9-26.7c0,0,0,0-0.1,0c-16.9,0-30.2,10.6-33.9,27
+                    <path d="M535.3,423.2c0-4.8-0.5-9.4-1.4-13.8c-3.5-16-17.1-26.7-33.9-26.7c0,0,0,0-0.1,0c-16.9,0-30.2,10.6-33.9,27
 	c-1.2,5.4-1.4,10.9-1.4,15.7c0,40.2,0,80.4,0,120.6l0,70.1c0,40.4,0,82.2,0.1,123.3c0,5.8,0.4,10.7,1.2,15c3,16,14.4,26.5,31.4,28.8
 	c12.7,1.7,27.5-6.7,33.8-19.1c3-5.9,4.3-12.7,4.3-22l0-84.7C535.4,580.7,535.4,501.3,535.3,423.2z" />
-              </svg></div>
-            <div class="MTableOptionName">حذف</div>
-          </div>
-        </template>
-      </MTable>
-    </div>
-
-    <div class="MGroup" ref="PersonsRealEstatesGroup" id="PersonsRealEstatesGroup"
-      v-show="CheckAttributes(['مالك', 'مستاجر'])">
-      <div class="MGroupTitle">العقارات</div>
-      <MComboBox ref='RECompound' :Name="'RECompound'" :Label="'المدينة'" :Items="RECompoundItems"></MComboBox>
-      <MComboBox ref='REAddress' :Name="'REAddress'" :ItemsName="'address'" :Label="'العنوان'" :Items="REAddressItems">
-      </MComboBox>
-      <MComboBox ref='REOccupancy' :Name="'REOccupancy'" :Label="'نوع السكن'" :Items="REOccupancyItems"></MComboBox>
-      <MComboBox ref='REHousingStatus' :Name="'REHousingStatus'" :Label="'حالة السكن'" :Items="REHousingStatusItems"
-        v-show="REOccupancyValue && REOccupancyValue == 'ملك'"></MComboBox>
-
-      <div class="MGroupButtons">
-        <div class="MButton" id="AddRealEstate"
-          v-show="RECompound && RECompound.Get().length > 0 && REAddress && REAddress.Get().length > 0 && REOccupancy && REOccupancy.Get().length > 0 && REHousingStatus && REHousingStatus.Get().length > 0">
-          اضافة</div>
-        <div class="MButton" id="SaveRealEstate">حفظ</div>
-        <div class="MButton" id="CancelRealEstate">الغاء</div>
+                  </svg></div>
+                <div class="MTableOptionName">حذف</div>
+              </div>
+            </template>
+          </MTable>
+        </div>
       </div>
-      <MTable ref="RealEstatesTB" :Name="'RealEstatesTB'" :DataArray="RealEstatesTBData" :Columns="RealEstatesTBColumns"
-        :Sums="RealEstatesTBSums" :ShowFilterRow="false" :RowsPerPage="1000">
-        <template v-slot:options>
-          <div class="MTableOption" OptionEventName="EditItem">
-            <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
-                <path d="M500.2,249.6c124.1,1.1,233.2,42.7,328.2,122.1c39.6,33,72.3,72.7,106.8,110.6c9,9.9,8.7,25.5-0.8,36.4
-	c-53.9,62.1-109.3,122.5-182.1,163.7c-66,37.4-136.2,60.8-212,66.4C399.6,759.2,276.4,716.6,169,626.3
-	C130.9,594.3,99.2,556,66,519.3c-10-11-10.5-26-0.9-37.1c53.3-61.5,107.9-121.4,179.6-162.7c66.8-38.5,138-62.1,215.1-68.3
-	C473.2,250.2,486.7,250.1,500.2,249.6z M504.7,308.1c-19.4,0.8-34.9,0.7-50.4,2.2c-61.5,6.1-119,24.8-173,54.6
-	c-59.2,32.7-106.2,79.4-150.3,129.6c-4.1,4.7-3.1,8.1,0.7,12.1c21.3,22.2,40.9,45.9,63.9,66.5c86.2,77.3,186.4,118.2,302.7,118.9
-	c68.3,0.4,133-14.2,194.7-43.2c70.8-33.3,126.2-85.4,176.6-143.7c4-4.6,2-7.9-1.3-11.3c-21.3-22.2-40.9-45.9-63.8-66.6
-	C718.1,349.4,617.3,308.9,504.7,308.1z" />
-                <path d="M392.3,499.7c0.2-59,49.3-108.3,108.1-107.4c60.6,0.9,107.4,47.4,107.2,108c-0.2,60.9-47.5,106.9-107.8,107.4
-	C440.8,608.1,392.1,558.6,392.3,499.7z M500.2,556.5c30.5,0,56.4-25.9,56.4-56.4c0-30.6-25.7-56.5-56.2-56.6
-	c-31-0.1-56.9,25.8-56.8,56.8C443.8,530.8,469.7,556.6,500.2,556.5z" />
-              </svg></div>
-            <div class="MTableOptionName">تعديل</div>
-          </div>
-          <div class="MTableOption" OptionEventName="DeleteItem">
-            <div class="MTableOptionIcon"><svg viewBox="0 0 1000 1000">
-                <path
-                  d="M906.1,242.4c-4.5-16.8-18.9-26-40.5-26c-89.9,0-179.8,0-269.8,0l-103.4,0v-0.2l-70.2,0c-65.9,0-131.8,0-197.8,0
-	c-6.8,0-13.5,0-20.3,0c-24.2,0-49.1,0-73.7,0.3c-12.9,0.2-24.3,5.5-31.2,14.5c-6.3,8.3-8.3,18.8-5.5,29.6
-	c4.1,16,18.4,26.1,37.3,26.4c14.2,0.2,28.7,0.1,42.7,0.1c5.9,0,11.9,0,17.8,0c0.8,0,1.6,0,2.5,0c8.9,0,14.2,0,18.3,4.2
-	c4,4.1,4,9.5,4,18.4l0,149.7c0,103.7,0,207.3,0,311c0,13,0.4,23.9,1.2,34.2c6.4,79,75.7,143.7,154.5,144.2
-	c68.3,0.4,137.8,0.3,205,0.2c17,0,34-0.1,51-0.1c15.5,0,31.3-2.8,46.9-8.3c67-23.6,108.6-82.9,108.7-154.7
-	c0.1-108.3,0.1-218.5,0.1-325c0-51,0-102.1,0-153.1c0-7.7,0-12.8,3.8-16.7c3.8-3.9,8.9-3.9,16.6-3.9c7.3,0,14.8,0,22,0.1
-	c14.4,0.1,29.3,0.1,43.8-0.2c12.9-0.3,24.2-5.7,31-14.8C907.1,263.7,909,253.1,906.1,242.4z M686.4,852.8
-	c-17.2,17.3-40.4,26.5-67.2,26.5c0,0,0,0,0,0c-23.8,0-47.6,0-71.5,0c-22.7,0-45.7,0-68.9,0c-32.7,0-65.6,0-98.2-0.1
-	c-46.8-0.1-82.1-27.4-92.1-71.2c-1.7-7.4-1.6-14.6-1.6-21.5c0-1.1,0-2.2,0-3.3c0-60.2,0-120.3,0-180.5l0-51.2l0-58.7
-	c0-61.5,0-123.1,0-184.6c0-7.9,0-13.1,3.9-17c3.9-3.9,8.8-3.9,17-3.9c128,0,256,0,383.9,0c8.2,0,13.2,0,17,3.8
-	c3.9,3.9,3.9,9.1,3.9,17c0,44.2,0,89.1-0.1,132.6c-0.1,112.9-0.2,229.6,0.5,344.4C713.5,810.7,703.7,835.4,686.4,852.8z" />
-                <path class="st1" d="M712.8,440.7c0-43.4,0.1-88.4,0.1-132.6c0-7.9,0-13.1-3.9-17c-3.9-3.8-8.8-3.8-17-3.8c-128,0-256,0-383.9,0
-	c-8.2,0-13.1,0-17,3.9c-3.9,3.9-3.9,9.1-3.9,17c0,61.5,0,123.1,0,184.6l0,58.7l0,51.2c0,60.2,0,120.3,0,180.5c0,1.1,0,2.2,0,3.3
-	c0,6.9-0.1,14.1,1.6,21.5c10,43.8,45.2,71.1,92.1,71.2c32.6,0.1,65.5,0.1,98.2,0.1c23.2,0,46.2,0,68.9,0c23.8,0,47.6,0,71.5,0
-	c0,0,0,0,0,0c26.8,0,50-9.1,67.2-26.5c17.3-17.4,27.1-42.1,26.9-67.8C712.6,670.3,712.7,553.5,712.8,440.7z M619.3,864.3
-	c-23.8,0-47.6,0-71.5,0c-54.7,0-111.3,0.1-167-0.1c-40.1-0.1-69-22.4-77.5-59.5c-1.3-5.7-1.3-11.7-1.2-18.1c0-1.1,0-2.3,0-3.4
-	c0-60.2,0-120.3,0-180.5l0-51.2l0-58.7c0-61.5,0-123.1,0-184.6c0-2,0-4.2,0.1-5.8c1.6-0.1,3.8-0.1,5.9-0.1c128,0,256,0,383.9,0
-	c2.1,0,4.3,0,5.9,0.1c0.1,1.5,0.1,3.7,0.1,5.7c0,44.2,0,89.1-0.1,132.5c-0.1,112.9-0.2,229.7,0.5,344.5c0.1,21.7-8.1,42.5-22.5,57.1
-	C661.5,856.6,641.9,864.3,619.3,864.3z" />
-                <path d="M382.7,86.6c0.1,19.9,14.7,33.9,35.5,34c18.8,0.1,38,0.1,56.5,0c8.3,0,16.6,0,24.9,0c8.1,0,16.3,0,24.4,0c18.7,0,38,0,57,0
-	c21.6-0.1,36.2-13.8,36.2-34.2c0.1-20.4-14.9-35.2-35.5-35.3C553.9,51,526.4,51,499.4,51c-27.8,0-55,0.1-81.4,0.2
-	c-10,0-19.1,3.6-25.5,10.1C386.1,67.7,382.6,76.7,382.7,86.6z" />
-                <path d="M535.3,423.2c0-4.8-0.5-9.4-1.4-13.8c-3.5-16-17.1-26.7-33.9-26.7c0,0,0,0-0.1,0c-16.9,0-30.2,10.6-33.9,27
-	c-1.2,5.4-1.4,10.9-1.4,15.7c0,40.2,0,80.4,0,120.6l0,70.1c0,40.4,0,82.2,0.1,123.3c0,5.8,0.4,10.7,1.2,15c3,16,14.4,26.5,31.4,28.8
-	c12.7,1.7,27.5-6.7,33.8-19.1c3-5.9,4.3-12.7,4.3-22l0-84.7C535.4,580.7,535.4,501.3,535.3,423.2z" />
-              </svg></div>
-            <div class="MTableOptionName">حذف</div>
-          </div>
-        </template>
-      </MTable>
-    </div>
-
-    <div class="MGroup" id="NFCCardGroup">
-      <div class="MGroupTitle">بطاقة الدخول</div>
-      <div class="MField" id="NFCID">
-        <input type="text" disabled v-model="NFCID" required>
-        <label>رمز البطاقة</label>
-        <div class="MFieldBG"></div>
-        <div v-show="NFCID" class="MButton MFieldBTN">
-          <svg viewBox="0 0 1000 1000">
-            <path d="M922.1,147.7c0.5,14.9-10.1,31.1-24.9,45.8C800.4,290,703.8,386.8,607.1,483.5c-16.5,16.5-16.5,16.5,0.5,33.4
+      <div class="MStepContent" :Label="'البطاقات'">
+        <div class="MField" id="NFCID">
+          <input type="text" disabled v-model="NFCID" required>
+          <label>رمز البطاقة</label>
+          <div class="MFieldBG"></div>
+          <div v-show="NFCID" class="MButton MFieldBTN">
+            <svg viewBox="0 0 1000 1000">
+              <path d="M922.1,147.7c0.5,14.9-10.1,31.1-24.9,45.8C800.4,290,703.8,386.8,607.1,483.5c-16.5,16.5-16.5,16.5,0.5,33.4
 		c97,97,194,194.1,291.1,291c17.4,17.3,27.2,36.8,22.7,61.9c-8.5,47.1-63.2,68.5-101.3,39.4c-5.5-4.2-10.5-9.3-15.4-14.2
 		c-97.8-97.7-195.6-195.3-293-293.4c-9.4-9.5-14-9.2-23.2,0.1C389.7,701.1,290.3,800,191.3,899.3c-19.7,19.8-42.3,28.4-69.5,20
 		c-41.1-12.7-57.5-63.1-32.2-97.9c4.1-5.6,9.2-10.6,14.1-15.5c97.3-97.4,194.7-194.8,292.1-292.2c13.8-13.8,13.8-13.8-0.5-28.1
 		C297.3,387.5,199.3,289.3,101,191.4c-20.2-20.1-29.1-43-19.9-70.8c15-45.2,70.8-57.9,106.2-23.7c33.9,32.7,66.7,66.4,100,99.7
 		c67.3,67.3,134.7,134.4,201.6,202c8.7,8.8,13.2,9.2,22.1,0.2c98.9-99.4,198.4-198.2,297.5-297.4c13.6-13.7,28.8-23,48.6-23.3
 		C893.3,77.6,921.6,104.9,922.1,147.7z" />
-          </svg>
+            </svg>
+          </div>
         </div>
-      </div>
-      <MDate ref="CardExpire" :Name="'CardExpire'" :Label="'صلاحية البطاقة'"></MDate>
-      <MComboBox ref='CardStatus' :Name="'CardStatus'" :Label="'حالة البطاقة'" :Items="CardStatusItems"></MComboBox>
-      <div class="MField" id="CardNotes">
-        <input type="text" required>
-        <label>ملاحظات البطاقة</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div class="MGroupTitle" id="GatesTitle">البوابات</div>
-      <div id="Gates">
-        <MCheckBox :Name="'Amal1-1'" :Label="'الامل 1 - البوابة 1'"></MCheckBox>
-        <MCheckBox :Name="'Amal1-2'" :Label="'الامل 1 - البوابة 2'"></MCheckBox>
-        <MCheckBox :Name="'Amal2-1'" :Label="'الامل 2 - البوابة 1'"></MCheckBox>
-        <MCheckBox :Name="'Amal2-2'" :Label="'الامل 2 - البوابة 2'"></MCheckBox>
-        <MCheckBox :Name="'Amaal-1'" :Label="'الامال - البوابة 1'"></MCheckBox>
-        <MCheckBox :Name="'Amaal-2'" :Label="'الامال - البوابة 2'"></MCheckBox>
-        <MCheckBox :Name="'jawhara-1'" :Label="'جوهرة البصرة - البوابة 1'"></MCheckBox>
-        <MCheckBox :Name="'jawhara-2'" :Label="'جوهرة البصرة - البوابة 2'"></MCheckBox>
-        <MCheckBox :Name="'eye-1'" :Label="'عين البصرة - البوابة 1'"></MCheckBox>
-        <MCheckBox :Name="'eye-2'" :Label="'عين البصرة - البوابة 2'"></MCheckBox>
-        <MCheckBox :Name="'dura-1'" :Label="'درة البصرة - البوابة 1'"></MCheckBox>
-        <MCheckBox :Name="'dura-2'" :Label="'درة البصرة - البوابة 2'"></MCheckBox>
-        <MCheckBox :Name="'shuruq-1'" :Label="'الشروق - البوابة 1'"></MCheckBox>
-        <MCheckBox :Name="'shuruq-2'" :Label="'الشروق - البوابة 2'"></MCheckBox>
-        <MCheckBox :Name="'rafah-1'" :Label="'الرفاه - البوابة 1'"></MCheckBox>
-        <MCheckBox :Name="'rafah-2'" :Label="'الرفاه - البوابة 2'"></MCheckBox>
-        <MCheckBox :Name="'nassem-1'" :Label="'النسيم - البوابة 1'"></MCheckBox>
-        <MCheckBox :Name="'nassem-2'" :Label="'النسيم - البوابة 2'"></MCheckBox>
-      </div>
-      <div class="MGroupSeperator"></div>
-      <div class="MImage">
-        <div class="MImagePreview">
-          <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
-          <div class="MImageButtons">
-            <div class="MImageBTN ShowMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
+        <MDate ref="CardExpire" :Name="'CardExpire'" :Label="'صلاحية البطاقة'"></MDate>
+        <MTime ref="AllowedTimeFrom" :Name="'AllowedTimeFrom'" :Label="'الوقت المسموح من'" :Clearable="true"
+          v-show="CheckAttributes(['سائق'])"></MTime>
+        <MTime ref="AllowedTimeTo" :Name="'AllowedTimeTo'" :Label="'الوقت المسموح الى'" :Clearable="true"
+          v-show="CheckAttributes(['سائق'])"></MTime>
+        <MComboBox ref='CardStatus' :Name="'CardStatus'" :Label="'حالة البطاقة'" :Items="CardStatusItems"></MComboBox>
+        <div class="MField" id="CardNotes">
+          <input type="text" required>
+          <label>ملاحظات البطاقة</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MGroupTitle" id="GatesTitle">البوابات</div>
+        <div id="Gates">
+          <MCheckBox :Name="'Amal1-1'" :Label="'الامل 1 - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'Amal1-2'" :Label="'الامل 1 - البوابة 2'"></MCheckBox>
+          <MCheckBox :Name="'Amal2-1'" :Label="'الامل 2 - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'Amal2-2'" :Label="'الامل 2 - البوابة 2'"></MCheckBox>
+          <MCheckBox :Name="'Amaal-1'" :Label="'الامال - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'Amaal-2'" :Label="'الامال - البوابة 2'"></MCheckBox>
+          <MCheckBox :Name="'jawhara-1'" :Label="'جوهرة البصرة - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'jawhara-2'" :Label="'جوهرة البصرة - البوابة 2'"></MCheckBox>
+          <MCheckBox :Name="'eye-1'" :Label="'عين البصرة - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'eye-2'" :Label="'عين البصرة - البوابة 2'"></MCheckBox>
+          <MCheckBox :Name="'dura-1'" :Label="'درة البصرة - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'dura-2'" :Label="'درة البصرة - البوابة 2'"></MCheckBox>
+          <MCheckBox :Name="'shuruq-1'" :Label="'الشروق - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'shuruq-2'" :Label="'الشروق - البوابة 2'"></MCheckBox>
+          <MCheckBox :Name="'rafah-1'" :Label="'الرفاه - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'rafah-2'" :Label="'الرفاه - البوابة 2'"></MCheckBox>
+          <MCheckBox :Name="'nassem-1'" :Label="'النسيم - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'nassem-2'" :Label="'النسيم - البوابة 2'"></MCheckBox>
+        </div>
+        <div class="MGroupSeperator"></div>
+        <div class="MImage">
+          <div class="MImagePreview">
+            <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
+            <div class="MImageButtons">
+              <div class="MImageBTN ShowMImage">
+                <svg viewBox="0 0 1000 1000">
+                  <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
 	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
 	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
 	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
 	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
 	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
 	C553.9,663.3,657.6,553.1,656.9,424.3z" />
-              </svg>
-            </div>
-            <div class="MImageBTN DeleteMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
+                </svg>
+              </div>
+              <div class="MImageBTN DeleteMImage">
+                <svg viewBox="0 0 1000 1000">
+                  <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
 	c15.3-15.2,23.8-28.8,27.3-43.8v-25.9c-5.5-21.4-16.3-36.2-34-46.4c-9.8-5.6-21.2-8.6-32.9-8.6h0h0c-16.4,0-32,5.7-43.9,15.9
 	c-3.4,2.9-6.9,6.2-11.4,10.8C705.4,199,646.3,258.1,589.2,315.2l-60,60c-6.6,6.6-14.9,14.9-28.9,14.9c-13.9,0-22.2-8.2-28.8-14.9
 	c-21-21-42.1-42.1-63.1-63.1C351.6,255.3,292.8,196.5,235,138.6c-16.5-16.5-33.9-24.2-54.7-24.2c-1,0-2,0-3,0.1
@@ -375,36 +379,37 @@
 	c13.9,0,22.4,8.5,28.6,14.7c20.1,20.1,40.2,40.2,60.4,60.3c56.6,56.5,115.1,115,172.5,172.8c15.1,15.2,28.7,23.8,43.8,27.3h26
 	c21.4-5.4,36.2-16.3,46.6-34.2c3.3-5.6,5.4-12.8,7.6-20.4v-25.5c-3.6-15-12.1-28.7-27.3-43.8c-57.8-57.4-116.3-116-172.9-172.6
 	c-20.1-20.1-40.1-40.2-60.2-60.2C619.1,522.8,610.6,514.3,610.6,500.4z" />
-              </svg>
+                </svg>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="MImagePicker">
-          <label class="MButton" for="CertificateImage">التاييد</label>
-          <input id="CertificateImage" type="file" accept=".jpg" />
+          <div class="MImagePicker">
+            <label class="MButton" for="CertificateImage">التاييد</label>
+            <input id="CertificateImage" type="file" accept=".jpg" />
+          </div>
         </div>
       </div>
-    </div>
-    <div class="MGroup">
-      <div class="MGroupTitle">المستمسكات</div>
-      <div class="MImage" required="true">
-        <div class="MImagePreview">
-          <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
-          <div class="MImageButtons">
-            <div class="MImageBTN ShowMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
+      <div class="MStepContent" :Label="'المستمسكات'">
+        <div class="ImagesSection">
+          <div class="MGroupTitle">المستمسكات</div>
+          <div class="MImage" required="true">
+            <div class="MImagePreview">
+              <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
+              <div class="MImageButtons">
+                <div class="MImageBTN ShowMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
 	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
 	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
 	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
 	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
 	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
 	C553.9,663.3,657.6,553.1,656.9,424.3z" />
-              </svg>
-            </div>
-            <div class="MImageBTN DeleteMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
+                  </svg>
+                </div>
+                <div class="MImageBTN DeleteMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
 	c15.3-15.2,23.8-28.8,27.3-43.8v-25.9c-5.5-21.4-16.3-36.2-34-46.4c-9.8-5.6-21.2-8.6-32.9-8.6h0h0c-16.4,0-32,5.7-43.9,15.9
 	c-3.4,2.9-6.9,6.2-11.4,10.8C705.4,199,646.3,258.1,589.2,315.2l-60,60c-6.6,6.6-14.9,14.9-28.9,14.9c-13.9,0-22.2-8.2-28.8-14.9
 	c-21-21-42.1-42.1-63.1-63.1C351.6,255.3,292.8,196.5,235,138.6c-16.5-16.5-33.9-24.2-54.7-24.2c-1,0-2,0-3,0.1
@@ -415,33 +420,33 @@
 	c13.9,0,22.4,8.5,28.6,14.7c20.1,20.1,40.2,40.2,60.4,60.3c56.6,56.5,115.1,115,172.5,172.8c15.1,15.2,28.7,23.8,43.8,27.3h26
 	c21.4-5.4,36.2-16.3,46.6-34.2c3.3-5.6,5.4-12.8,7.6-20.4v-25.5c-3.6-15-12.1-28.7-27.3-43.8c-57.8-57.4-116.3-116-172.9-172.6
 	c-20.1-20.1-40.1-40.2-60.2-60.2C619.1,522.8,610.6,514.3,610.6,500.4z" />
-              </svg>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="MImagePicker">
+              <label class="MButton" for="PersonalImage">صورة شخصية</label>
+              <input id="PersonalImage" type="file" accept=".jpg" />
             </div>
           </div>
-        </div>
-        <div class="MImagePicker">
-          <label class="MButton" for="PersonalImage">صورة شخصية</label>
-          <input id="PersonalImage" type="file" accept=".jpg" />
-        </div>
-      </div>
-      <div class="MImage" required="true">
-        <div class="MImagePreview">
-          <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
-          <div class="MImageButtons">
-            <div class="MImageBTN ShowMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
+          <div class="MImage" required="true">
+            <div class="MImagePreview">
+              <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
+              <div class="MImageButtons">
+                <div class="MImageBTN ShowMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
 	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
 	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
 	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
 	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
 	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
 	C553.9,663.3,657.6,553.1,656.9,424.3z" />
-              </svg>
-            </div>
-            <div class="MImageBTN DeleteMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
+                  </svg>
+                </div>
+                <div class="MImageBTN DeleteMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
 	c15.3-15.2,23.8-28.8,27.3-43.8v-25.9c-5.5-21.4-16.3-36.2-34-46.4c-9.8-5.6-21.2-8.6-32.9-8.6h0h0c-16.4,0-32,5.7-43.9,15.9
 	c-3.4,2.9-6.9,6.2-11.4,10.8C705.4,199,646.3,258.1,589.2,315.2l-60,60c-6.6,6.6-14.9,14.9-28.9,14.9c-13.9,0-22.2-8.2-28.8-14.9
 	c-21-21-42.1-42.1-63.1-63.1C351.6,255.3,292.8,196.5,235,138.6c-16.5-16.5-33.9-24.2-54.7-24.2c-1,0-2,0-3,0.1
@@ -452,33 +457,33 @@
 	c13.9,0,22.4,8.5,28.6,14.7c20.1,20.1,40.2,40.2,60.4,60.3c56.6,56.5,115.1,115,172.5,172.8c15.1,15.2,28.7,23.8,43.8,27.3h26
 	c21.4-5.4,36.2-16.3,46.6-34.2c3.3-5.6,5.4-12.8,7.6-20.4v-25.5c-3.6-15-12.1-28.7-27.3-43.8c-57.8-57.4-116.3-116-172.9-172.6
 	c-20.1-20.1-40.1-40.2-60.2-60.2C619.1,522.8,610.6,514.3,610.6,500.4z" />
-              </svg>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="MImagePicker">
+              <label class="MButton" for="IDImage">هويه او جواز</label>
+              <input id="IDImage" type="file" accept=".jpg" />
             </div>
           </div>
-        </div>
-        <div class="MImagePicker">
-          <label class="MButton" for="IDImage">هويه او جواز</label>
-          <input id="IDImage" type="file" accept=".jpg" />
-        </div>
-      </div>
-      <div class="MImage" required="true">
-        <div class="MImagePreview">
-          <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
-          <div class="MImageButtons">
-            <div class="MImageBTN ShowMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
+          <div class="MImage" required="true">
+            <div class="MImagePreview">
+              <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
+              <div class="MImageButtons">
+                <div class="MImageBTN ShowMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
 	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
 	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
 	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
 	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
 	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
 	C553.9,663.3,657.6,553.1,656.9,424.3z" />
-              </svg>
-            </div>
-            <div class="MImageBTN DeleteMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
+                  </svg>
+                </div>
+                <div class="MImageBTN DeleteMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
 	c15.3-15.2,23.8-28.8,27.3-43.8v-25.9c-5.5-21.4-16.3-36.2-34-46.4c-9.8-5.6-21.2-8.6-32.9-8.6h0h0c-16.4,0-32,5.7-43.9,15.9
 	c-3.4,2.9-6.9,6.2-11.4,10.8C705.4,199,646.3,258.1,589.2,315.2l-60,60c-6.6,6.6-14.9,14.9-28.9,14.9c-13.9,0-22.2-8.2-28.8-14.9
 	c-21-21-42.1-42.1-63.1-63.1C351.6,255.3,292.8,196.5,235,138.6c-16.5-16.5-33.9-24.2-54.7-24.2c-1,0-2,0-3,0.1
@@ -489,33 +494,33 @@
 	c13.9,0,22.4,8.5,28.6,14.7c20.1,20.1,40.2,40.2,60.4,60.3c56.6,56.5,115.1,115,172.5,172.8c15.1,15.2,28.7,23.8,43.8,27.3h26
 	c21.4-5.4,36.2-16.3,46.6-34.2c3.3-5.6,5.4-12.8,7.6-20.4v-25.5c-3.6-15-12.1-28.7-27.3-43.8c-57.8-57.4-116.3-116-172.9-172.6
 	c-20.1-20.1-40.1-40.2-60.2-60.2C619.1,522.8,610.6,514.3,610.6,500.4z" />
-              </svg>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="MImagePicker">
+              <label class="MButton" for="IDImageBack">ظهر الهوية او الجواز</label>
+              <input id="IDImageBack" type="file" accept=".jpg" />
             </div>
           </div>
-        </div>
-        <div class="MImagePicker">
-          <label class="MButton" for="IDImageBack">ظهر الهوية او الجواز</label>
-          <input id="IDImageBack" type="file" accept=".jpg" />
-        </div>
-      </div>
-      <div class="MImage">
-        <div class="MImagePreview">
-          <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
-          <div class="MImageButtons">
-            <div class="MImageBTN ShowMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
+          <div class="MImage">
+            <div class="MImagePreview">
+              <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
+              <div class="MImageButtons">
+                <div class="MImageBTN ShowMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
 	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
 	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
 	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
 	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
 	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
 	C553.9,663.3,657.6,553.1,656.9,424.3z" />
-              </svg>
-            </div>
-            <div class="MImageBTN DeleteMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
+                  </svg>
+                </div>
+                <div class="MImageBTN DeleteMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
 	c15.3-15.2,23.8-28.8,27.3-43.8v-25.9c-5.5-21.4-16.3-36.2-34-46.4c-9.8-5.6-21.2-8.6-32.9-8.6h0h0c-16.4,0-32,5.7-43.9,15.9
 	c-3.4,2.9-6.9,6.2-11.4,10.8C705.4,199,646.3,258.1,589.2,315.2l-60,60c-6.6,6.6-14.9,14.9-28.9,14.9c-13.9,0-22.2-8.2-28.8-14.9
 	c-21-21-42.1-42.1-63.1-63.1C351.6,255.3,292.8,196.5,235,138.6c-16.5-16.5-33.9-24.2-54.7-24.2c-1,0-2,0-3,0.1
@@ -526,33 +531,33 @@
 	c13.9,0,22.4,8.5,28.6,14.7c20.1,20.1,40.2,40.2,60.4,60.3c56.6,56.5,115.1,115,172.5,172.8c15.1,15.2,28.7,23.8,43.8,27.3h26
 	c21.4-5.4,36.2-16.3,46.6-34.2c3.3-5.6,5.4-12.8,7.6-20.4v-25.5c-3.6-15-12.1-28.7-27.3-43.8c-57.8-57.4-116.3-116-172.9-172.6
 	c-20.1-20.1-40.1-40.2-60.2-60.2C619.1,522.8,610.6,514.3,610.6,500.4z" />
-              </svg>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="MImagePicker">
+              <label class="MButton" for="HousingImage">بطاقة السكن</label>
+              <input id="HousingImage" type="file" accept=".jpg" />
             </div>
           </div>
-        </div>
-        <div class="MImagePicker">
-          <label class="MButton" for="HousingImage">بطاقة السكن</label>
-          <input id="HousingImage" type="file" accept=".jpg" />
-        </div>
-      </div>
-      <div class="MImage">
-        <div class="MImagePreview">
-          <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
-          <div class="MImageButtons">
-            <div class="MImageBTN ShowMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
+          <div class="MImage">
+            <div class="MImagePreview">
+              <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
+              <div class="MImageButtons">
+                <div class="MImageBTN ShowMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
 	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
 	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
 	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
 	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
 	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
 	C553.9,663.3,657.6,553.1,656.9,424.3z" />
-              </svg>
-            </div>
-            <div class="MImageBTN DeleteMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
+                  </svg>
+                </div>
+                <div class="MImageBTN DeleteMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
 	c15.3-15.2,23.8-28.8,27.3-43.8v-25.9c-5.5-21.4-16.3-36.2-34-46.4c-9.8-5.6-21.2-8.6-32.9-8.6h0h0c-16.4,0-32,5.7-43.9,15.9
 	c-3.4,2.9-6.9,6.2-11.4,10.8C705.4,199,646.3,258.1,589.2,315.2l-60,60c-6.6,6.6-14.9,14.9-28.9,14.9c-13.9,0-22.2-8.2-28.8-14.9
 	c-21-21-42.1-42.1-63.1-63.1C351.6,255.3,292.8,196.5,235,138.6c-16.5-16.5-33.9-24.2-54.7-24.2c-1,0-2,0-3,0.1
@@ -563,33 +568,33 @@
 	c13.9,0,22.4,8.5,28.6,14.7c20.1,20.1,40.2,40.2,60.4,60.3c56.6,56.5,115.1,115,172.5,172.8c15.1,15.2,28.7,23.8,43.8,27.3h26
 	c21.4-5.4,36.2-16.3,46.6-34.2c3.3-5.6,5.4-12.8,7.6-20.4v-25.5c-3.6-15-12.1-28.7-27.3-43.8c-57.8-57.4-116.3-116-172.9-172.6
 	c-20.1-20.1-40.1-40.2-60.2-60.2C619.1,522.8,610.6,514.3,610.6,500.4z" />
-              </svg>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="MImagePicker">
+              <label class="MButton" for="HousingImageBack">ظهر بطاقة السكن</label>
+              <input id="HousingImageBack" type="file" accept=".jpg" />
             </div>
           </div>
-        </div>
-        <div class="MImagePicker">
-          <label class="MButton" for="HousingImageBack">ظهر بطاقة السكن</label>
-          <input id="HousingImageBack" type="file" accept=".jpg" />
-        </div>
-      </div>
-      <div class="MImage">
-        <div class="MImagePreview">
-          <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
-          <div class="MImageButtons">
-            <div class="MImageBTN ShowMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
+          <div class="MImage">
+            <div class="MImagePreview">
+              <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
+              <div class="MImageButtons">
+                <div class="MImageBTN ShowMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
 	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
 	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
 	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
 	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
 	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
 	C553.9,663.3,657.6,553.1,656.9,424.3z" />
-              </svg>
-            </div>
-            <div class="MImageBTN DeleteMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
+                  </svg>
+                </div>
+                <div class="MImageBTN DeleteMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
 	c15.3-15.2,23.8-28.8,27.3-43.8v-25.9c-5.5-21.4-16.3-36.2-34-46.4c-9.8-5.6-21.2-8.6-32.9-8.6h0h0c-16.4,0-32,5.7-43.9,15.9
 	c-3.4,2.9-6.9,6.2-11.4,10.8C705.4,199,646.3,258.1,589.2,315.2l-60,60c-6.6,6.6-14.9,14.9-28.9,14.9c-13.9,0-22.2-8.2-28.8-14.9
 	c-21-21-42.1-42.1-63.1-63.1C351.6,255.3,292.8,196.5,235,138.6c-16.5-16.5-33.9-24.2-54.7-24.2c-1,0-2,0-3,0.1
@@ -600,33 +605,33 @@
 	c13.9,0,22.4,8.5,28.6,14.7c20.1,20.1,40.2,40.2,60.4,60.3c56.6,56.5,115.1,115,172.5,172.8c15.1,15.2,28.7,23.8,43.8,27.3h26
 	c21.4-5.4,36.2-16.3,46.6-34.2c3.3-5.6,5.4-12.8,7.6-20.4v-25.5c-3.6-15-12.1-28.7-27.3-43.8c-57.8-57.4-116.3-116-172.9-172.6
 	c-20.1-20.1-40.1-40.2-60.2-60.2C619.1,522.8,610.6,514.3,610.6,500.4z" />
-              </svg>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="MImagePicker">
+              <label class="MButton" for="DriverLicenceImage">اجازة السائق</label>
+              <input id="DriverLicenceImage" type="file" accept=".jpg" />
             </div>
           </div>
-        </div>
-        <div class="MImagePicker">
-          <label class="MButton" for="DriverLicenceImage">اجازة السائق</label>
-          <input id="DriverLicenceImage" type="file" accept=".jpg" />
-        </div>
-      </div>
-      <div class="MImage">
-        <div class="MImagePreview">
-          <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
-          <div class="MImageButtons">
-            <div class="MImageBTN ShowMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
+          <div class="MImage">
+            <div class="MImagePreview">
+              <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
+              <div class="MImageButtons">
+                <div class="MImageBTN ShowMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
 	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
 	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
 	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
 	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
 	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
 	C553.9,663.3,657.6,553.1,656.9,424.3z" />
-              </svg>
-            </div>
-            <div class="MImageBTN DeleteMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
+                  </svg>
+                </div>
+                <div class="MImageBTN DeleteMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
 	c15.3-15.2,23.8-28.8,27.3-43.8v-25.9c-5.5-21.4-16.3-36.2-34-46.4c-9.8-5.6-21.2-8.6-32.9-8.6h0h0c-16.4,0-32,5.7-43.9,15.9
 	c-3.4,2.9-6.9,6.2-11.4,10.8C705.4,199,646.3,258.1,589.2,315.2l-60,60c-6.6,6.6-14.9,14.9-28.9,14.9c-13.9,0-22.2-8.2-28.8-14.9
 	c-21-21-42.1-42.1-63.1-63.1C351.6,255.3,292.8,196.5,235,138.6c-16.5-16.5-33.9-24.2-54.7-24.2c-1,0-2,0-3,0.1
@@ -637,33 +642,33 @@
 	c13.9,0,22.4,8.5,28.6,14.7c20.1,20.1,40.2,40.2,60.4,60.3c56.6,56.5,115.1,115,172.5,172.8c15.1,15.2,28.7,23.8,43.8,27.3h26
 	c21.4-5.4,36.2-16.3,46.6-34.2c3.3-5.6,5.4-12.8,7.6-20.4v-25.5c-3.6-15-12.1-28.7-27.3-43.8c-57.8-57.4-116.3-116-172.9-172.6
 	c-20.1-20.1-40.1-40.2-60.2-60.2C619.1,522.8,610.6,514.3,610.6,500.4z" />
-              </svg>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="MImagePicker">
+              <label class="MButton" for="DriverLicenceImageBack">ظهر اجازة السائق</label>
+              <input id="DriverLicenceImageBack" type="file" accept=".jpg" />
             </div>
           </div>
-        </div>
-        <div class="MImagePicker">
-          <label class="MButton" for="DriverLicenceImageBack">ظهر اجازة السائق</label>
-          <input id="DriverLicenceImageBack" type="file" accept=".jpg" />
-        </div>
-      </div>
-      <div class="MImage" :required="CheckAttributes(['موظف'])" v-show="CheckAttributes(['موظف'])">
-        <div class="MImagePreview">
-          <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
-          <div class="MImageButtons">
-            <div class="MImageBTN ShowMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
+          <div class="MImage" :required="CheckAttributes(['موظف'])" v-show="CheckAttributes(['موظف'])">
+            <div class="MImagePreview">
+              <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
+              <div class="MImageButtons">
+                <div class="MImageBTN ShowMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
 	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
 	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
 	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
 	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
 	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
 	C553.9,663.3,657.6,553.1,656.9,424.3z" />
-              </svg>
-            </div>
-            <div class="MImageBTN DeleteMImage">
-              <svg viewBox="0 0 1000 1000">
-                <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
+                  </svg>
+                </div>
+                <div class="MImageBTN DeleteMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
 	c15.3-15.2,23.8-28.8,27.3-43.8v-25.9c-5.5-21.4-16.3-36.2-34-46.4c-9.8-5.6-21.2-8.6-32.9-8.6h0h0c-16.4,0-32,5.7-43.9,15.9
 	c-3.4,2.9-6.9,6.2-11.4,10.8C705.4,199,646.3,258.1,589.2,315.2l-60,60c-6.6,6.6-14.9,14.9-28.9,14.9c-13.9,0-22.2-8.2-28.8-14.9
 	c-21-21-42.1-42.1-63.1-63.1C351.6,255.3,292.8,196.5,235,138.6c-16.5-16.5-33.9-24.2-54.7-24.2c-1,0-2,0-3,0.1
@@ -674,26 +679,28 @@
 	c13.9,0,22.4,8.5,28.6,14.7c20.1,20.1,40.2,40.2,60.4,60.3c56.6,56.5,115.1,115,172.5,172.8c15.1,15.2,28.7,23.8,43.8,27.3h26
 	c21.4-5.4,36.2-16.3,46.6-34.2c3.3-5.6,5.4-12.8,7.6-20.4v-25.5c-3.6-15-12.1-28.7-27.3-43.8c-57.8-57.4-116.3-116-172.9-172.6
 	c-20.1-20.1-40.1-40.2-60.2-60.2C619.1,522.8,610.6,514.3,610.6,500.4z" />
-              </svg>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="MImagePicker">
+              <label class="MButton" for="EmploymentOrder">امر التعيين</label>
+              <input id="EmploymentOrder" type="file" accept=".jpg" />
             </div>
           </div>
         </div>
-        <div class="MImagePicker">
-          <label class="MButton" for="EmploymentOrder">امر التعيين</label>
-          <input id="EmploymentOrder" type="file" accept=".jpg" />
+        <div class="AttachmentsSection">
+          <div class="MGroupTitle">المرفقات</div>
+          <div class="MGroupButtons">
+            <div id="AddAttachment">
+              <label class="MButton" for="AddAttachmentInput">اضافة مرفق</label>
+              <input id="AddAttachmentInput" type="file" accept=".jpg" />
+            </div>
+          </div>
+          <div class="Attachments"></div>
         </div>
       </div>
-    </div>
-    <div class="MGroup" id="AttacmentsGroup">
-      <div class="MGroupTitle">المرفقات</div>
-      <div class="MGroupButtons">
-        <div id="AddAttachment">
-          <label class="MButton" for="AddAttachmentInput">اضافة مرفق</label>
-          <input id="AddAttachmentInput" type="file" accept=".jpg" />
-        </div>
-      </div>
-      <div class="Attachments"></div>
-    </div>
+    </MStepper>
     <div class="ComponentButtons">
       <div class="MButton" id="SaveBTN" @click="Save">حفظ</div>
       <div class="MButton" id="DeleteBTN" @click="Delete">حذف</div>
@@ -726,6 +733,8 @@ export default {
       EmployeeStartDate: ref(null),
       SelectedAttributes: ref([]),
       CardExpire: ref(null),
+      AllowedTimeFrom: ref(null),
+      AllowedTimeTo: ref(null),
       CardStatus: ref(null),
       CardStatusItems: ref([]),
       NFCID: ref(''),
@@ -806,6 +815,8 @@ export default {
       ContractorWorkPlace: ref(null),
       ContractorWorkPlaceItems: ref([]),
       PersonRelationsItems: ref([]),
+
+
     };
   },
   mounted() {
@@ -829,6 +840,30 @@ export default {
 
     document.getElementById('NFCID').querySelector('.MFieldBTN').addEventListener('click', function () {
       Instance.NFCID = '';
+    });
+
+    document.getElementById('AllowedTimeFrom').addEventListener('MTimeValueChange', function () {
+      let AllowedFrom = Instance.AllowedTimeFrom.Get();
+      let AllowedTo = Instance.AllowedTimeTo.Get();
+      if (AllowedFrom != '' && AllowedTo != '') {
+        AllowedFrom = new Date(`1970-01-01T${AllowedFrom.padStart(5, '0')}:00`);
+        AllowedTo = new Date(`1970-01-01T${AllowedTo.padStart(5, '0')}:00`);
+        if (AllowedFrom > AllowedTo) {
+          Instance.AllowedTimeTo.Set(AllowedFrom.toTimeString().slice(0, 5));
+        }
+      }
+    });
+    
+    document.getElementById('AllowedTimeTo').addEventListener('MTimeValueChange', function () {
+      let AllowedFrom = Instance.AllowedTimeFrom.Get();
+      let AllowedTo = Instance.AllowedTimeTo.Get();
+      if (AllowedFrom != '' && AllowedTo != '') {
+        AllowedFrom = new Date(`1970-01-01T${AllowedFrom.padStart(5, '0')}:00`);
+        AllowedTo = new Date(`1970-01-01T${AllowedTo.padStart(5, '0')}:00`);
+        if (AllowedFrom > AllowedTo) {
+          Instance.AllowedTimeTo.Set(AllowedFrom.toTimeString().slice(0, 5));
+        }
+      }
     });
 
     document.getElementById('Attributes').addEventListener('MCBValueChange', function () {
@@ -1260,6 +1295,8 @@ export default {
         if (this.GlobalsStore.MArray['nfc_card'] && this.GlobalsStore.MArray['nfc_card'].length != 0) {
           this.NFCID = this.GlobalsStore.MArray['nfc_card']['nfc_id'];
           this.CardExpire.Set(this.GlobalsStore.MArray['nfc_card']['card_expire']);
+          this.AllowedTimeFrom.Set(this.GlobalsStore.MArray['nfc_card']['allowed_time_from']);
+          this.AllowedTimeTo.Set(this.GlobalsStore.MArray['nfc_card']['allowed_time_to']);
           this.CardStatus.Set(this.GlobalsStore.MArray['nfc_card']['card_status']);
           document.getElementById('CardNotes').querySelector('input').value = this.GlobalsStore.MArray['nfc_card']['card_notes'];
           // Populate Gates
@@ -1341,6 +1378,8 @@ export default {
       Parameters.append('nfc_card', JSON.stringify({
         nfc_id: this.NFCID,
         card_expire: this.CardExpire.Get(),
+        allowed_time_from: this.AllowedTimeFrom.Get(),
+        allowed_time_to: this.AllowedTimeTo.Get(),
         card_status: this.CardStatus.GetValue(),
         card_notes: document.getElementById('CardNotes').querySelector('input').value,
         gates: this.Gates,
@@ -1739,6 +1778,39 @@ export default {
 </script>
 
 <style scoped>
+.ImagesSection,
+.AttachmentsSection,
+.RelationsSection,
+.RealEstatesSection {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ImagesSection .MButton {
+  white-space: normal;
+}
+
+.RelationsSection .MGroupTitle {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.ImagesSection .MGroupTitle {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.AttachmentsSection .MGroupTitle {
+  margin-top: 15px;
+  margin-bottom: 0;
+}
+
+.ComponentButtons {
+  margin-top: 25px;
+}
+
 #AddAttachmentInput {
   display: none;
 }

@@ -76,97 +76,97 @@ export function HideModal(TheModal) {
   }, 700)
 }
 export function MStepperBuild(Element, MStepHeaders, AllowStepSelection) {
-  if (Element.querySelectorAll('.MStepperHeader').length != 0) {
-    Element.querySelector('.MStepperHeader').remove()
-  }
-
-  var MStepperHeaderHTML = '<div class="MStepperHeader">'
-  for (var i = 0; i < MStepHeaders.length; i++) {
-    MStepperHeaderHTML +=
-      '<div class="MStepHeader" MStepID="' +
-      (i + 1) +
-      '"><div class="MStepHeaderIcon">' +
-      (i + 1) +
-      '</div><div class="MStepHeaderTitle">' +
-      MStepHeaders[i] +
-      '</div></div>'
-    if (i < MStepHeaders.length - 1) {
-      MStepperHeaderHTML += ' <div class="MStepperHeaderLine"></div>'
+    if (Element.querySelectorAll('.MStepperHeader').length != 0) {
+        Element.querySelector('.MStepperHeader').remove();
     }
-  }
-  MStepperHeaderHTML += '</div>'
 
-  Element.insertAdjacentHTML('afterbegin', MStepperHeaderHTML)
-
-  GoToStep(1)
-
-  Element.querySelectorAll('.MStepHeader').forEach(function (e) {
-    e.removeEventListener('click', null)
-    if (AllowStepSelection == true) {
-      e.style.cursor = 'pointer'
-      e.addEventListener('click', function () {
-        GoToStep(e.getAttribute('MStepID'))
-      })
-    } else {
-      e.style.cursor = 'default'
+    var MStepperHeaderHTML = '<div class="MStepperHeader">';
+    for (var i = 0; i < MStepHeaders.length; i++) {
+        MStepperHeaderHTML +=
+            '<div class="MStepHeader" MStepID="' +
+            (i + 1) +
+            '"><div class="MStepHeaderIcon">' +
+            (i + 1) +
+            '</div><div class="MStepHeaderTitle">' +
+            MStepHeaders[i] +
+            '</div></div>';
+        if (i < MStepHeaders.length - 1) {
+            MStepperHeaderHTML += ' <div class="MStepperHeaderLine"></div>';
+        }
     }
-  })
+    MStepperHeaderHTML += '</div>';
 
-  Element.querySelectorAll('[MStepperGo]').forEach(function (e) {
-    e.removeEventListener('click', null)
-    e.addEventListener('click', function () {
-      var GoValue = e.getAttribute('MStepperGo')
-      var CurrentStep = parseInt(
-        Element.querySelector('.ActiveMStepHeader').getAttribute('MStepID'),
-      )
+    Element.insertAdjacentHTML('afterbegin', MStepperHeaderHTML);
 
-      if (GoValue == 'Next') {
-        if (
-          CurrentStep < Element.querySelectorAll('.ActiveMStepHeader').length
-        ) {
-          GoToStep(CurrentStep + 1)
-        }
-      } else if (GoValue == 'Back') {
-        if (CurrentStep > 1) {
-          GoToStep(CurrentStep - 1)
-        }
-      } else {
-        GoValue = parseInt(GoValue)
-        GoToStep(GoValue)
-      }
-    })
-  })
+    GoToStep(1);
 
-  function GoToStep(Step) {
     Element.querySelectorAll('.MStepHeader').forEach(function (e) {
-      e.classList.remove('ActiveMStepHeader')
-    })
-    Element.querySelector('.MStepHeader[MStepID="' + Step + '"]').classList.add(
-      'ActiveMStepHeader',
-    )
+        e.removeEventListener('click', null);
+        if (AllowStepSelection == true) {
+            e.style.cursor = 'pointer';
+            e.addEventListener('click', function () {
+                GoToStep(e.getAttribute('MStepID'));
+            });
+        } else {
+            e.style.cursor = 'default';
+        }
+    });
 
-    Element.querySelector(
-      '.MStepContent:nth-child(' + Step + ')',
-    ).classList.add('ActiveMStepContent')
+    Element.querySelectorAll('[MStepperGo]').forEach(function (e) {
+        e.removeEventListener('click', null);
+        e.addEventListener('click', function () {
+            var GoValue = e.getAttribute('MStepperGo');
+            var CurrentStep = parseInt(
+                Element.querySelector('.ActiveMStepHeader').getAttribute('MStepID')
+            );
 
-    Element.querySelectorAll('.MStepContent').forEach(function (e, i) {
-      if (i + 1 != Step) {
-        e.classList.remove('ActiveMStepContent')
-      }
-    })
-    Element.querySelector('.MStepperContent').style.overflow = 'hidden'
+            if (GoValue == 'Next') {
+                if (
+                    CurrentStep < Element.querySelectorAll('.ActiveMStepHeader').length
+                ) {
+                    GoToStep(CurrentStep + 1);
+                }
+            } else if (GoValue == 'Back') {
+                if (CurrentStep > 1) {
+                    GoToStep(CurrentStep - 1);
+                }
+            } else {
+                GoValue = parseInt(GoValue);
+                GoToStep(GoValue);
+            }
+        });
+    });
 
-    Element.querySelectorAll('.MStepContent').forEach(function (e) {
-      var Translate = (Step - 1) * 100
-      e.style.right = '-' + Translate + '%'
-    })
+    function GoToStep(Step) {
+        Element.querySelectorAll('.MStepHeader').forEach(function (e) {
+            e.classList.remove('ActiveMStepHeader');
+        });
+        Element.querySelector('.MStepHeader[MStepID="' + Step + '"]').classList.add(
+            'ActiveMStepHeader'
+        );
 
-    setTimeout(function () {
-      Element.querySelector('.MStepperContent').style.overflow = ''
-    }, 300)
-  }
+        Element.querySelector(
+            '.MStepContent:nth-child(' + Step + ')'
+        ).classList.add('ActiveMStepContent');
 
-  return {
-    GoToStep: GoToStep,
-  }
+        Element.querySelectorAll('.MStepContent').forEach(function (e, i) {
+            if (i + 1 != Step) {
+                e.classList.remove('ActiveMStepContent');
+            }
+        });
+        Element.querySelector('.MStepperContent').style.overflow = 'hidden';
+
+        Element.querySelectorAll('.MStepContent').forEach(function (e) {
+            var Translate = (Step - 1) * 100;
+            e.style.transform = 'translateX(' + Translate + '%)';
+        });
+
+        setTimeout(function () {
+            Element.querySelector('.MStepperContent').style.overflow = '';
+        }, 300);
+    }
+
+    return {
+        GoToStep: GoToStep,
+    };
 }

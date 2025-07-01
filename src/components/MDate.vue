@@ -1068,7 +1068,7 @@ export default {
   background-color: var(--MDatePickerBG);
   box-shadow: 0 2px 5px 1px var(--MDatePickerShadow);
   border-radius: 5px;
-  z-index: 7;
+  z-index: 100;
   outline: none;
   width: min-content;
   top: -41px;

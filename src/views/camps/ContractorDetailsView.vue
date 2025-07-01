@@ -517,7 +517,7 @@ export default {
         this.IdentificationType.Set(this.GlobalsStore.MArray['identification_type'])
         document.getElementById('IdentificationNumber').querySelector('input').value = this.GlobalsStore.MArray['identification_number'];
         document.getElementById('Phone').querySelector('input').value = this.GlobalsStore.MArray['phone'];
-        document.getElementById('Address').querySelector('input').value = this.GlobalsStore.MArray['address'];
+        document.getElementById('Address').querySelector('input').value = this.GlobalsStore.MArray['outside_address'];
         document.getElementById('ContractorContractNo').querySelector('input').value = this.GlobalsStore.MArray['contractor_contract_no'];
         document.getElementById('WorkersCount').querySelector('input').value = this.GlobalsStore.MArray['workers_count'];
         document.getElementById('EntryPort').querySelector('input').value = this.GlobalsStore.MArray['entry_port'];
@@ -544,7 +544,7 @@ export default {
       Parameters.append('identification_type', this.IdentificationType.GetValue());
       Parameters.append('identification_number', document.getElementById('IdentificationNumber').querySelector('input').value);
       Parameters.append('phone', document.getElementById('Phone').querySelector('input').value);
-      Parameters.append('address', document.getElementById('Address').querySelector('input').value);
+      Parameters.append('outside_address', document.getElementById('Address').querySelector('input').value);
       Parameters.append('contractor_contract_no', document.getElementById('ContractorContractNo').querySelector('input').value);
       Parameters.append('entry_port', document.getElementById('EntryPort').querySelector('input').value);
 

@@ -85,6 +85,21 @@ const router = createRouter({
         HeaderTitle: 'تعديل الشخص',
       },
     },
+    {
+      path: '/sales/tenants',
+      component: () => import('../views/information/SalesTenantsView.vue'),
+      name: 'SalesTenants',
+      meta: { requiresAuth: true, HeaderTitle: 'المستاجرين' },
+    },
+    //#endregion
+
+    //#region NFC Cards
+    {
+      path: '/nfc_cards',
+      component: () => import('../views/information/NFCCardsView.vue'),
+      name: 'NFCCards',
+      meta: { requiresAuth: true, HeaderTitle: 'بطاقات الدخول' },
+    },
     //#endregion
 
     //#region Internet
