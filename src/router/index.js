@@ -4,7 +4,6 @@ import { useAuthStore } from '../stores/auth'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-
     //#region Login
     {
       path: '/login',
@@ -166,6 +165,12 @@ const router = createRouter({
       component: () => import('../views/requests/internetRequest.vue'),
       name: 'internetRequest',
       meta: { requiresAuth: true, HeaderTitle: 'طلبات الانترنت' },
+    },
+    {
+      path: '/maintenance-requests',
+      component: () => import('../views/requests/maintenanceRequest.vue'),
+      name: 'maintenanceRequest',
+      meta: { requiresAuth: true, HeaderTitle: 'طلبات الصيانة' },
     },
     //#endregion
 
@@ -358,6 +363,6 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
-});
+})
 
 export default router
