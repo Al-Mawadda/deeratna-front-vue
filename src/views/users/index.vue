@@ -262,6 +262,13 @@ const groupedPermissions = ref(
         { val: 'send-qr-notification', label: 'ارسال اشعارات كيو ار' },
       ],
     },
+    {
+      label: 'الادارة المحلية',
+      items: [
+        { val: 'local_management_view', label: 'الادارة المحلية' },
+        { val: 'maintenance_list', label: 'قائمة الصيانات' },
+      ],
+    },
   ].map(group => ({
     ...group,
     items: group.items.map(item => ({

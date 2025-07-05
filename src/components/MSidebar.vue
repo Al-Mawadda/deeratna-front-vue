@@ -518,6 +518,18 @@ export default {
           },
         ],
       },
+      //============= الادارة المحلية ===============
+      {
+        text: 'الادارة المحلية',
+        permission: 'local_management_view',
+        items: [
+          {
+            text: 'قائمة الصيانات',
+            route: '/localmanagement/maintenance_list',
+            permission: 'maintenance_list',
+          },
+        ],
+      },
     ])
 
     const hasPermission = permission => {

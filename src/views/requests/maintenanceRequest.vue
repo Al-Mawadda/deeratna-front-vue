@@ -5,7 +5,9 @@
     <MModal
       ref="MaintenanceRequestModal"
       :Name="'MaintenanceRequestModal'"
-      :Title="' طلب ' + selectedRowData.request_type + selectedRowData.name"
+      :Title="
+        ' طلب ' + selectedRowData.request_type + ' ' + selectedRowData.name
+      "
     >
       <!-- ============= details Table =============== -->
 
@@ -32,10 +34,6 @@
             <td>{{ selectedRowData.address }}</td>
           </tr>
           <tr>
-            <td>الهاتف</td>
-            <td>{{ selectedRowData.phone }}</td>
-          </tr>
-          <tr>
             <td>السعر</td>
             <td>{{ selectedRowData.price }}</td>
           </tr>
@@ -47,10 +45,7 @@
             <td>حالة الطلب</td>
             <td>{{ selectedRowData.request_status }}</td>
           </tr>
-          <tr>
-            <td>تاريخ الطلب</td>
-            <td>{{ selectedRowData.created_at }}</td>
-          </tr>
+
           <!-- Rejection Reason -->
           <tr v-if="selectedRowData.rejection_reason != ''">
             <td>سبب الرفض</td>
@@ -58,9 +53,21 @@
           </tr>
         </tbody>
       </table>
+      <MTable
+        ref="MaintenanceRequestTimeTB"
+        :Name="'MaintenanceRequestTimeTB'"
+        :DataArray="MaintenanceRequestTimeTBData"
+        :Columns="MaintenanceRequestTimeTBColumns"
+        :Sums="MaintenanceRequestTimeTBSums"
+        :GetDataFunction="GetMaintenanceRequestTimeData"
+        :RowsCount="MaintenanceRequestTimeTBRowsCount"
+        :RowsPerPage="101"
+        :ShowFilterRow="false"
+      >
+      </MTable>
       <div class="MField" id="note">
         <input type="text" required />
-        <label>الملاحظات</label>
+        <label>تمت الموافقة على طلب الصيانة ليوم</label>
         <div class="MFieldBG"></div>
       </div>
       <div class="MField" id="Price">
@@ -70,9 +77,31 @@
       </div>
 
       <div class="ModalButtons">
-        <div class="MButton" id="AcceptBTN" @click="AcceptRequest()">موافق</div>
-        <div class="MButton" id="RejectBTN" @click="RejectRequest">رفض</div>
-        <div class="MButton" id="CloseRequestBTN" @click="CloseRequest()">
+        <div
+          v-show="selectedRowData.request_status == 'قيد المراجعة'"
+          class="MButton"
+          id="AcceptBTN"
+          @click="AcceptRequest()"
+        >
+          موافق
+        </div>
+        <div
+          v-show="selectedRowData.request_status == 'قيد المراجعة'"
+          class="MButton"
+          id="RejectBTN"
+          @click="RejectRequest"
+        >
+          رفض
+        </div>
+        <div
+          v-show="
+            selectedRowData.request_status != 'مرفوض' ||
+            selectedRowData.request_status != 'تم'
+          "
+          class="MButton"
+          id="CloseRequestBTN"
+          @click="CloseRequest()"
+        >
           تحديث وغلق الطلب
         </div>
       </div>
@@ -201,14 +230,6 @@ export default {
           label: 'تفاصيل الطلب',
         },
         {
-          name: 'time_from',
-          label: 'الوقت من',
-        },
-        {
-          name: 'time_to',
-          label: 'الوقت الى',
-        },
-        {
           name: 'price',
           label: 'المبلغ',
           sum: true,
@@ -219,6 +240,10 @@ export default {
           label: 'حالة الطلب',
         },
         {
+          name: 'note',
+          label: 'الملاحظات',
+        },
+        {
           name: 'created_at',
           label: 'التاريخ',
           filter: 'date',
@@ -227,6 +252,40 @@ export default {
       MaintenanceRequestsTBSums: ref([]),
       MaintenanceRequestsTBRowsCount: ref(0),
       MaintenanceRequestsFromDate: ref(null),
+
+      MaintenanceRequestTimeTB: ref(null),
+      MaintenanceRequestTimeTBData: ref([]),
+      MaintenanceRequestTimeTBColumns: [
+        {
+          name: 'id',
+          label: '#',
+        },
+        {
+          name: 'maintenance_request_id',
+          label: 'رقم الطلب',
+        },
+        {
+          name: 'day',
+          label: 'اليوم',
+        },
+        {
+          name: 'time_from',
+          label: 'الوقت من',
+        },
+        {
+          name: 'time_to',
+          label: 'الوقت الى',
+        },
+        {
+          name: 'created_at',
+          label: 'التاريخ',
+          filter: 'date',
+        },
+      ],
+      MaintenanceRequestTimeTBSums: ref([]),
+      MaintenanceRequestTimeTBRowsCount: ref(0),
+      MaintenanceRequestTimeFromDate: ref(null),
+
       selectedRowData: ref([]),
       ServerPath: GetServerPath(),
     }
@@ -247,7 +306,17 @@ export default {
       'ViewItem',
       function (data) {
         this.selectedRowData = this.selectedRowData = data.detail.RowData
-        document.getElementById('Price').querySelector('input').value = 0
+
+        //if (this.selectedRowData.request_type != 'تجديد') {}
+
+        document.getElementById('note').querySelector('input').value = ''
+        document.getElementById('note').querySelector('input').value =
+          this.selectedRowData.note
+        document.getElementById('Price').querySelector('input').value =
+          this.selectedRowData.price
+        this.MaintenanceRequestTimeTBData =
+          this.selectedRowData.maintenance_time
+
         this.MaintenanceRequestModal.Show()
       }.bind(this)
     )
@@ -278,22 +347,18 @@ export default {
           ShowMessage(error)
         })
     },
-
     AcceptRequest() {
       ShowLoading()
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append('pid', this.selectedRowData.pid)
-      Parameters.append('customer_id', this.selectedRowData.customer_id)
       Parameters.append('name', this.selectedRowData.name)
       Parameters.append('request_type', this.selectedRowData.request_type)
-
-      // if (this.selectedRowData.request_type == 'تجديد') {
-      //   Parameters.append('request_status', 'تم')
-      // } else {
-      Parameters.append('request_status', 'موافق')
-      // }
-
+      Parameters.append('request_status', 'دفع الكتروني')
+      Parameters.append(
+        'maintenance_detail',
+        this.selectedRowData.maintenance_detail
+      )
       Parameters.append(
         'note',
         document.getElementById('note').querySelector('input').value
@@ -328,31 +393,15 @@ export default {
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append('pid', this.selectedRowData.pid)
-      Parameters.append('customer_id', this.selectedRowData.customer_id)
       Parameters.append('name', this.selectedRowData.name)
       Parameters.append('request_status', 'تم')
       Parameters.append(
-        'subscriber_name',
-        document.getElementById('SubscriberName').querySelector('input').value
+        'note',
+        document.getElementById('note').querySelector('input').value
       )
-      Parameters.append(
-        'subscriber_phone',
-        document.getElementById('SubscriberPhone').querySelector('input').value
-      )
-      Parameters.append(
-        'company_name',
-        document.getElementById('CompanyName').querySelector('input').value
-      )
-      Parameters.append(
-        'subscription_type',
-        document.getElementById('SubscriptionType').querySelector('input').value
-      )
-      Parameters.append(
-        'price',
-        document.getElementById('Price').querySelector('input').value
-      )
+
       api
-        .put(`MaintenanceRequests/` + this.selectedRowData.id, Parameters)
+        .put(`CloseMaintenanceRequests/` + this.selectedRowData.id, Parameters)
         .then(response => {
           HideLoading()
           if (response.data.success == true) {
@@ -401,13 +450,6 @@ export default {
           HideLoading()
           ShowMessage(error)
         })
-    },
-    ShowImage(e) {
-      let ImagePath = e.target
-        .closest('.InformationRequestImage')
-        .querySelector('img')
-        .getAttribute('src')
-      window.open(ImagePath)
     },
   },
 }

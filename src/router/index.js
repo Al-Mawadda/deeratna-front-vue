@@ -366,6 +366,15 @@ const router = createRouter({
       meta: { requiresAuth: true, HeaderTitle: 'سجل التحديث التلقائي' },
     },
     //#endregion
+
+    //#region local_management
+    {
+      path: '/localmanagement/maintenance_list',
+      component: () => import('../views/LocalManagement/maintenanceList.vue'),
+      name: 'maintenanceList',
+      meta: { requiresAuth: true, HeaderTitle: 'قائمة الصيانات' },
+    },
+    //#endregion
   ],
 })
 
