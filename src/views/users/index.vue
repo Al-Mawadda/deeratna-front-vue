@@ -199,6 +199,7 @@ const groupedPermissions = ref(
         { val: 'on_pay_caradd', label: 'عرض دفعات ملصق السيارة' },
         { val: 'on_pay_carrenew', label: 'عرض دفعات تجديد ملصق السيارة' },
         { val: 'on_pay_internet', label: 'عرض تجديد اشتراكات الانترنت' },
+        { val: 'on_pay_maintenance', label: 'الصيانة' },
       ],
     },
     {

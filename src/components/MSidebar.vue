@@ -438,6 +438,11 @@ export default {
             route: '/internet-payment',
             permission: 'on_pay_internet',
           },
+          {
+            text: 'الصيانة',
+            route: '/maintenance-payment',
+            permission: 'on_pay_maintenance',
+          },
         ],
       },
       //============= الكمب =================

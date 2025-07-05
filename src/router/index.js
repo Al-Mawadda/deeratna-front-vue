@@ -226,6 +226,12 @@ const router = createRouter({
       name: 'Internet-Payment',
       meta: { requiresAuth: true, HeaderTitle: 'دفع الانترنيت' },
     },
+    {
+      path: '/maintenance-payment',
+      component: () => import('../views/payment/maintenance.vue'),
+      name: 'maintenance-payment',
+      meta: { requiresAuth: true, HeaderTitle: 'الصيانة' },
+    },
     //#endregion
 
     //#region Camps
