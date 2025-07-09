@@ -1,75 +1,43 @@
 <template>
   <div class="ComponentWrapper">
-    <!-- ===============  add subsc Model  ========= -->
+    <!-- =============== add subsc Model========= -->
     <MModal
-      ref="AddCustomerModal"
-      :Name="'AddCustomerModal'"
-      :Title="'اضافة مشترك جديد'"
+      ref="AddMaintenanceListModal"
+      :Name="'AddMaintenanceListModal'"
+      :Title="'اضافة صيانة جديدة'"
     >
-      <!-- <MComboBox
-        ref="Compounds"
-        :Name="'Compounds'"
-        :Label="' اسم المدينة *'"
-        :Items="CompoundsItems"
-      >
-      </MComboBox> -->
-
-      <div class="MField" id="username">
-        <input ref="username" type="text" required />
-        <label>كلمة الدخول *</label>
+      <div class="MField" id="MaintenanceDetails">
+        <input ref="MaintenanceDetails" type="text" required />
+        <label>تفاصيل الصيانة</label>
         <div class="MFieldBG"></div>
       </div>
-
-      <!-- <div class="MField" id="address">
-        <input ref="address" type="text" required />
-        <label>العنوان *</label>
-        <div class="MFieldBG"></div>
-      </div> -->
-
-      <div class="MField" id="phone">
-        <input ref="phone" type="text" required />
-        <label>هاتف المشترك *</label>
+      <div class="MField" id="Price" v-OnlyNumbers>
+        <input ref="Price" type="text" required />
+        <label>السعر</label>
         <div class="MFieldBG"></div>
       </div>
-
-      <div class="MField" id="status">
-        <input ref="status" type="text" required />
-        <label>حالة الاشتراك *</label>
-        <div class="MFieldBG"></div>
-      </div>
-
-      <!-- <div class="MField" id="Notes">
-        <input ref="Notes" type="text" required />
-        <label>الملاحظات *</label>
-        <div class="MFieldBG"></div>
-      </div> -->
 
       <div class="ModalButtons">
-        <div class="MButton" id="SavePersonBTN" @click="SavePerson">حفـــظ</div>
+        <div
+          class="MButton"
+          id="SaveMaintenanceListBTN"
+          @click="SaveMaintenanceList"
+        >
+          حفـــظ
+        </div>
       </div>
     </MModal>
 
-    <div class="MButton" id="GetCustomersBTN">عرض البيانات</div>
-    <div class="MGroup">
-      <MDate
-        ref="CustomersFromDate"
-        :Name="'CustomersFromDate'"
-        :Label="'تاريخ من'"
-      ></MDate>
-      <MDate
-        ref="CustomersToDate"
-        :Name="'CustomersToDate'"
-        :Label="'تاريخ الى'"
-      ></MDate>
-    </div>
+    <div class="MButton" id="AddMaintenanceListBTN">ادخال اشتراك جديد</div>
+    <div class="MButton" id="GetMaintenanceListBTN">عرض البيانات</div>
     <MTable
-      ref="CustomersTB"
-      :Name="'CustomersTB'"
-      :DataArray="CustomersTBData"
-      :Columns="CustomersTBColumns"
-      :Sums="CustomersTBSums"
-      :GetDataFunction="GetCustomersData"
-      :RowsCount="CustomersTBRowsCount"
+      ref="MaintenanceListTB"
+      :Name="'MaintenanceListTB'"
+      :DataArray="MaintenanceListTBData"
+      :Columns="MaintenanceListTBColumns"
+      :Sums="MaintenanceListTBSums"
+      :GetDataFunction="GetMaintenanceListData"
+      :RowsCount="MaintenanceListTBRowsCount"
       :RowsPerPage="10"
     >
       <template v-slot:options>
@@ -134,53 +102,28 @@ export default {
     const authStore = useAuthStore()
     const hasPermission = permission =>
       authStore.user && authStore.user.permissions.includes(permission)
-    const GlobalsStore = ref(useGlobalsStore())
 
     return {
       hasPermission,
       Operation: ref(''),
-      AddCustomerModal: ref(null),
+      AddMaintenanceListModal: ref(null),
       ID: ref(''),
       GlobalsStore: ref(useGlobalsStore()),
-      Compounds: ref(null),
-      CompoundsItems: ref([]),
-      CompanyName: ref(null),
-      CompanyNameItems: ref([]),
-      SubscriptionTypeItems: ref([]),
-      CustomersTB: ref(null),
-      CustomersTBData: ref([]),
-      CustomersTBRowsCount: ref(0),
+      MaintenanceListTB: ref(null),
+      MaintenanceListTBData: ref([]),
 
-      CustomersTBColumns: [
+      MaintenanceListTBColumns: [
         {
           name: 'id',
           label: '#',
         },
         {
-          name: 'uid',
-          label: 'رمز المستخدم',
+          name: 'details',
+          label: 'تفاصيل الصيانة',
         },
         {
-          name: 'real_estates.compound',
-          label: 'المدينة',
-          filter: 'combo',
-          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
-        },
-        {
-          name: 'real_estates.address',
-          label: 'العنوان',
-        },
-        {
-          name: 'username',
-          label: 'كلمة الدخول',
-        },
-        {
-          name: 'phone',
-          label: 'رقم الهاتف',
-        },
-        {
-          name: 'status',
-          label: 'حالة الاشتراك',
+          name: 'price',
+          label: 'السعر',
         },
         {
           name: 'created_at',
@@ -188,55 +131,62 @@ export default {
           filter: 'date',
         },
       ],
-      CustomersTBSums: ref([]),
+      MaintenanceListTBSums: ref([]),
 
-      CustomersFromDate: ref(null),
-      CustomersToDate: ref(null),
+      MaintenanceListTBRowsCount: ref(0),
+      MaintenanceListFromDate: ref(null),
+      MaintenanceListToDate: ref(null),
       selectedRowData: ref([]),
       ServerPath: GetServerPath(),
     }
   },
   mounted() {
-    this.CompoundsItems = this.GlobalsStore.ComboBoxes['Compounds']
-    this.CustomersTB.LoadMTable()
-    //ReLoad table
-    document.getElementById('GetCustomersBTN').addEventListener(
+    this.MaintenanceListTB.LoadMTable()
+    //Reload Data
+    document.getElementById('GetMaintenanceListBTN').addEventListener(
       'click',
       function () {
-        this.CustomersTB.ReLoadMTable()
+        this.MaintenanceListTB.ReLoadMTable()
       }.bind(this)
     )
-    // EditItem
-    document.getElementById('CustomersTB').addEventListener(
+    // ShowModal
+    document.getElementById('AddMaintenanceListBTN').addEventListener(
+      'click',
+      function () {
+        this.AddMaintenanceListModal.Show()
+        this.Operation = 1
+        this.clearFields()
+      }.bind(this)
+    )
+    // EditData
+    document.getElementById('MaintenanceListTB').addEventListener(
       'EditItem',
       function (data) {
         this.selectedRowData = data.detail.RowData
         this.Operation = 2
         this.ID = this.selectedRowData.id
+        document.getElementById('Price').querySelector('input').value =
+          this.selectedRowData.price
+        document
+          .getElementById('MaintenanceDetails')
+          .querySelector('input').value = this.selectedRowData.details
 
-        document.getElementById('username').querySelector('input').value =
-          this.selectedRowData.username
-        document.getElementById('phone').querySelector('input').value =
-          this.selectedRowData.phone
-        document.getElementById('status').querySelector('input').value =
-          this.selectedRowData.status
-
-        this.AddCustomerModal.Show()
+        this.AddMaintenanceListModal.Show()
       }.bind(this)
     )
-    // DeleteItem
-    document.getElementById('CustomersTB').addEventListener(
+    //Delete Data
+    document.getElementById('MaintenanceListTB').addEventListener(
       'DeleteItem',
       function (data) {
         this.selectedRowData = data.detail.RowData
         this.ID = this.selectedRowData.id
         api
-          .put(`deleteCustomer/` + this.ID)
+          .delete(`MaintenanceList/` + this.ID)
           .then(response => {
             HideLoading()
             if (response.data.success) {
               ShowMessage(response.data.message)
-              this.CustomersTB.LoadMTable()
+              this.MaintenanceListTB.LoadMTable()
             } else {
               ShowMessage(response.data.message)
             }
@@ -253,19 +203,18 @@ export default {
     )
   },
   methods: {
-    GetCustomersData(MTable) {
+    //load data from table to table and combo companyName
+    GetMaintenanceListData(MTable) {
       api
-        .get('getAllCustomer', {
+        .get('MaintenanceList', {
           params: {
             MTable: MTable,
-            CustomersFrom: this.CustomersFromDate.Get(),
-            CustomersTo: this.CustomersToDate.Get(),
           },
         })
         .then(response => {
-          this.CustomersTBData = response.data.data
-          this.CustomersTBRowsCount = response.data.total
-          this.CustomersTBSums = response.data.sums
+          this.MaintenanceListTBData = response.data.data
+          this.MaintenanceListTBRowsCount = response.data.total
+          this.MaintenanceListTBSums = response.data.sums
         })
         .catch(error => {
           ShowMessage(error)
@@ -273,46 +222,69 @@ export default {
     },
 
     //==============Save  person=========================
-    SavePerson() {
+    SaveMaintenanceList() {
       ShowLoading()
       var Parameters = new FormData()
+      Parameters.append(
+        'details',
+        document.getElementById('MaintenanceDetails').querySelector('input')
+          .value
+      )
+      Parameters.append(
+        'price',
+        document.getElementById('Price').querySelector('input').value
+      )
 
-      Parameters.append(
-        'username',
-        document.getElementById('username').querySelector('input').value
-      )
-      Parameters.append(
-        'phone',
-        document.getElementById('phone').querySelector('input').value
-      )
-      Parameters.append(
-        'status',
-        document.getElementById('status').querySelector('input').value
-      )
-      api
-        .put(`updateCustomer/` + this.ID, Parameters)
-        .then(response => {
-          HideLoading()
-          if (response.data.message == 'تمت العملية بنجاح') {
-            this.CustomersTB.LoadMTable()
-            this.AddCustomerModal.Hide()
-            // this.clearFields()
-          } else {
+      //=========post ============
+      if (this.Operation == 1) {
+        api
+          .post('MaintenanceList', Parameters, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then(response => {
             HideLoading()
-            ShowMessage(response.data.message)
-          }
-        })
-        .catch(error => {
-          HideLoading()
-          if (error.response && error.response.status === 422) {
-            const firstError = Object.values(error.response.data.errors)[0][0]
-            ShowMessage(firstError)
-          } else ShowMessage('حدث خطأ غير متوقع')
-        })
+            if (response.data.message == 'تمت العملية بنجاح') {
+              this.MaintenanceListTB.LoadMTable()
+              this.AddMaintenanceListModal.Hide()
+              this.clearFields()
+            } else {
+              HideLoading()
+              ShowMessage(response.data.message)
+            }
+          })
+          .catch(error => {
+            HideLoading()
+            if (error.response && error.response.status === 422) {
+              const firstError = Object.values(error.response.data.errors)[0][0]
+              ShowMessage(firstError)
+            } else ShowMessage('حدث خطأ غير متوقع')
+          })
+      } else if (this.Operation == 2) {
+        api
+          .put(`MaintenanceList/` + this.ID, Parameters)
+          .then(response => {
+            HideLoading()
+            if (response.data.message == 'تمت العملية بنجاح') {
+              this.MaintenanceListTB.LoadMTable()
+              this.AddMaintenanceListModal.Hide()
+              this.clearFields()
+            } else {
+              HideLoading()
+              ShowMessage(response.data.message)
+            }
+          })
+          .catch(error => {
+            HideLoading()
+            if (error.response && error.response.status === 422) {
+              const firstError = Object.values(error.response.data.errors)[0][0]
+              ShowMessage(firstError)
+            } else ShowMessage('حدث خطأ غير متوقع')
+          })
+      }
     },
     clearFields() {
-      this.Compounds.Clear()
-      this.CompanyName.Clear()
       Object.keys(this.$refs).forEach(ref => {
         const field = this.$refs[ref]
         // Check if the ref is an input field or a custom component

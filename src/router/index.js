@@ -4,7 +4,6 @@ import { useAuthStore } from '../stores/auth'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-
     //#region Login
     {
       path: '/login',
@@ -182,6 +181,12 @@ const router = createRouter({
       name: 'internetRequest',
       meta: { requiresAuth: true, HeaderTitle: 'طلبات الانترنت' },
     },
+    {
+      path: '/maintenance-requests',
+      component: () => import('../views/requests/maintenanceRequest.vue'),
+      name: 'maintenanceRequest',
+      meta: { requiresAuth: true, HeaderTitle: 'طلبات الصيانة' },
+    },
     //#endregion
 
     //#region Payments
@@ -220,6 +225,12 @@ const router = createRouter({
       component: () => import('../views/payment/InternetView.vue'),
       name: 'Internet-Payment',
       meta: { requiresAuth: true, HeaderTitle: 'دفع الانترنيت' },
+    },
+    {
+      path: '/maintenance-payment',
+      component: () => import('../views/payment/maintenance.vue'),
+      name: 'maintenance-payment',
+      meta: { requiresAuth: true, HeaderTitle: 'الصيانة' },
     },
     //#endregion
 
@@ -361,6 +372,15 @@ const router = createRouter({
       meta: { requiresAuth: true, HeaderTitle: 'سجل التحديث التلقائي' },
     },
     //#endregion
+
+    //#region local_management
+    {
+      path: '/localmanagement/maintenance_list',
+      component: () => import('../views/LocalManagement/maintenanceList.vue'),
+      name: 'maintenanceList',
+      meta: { requiresAuth: true, HeaderTitle: 'قائمة الصيانات' },
+    },
+    //#endregion
   ],
 })
 
@@ -373,6 +393,6 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
-});
+})
 
 export default router

@@ -58,6 +58,10 @@ export default {
           filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
         },
         {
+          name: 'pid',
+          label: 'رمز الشخص',
+        },
+        {
           name: 'name',
           label: 'اسم الساكن',
         },

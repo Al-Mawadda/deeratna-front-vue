@@ -184,6 +184,7 @@ const groupedPermissions = ref(
         { val: 'car_label_accept', label: 'قبول طلب ملصق السيارة' },
         { val: 'car_label_reject', label: 'رفض طلب ملصق السيارة' },
         { val: 'internet_requests_view', label: 'عرض طلبات الانترنت' },
+        { val: 'maintenance-requests_view', label: 'عرض طلبات الصيانة' },
       ],
     },
     {
@@ -198,6 +199,7 @@ const groupedPermissions = ref(
         { val: 'on_pay_caradd', label: 'عرض دفعات ملصق السيارة' },
         { val: 'on_pay_carrenew', label: 'عرض دفعات تجديد ملصق السيارة' },
         { val: 'on_pay_internet', label: 'عرض تجديد اشتراكات الانترنت' },
+        { val: 'on_pay_maintenance', label: 'الصيانة' },
       ],
     },
     {
@@ -259,6 +261,13 @@ const groupedPermissions = ref(
         { val: 'qr_security', label: 'بيانات ال QR' },
         { val: 'qr_notification', label: 'الاشعارات' },
         { val: 'send-qr-notification', label: 'ارسال اشعارات كيو ار' },
+      ],
+    },
+    {
+      label: 'الادارة المحلية',
+      items: [
+        { val: 'local_management_view', label: 'الادارة المحلية' },
+        { val: 'maintenance_list', label: 'قائمة الصيانات' },
       ],
     },
   ].map(group => ({

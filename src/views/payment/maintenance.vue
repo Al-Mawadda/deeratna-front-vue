@@ -1,28 +1,29 @@
 <template>
   <div class="ComponentWrapper">
-    <div class="MButton" id="GetSuccessServicesTransactionsBTN">
+    <div class="MButton" id="GetSuccessMaintenanceTransactionsBTN">
       عرض البيانات
     </div>
     <div class="MGroup">
       <MDate
-        ref="ServicesFromDate"
-        :Name="'ServicesFromDate'"
+        ref="MaintenanceFromDate"
+        :Name="'MaintenanceFromDate'"
         :Label="'تاريخ من'"
       ></MDate>
       <MDate
-        ref="ServicesToDate"
-        :Name="'ServicesToDate'"
+        ref="MaintenanceToDate"
+        :Name="'MaintenanceToDate'"
         :Label="'تاريخ الى'"
       ></MDate>
     </div>
+
     <MTable
-      ref="ServicesTB"
-      :Name="'ServicesTB'"
-      :DataArray="ServicesTBData"
-      :Columns="ServiceTBColumns"
-      :Sums="ServicesTBSums"
-      :GetDataFunction="GetServicesData"
-      :RowsCount="ServicesTBRowsCount"
+      ref="MaintenanceTB"
+      :Name="'MaintenanceTB'"
+      :DataArray="MaintenanceTBData"
+      :Columns="MaintenanceTBColumns"
+      :Sums="MaintenanceTBSums"
+      :GetDataFunction="GetMaintenanceData"
+      :RowsCount="MaintenanceTBRowsCount"
       :RowsPerPage="10"
     >
     </MTable>
@@ -32,7 +33,6 @@
 import { ref } from 'vue'
 import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
-import { ShowMessage } from '@/MJS.js'
 import { useGlobalsStore } from '../../stores/Globals.js'
 
 export default {
@@ -44,10 +44,9 @@ export default {
 
     return {
       hasPermission,
-      ServicesTB: ref(null),
-      ServicesTBData: ref([]),
-      ServicesTBRowsCount: ref(0),
-      ServiceTBColumns: [
+      MaintenanceTB: ref(null),
+      MaintenanceTBData: ref([]),
+      MaintenanceTBColumns: [
         {
           name: 'id',
           label: '#',
@@ -75,6 +74,10 @@ export default {
           label: 'رقم الهاتف',
         },
         {
+          name: 'payment_name',
+          label: 'نوع العملية',
+        },
+        {
           name: 'payment_amount',
           label: 'المبلغ',
           sum: true,
@@ -98,39 +101,60 @@ export default {
           label: 'معرف المعاملة',
         },
       ],
-      ServicesTBSums: ref([]),
-      ServicesFromDate: ref(null),
-      ServicesToDate: ref(null),
+      MaintenanceTBSums: ref([]),
+
+      MaintenanceTBRowsCount: ref(0),
+      MaintenanceFromDate: ref(null),
+      MaintenanceToDate: ref(null),
     }
   },
   mounted() {
-    this.ServicesTB.LoadMTable()
+    this.MaintenanceTB.LoadMTable()
     document
-      .getElementById('GetSuccessServicesTransactionsBTN')
+      .getElementById('GetSuccessMaintenanceTransactionsBTN')
       .addEventListener(
         'click',
         function () {
-          this.ServicesTB.ReLoadMTable()
+          this.MaintenanceTB.ReLoadMTable()
         }.bind(this)
       )
   },
   methods: {
-    GetServicesData(MTable) {
+    GetMaintenanceData(MTable) {
       api
-        .get('GetServicesTransactions', {
+        .get('GetMaintenanceTransactions', {
           params: {
             MTable: MTable,
-            serviceFrom: this.ServicesFromDate.Get(),
-            serviceTo: this.ServicesToDate.Get(),
+            maintenanceFrom: this.MaintenanceFromDate.Get(),
+            maintenanceTo: this.MaintenanceToDate.Get(),
           },
         })
         .then(response => {
-          this.ServicesTBData = response.data.data
-          this.ServicesTBRowsCount = response.data.total
-          this.ServicesTBSums = response.data.sums
+          this.MaintenanceTBData = response.data.data
+          this.MaintenanceTBRowsCount = response.data.total
+          this.MaintenanceTBSums = response.data.sums
         })
         .catch(error => {
-          ShowMessage('حدث خطا', error)
+          this.ShowMessage('حدث خطا', error)
+        })
+    },
+    GetMaintenanceDataSuccess(MTable) {
+      MTable['Filters']['transaction_status'] = 'success';
+      api
+        .get('GetMaintenanceTransactions', {
+          params: {
+            MTable: MTable,
+            maintenanceFrom: this.MaintenanceFromDate.Get(),
+            maintenanceTo: this.MaintenanceToDate.Get(),
+          },
+        })
+        .then(response => {
+          this.MaintenanceTBData = response.data.data
+          this.MaintenanceTBRowsCount = response.data.total
+          this.MaintenanceTBSums = response.data.sums
+        })
+        .catch(error => {
+          this.ShowMessage('حدث خطا', error)
         })
     },
   },
@@ -138,8 +162,8 @@ export default {
 </script>
 
 <style scoped>
-#ServicesFromDate,
-#ServicesToDate {
+#MaintenanceFromDate,
+#MaintenanceToDate {
   max-width: 300px;
 }
 </style>
