@@ -1,6 +1,7 @@
 <template>
   <div class="ComponentWrapper">
-    <MModal ref="CarLableRequestModal" :Name="'CarLableRequestModal'" :Title="' طلب ' + selectedRowData.request_type + ' ملصق ' + selectedRowData.name ">
+    <MModal ref="CarLableRequestModal" :Name="'CarLableRequestModal'"
+      :Title="' طلب ' + selectedRowData.request_type + ' ملصق ' + selectedRowData.name">
       <table cellpadding="0" cellspacing="0" class="RequestsMTable" id="CarsLabelRequestsTable">
         <thead>
           <tr>
@@ -47,16 +48,17 @@
           </tr>
         </tbody>
       </table>
-      <div class="MGroup ModalMGroup">
+      <div class="MGroup ModalMGroup" v-show="selectedRowData.department_id == 3">
         <div class="MField" id="LabelCode">
-          <input :disabled="!(selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.label_code == '')" type="text" required />
+          <input :disabled="!(selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.label_code == '') || UserData.user.department_id != 3 || selectedRowData.department_id != 3"
+            type="text" required />
           <label>رمز الملصق</label>
           <div class="MFieldBG"></div>
         </div>
-        <MDate :Disabled="selectedRowData.request_status !== 'قيد المراجعة'"
+        <MDate :Disabled="selectedRowData.request_status !== 'قيد المراجعة' || UserData.user.department_id != 3 || selectedRowData.department_id != 3"
           v-show="selectedRowData.request_type == 'اضافة'" ref="LabelIssue" :Name="'LabelIssue'"
           :Label="'تاريخ الانشاء'"></MDate>
-        <MDate :Disabled="selectedRowData.request_status !== 'قيد المراجعة'" v-show="selectedRowData.request_type == 'اضافة' ||
+        <MDate :Disabled="selectedRowData.request_status !== 'قيد المراجعة' || UserData.user.department_id != 3 || selectedRowData.department_id != 3" v-show="selectedRowData.request_type == 'اضافة' ||
           selectedRowData.request_type == 'تمديد'
           " ref="LabelExpire" :Name="'LabelExpire'" :Label="'تاريخ الانتهاء'"></MDate>
       </div>
@@ -90,13 +92,16 @@
 
       <div class="ModalButtons">
         <div v-if="hasPermission('car_label_accept')">
-          <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="AcceptBTN"
-            @click="AcceptRequest">
+          <div
+            v-show="selectedRowData.request_status == 'قيد المراجعة' && UserData.user.department_id == selectedRowData.department_id"
+            class="MButton" id="AcceptBTN" @click="AcceptRequest">
             قبول
           </div>
         </div>
         <div v-if="hasPermission('car_label_reject')">
-          <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN">
+          <div
+            v-show="selectedRowData.request_status == 'قيد المراجعة' && UserData.user.department_id == selectedRowData.department_id"
+            class="MButton" id="RejectBTN">
             رفض
           </div>
         </div>
@@ -226,6 +231,7 @@ export default {
       LabelIssue: ref(null),
       LabelExpire: ref(null),
       Gates: ref(''),
+      UserData: ref(useAuthStore()),
     }
   },
   mounted() {

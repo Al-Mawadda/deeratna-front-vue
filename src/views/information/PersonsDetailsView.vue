@@ -610,7 +610,7 @@
               </div>
             </div>
             <div class="MImagePicker">
-              <label class="MButton" for="DriverLicenceImage">اجازة السائق</label>
+              <label class="MButton" for="DriverLicenceImage">سنوية السائق</label>
               <input id="DriverLicenceImage" type="file" accept=".jpg" />
             </div>
           </div>
@@ -647,7 +647,7 @@
               </div>
             </div>
             <div class="MImagePicker">
-              <label class="MButton" for="DriverLicenceImageBack">ظهر اجازة السائق</label>
+              <label class="MButton" for="DriverLicenceImageBack">ظهر سنوية السائق</label>
               <input id="DriverLicenceImageBack" type="file" accept=".jpg" />
             </div>
           </div>
