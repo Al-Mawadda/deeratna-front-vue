@@ -70,8 +70,14 @@
         <label>تمت الموافقة على طلب الصيانة ليوم</label>
         <div class="MFieldBG"></div>
       </div>
-      <div class="MField" id="Price">
-        <input type="text" />
+      <div class="MField" id="Price" v-OnlyNumbers>
+        <input
+          :disabled="
+            selectedRowData.request_status == 'تم الدفع' ||
+            selectedRowData.request_status == 'تم'
+          "
+          type="text"
+        />
         <label>السعر</label>
         <div class="MFieldBG"></div>
       </div>
@@ -389,6 +395,10 @@ export default {
         })
     },
     CloseRequest() {
+      if (this.selectedRowData.request_status != 'تم الدفع') {
+        ShowMessage('لا يمكن غلق الطلب الا بعد اجراء عملية الدفع')
+        return
+      }
       ShowLoading()
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
@@ -399,7 +409,6 @@ export default {
         'note',
         document.getElementById('note').querySelector('input').value
       )
-
       api
         .put(`CloseMaintenanceRequests/` + this.selectedRowData.id, Parameters)
         .then(response => {
