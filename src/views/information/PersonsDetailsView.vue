@@ -60,11 +60,8 @@
           <label>رقم الهاتف</label>
           <div class="MFieldBG"></div>
         </div>
-        <div class="MField" id="Study" v-show="CheckAttributes(['مالك', 'مستاجر', 'موظف'])">
-          <input type="text" required />
-          <label>التحصيل الدراسي</label>
-          <div class="MFieldBG"></div>
-        </div>
+        <MComboBox ref='Study' :Name="'Study'" :Label="'التحصيل الدراسي'" :Items="StudyItems"
+          v-show="CheckAttributes(['مالك', 'مستاجر', 'موظف'])"></MComboBox>
         <div class="MField" id="EducationCertificate" v-show="CheckAttributes(['موظف'])">
           <input type="text" required />
           <label>الشهادة</label>
@@ -725,6 +722,8 @@ export default {
       AttributesItems: ref([]),
       IdentificationType: ref(null),
       IdentificationTypeItems: ref([]),
+      Study: ref(null),
+      StudyItems: ref([]),
       EntryDate: ref(null),
       Gender: ref(null),
       GenderItems: ref([]),
@@ -824,6 +823,7 @@ export default {
 
     this.GenderItems = this.GlobalsStore.ComboBoxes['Gender'];
     this.IdentificationTypeItems = this.GlobalsStore.ComboBoxes['IdentificationType'];
+    this.StudyItems = this.GlobalsStore.ComboBoxes['Study'];
     this.AttributesItems = this.GlobalsStore.ComboBoxes['Attributes'];
     this.CardStatusItems = this.GlobalsStore.ComboBoxes['NFCCardStatus'];
     this.RECompoundItems = this.GlobalsStore.ComboBoxes['Compounds'];
@@ -853,7 +853,7 @@ export default {
         }
       }
     });
-    
+
     document.getElementById('AllowedTimeTo').addEventListener('MTimeValueChange', function () {
       let AllowedFrom = Instance.AllowedTimeFrom.Get();
       let AllowedTo = Instance.AllowedTimeTo.Get();
@@ -1249,7 +1249,6 @@ export default {
         document.getElementById('IdentificationPage').querySelector('input').value = this.GlobalsStore.MArray['identification_page'];
         document.getElementById('IdentificationIssuingAuthority').querySelector('input').value = this.GlobalsStore.MArray['identification_issuing_authority'];
         document.getElementById('Phone').querySelector('input').value = this.GlobalsStore.MArray['phone'];
-        document.getElementById('Study').querySelector('input').value = this.GlobalsStore.MArray['study'];
         document.getElementById('EducationCertificate').querySelector('input').value = this.GlobalsStore.MArray['education_certificate'];
         document.getElementById('WorkType').querySelector('input').value = this.GlobalsStore.MArray['work_type'];
         document.getElementById('WorkPlace').querySelector('input').value = this.GlobalsStore.MArray['work_place'];
@@ -1268,6 +1267,7 @@ export default {
         this.Gender.Set(this.GlobalsStore.MArray['gender']);
         this.BirthDate.Set(this.GlobalsStore.MArray['birth']);
         this.IdentificationType.Set(this.GlobalsStore.MArray['identification_type']);
+        this.Study.Set(this.GlobalsStore.MArray['study']);
         this.IdentificationIssuingDate.Set(this.GlobalsStore.MArray['identification_issuing_date']);
         this.EntryDate.Set(this.GlobalsStore.MArray['entry_date']);
         this.EmployeeStartDate.Set(this.GlobalsStore.MArray['employee_start_date']);
@@ -1351,7 +1351,7 @@ export default {
       Parameters.append('identification_issuing_authority', document.getElementById('IdentificationIssuingAuthority').querySelector('input').value);
       Parameters.append('identification_issuing_date', this.IdentificationIssuingDate.Get());
       Parameters.append('phone', document.getElementById('Phone').querySelector('input').value);
-      Parameters.append('study', document.getElementById('Study').querySelector('input').value);
+      Parameters.append('study', this.Study.GetValue());
       Parameters.append('education_certificate', document.getElementById('EducationCertificate').querySelector('input').value);
       Parameters.append('work_type', document.getElementById('WorkType').querySelector('input').value);
       Parameters.append('work_place', document.getElementById('WorkPlace').querySelector('input').value);
