@@ -1,6 +1,6 @@
 <template>
   <div class="ComponentWrapper">
-    <MModal ref="CarLableRequestModal" :Name="'CarLableRequestModal'"
+    <MModal ref="CarLabelRequestModal" :Name="'CarLabelRequestModal'"
       :Title="' طلب ' + selectedRowData.request_type + ' ملصق ' + selectedRowData.name">
       <table cellpadding="0" cellspacing="0" class="RequestsMTable" id="CarsLabelRequestsTable">
         <thead>
@@ -48,59 +48,51 @@
           </tr>
         </tbody>
       </table>
-      <div class="MGroup ModalMGroup" v-show="selectedRowData.department_id == 3">
+      <div class="MGroup ModalMGroup" v-show="selectedRowData.department_id == 3 || UserData.user.department_id == 1">
         <div class="MField" id="LabelCode">
-          <input :disabled="!(selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.label_code == '') || UserData.user.department_id != 3 || selectedRowData.department_id != 3"
+          <input
+            :disabled="!(selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.label_code == '' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
             type="text" required />
           <label>رمز الملصق</label>
           <div class="MFieldBG"></div>
         </div>
-        <MDate :Disabled="selectedRowData.request_status !== 'قيد المراجعة' || UserData.user.department_id != 3 || selectedRowData.department_id != 3"
+        <MDate
+          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
           v-show="selectedRowData.request_type == 'اضافة'" ref="LabelIssue" :Name="'LabelIssue'"
           :Label="'تاريخ الانشاء'"></MDate>
-        <MDate :Disabled="selectedRowData.request_status !== 'قيد المراجعة' || UserData.user.department_id != 3 || selectedRowData.department_id != 3" v-show="selectedRowData.request_type == 'اضافة' ||
-          selectedRowData.request_type == 'تمديد'
-          " ref="LabelExpire" :Name="'LabelExpire'" :Label="'تاريخ الانتهاء'"></MDate>
+        <MDate
+          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
+          v-show="selectedRowData.request_type == 'اضافة' ||
+            selectedRowData.request_type == 'تمديد'
+            " ref="LabelExpire" :Name="'LabelExpire'" :Label="'تاريخ الانتهاء'"></MDate>
       </div>
 
-      <div class="MGroup ModalMGroup" id="GatesMGroup" v-show="selectedRowData.request_type == 'اضافة'">
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'Amal1-1Box'"
-          :Label="'الامل 1-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'Amal1-2Box'"
-          :Label="'الامل 1-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'Amal2-1Box'"
-          :Label="'الامل 2-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'Amal2-2Box'"
-          :Label="'الامل 2-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'Amaal-1Box'"
-          :Label="'الامال-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'Amaal-2Box'"
-          :Label="'الامال-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'jawhara-1Box'"
-          :Label="'جوهرة البصرة-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'jawhara-2Box'"
-          :Label="'جوهرة البصرة-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'eye-1Box'"
-          :Label="'عين البصرة-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'eye-2Box'"
-          :Label="'عين البصرة-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'dura-1Box'"
-          :Label="'درة البصرة-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'dura-2Box'"
-          :Label="'درة البصرة-البوابة 2'"></MCheckBox>
+      <div class="MGroup ModalMGroup" id="GatesMGroup" v-show="selectedRowData.request_type == 'اضافة' && selectedRowData.department_id == 3 || UserData.user.department_id == 1">
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal1-1Box'" :Label="'الامل 1-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal1-2Box'" :Label="'الامل 1-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal2-1Box'" :Label="'الامل 2-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal2-2Box'" :Label="'الامل 2-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amaal-1Box'" :Label="'الامال-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amaal-2Box'" :Label="'الامال-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'jawhara-1Box'" :Label="'جوهرة البصرة-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'jawhara-2Box'" :Label="'جوهرة البصرة-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'eye-1Box'" :Label="'عين البصرة-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'eye-2Box'" :Label="'عين البصرة-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'dura-1Box'" :Label="'درة البصرة-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'dura-2Box'" :Label="'درة البصرة-البوابة 2'"></MCheckBox>
       </div>
 
       <div class="ModalButtons">
         <div v-if="hasPermission('car_label_accept')">
           <div
-            v-show="selectedRowData.request_status == 'قيد المراجعة' && UserData.user.department_id == selectedRowData.department_id"
+            v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == selectedRowData.department_id || UserData.user.department_id == 1)"
             class="MButton" id="AcceptBTN" @click="AcceptRequest">
             قبول
           </div>
         </div>
         <div v-if="hasPermission('car_label_reject')">
           <div
-            v-show="selectedRowData.request_status == 'قيد المراجعة' && UserData.user.department_id == selectedRowData.department_id"
+            v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == selectedRowData.department_id || UserData.user.department_id == 1)"
             class="MButton" id="RejectBTN">
             رفض
           </div>
@@ -109,7 +101,7 @@
     </MModal>
 
     <!-- ========= Reject Model======== -->
-    <MModal ref="CarLableRequestRejectModal" :Name="'CarLableRequestRejectModal'" :Title="'رفض الطلب'">
+    <MModal ref="CarLabelRequestRejectModal" :Name="'CarLabelRequestRejectModal'" :Title="'رفض الطلب'">
       <div class="MField" id="RejectionReason">
         <input type="text" required />
         <label>سبب الرفض</label>
@@ -168,8 +160,8 @@ export default {
 
     return {
       hasPermission,
-      CarLableRequestModal: ref(null),
-      CarLableRequestRejectModal: ref(null),
+      CarLabelRequestModal: ref(null),
+      CarLabelRequestRejectModal: ref(null),
       CarLabelRequestsTB: ref(null),
       CarLabelRequestsTBData: ref([]),
 
@@ -217,6 +209,10 @@ export default {
           label: 'حالة الطلب',
         },
         {
+          name: 'department_name',
+          label: 'القسم',
+        },
+        {
           name: 'created_at',
           label: 'التاريخ',
           filter: 'date',
@@ -245,7 +241,7 @@ export default {
     document.getElementById('RejectBTN').addEventListener(
       'click',
       function () {
-        this.CarLableRequestRejectModal.Show()
+        this.CarLabelRequestRejectModal.Show()
       }.bind(this)
     )
 
@@ -289,7 +285,7 @@ export default {
           })
         })
 
-        this.CarLableRequestModal.Show()
+        this.CarLabelRequestModal.Show()
       }.bind(this)
     )
   },
@@ -349,7 +345,7 @@ export default {
         .then(response => {
           HideLoading()
           if (response.data == 'تمت العملية بنجاح') {
-            this.CarLableRequestModal.Hide()
+            this.CarLabelRequestModal.Hide()
             this.CarLabelRequestsTB.LoadMTable()
           } else {
             ShowMessage(response.data)
@@ -382,8 +378,8 @@ export default {
         .then(response => {
           HideLoading()
           if (response.data == 'تمت العملية بنجاح') {
-            this.CarLableRequestModal.Hide()
-            this.CarLableRequestRejectModal.Hide()
+            this.CarLabelRequestModal.Hide()
+            this.CarLabelRequestRejectModal.Hide()
             this.CarLabelRequestsTB.LoadMTable()
           } else {
             ShowMessage(response.data)
@@ -412,7 +408,7 @@ export default {
   background-color: var(--MButtonBG);
 }
 
-#CarLableRequestModal .Modal {
+#CarLabelRequestModal .Modal {
   max-width: 700px;
 }
 

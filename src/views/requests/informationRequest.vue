@@ -344,20 +344,22 @@
       </div>
       <div class="ModalButtons">
         <div v-if="hasPermission('info_accept')">
-          <div v-show="selectedRowData.request_status == 'قيد المراجعة' && UserData.user.department_id == selectedRowData.department_id" class="MButton" id="AcceptBTN"
-            @click="AcceptRequest()">
+          <div
+            v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == selectedRowData.department_id || UserData.user.department_id == 1)"
+            class="MButton" id="AcceptBTN" @click="AcceptRequest()">
             قبول
           </div>
         </div>
 
         <div v-if="hasPermission('info_accept')">
-          <div v-show="selectedRowData.request_status == 'قيد المراجعة' && UserData.user.department_id == selectedRowData.department_id" class="MButton" id="RejectBTN"
-            @click="RejectRequest">
+          <div
+            v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == selectedRowData.department_id || UserData.user.department_id == 1)"
+            class="MButton" id="RejectBTN" @click="RejectRequest">
             رفض
           </div>
         </div>
         <div v-show="selectedRowData.request_type == 'اضافة' &&
-          selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.department_id == 3 && UserData.user.department_id == 3
+          selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.department_id == 3 && (UserData.user.department_id == 3 || UserData.user.department_id == 1)
           " class="MButton" @click="ShowAddPersonRelationModal">
           اضافة كعلاقة
         </div>
@@ -487,6 +489,10 @@ export default {
         {
           name: 'request_status',
           label: 'حالة الطلب',
+        },
+        {
+          name: 'department_name',
+          label: 'القسم',
         },
         {
           name: 'created_at',
