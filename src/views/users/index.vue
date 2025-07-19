@@ -242,6 +242,7 @@ const groupedPermissions = ref(
         { val: 'internet_view_all', label: 'الانترنت' },
         { val: 'subscribers_view', label: 'عرض بيانات المشتركين' },
         { val: 'profile_view', label: 'عرض الاشتراكات' },
+        { val: 'internet_maintenance_list', label: 'قائمة صيانات الانترنت' },
       ],
     },
     {

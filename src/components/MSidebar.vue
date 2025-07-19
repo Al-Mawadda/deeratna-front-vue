@@ -330,6 +330,11 @@ export default {
             route: '/internet/profile',
             permission: 'profile_view',
           },
+          {
+            text: 'صيانات الانترنت',
+            route: '/internet/maintenance_list',
+            permission: 'internet_maintenance_list',
+          },
         ],
       },
       //============= الاعلانات ===============

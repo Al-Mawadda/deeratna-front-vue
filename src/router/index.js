@@ -115,6 +115,12 @@ const router = createRouter({
       name: 'InternetProfiles',
       meta: { requiresAuth: true, HeaderTitle: 'الاشتراكات' },
     },
+    {
+      path: '/internet/maintenance_list',
+      component: () => import('../views/internet/InternetMaintenanceList.vue'),
+      name: 'InternetMaintenanceList',
+      meta: { requiresAuth: true, HeaderTitle: 'قائمة صيانات الانرنت' },
+    },
     //#endregion
 
     //#region ADS
