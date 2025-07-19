@@ -2,11 +2,12 @@ import { defineStore } from 'pinia'
 import { api } from '../axios'
 
 interface User {
-  id: number
-  name: string
-  email: string
-  roles: string[]
-  permissions: string[]
+  id: number;
+  name: string;
+  email: string;
+  roles: string[];
+  permissions: string[];
+  department_id: number;
 }
 
 interface AuthState {
@@ -40,6 +41,7 @@ export const useAuthStore = defineStore('auth', {
             name: response.data.name,
             email: response.data.email,
             roles: response.data.roles,
+            department_id: response.data.department_id,
             permissions: response.data.permissions,
           }
         } else {

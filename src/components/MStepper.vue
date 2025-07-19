@@ -229,7 +229,6 @@ export default {
   font-family: 'MFontB';
   line-height: 0.3;
   transition-duration: 0.3s;
-  margin-left: 5px;
 }
 
 .MStepHeaderTitle {
@@ -241,6 +240,7 @@ export default {
   align-items: center;
   color: var(--MStepperHeaderTitleColor);
   transition-duration: 0.3s;
+  padding-right: 5px;
 }
 
 .ActiveMStepHeader .MStepHeaderIcon {

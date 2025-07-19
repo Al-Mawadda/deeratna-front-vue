@@ -51,57 +51,47 @@
           </tr>
         </tbody>
       </table>
-      <div class="MGroup ModalMGroup">
+      <div class="MGroup ModalMGroup" v-show="selectedRowData.department_id == 3 || UserData.user.department_id == 1">
         <div class="MField" id="NFCID">
-          <input :disabled="selectedRowData.request_status !== 'قيد المراجعة' ||
-            selectedRowData.request_type !== 'اضافة'
-            " type="text" required />
+          <input
+            :disabled="!(selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.request_type == 'اضافة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
+            type="text" required />
           <label>رمز البطاقة</label>
           <div class="MFieldBG"></div>
         </div>
 
-        <MDate :Disabled="selectedRowData.request_status !== 'قيد المراجعة'" v-show="selectedRowData.request_type == 'اضافة' ||
-          selectedRowData.request_type == 'تمديد'
-          " ref="CardExpire" :Name="'CardExpire'" :Label="'تاريخ الانتهاء'"></MDate>
+        <MDate :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
+          v-show="selectedRowData.request_type == 'اضافة' || selectedRowData.request_type == 'تمديد'" ref="CardExpire"
+          :Name="'CardExpire'" :Label="'تاريخ الانتهاء'"></MDate>
       </div>
 
-      <div class="MGroup ModalMGroup" id="GatesMGroup" v-show="selectedRowData.request_type == 'اضافة'">
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'Amal1-1Box'"
-          :Label="'الامل 1-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'Amal1-2Box'"
-          :Label="'الامل 1-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'Amal2-1Box'"
-          :Label="'الامل 2-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'Amal2-2Box'"
-          :Label="'الامل 2-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'Amaal-1Box'"
-          :Label="'الامال-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'Amaal-2Box'"
-          :Label="'الامال-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'jawhara-1Box'"
-          :Label="'جوهرة البصرة-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'jawhara-2Box'"
-          :Label="'جوهرة البصرة-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'eye-1Box'"
-          :Label="'عين البصرة-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'eye-2Box'"
-          :Label="'عين البصرة-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'dura-1Box'"
-          :Label="'درة البصرة-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="selectedRowData.request_status != 'قيد المراجعة'" :Name="'dura-2Box'"
-          :Label="'درة البصرة-البوابة 2'"></MCheckBox>
+      <div class="MGroup ModalMGroup" id="GatesMGroup" v-show="selectedRowData.request_type == 'اضافة' && selectedRowData.department_id == 3 || UserData.user.department_id == 1">
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal1-1Box'" :Label="'الامل 1-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal1-2Box'" :Label="'الامل 1-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal2-1Box'" :Label="'الامل 2-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal2-2Box'" :Label="'الامل 2-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amaal-1Box'" :Label="'الامال-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amaal-2Box'" :Label="'الامال-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'jawhara-1Box'" :Label="'جوهرة البصرة-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'jawhara-2Box'" :Label="'جوهرة البصرة-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'eye-1Box'" :Label="'عين البصرة-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'eye-2Box'" :Label="'عين البصرة-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'dura-1Box'" :Label="'درة البصرة-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'dura-2Box'" :Label="'درة البصرة-البوابة 2'"></MCheckBox>
       </div>
 
       <div class="ModalButtons">
         <div v-id="hasPermission('entry_card_accept')">
-          <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="AcceptBTN"
-            @click="AcceptRequest">
+          <div
+            v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == selectedRowData.department_id || UserData.user.department_id == 1)"
+            class="MButton" id="AcceptBTN" @click="AcceptRequest">
             قبول
           </div>
         </div>
         <div v-id="hasPermission('entry_card_reject')">
-          <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN"
-            @click="RejectRequest">
+          <div
+            v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == selectedRowData.department_id || UserData.user.department_id == 1)"
+            class="MButton" id="RejectBTN" @click="RejectRequest">
             رفض
           </div>
         </div>
@@ -221,6 +211,10 @@ export default {
           label: 'حالة الطلب',
         },
         {
+          name: 'department_name',
+          label: 'القسم',
+        },
+        {
           name: 'created_at',
           label: 'التاريخ',
           filter: 'date',
@@ -234,6 +228,7 @@ export default {
       NFCID: ref(''),
       CardExpire: ref(null),
       Gates: ref(''),
+      UserData: ref(useAuthStore()),
     }
   },
   mounted() {
@@ -253,58 +248,50 @@ export default {
         this.NfcCardRequestRejectModal.Show()
       }.bind(this)
     )
-    document.getElementById('NfcCardRequestsTB').addEventListener(
-      'ViewItem',
-      function (data) {
-        this.selectedRowData = data.detail.RowData
-        document.getElementById('NFCID').querySelector('input').value = ''
-        this.CardExpire.Clear()
-        document.querySelectorAll('.MCheckBox input').forEach(function (e) {
-          e.checked = false
+    document.getElementById('NfcCardRequestsTB').addEventListener('ViewItem', function (data) {
+      this.selectedRowData = data.detail.RowData
+      document.getElementById('NFCID').querySelector('input').value = ''
+      this.CardExpire.Clear()
+      document.querySelectorAll('.MCheckBox input').forEach(function (e) {
+        e.checked = false
+      })
+
+      document.getElementById('NFCID').querySelector('input').value = this.selectedRowData.nfc_id
+
+      if (this.selectedRowData.request_type == 'اضافة' && this.selectedRowData.request_status == 'قيد المراجعة') {
+        const now = new Date()
+        const nextYear = new Date(
+          now.getFullYear() + 1,
+          now.getMonth(),
+          now.getDate()
+        )
+        this.CardExpire.Set(nextYear.toISOString().split('T')[0]) // assuming Set() takes a string in YYYY-MM-DD format
+      } else {
+        this.CardExpire.Set(this.selectedRowData.card_expire)
+      }
+
+      if (this.selectedRowData.request_type == 'تمديد' && this.selectedRowData.request_status == 'قيد المراجعة') {
+        // Parse old_CardExpire and add 1 year
+        const oldDate = new Date(this.selectedRowData.old_card_expire)
+        const nextYear = new Date(
+          oldDate.getFullYear() + 1,
+          oldDate.getMonth(),
+          oldDate.getDate()
+        )
+
+        this.CardExpire.Set(nextYear.toISOString().split('T')[0]) // Format as YYYY-MM-DD
+      } else {
+        this.CardExpire.Set(this.selectedRowData.card_expire)
+      }
+      this.selectedRowData.gates.split('|').forEach(function (e) {
+        document.querySelectorAll('.MCheckBox').forEach(function (d) {
+          if (e == d.querySelector('.MCheckBoxText').innerHTML) {
+            d.querySelector('input').checked = true
+          }
         })
-
-        document.getElementById('NFCID').querySelector('input').value =
-          this.selectedRowData.nfc_id
-
-        if (
-          this.selectedRowData.request_type == 'اضافة' &&
-          this.selectedRowData.request_status == 'قيد المراجعة'
-        ) {
-          const now = new Date()
-          const nextYear = new Date(
-            now.getFullYear() + 1,
-            now.getMonth(),
-            now.getDate()
-          )
-          this.CardExpire.Set(nextYear.toISOString().split('T')[0]) // assuming Set() takes a string in YYYY-MM-DD format
-        } else {
-          this.CardExpire.Set(this.selectedRowData.card_expire)
-        }
-
-        if (
-          this.selectedRowData.request_type == 'تمديد' &&
-          this.selectedRowData.request_status == 'قيد المراجعة'
-        ) {
-          // Parse old_CardExpire and add 1 year
-          const oldDate = new Date(this.selectedRowData.old_card_expire)
-          const nextYear = new Date(
-            oldDate.getFullYear() + 1,
-            oldDate.getMonth(),
-            oldDate.getDate()
-          )
-          this.CardExpire.Set(nextYear.toISOString().split('T')[0]) // Format as YYYY-MM-DD
-        } else {
-          this.CardExpire.Set(this.selectedRowData.card_expire)
-        }
-        this.selectedRowData.gates.split('|').forEach(function (e) {
-          document.querySelectorAll('.MCheckBox').forEach(function (d) {
-            if (e == d.querySelector('.MCheckBoxText').innerHTML) {
-              d.querySelector('input').checked = true
-            }
-          })
-        })
-        this.NfcCardRequestModal.Show()
-      }.bind(this)
+      })
+      this.NfcCardRequestModal.Show()
+    }.bind(this)
     )
   },
 

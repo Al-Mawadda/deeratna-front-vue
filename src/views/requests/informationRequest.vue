@@ -2,8 +2,9 @@
   <div class="ComponentWrapper">
     <!-- ========= InformationRequest Model======== -->
 
-    <MModal ref="InformationRequestModal" :Name="'InformationRequestModal'" :Title="' طلب ' + selectedRowData.request_type + ' بيانات ' + selectedRowData.name ">
-      
+    <MModal ref="InformationRequestModal" :Name="'InformationRequestModal'"
+      :Title="' طلب ' + selectedRowData.request_type + ' بيانات ' + selectedRowData.name">
+
       <!-- ============= Add Table =============== -->
       <table v-if="selectedRowData.request_type == 'اضافة'" cellpadding="0" cellspacing="0" class="RequestsMTable">
         <thead>
@@ -309,7 +310,7 @@
           </div>
         </div>
         <div class="InformationRequestImage" v-if="selectedRowData.driver_licence_image != ''">
-          <div class="InformationRequestImageTitle">اجازة السائق</div>
+          <div class="InformationRequestImageTitle">سنوية السائق</div>
           <div class="InformationRequestImagePreview" @click="ShowImage(selectedRowData.driver_licence_image)">
             <div class="InformationRequestImagePreviewOverlay">
               <svg viewBox="0 0 1000 1000">
@@ -325,7 +326,7 @@
           </div>
         </div>
         <div class="InformationRequestImage" v-if="selectedRowData.driver_licence_image_back != ''">
-          <div class="InformationRequestImageTitle">ضهر اجازة السائق</div>
+          <div class="InformationRequestImageTitle">ضهر سنوية السائق</div>
           <div class="InformationRequestImagePreview" @click="ShowImage(selectedRowData.driver_licence_image_back)">
             <div class="InformationRequestImagePreviewOverlay">
               <svg viewBox="0 0 1000 1000">
@@ -343,20 +344,22 @@
       </div>
       <div class="ModalButtons">
         <div v-if="hasPermission('info_accept')">
-          <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="AcceptBTN"
-            @click="AcceptRequest()">
+          <div
+            v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == selectedRowData.department_id || UserData.user.department_id == 1)"
+            class="MButton" id="AcceptBTN" @click="AcceptRequest()">
             قبول
           </div>
         </div>
 
         <div v-if="hasPermission('info_accept')">
-          <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN"
-            @click="RejectRequest">
+          <div
+            v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == selectedRowData.department_id || UserData.user.department_id == 1)"
+            class="MButton" id="RejectBTN" @click="RejectRequest">
             رفض
           </div>
         </div>
         <div v-show="selectedRowData.request_type == 'اضافة' &&
-          selectedRowData.request_status == 'قيد المراجعة'
+          selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.department_id == 3 && (UserData.user.department_id == 3 || UserData.user.department_id == 1)
           " class="MButton" @click="ShowAddPersonRelationModal">
           اضافة كعلاقة
         </div>
@@ -441,9 +444,9 @@ export default {
       InformationRequestModal: ref(null),
       InformationRequestRejectModal: ref(null),
       AddPersonRelationModal: ref(null),
+
       InformationRequestsTB: ref(null),
       InformationRequestsTBData: ref([]),
-
       InformationRequestsTBColumns: [
         {
           name: 'id',
@@ -488,17 +491,22 @@ export default {
           label: 'حالة الطلب',
         },
         {
+          name: 'department_name',
+          label: 'القسم',
+        },
+        {
           name: 'created_at',
           label: 'التاريخ',
           filter: 'date',
         },
       ],
-      InformationRequestsTBSums: ref([]),
-
+      InformationRequestsTBSums: ref(),
       InformationRequestsTBRowsCount: ref(0),
+
       InformationRequestsFromDate: ref(null),
       selectedRowData: ref([]),
       ServerPath: GetServerPath(),
+      UserData: ref(useAuthStore()),
     }
   },
   mounted() {
