@@ -429,7 +429,7 @@ export default {
           }, '100')
         }
 
-        if (this.selectedRowData.request_type != 'تجديد') {
+        if (this.selectedRowData.request_type == 'نصب') {
           this.IDImage =
             'https://www.app.deeratna.net/backend/public/storage/internet_images/id/' +
             this.selectedRowData.id +

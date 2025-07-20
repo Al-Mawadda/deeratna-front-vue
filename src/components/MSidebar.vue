@@ -400,9 +400,14 @@ export default {
             permission: 'internet_requests_view',
           },
           {
-            text: 'الصيانة',
+            text: 'صيانة المنازل',
             route: '/maintenance-requests',
             permission: 'maintenance-requests_view',
+          },
+          {
+            text: 'صيانة الانترنت',
+            route: '/internet-maintenance-requests',
+            permission: 'internetـmaintenanceـrequests_view',
           },
         ],
       },

@@ -191,7 +191,14 @@ const router = createRouter({
       path: '/maintenance-requests',
       component: () => import('../views/requests/maintenanceRequest.vue'),
       name: 'maintenanceRequest',
-      meta: { requiresAuth: true, HeaderTitle: 'طلبات الصيانة' },
+      meta: { requiresAuth: true, HeaderTitle: 'صيانة المنازل' },
+    },
+    {
+      path: '/internet-maintenance-requests',
+      component: () =>
+        import('../views/requests/internetMaintenanceRequest.vue'),
+      name: 'internetmaintenanceRequest',
+      meta: { requiresAuth: true, HeaderTitle: 'صيانة الانترنيت' },
     },
     //#endregion
 
