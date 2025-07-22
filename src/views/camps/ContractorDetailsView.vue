@@ -562,7 +562,7 @@ export default {
         }).then(response => {
           if (response.data == 'تمت العملية بنجاح') {
             window.HideLoading();
-            this.$router.push({ name: 'CampsConractors' });
+            this.$router.back();
           } else {
             window.HideLoading();
             window.ShowMessage(response.data)
@@ -581,7 +581,7 @@ export default {
         }).then(response => {
           if (response.data == 'تمت العملية بنجاح') {
             window.HideLoading();
-            this.$router.push({ name: 'CampsConractors' });
+            this.$router.back();
           } else {
             window.HideLoading();
             window.ShowMessage(response.data);
@@ -601,7 +601,7 @@ export default {
           }
         }).then(response => {
           if (response.data == 'تمت العملية بنجاح') {
-            this.$router.push({ name: 'CampsConractors' });
+            this.$router.back();
             window.HideChoose();
           } else {
             window.HideChoose();

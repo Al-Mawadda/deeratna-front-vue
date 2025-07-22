@@ -493,6 +493,8 @@ export default {
         {
           name: 'department_name',
           label: 'القسم',
+          filter: 'combo',
+          filter_items: ['المختار', 'الادارة المحلية', 'المعلوماتية'],
         },
         {
           name: 'created_at',
