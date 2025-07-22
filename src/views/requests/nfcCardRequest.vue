@@ -33,11 +33,11 @@
             <td>رقم الهاتف</td>
             <td>{{ selectedRowData.phone }}</td>
           </tr>
-          <tr v-show="selectedRowData.request_type == 'اضافة'">
+          <tr v-show="selectedRowData.request_type == 'اضافة' && selectedRowData.attributes.includes('سائق')">
             <td>وقت السماح من</td>
             <td>{{ selectedRowData.allowed_time_from }}</td>
           </tr>
-          <tr v-show="selectedRowData.request_type == 'اضافة'">
+          <tr v-show="selectedRowData.request_type == 'اضافة' && selectedRowData.attributes.includes('سائق')">
             <td>وقت السماح الى</td>
             <td>{{ selectedRowData.allowed_time_to }}</td>
           </tr>
@@ -53,31 +53,55 @@
       </table>
       <div class="MGroup ModalMGroup" v-show="selectedRowData.department_id == 3 || UserData.user.department_id == 1">
         <div class="MField" id="NFCID">
-          <input
-            :disabled="!(selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.request_type == 'اضافة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
-            type="text" required />
+          <input disabled type="text" required />
           <label>رمز البطاقة</label>
           <div class="MFieldBG"></div>
         </div>
 
-        <MDate :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
+        <MDate
+          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
           v-show="selectedRowData.request_type == 'اضافة' || selectedRowData.request_type == 'تمديد'" ref="CardExpire"
           :Name="'CardExpire'" :Label="'تاريخ الانتهاء'"></MDate>
       </div>
 
-      <div class="MGroup ModalMGroup" id="GatesMGroup" v-show="selectedRowData.request_type == 'اضافة' && selectedRowData.department_id == 3 || UserData.user.department_id == 1">
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal1-1Box'" :Label="'الامل 1-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal1-2Box'" :Label="'الامل 1-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal2-1Box'" :Label="'الامل 2-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal2-2Box'" :Label="'الامل 2-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amaal-1Box'" :Label="'الامال-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amaal-2Box'" :Label="'الامال-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'jawhara-1Box'" :Label="'جوهرة البصرة-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'jawhara-2Box'" :Label="'جوهرة البصرة-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'eye-1Box'" :Label="'عين البصرة-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'eye-2Box'" :Label="'عين البصرة-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'dura-1Box'" :Label="'درة البصرة-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'dura-2Box'" :Label="'درة البصرة-البوابة 2'"></MCheckBox>
+      <div class="MGroup ModalMGroup" id="GatesMGroup"
+        v-show="selectedRowData.request_type == 'اضافة' && selectedRowData.department_id == 3 || UserData.user.department_id == 1">
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'Amal1-1Box'" :Label="'الامل 1-البوابة 1'"></MCheckBox>
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'Amal1-2Box'" :Label="'الامل 1-البوابة 2'"></MCheckBox>
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'Amal2-1Box'" :Label="'الامل 2-البوابة 1'"></MCheckBox>
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'Amal2-2Box'" :Label="'الامل 2-البوابة 2'"></MCheckBox>
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'Amaal-1Box'" :Label="'الامال-البوابة 1'"></MCheckBox>
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'Amaal-2Box'" :Label="'الامال-البوابة 2'"></MCheckBox>
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'jawhara-1Box'" :Label="'جوهرة البصرة-البوابة 1'"></MCheckBox>
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'jawhara-2Box'" :Label="'جوهرة البصرة-البوابة 2'"></MCheckBox>
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'eye-1Box'" :Label="'عين البصرة-البوابة 1'"></MCheckBox>
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'eye-2Box'" :Label="'عين البصرة-البوابة 2'"></MCheckBox>
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'dura-1Box'" :Label="'درة البصرة-البوابة 1'"></MCheckBox>
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'dura-2Box'" :Label="'درة البصرة-البوابة 2'"></MCheckBox>
       </div>
 
       <div class="ModalButtons">
@@ -213,6 +237,8 @@ export default {
         {
           name: 'department_name',
           label: 'القسم',
+          filter: 'combo',
+          filter_items: ['المختار', 'الادارة المحلية', 'المعلوماتية'],
         },
         {
           name: 'created_at',
@@ -232,7 +258,8 @@ export default {
     }
   },
   mounted() {
-    this.NfcCardRequestsTB.LoadMTable()
+    this.NFCCardsDetection();
+    this.NfcCardRequestsTB.LoadMTable();
     document.getElementById('GetNfcCardRequestsBTN').addEventListener(
       'click',
       function () {
@@ -314,9 +341,6 @@ export default {
           ShowMessage(error)
         })
     },
-
-    //==============Accept Request =========================
-
     AcceptRequest() {
       ShowLoading()
       var GatesCheckBoxes = document
@@ -363,9 +387,6 @@ export default {
           ShowMessage(error)
         })
     },
-
-    //==============Save Reject Request =========================
-
     SaveRejectRequest() {
       ShowLoading()
 
@@ -396,6 +417,39 @@ export default {
           HideLoading()
           ShowMessage(error)
         })
+    },
+    async NFCCardsDetection() {
+      let Instance = this;
+      /* eslint-disable */
+      try {
+        const ndef = new NDEFReader();
+        await ndef.scan();
+
+        ndef.addEventListener("reading", function ({ serialNumber }) {
+          if (document.getElementById('NfcCardRequestModal').classList.contains('MModalActive')) {
+            if (Instance.selectedRowData.request_status == 'قيد المراجعة' && Instance.selectedRowData.request_type == 'اضافة' && (Instance.UserData.user.department_id == 1 || (Instance.UserData.user.department_id == 3 && Instance.selectedRowData.department_id == 3))) {
+              document.getElementById('NFCID').querySelector('input').value = serialNumber;
+            }
+          }
+        });
+      }
+      catch {
+        ufRequest("ReaderOpen", function () { });
+        setInterval(function () {
+          ufRequest("GetCardIdEx", function () {
+            var serialNumber = ufResponse().CardUid;
+            if (typeof serialNumber != 'undefined') {
+              serialNumber = parseInt(ufResponse().CardUid).toString(16).match(/.{1,2}/g).join(':').toLowerCase();
+              if (document.getElementById('NfcCardRequestModal').classList.contains('MModalActive')) {
+                if (Instance.selectedRowData.request_status == 'قيد المراجعة' && Instance.selectedRowData.request_type == 'اضافة' && (Instance.UserData.user.department_id == 1 || (Instance.UserData.user.department_id == 3 && Instance.selectedRowData.department_id == 3))) {
+                  document.getElementById('NFCID').querySelector('input').value = serialNumber;
+                }
+              }
+            }
+          });
+        }, 1000);
+      }
+      /* eslint-enable */
     },
   },
 }

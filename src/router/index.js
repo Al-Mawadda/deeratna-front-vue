@@ -86,10 +86,22 @@ const router = createRouter({
       },
     },
     {
+      path: '/sales/owners',
+      component: () => import('../views/information/SalesOwnersView.vue'),
+      name: 'SalesOwners',
+      meta: { requiresAuth: true, HeaderTitle: 'المالكين' },
+    },
+        {
       path: '/sales/tenants',
       component: () => import('../views/information/SalesTenantsView.vue'),
       name: 'SalesTenants',
       meta: { requiresAuth: true, HeaderTitle: 'المستاجرين' },
+    },
+        {
+      path: '/car_labels',
+      component: () => import('../views/information/CarLabelsView.vue'),
+      name: 'CarLabels',
+      meta: { requiresAuth: true, HeaderTitle: 'ملصقات السيارات' },
     },
     //#endregion
 
@@ -370,6 +382,12 @@ const router = createRouter({
       component: () => import('../views/logs/AutoUpdatesView.vue'),
       name: 'AutoUpdatesLog',
       meta: { requiresAuth: true, HeaderTitle: 'سجل التحديث التلقائي' },
+    },
+    {
+      path: '/logs/persons',
+      component: () => import('../views/logs/PersonsView.vue'),
+      name: 'PersonsLog',
+      meta: { requiresAuth: true, HeaderTitle: 'سجل معلومات الاشخاص' },
     },
     //#endregion
 

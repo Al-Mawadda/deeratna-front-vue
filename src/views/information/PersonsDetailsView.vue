@@ -1190,6 +1190,7 @@ export default {
         let CallBack = function () {
           document.getElementById('AddRealEstate').style.display = 'none';
           Instance.REAddress.Set(data.detail.RowData['address'], 'address');
+          Instance.REOccupancyValue = Instance.REOccupancy.GetValue();
 
           setTimeout(() => {
             Instance.RECompound.Disable();
@@ -1405,7 +1406,7 @@ export default {
         }).then(response => {
           if (response.data == 'تمت العملية بنجاح') {
             window.HideLoading();
-            this.$router.push({ name: 'Persons' });
+            this.$router.back();
           } else {
             window.HideLoading();
             window.ShowMessage(response.data)
@@ -1424,7 +1425,7 @@ export default {
         }).then(response => {
           if (response.data == 'تمت العملية بنجاح') {
             window.HideLoading();
-            this.$router.push({ name: 'Persons' });
+            this.$router.back();
           } else {
             window.HideLoading();
             window.ShowMessage(response.data);
@@ -1444,7 +1445,7 @@ export default {
           }
         }).then(response => {
           if (response.data == 'تمت العملية بنجاح') {
-            this.$router.push({ name: 'Persons' });
+            this.$router.back();
             window.HideChoose();
           } else {
             window.HideChoose();
