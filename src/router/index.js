@@ -240,10 +240,16 @@ const router = createRouter({
       meta: { requiresAuth: true, HeaderTitle: 'دفع الانترنيت' },
     },
     {
+      path: '/internet-maintenance-payment',
+      component: () => import('../views/payment/internetMintenance.vue'),
+      name: 'internet-maintenance-payment',
+      meta: { requiresAuth: true, HeaderTitle: 'صيانة الانترنت' },
+    },
+    {
       path: '/maintenance-payment',
       component: () => import('../views/payment/maintenance.vue'),
       name: 'maintenance-payment',
-      meta: { requiresAuth: true, HeaderTitle: 'الصيانة' },
+      meta: { requiresAuth: true, HeaderTitle: 'صيانة المنازل' },
     },
     //#endregion
 

@@ -449,7 +449,12 @@ export default {
             permission: 'on_pay_internet',
           },
           {
-            text: 'الصيانة',
+            text: 'صيانة الانترنت',
+            route: '/internet-maintenance-payment',
+            permission: 'on_pay_internet_maintenance',
+          },
+          {
+            text: 'صيانة المنازل',
             route: '/maintenance-payment',
             permission: 'on_pay_maintenance',
           },

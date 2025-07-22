@@ -185,7 +185,10 @@ const groupedPermissions = ref(
         { val: 'car_label_reject', label: 'رفض طلب ملصق السيارة' },
         { val: 'internet_requests_view', label: 'عرض طلبات الانترنت' },
         { val: 'maintenance-requests_view', label: 'عرض طلبات صيانة المنازل' },
-        { val: 'internetـmaintenanceـrequests_view', label: 'عرض طلبات صيانة الانترنت' },
+        {
+          val: 'internetـmaintenanceـrequests_view',
+          label: 'عرض طلبات صيانة الانترنت',
+        },
       ],
     },
     {
@@ -200,7 +203,8 @@ const groupedPermissions = ref(
         { val: 'on_pay_caradd', label: 'عرض دفعات ملصق السيارة' },
         { val: 'on_pay_carrenew', label: 'عرض دفعات تجديد ملصق السيارة' },
         { val: 'on_pay_internet', label: 'عرض تجديد اشتراكات الانترنت' },
-        { val: 'on_pay_maintenance', label: 'الصيانة' },
+        { val: 'on_pay_maintenance', label: 'صيانة الانترنت' },
+        { val: 'on_pay_internet_maintenance', label: 'صيانة المنازل' },
       ],
     },
     {
