@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia';
-import { api } from '../axios';
+import { defineStore } from 'pinia'
+import { api } from '../axios'
 
 interface User {
   id: number;
@@ -11,8 +11,8 @@ interface User {
 }
 
 interface AuthState {
-  user: User | null;
-  token: string | null;
+  user: User | null
+  token: string | null
 }
 
 export const useAuthStore = defineStore('auth', {
@@ -23,18 +23,18 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async login(name: string, password: string) {
       try {
-        const response = await api.post('/login', { name, password });
+        const response = await api.post('/login', { name, password })
 
-        this.token = response.data.token;
-        localStorage.setItem('token', this.token ?? '');
-        await this.getUser();
+        this.token = response.data.token
+        localStorage.setItem('token', this.token ?? '')
+        await this.getUser()
       } catch (error) {
-        throw error;
+        throw error
       }
     },
     async getUser() {
       try {
-        const response = await api.get('/user');
+        const response = await api.get('/user')
         if (response.data) {
           this.user = {
             id: response.data.id,
@@ -43,28 +43,28 @@ export const useAuthStore = defineStore('auth', {
             roles: response.data.roles,
             department_id: response.data.department_id,
             permissions: response.data.permissions,
-          };
+          }
         } else {
-          this.user = null;
+          this.user = null
         }
       } catch (error) {
-        this.logout(); // Logout if fetching user fails
-        throw error;
+        this.logout() // Logout if fetching user fails
+        throw error
       }
     },
     async logout() {
       try {
-        await api.post('/logout');
+        await api.post('/logout', { panel: true })
       } catch (error) {
-        console.error('Error during logout:', error);
+        console.error('Error during logout:', error)
       } finally {
-        this.token = null;
-        this.user = null;
-        localStorage.removeItem('token');
+        this.token = null
+        this.user = null
+        localStorage.removeItem('token')
       }
     },
     hasPermission(permission: string) {
-      return this.user?.permissions.includes(permission);
+      return this.user?.permissions.includes(permission)
     },
   },
-});
+})

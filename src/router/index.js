@@ -127,6 +127,12 @@ const router = createRouter({
       name: 'InternetProfiles',
       meta: { requiresAuth: true, HeaderTitle: 'الاشتراكات' },
     },
+    {
+      path: '/internet/maintenance_list',
+      component: () => import('../views/internet/InternetMaintenanceList.vue'),
+      name: 'InternetMaintenanceList',
+      meta: { requiresAuth: true, HeaderTitle: 'قائمة صيانات الانرنت' },
+    },
     //#endregion
 
     //#region ADS
@@ -197,7 +203,14 @@ const router = createRouter({
       path: '/maintenance-requests',
       component: () => import('../views/requests/maintenanceRequest.vue'),
       name: 'maintenanceRequest',
-      meta: { requiresAuth: true, HeaderTitle: 'طلبات الصيانة' },
+      meta: { requiresAuth: true, HeaderTitle: 'صيانة المنازل' },
+    },
+    {
+      path: '/internet-maintenance-requests',
+      component: () =>
+        import('../views/requests/internetMaintenanceRequest.vue'),
+      name: 'internetmaintenanceRequest',
+      meta: { requiresAuth: true, HeaderTitle: 'صيانة الانترنيت' },
     },
     //#endregion
 
