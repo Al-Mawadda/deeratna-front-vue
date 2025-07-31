@@ -114,44 +114,159 @@
         ></MDate>
       </div>
 
-      <div class="MGroup ModalMGroup" id="GatesMGroup"
-        v-show="selectedRowData.request_type == 'اضافة' && selectedRowData.department_id == 3 || UserData.user.department_id == 1">
+      <div
+        class="MGroup ModalMGroup"
+        id="GatesMGroup"
+        v-show="
+          (selectedRowData.request_type == 'اضافة' &&
+            selectedRowData.department_id == 3) ||
+          UserData.user.department_id == 1
+        "
+      >
         <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'Amal1-1Box'" :Label="'الامل 1-البوابة 1'"></MCheckBox>
+          :Disabled="
+            !(
+              selectedRowData.request_status == 'قيد المراجعة' &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
+                  selectedRowData.department_id == 3))
+            )
+          "
+          :Name="'Amal1-1Box'"
+          :Label="'الامل 1-البوابة 1'"
+        ></MCheckBox>
         <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'Amal1-2Box'" :Label="'الامل 1-البوابة 2'"></MCheckBox>
+          :Disabled="
+            !(
+              selectedRowData.request_status == 'قيد المراجعة' &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
+                  selectedRowData.department_id == 3))
+            )
+          "
+          :Name="'Amal1-2Box'"
+          :Label="'الامل 1-البوابة 2'"
+        ></MCheckBox>
         <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'Amal2-1Box'" :Label="'الامل 2-البوابة 1'"></MCheckBox>
+          :Disabled="
+            !(
+              selectedRowData.request_status == 'قيد المراجعة' &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
+                  selectedRowData.department_id == 3))
+            )
+          "
+          :Name="'Amal2-1Box'"
+          :Label="'الامل 2-البوابة 1'"
+        ></MCheckBox>
         <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'Amal2-2Box'" :Label="'الامل 2-البوابة 2'"></MCheckBox>
+          :Disabled="
+            !(
+              selectedRowData.request_status == 'قيد المراجعة' &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
+                  selectedRowData.department_id == 3))
+            )
+          "
+          :Name="'Amal2-2Box'"
+          :Label="'الامل 2-البوابة 2'"
+        ></MCheckBox>
         <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'Amaal-1Box'" :Label="'الامال-البوابة 1'"></MCheckBox>
+          :Disabled="
+            !(
+              selectedRowData.request_status == 'قيد المراجعة' &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
+                  selectedRowData.department_id == 3))
+            )
+          "
+          :Name="'Amaal-1Box'"
+          :Label="'الامال-البوابة 1'"
+        ></MCheckBox>
         <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'Amaal-2Box'" :Label="'الامال-البوابة 2'"></MCheckBox>
+          :Disabled="
+            !(
+              selectedRowData.request_status == 'قيد المراجعة' &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
+                  selectedRowData.department_id == 3))
+            )
+          "
+          :Name="'Amaal-2Box'"
+          :Label="'الامال-البوابة 2'"
+        ></MCheckBox>
         <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'jawhara-1Box'" :Label="'جوهرة البصرة-البوابة 1'"></MCheckBox>
+          :Disabled="
+            !(
+              selectedRowData.request_status == 'قيد المراجعة' &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
+                  selectedRowData.department_id == 3))
+            )
+          "
+          :Name="'jawhara-1Box'"
+          :Label="'جوهرة البصرة-البوابة 1'"
+        ></MCheckBox>
         <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'jawhara-2Box'" :Label="'جوهرة البصرة-البوابة 2'"></MCheckBox>
+          :Disabled="
+            !(
+              selectedRowData.request_status == 'قيد المراجعة' &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
+                  selectedRowData.department_id == 3))
+            )
+          "
+          :Name="'jawhara-2Box'"
+          :Label="'جوهرة البصرة-البوابة 2'"
+        ></MCheckBox>
         <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'eye-1Box'" :Label="'عين البصرة-البوابة 1'"></MCheckBox>
+          :Disabled="
+            !(
+              selectedRowData.request_status == 'قيد المراجعة' &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
+                  selectedRowData.department_id == 3))
+            )
+          "
+          :Name="'eye-1Box'"
+          :Label="'عين البصرة-البوابة 1'"
+        ></MCheckBox>
         <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'eye-2Box'" :Label="'عين البصرة-البوابة 2'"></MCheckBox>
+          :Disabled="
+            !(
+              selectedRowData.request_status == 'قيد المراجعة' &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
+                  selectedRowData.department_id == 3))
+            )
+          "
+          :Name="'eye-2Box'"
+          :Label="'عين البصرة-البوابة 2'"
+        ></MCheckBox>
         <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'dura-1Box'" :Label="'درة البصرة-البوابة 1'"></MCheckBox>
+          :Disabled="
+            !(
+              selectedRowData.request_status == 'قيد المراجعة' &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
+                  selectedRowData.department_id == 3))
+            )
+          "
+          :Name="'dura-1Box'"
+          :Label="'درة البصرة-البوابة 1'"
+        ></MCheckBox>
         <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == 1 || (UserData.user.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'dura-2Box'" :Label="'درة البصرة-البوابة 2'"></MCheckBox>
+          :Disabled="
+            !(
+              selectedRowData.request_status == 'قيد المراجعة' &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
+                  selectedRowData.department_id == 3))
+            )
+          "
+          :Name="'dura-2Box'"
+          :Label="'درة البصرة-البوابة 2'"
+        ></MCheckBox>
       </div>
 
       <div class="ModalButtons">
@@ -201,7 +316,10 @@
       </div>
     </MModal>
 
-    <div class="MButton" id="GetCarLabelRequestsBTN">عرض البيانات</div>
+    <div class="MButton" id="GetCarLabelRequestsBTN">عرض كافة البيانات</div>
+    <div class="MButton" id="GetCarLabelRequestsUnderReviewBTN">
+      عرض قيد المراجعة
+    </div>
     <div class="MGroup">
       <MDate
         ref="CarLabelRequestsFromDate"
@@ -255,6 +373,7 @@ import { api } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
 import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 import { useGlobalsStore } from '../../stores/Globals.js'
+var RequestStatusData = 0
 
 export default {
   setup() {
@@ -342,9 +461,19 @@ export default {
     document.getElementById('GetCarLabelRequestsBTN').addEventListener(
       'click',
       function () {
+        RequestStatusData = 1
         this.CarLabelRequestsTB.ReLoadMTable()
       }.bind(this)
     )
+    document
+      .getElementById('GetCarLabelRequestsUnderReviewBTN')
+      .addEventListener(
+        'click',
+        function () {
+          RequestStatusData = 0
+          this.CarLabelRequestsTB.ReLoadMTable()
+        }.bind(this)
+      )
     document.getElementById('RejectBTN').addEventListener(
       'click',
       function () {
@@ -399,8 +528,12 @@ export default {
 
   methods: {
     GetCarLabelRequestsData(MTable) {
+      let APIName = 'GetCarsLabelRequestsUnderReviewDeeratna'
+      if (RequestStatusData == 1) {
+        APIName = 'GetCarsLabelRequests'
+      }
       api
-        .get('GetCarsLabelRequests', {
+        .get(APIName, {
           params: {
             MTable: MTable,
             carLabelRequestFrom: this.CarLabelRequestsFromDate.Get()[0],

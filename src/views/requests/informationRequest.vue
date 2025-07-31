@@ -567,7 +567,7 @@
       </div>
     </MModal>
 
-    <div class="MButton" id="GetInformationRequestsBTN">عرض البيانات</div>
+    <div class="MButton" id="GetInformationRequestsBTN">عرض كافة البيانات</div>
     <div class="MButton" id="GetInformationRequestsUnderReviewBTN">
       عرض قيد المراجعة
     </div>
@@ -626,6 +626,7 @@ import { api, GetServerPath } from '../../axios'
 import { useAuthStore } from '../../stores/auth'
 import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 import { useGlobalsStore } from '../../stores/Globals.js'
+var RequestStatusData = 0
 
 export default {
   setup() {
@@ -708,17 +709,21 @@ export default {
   },
   mounted() {
     this.InformationRequestsTB.LoadMTable()
+    // load all data
     document.getElementById('GetInformationRequestsBTN').addEventListener(
       'click',
       function () {
+        RequestStatusData = 1
         this.InformationRequestsTB.ReLoadMTable()
       }.bind(this)
     )
+    // load under review data
     document
       .getElementById('GetInformationRequestsUnderReviewBTN')
       .addEventListener(
         'click',
         function () {
+          RequestStatusData = 0
           this.InformationRequestsTB.ReLoadMTable()
         }.bind(this)
       )
@@ -738,8 +743,12 @@ export default {
   },
   methods: {
     GetInformationRequestsData(MTable) {
+      let APIName = 'GetInformationRequestsUnderReviewDeeratna'
+      if (RequestStatusData == 1) {
+        APIName = 'GetInformationRequests'
+      }
       api
-        .get('GetInformationRequests', {
+        .get(APIName, {
           params: {
             MTable: MTable,
             InformationRequestFrom: this.InformationRequestsFromDate.Get()[0],
