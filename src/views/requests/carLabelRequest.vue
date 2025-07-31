@@ -120,15 +120,15 @@
         v-show="
           (selectedRowData.request_type == 'اضافة' &&
             selectedRowData.department_id == 3) ||
-          UserData.user.department_id == 1
+          UserData.department_id == 1
         "
       >
         <MCheckBox
           :Disabled="
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.user.department_id == 1 ||
-                (UserData.user.department_id == 3 &&
+              (UserData.department_id == 1 ||
+                (UserData.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -139,8 +139,8 @@
           :Disabled="
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.user.department_id == 1 ||
-                (UserData.user.department_id == 3 &&
+              (UserData.department_id == 1 ||
+                (UserData.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -151,8 +151,8 @@
           :Disabled="
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.user.department_id == 1 ||
-                (UserData.user.department_id == 3 &&
+              (UserData.department_id == 1 ||
+                (UserData.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -161,10 +161,11 @@
         ></MCheckBox>
         <MCheckBox
           :Disabled="
+            true ||
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.user.department_id == 1 ||
-                (UserData.user.department_id == 3 &&
+              (UserData.department_id == 1 ||
+                (UserData.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -175,8 +176,8 @@
           :Disabled="
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.user.department_id == 1 ||
-                (UserData.user.department_id == 3 &&
+              (UserData.department_id == 1 ||
+                (UserData.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -185,10 +186,11 @@
         ></MCheckBox>
         <MCheckBox
           :Disabled="
+            true ||
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.user.department_id == 1 ||
-                (UserData.user.department_id == 3 &&
+              (UserData.department_id == 1 ||
+                (UserData.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -199,8 +201,8 @@
           :Disabled="
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.user.department_id == 1 ||
-                (UserData.user.department_id == 3 &&
+              (UserData.department_id == 1 ||
+                (UserData.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -209,10 +211,11 @@
         ></MCheckBox>
         <MCheckBox
           :Disabled="
+            true ||
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.user.department_id == 1 ||
-                (UserData.user.department_id == 3 &&
+              (UserData.department_id == 1 ||
+                (UserData.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -221,10 +224,11 @@
         ></MCheckBox>
         <MCheckBox
           :Disabled="
+            true ||
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.user.department_id == 1 ||
-                (UserData.user.department_id == 3 &&
+              (UserData.department_id == 1 ||
+                (UserData.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -233,10 +237,11 @@
         ></MCheckBox>
         <MCheckBox
           :Disabled="
+            true ||
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.user.department_id == 1 ||
-                (UserData.user.department_id == 3 &&
+              (UserData.department_id == 1 ||
+                (UserData.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -245,10 +250,11 @@
         ></MCheckBox>
         <MCheckBox
           :Disabled="
+            true ||
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.user.department_id == 1 ||
-                (UserData.user.department_id == 3 &&
+              (UserData.department_id == 1 ||
+                (UserData.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -257,10 +263,11 @@
         ></MCheckBox>
         <MCheckBox
           :Disabled="
+            true ||
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.user.department_id == 1 ||
-                (UserData.user.department_id == 3 &&
+              (UserData.department_id == 1 ||
+                (UserData.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
