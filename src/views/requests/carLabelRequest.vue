@@ -120,15 +120,15 @@
         v-show="
           (selectedRowData.request_type == 'اضافة' &&
             selectedRowData.department_id == 3) ||
-          UserData.department_id == 1
+          UserData.user.department_id == 1
         "
       >
         <MCheckBox
           :Disabled="
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.department_id == 1 ||
-                (UserData.department_id == 3 &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -139,8 +139,8 @@
           :Disabled="
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.department_id == 1 ||
-                (UserData.department_id == 3 &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -151,8 +151,8 @@
           :Disabled="
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.department_id == 1 ||
-                (UserData.department_id == 3 &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -164,8 +164,8 @@
             true ||
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.department_id == 1 ||
-                (UserData.department_id == 3 &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -176,8 +176,8 @@
           :Disabled="
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.department_id == 1 ||
-                (UserData.department_id == 3 &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -189,8 +189,8 @@
             true ||
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.department_id == 1 ||
-                (UserData.department_id == 3 &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -201,8 +201,8 @@
           :Disabled="
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.department_id == 1 ||
-                (UserData.department_id == 3 &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -214,8 +214,8 @@
             true ||
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.department_id == 1 ||
-                (UserData.department_id == 3 &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -227,8 +227,8 @@
             true ||
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.department_id == 1 ||
-                (UserData.department_id == 3 &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -240,8 +240,8 @@
             true ||
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.department_id == 1 ||
-                (UserData.department_id == 3 &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -253,8 +253,8 @@
             true ||
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.department_id == 1 ||
-                (UserData.department_id == 3 &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -266,8 +266,8 @@
             true ||
             !(
               selectedRowData.request_status == 'قيد المراجعة' &&
-              (UserData.department_id == 1 ||
-                (UserData.department_id == 3 &&
+              (UserData.user.department_id == 1 ||
+                (UserData.user.department_id == 3 &&
                   selectedRowData.department_id == 3))
             )
           "
@@ -538,6 +538,9 @@ export default {
       let APIName = 'GetCarsLabelRequestsUnderReviewDeeratna'
       if (RequestStatusData == 1) {
         APIName = 'GetCarsLabelRequests'
+      }
+      if (RequestStatusData == 0) {
+        APIName = 'GetCarsLabelRequestsUnderReviewDeeratna'
       }
       api
         .get(APIName, {
