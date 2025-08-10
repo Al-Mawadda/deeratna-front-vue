@@ -121,7 +121,7 @@
       </div>
 
       <div class="ModalButtons">
-        <div v-show="GlobalsStore.CheckPermissions('car_label_accept')">
+        <div v-show="GlobalsStore.CheckPermissions('car_label_requests_accept')">
           <div v-show="selectedRowData.request_status == 'قيد المراجعة' &&
             (UserData.department_id == selectedRowData.department_id ||
               UserData.department_id == 1)
@@ -129,7 +129,7 @@
             قبول
           </div>
         </div>
-        <div v-show="GlobalsStore.CheckPermissions('car_label_reject')">
+        <div v-show="GlobalsStore.CheckPermissions('car_label_requests_accept')">
           <div v-show="selectedRowData.request_status == 'قيد المراجعة' &&
             (UserData.department_id == selectedRowData.department_id ||
               UserData.department_id == 1)

@@ -484,7 +484,7 @@
         </div>
       </div>
       <div class="ModalButtons">
-        <div v-if="GlobalsStore.CheckPermissions('information_requests_accept')">
+        <div v-show="GlobalsStore.CheckPermissions('information_requests_accept')">
           <div
             v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == selectedRowData.department_id || UserData.department_id == 1)"
             class="MButton" id="AcceptBTN" @click="AcceptRequest()">
@@ -492,7 +492,7 @@
           </div>
         </div>
 
-        <div v-if="GlobalsStore.CheckPermissions('information_requests_reject')">
+        <div v-show="GlobalsStore.CheckPermissions('information_requests_reject')">
           <div
             v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == selectedRowData.department_id || UserData.department_id == 1)"
             class="MButton" id="RejectBTN" @click="RejectRequest">

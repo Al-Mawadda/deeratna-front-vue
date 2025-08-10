@@ -124,14 +124,14 @@
       </div>
 
       <div class="ModalButtons">
-        <div v-id="GlobalsStore.CheckPermissions('nfc_cards_requests_accept')">
+        <div v-show="GlobalsStore.CheckPermissions('nfc_cards_requests_accept')">
           <div
             v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == selectedRowData.department_id || UserData.department_id == 1)"
             class="MButton" id="AcceptBTN" @click="AcceptRequest">
             قبول
           </div>
         </div>
-        <div v-id="GlobalsStore.CheckPermissions('nfc_cards_requests_reject')">
+        <div v-show="GlobalsStore.CheckPermissions('nfc_cards_requests_reject')">
           <div
             v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == selectedRowData.department_id || UserData.department_id == 1)"
             class="MButton" id="RejectBTN" @click="RejectRequest">
