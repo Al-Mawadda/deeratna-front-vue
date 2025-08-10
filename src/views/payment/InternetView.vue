@@ -80,12 +80,16 @@ export default {
           label: 'اسم الساكن',
         },
         {
+          name: 'subscriber_name',
+          label: 'اسم المشترك',
+        },
+        {
           name: 'address',
           label: 'العنوان',
         },
         {
-          name: 'phone',
-          label: 'رقم الهاتف',
+          name: 'subscriber_phone',
+          label: 'رقم المشترك',
         },
         {
           name: 'payment_name',

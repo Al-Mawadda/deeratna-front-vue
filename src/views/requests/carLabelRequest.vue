@@ -152,7 +152,10 @@
       </div>
     </MModal>
 
-    <div class="MButton" id="GetCarLabelRequestsBTN">عرض البيانات</div>
+    <div class="MButton" id="GetCarLabelRequestsBTN">عرض كافة البيانات</div>
+    <div class="MButton" id="GetCarLabelRequestsUnderReviewBTN">
+      عرض قيد المراجعة
+    </div>
     <div class="MGroup">
       <MDate ref="CarLabelRequestsFromDate" :Name="'CarLabelRequestsFromDate'" :Label="'التاريخ'" :Range="true"
         :Clearable="true"></MDate>
@@ -189,6 +192,7 @@ import { ref } from 'vue'
 import { api } from '../../axios'
 import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 import { useGlobalsStore } from '../../stores/Globals.js'
+var RequestStatusData = 0
 
 export default {
   setup() {
@@ -274,9 +278,19 @@ export default {
     document.getElementById('GetCarLabelRequestsBTN').addEventListener(
       'click',
       function () {
+        RequestStatusData = 1
         this.CarLabelRequestsTB.ReLoadMTable()
       }.bind(this)
     )
+    document
+      .getElementById('GetCarLabelRequestsUnderReviewBTN')
+      .addEventListener(
+        'click',
+        function () {
+          RequestStatusData = 0
+          this.CarLabelRequestsTB.ReLoadMTable()
+        }.bind(this)
+      )
     document.getElementById('RejectBTN').addEventListener(
       'click',
       function () {
@@ -331,8 +345,15 @@ export default {
 
   methods: {
     GetCarLabelRequestsData(MTable) {
+      let APIName = 'GetCarsLabelRequestsUnderReviewDeeratna'
+      if (RequestStatusData == 1) {
+        APIName = 'GetCarsLabelRequests'
+      }
+      if (RequestStatusData == 0) {
+        APIName = 'GetCarsLabelRequestsUnderReviewDeeratna'
+      }
       api
-        .get('GetCarsLabelRequests', {
+        .get(APIName, {
           params: {
             MTable: MTable,
             carLabelRequestFrom: this.CarLabelRequestsFromDate.Get()[0],
