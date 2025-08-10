@@ -1,9 +1,9 @@
 <template>
   <div class="ComponentWrapper">
-    <RouterLink to="/real_estates/add" class="MButton" v-show="GlobalsStore.CheckPermissions('real_estates_add')" id="AddRealEstateBTN">اضافة عقار</RouterLink>
-    <div class="MButton" id="ReloadRealEstatesBTN">اعادة تحميل البيانات</div>
-    <MTable ref="RealEstatesTB" :Name="'RealEstatesTB'" :DataArray="RealEstatesTBData" :Columns="RealEstatesTBColumns"
-      :Sums="RealEstatesTBSums" :GetDataFunction="GetRealEstatesData" :RowsCount="RealEstatesTBRowsCount" :RowsPerPage="10">
+    <RouterLink to="/users/add" class="MButton" v-show="GlobalsStore.CheckPermissions('users_add')" id="AddUserBTN">اضافة مستخدم</RouterLink>
+    <div class="MButton" id="ReloadUsersBTN">اعادة تحميل البيانات</div>
+    <MTable ref="UsersTB" :Name="'UsersTB'" :DataArray="UsersTBData" :Columns="UsersTBColumns" :Sums="UsersTBSums"
+      :GetDataFunction="GetUsersData" :RowsCount="UsersTBRowsCount" :RowsPerPage="10">
       <template v-slot:options>
         <div class="MTableOption" OptionEventName="ViewItem">
           <div class="MTableOptionIcon">
@@ -39,53 +39,63 @@ export default {
 
     return {
       GlobalsStore,
-      RealEstatesTB: ref(null),
-      RealEstatesTBData: ref([]),
-      RealEstatesTBColumns: [
+      UsersTB: ref(null),
+      UsersTBData: ref([]),
+      UsersTBColumns: [
         {
           name: 'id',
           label: '#',
         },
         {
-          name: 'compound',
+          name: 'username',
+          label: 'اسم المستخدم',
+        },
+        {
+          name: 'department_name',
+          label: 'القسم',
+        },
+        {
+          name: 'status',
+          label: 'الحالة',
+          filter: 'combo',
+          filter_items: GlobalsStore.value.ComboBoxes?.Status || [],
+        },
+        {
+          name: 'compounds.compound',
           label: 'المدينة',
           filter: 'combo',
           filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
         },
-        {
-          name: 'address',
-          label: 'العنوان',
-        },
       ],
-      RealEstatesTBSums: ref([]),
-      RealEstatesTBRowsCount: ref(0),
+      UsersTBSums: ref([]),
+      UsersTBRowsCount: ref(0),
     }
   },
   mounted() {
-    this.RealEstatesTB.LoadMTable()
+    this.UsersTB.LoadMTable()
 
     let Instance = this;
 
-    document.getElementById('ReloadRealEstatesBTN').addEventListener('click', function () {
-      Instance.RealEstatesTB.ReLoadMTable();
+    document.getElementById('ReloadUsersBTN').addEventListener('click', function () {
+      Instance.UsersTB.ReLoadMTable();
     });
-    document.getElementById('RealEstatesTB').addEventListener('ViewItem', function (data) {
+    document.getElementById('UsersTB').addEventListener('ViewItem', function (data) {
       Instance.GlobalsStore.setMArray(data.detail.RowData);
-      Instance.$router.push({ name: 'EditRealEstate' });
+      Instance.$router.push({ name: 'EditUser' });
     });
   },
   methods: {
-    GetRealEstatesData(MTable) {
+    GetUsersData(MTable) {
       api
-        .get('GetRealEstatesData', {
+        .get('GetUsersData', {
           params: {
             MTable: MTable,
           },
         })
         .then(response => {
-          this.RealEstatesTBData = response.data.data
-          this.RealEstatesTBRowsCount = response.data.total
-          this.RealEstatesTBSums = response.data.sums
+          this.UsersTBData = response.data.data
+          this.UsersTBRowsCount = response.data.total
+          this.UsersTBSums = response.data.sums
         })
         .catch(error => {
           window.ShowMessage('حدث خطا', error)

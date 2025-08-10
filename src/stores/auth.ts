@@ -1,3 +1,4 @@
+/*
 import { defineStore } from 'pinia'
 import { api } from '../axios'
 
@@ -67,4 +68,5 @@ export const useAuthStore = defineStore('auth', {
       return this.user?.permissions.includes(permission)
     },
   },
-})
+});
+*/

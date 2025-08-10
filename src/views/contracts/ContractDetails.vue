@@ -281,19 +281,13 @@
 import { ref } from 'vue'
 import { api } from '../../axios'
 import { MStepperBuild } from '../../MJS.js'
-import { useAuthStore } from '../../stores/auth'
 import { useGlobalsStore } from '../../stores/Globals.js'
 import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 var thecount = 1
 
 export default {
   setup() {
-    const authStore = useAuthStore()
-    const hasPermission = permission =>
-      authStore.user && authStore.user.permissions.includes(permission)
-
     return {
-      hasPermission,
       AddPersonModal: ref(null),
       GlobalsStore: ref(useGlobalsStore()),
       Gender: ref(null),

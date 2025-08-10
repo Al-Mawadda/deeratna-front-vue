@@ -343,23 +343,23 @@
         </div>
       </div>
       <div class="ModalButtons">
-        <div v-if="hasPermission('info_accept')">
+        <div v-if="GlobalsStore.CheckPermissions('information_requests_accept')">
           <div
-            v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == selectedRowData.department_id || UserData.user.department_id == 1)"
+            v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == selectedRowData.department_id || UserData.department_id == 1)"
             class="MButton" id="AcceptBTN" @click="AcceptRequest()">
             قبول
           </div>
         </div>
 
-        <div v-if="hasPermission('info_accept')">
+        <div v-if="GlobalsStore.CheckPermissions('information_requests_reject')">
           <div
-            v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.user.department_id == selectedRowData.department_id || UserData.user.department_id == 1)"
+            v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == selectedRowData.department_id || UserData.department_id == 1)"
             class="MButton" id="RejectBTN" @click="RejectRequest">
             رفض
           </div>
         </div>
         <div v-show="selectedRowData.request_type == 'اضافة' &&
-          selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.department_id == 3 && (UserData.user.department_id == 3 || UserData.user.department_id == 1)
+          selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.department_id == 3 && (UserData.department_id == 3 || UserData.department_id == 1)
           " class="MButton" @click="ShowAddPersonRelationModal">
           اضافة كعلاقة
         </div>
@@ -428,19 +428,16 @@
 <script>
 import { ref } from 'vue'
 import { api, GetServerPath } from '../../axios'
-import { useAuthStore } from '../../stores/auth'
 import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 import { useGlobalsStore } from '../../stores/Globals.js'
 
 export default {
   setup() {
-    const authStore = useAuthStore()
-    const hasPermission = permission =>
-      authStore.user && authStore.user.permissions.includes(permission)
     const GlobalsStore = ref(useGlobalsStore())
-
+    const UserData = ref(useGlobalsStore().User)
     return {
-      hasPermission,
+      GlobalsStore,
+      UserData,
       InformationRequestModal: ref(null),
       InformationRequestRejectModal: ref(null),
       AddPersonRelationModal: ref(null),
@@ -460,7 +457,7 @@ export default {
           name: 'compound',
           label: 'المدينة',
           filter: 'combo',
-          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
+          filter_items: UserData.value?.department_id == 1 ? (GlobalsStore.value.ComboBoxes?.Compounds ?? []) : (UserData.value?.compounds ?? []),
         },
         {
           name: 'guardian_name',
@@ -508,7 +505,6 @@ export default {
       InformationRequestsFromDate: ref(null),
       selectedRowData: ref([]),
       ServerPath: GetServerPath(),
-      UserData: ref(useAuthStore()),
     }
   },
   mounted() {

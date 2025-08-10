@@ -1,25 +1,14 @@
 import axios from 'axios'
-import { useAuthStore } from './stores/auth'
 
 const api = axios.create({
-  // baseURL: 'http://localhost:8000/api/',
-  baseURL: 'https://app.deeratna.net/backend/public/api/',
+  baseURL: 'http://localhost:8000/api/',
+  //baseURL: 'https://app.deeratna.net/backend/public/api/',
   //baseURL: 'https://test.deeratna.net/backend/public/api/',
   headers: {
     'Content-Type': 'application/json',
   },
 })
 
-api.interceptors.request.use(config => {
-  const authStore = useAuthStore()
-  const token = authStore.token
-
-  if (token) {
-    config.headers['Authorization'] = `Bearer ${token}`
-  }
-
-  return config
-})
 export function GetServerPath() {
   const baseURL = api.defaults.baseURL // Get the baseURL
   try {
@@ -31,5 +20,5 @@ export function GetServerPath() {
     return null
   }
 }
-
+export default api
 export { api }

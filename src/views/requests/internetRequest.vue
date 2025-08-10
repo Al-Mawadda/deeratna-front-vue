@@ -287,19 +287,14 @@
 <script>
 import { ref } from 'vue'
 import { api, GetServerPath } from '../../axios'
-import { useAuthStore } from '../../stores/auth'
 import { useGlobalsStore } from '../../stores/Globals.js'
 import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 
 export default {
   setup() {
-    const authStore = useAuthStore()
-    const hasPermission = permission =>
-      authStore.user && authStore.user.permissions.includes(permission)
     const GlobalsStore = ref(useGlobalsStore())
 
     return {
-      hasPermission,
       IDImage: ref(''),
       InternetRequestModal: ref(null),
       InternetRequestRejectModal: ref(null),

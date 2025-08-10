@@ -1,6 +1,6 @@
 <template>
   <div class="ComponentWrapper">
-    <div v-if="hasPermission('ads_ser_view')" class="MGroup">
+    <div v-if="GlobalsStore.CheckPermissions('main_screen_second_ads_videos')" class="MGroup">
       <form @submit.prevent="postSliderAd" class="MGroup">
         <div class="MField">
           <input v-model="formData.name" type="text" id="name" required />
@@ -26,7 +26,7 @@
       </form>
       <!-- Table Section -->
 
-      <table v-if="hasPermission('ads_main_view')" class="table table-bordered">
+      <table v-if="GlobalsStore.CheckPermissions('main_screen_ads_videos')" class="table table-bordered">
         <thead>
           <tr>
             <th>اسم الاعلان</th>
@@ -48,7 +48,7 @@
             </td>
             <td>
               <button
-                v-if="hasPermission('ads_main_delete')"
+                v-if="GlobalsStore.CheckPermissions('main_screen_ads_videos_delete')"
                 class="btn btn-danger"
                 @click="deleteRow(row)"
               >
@@ -65,20 +65,14 @@
 <script>
 import { ref, onMounted } from 'vue'
 import { api } from '../../axios'
-import { useAuthStore } from '../../stores/auth'
 import { ShowLoading, HideLoading } from '@/MJS.js'
+import { useGlobalsStore } from '../../stores/Globals.js';
 
 export default {
   name: 'PostSliderAd',
   setup() {
-    const authStore = useAuthStore()
+    const GlobalsStore = ref(useGlobalsStore())
 
-    // Check permission
-    const hasPermission = permission => {
-      return authStore.user && authStore.user.permissions.includes(permission)
-    }
-
-    // Form data
     const formData = ref({
       name: '',
       image: null,
@@ -146,7 +140,7 @@ export default {
     onMounted(fetchTableData)
 
     return {
-      hasPermission,
+      GlobalsStore,
       formData,
       tableData,
       handleFileUpload,

@@ -1,6 +1,6 @@
 <template>
   <div class="ComponentWrapper">
-    <div v-if="hasPermission('ads_ser_view')" class="MGroup">
+    <div v-if="GlobalsStore.CheckPermissions('services_ads_videos')" class="MGroup">
       <form @submit.prevent="postSliderAd" class="MGroup">
         <div class="MField" id="name">
           <input v-model="formData.name" type="text" required />
@@ -9,16 +9,9 @@
         </div>
 
         <div class="MButton">
-          <label for="image"
-            >تحميل صورة
-            <input
-              v-on:change="formData.image"
-              id="image"
-              type="file"
-              accept="image/*"
-              @change="handleFileUpload"
-              class="form-control"
-            />
+          <label for="image">تحميل صورة
+            <input v-on:change="formData.image" id="image" type="file" accept="image/*" @change="handleFileUpload"
+              class="form-control" />
           </label>
         </div>
 
@@ -26,7 +19,7 @@
           <button class="MButton" type="submit">ارسال</button>
         </div>
       </form>
-      <table v-if="hasPermission('ads_main_view')" class="table table-bordered">
+      <table v-if="GlobalsStore.CheckPermissions('services_ads_videos')" class="table table-bordered">
         <thead>
           <tr>
             <th>اسم الاعلان</th>
@@ -39,19 +32,12 @@
             <td>{{ row.name }}</td>
             <td>
               <div v-if="row.images[0]?.path">
-                <img
-                  :src="row.images[0]?.path"
-                  alt="Ad Image"
-                  style="width: 100px; height: auto"
-                />
+                <img :src="row.images[0]?.path" alt="Ad Image" style="width: 100px; height: auto" />
               </div>
             </td>
             <td>
-              <button
-                v-if="hasPermission('ads_main_delete')"
-                class="btn btn-danger"
-                @click="deleteRow(row)"
-              >
+              <button v-if="GlobalsStore.CheckPermissions('services_ads_videos_delete')" class="btn btn-danger"
+                @click="deleteRow(row)">
                 حذف
               </button>
             </td>
@@ -65,20 +51,13 @@
 <script>
 import { ref, onMounted } from 'vue'
 import { api } from '../../axios'
-import { useAuthStore } from '../../stores/auth'
 import { ShowLoading, HideLoading } from '@/MJS.js'
+import { useGlobalsStore } from '../../stores/Globals.js';
 
 export default {
   name: 'PostSliderAd',
   setup() {
-    const authStore = useAuthStore()
-
-    // Check permission
-    const hasPermission = permission => {
-      return authStore.user && authStore.user.permissions.includes(permission)
-    }
-
-    // Form data
+    const GlobalsStore = ref(useGlobalsStore())
     const formData = ref({
       name: '',
       image: null,
@@ -146,7 +125,7 @@ export default {
     onMounted(fetchTableData)
 
     return {
-      hasPermission,
+      GlobalsStore,
       formData,
       tableData,
       handleFileUpload,

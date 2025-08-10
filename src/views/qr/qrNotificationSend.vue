@@ -16,20 +16,9 @@
 <!-- ======================================== -->
 <script>
 import { api } from '../../axios'
-import { useAuthStore } from '../../stores/auth'
 import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 
 export default {
-  setup() {
-    const authStore = useAuthStore()
-    const hasPermission = permission =>
-      authStore.user && authStore.user.permissions.includes(permission)
-
-    return {
-      hasPermission,
-    }
-  },
-  mounted() {},
   methods: {
     SendNotification() {
       ShowLoading()

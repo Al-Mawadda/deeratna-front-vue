@@ -1,6 +1,8 @@
 <template>
-  <div class="MCheckBox" :id="Name">
-    <input :id="Name + 'Input'" type="checkBox">
+  <div class="MCheckBox" :id="Name" :parent="Parent">
+        <div class="MCheckBoxSubIcon"></div>
+
+    <input :id="Name + 'Input'" type="checkBox" @change="OnChange">
     <label :for="Name + 'Input'">
       <div class="MCheckBoxMarkBox">
         <div class="MCheckBoxMark"></div>
@@ -11,10 +13,6 @@
 </template>
 
 <script>
-var IsVisible;
-var IsDisabled;
-var Value;
-
 export default {
   props: {
     Name: { type: String, required: true },
@@ -22,107 +20,96 @@ export default {
     Visible: { type: Boolean, default: true },
     Disabled: { type: Boolean, default: false },
     Value: { type: Boolean, default: false },
+    Parent: { type: String, default: null },
+  },
+  data() {
+    return {
+      Element: null,
+      IsDisabled: false,
+      TheValue: false,
+    }
   },
   watch: {
     Disabled: {
       handler(newValue) {
-        IsDisabled = false;
-
-        var Element = document.getElementById(this.Name);
-        IsDisabled = newValue;
-
-        if (IsDisabled == true) {
-          Element.querySelector('input').setAttribute('disabled', true)
-        } else {
-          Element.querySelector('input').removeAttribute('disabled')
-        }
-      },
-      deep: true,
-    },
-    Visible: {
-      handler(newValue) {
-        IsVisible = true;
-
-        var Element = document.getElementById(this.Name);
-        IsVisible = newValue;
-
-        if (IsVisible == true) {
-          Element.querySelector('input').setAttribute('disabled', true)
-        } else {
-          Element.querySelector('input').removeAttribute('disabled')
-        }
+        this.IsDisabled = newValue;
+        this.EnableDisable();
       },
       deep: true,
     },
   },
   mounted() {
-    var Element = document.getElementById(this.Name).querySelector('input');
-    IsVisible = this.Visible;
-    IsDisabled = this.Disabled;
-    Value = this.Value;
+    this.Element = document.getElementById(this.Name);
+    this.IsDisabled = this.Disabled;
+    this.TheValue = this.Value;
 
-    if (IsVisible == true) {
-      Element.style.display = '';
-    } else {
-      Element.style.display = 'none';
-    }
-
-    if (IsDisabled == true) {
-      Element.setAttribute('disabled', true)
-    } else {
-      Element.removeAttribute('disabled')
-    }
-
-    Element.checked = Value;
+    this.EnableDisable();
+    this.Set(this.TheValue);
   },
+  emits: ['OnChange'],
   methods: {
     Get() {
-      var Element = document.getElementById(this.Name).querySelector('input');
-      return Element.checked;
+      return this.Element.querySelector('input').checked;
     },
-    Set(TheValue) {
-      var Element = document.getElementById(this.Name).querySelector('input');
-      Value = TheValue;
-      Element.checked = Value;
+    Set(NewValue) {
+      this.TheValue = NewValue;
+      this.Element.querySelector('input').checked = this.TheValue;
     },
     Disable() {
-      var Element = document.getElementById(this.Name).querySelector('input');
-      IsDisabled = true;
-      if (IsDisabled == true) {
-        Element.setAttribute('disabled', true)
-      } else {
-        Element.removeAttribute('disabled')
-      }
+      this.IsDisabled = true;
+      this.EnableDisable();
     },
     Enable() {
-      var Element = document.getElementById(this.Name).querySelector('input');
-      IsDisabled = false;
-      if (IsDisabled == true) {
-        Element.setAttribute('disabled', true)
+      this.IsDisabled = false;
+      this.EnableDisable();
+    },
+    EnableDisable() {
+      if (this.IsDisabled == true) {
+        this.Element.querySelector('input').setAttribute('disabled', true)
       } else {
-        Element.removeAttribute('disabled')
+        this.Element.querySelector('input').removeAttribute('disabled')
       }
     },
-    Show() {
-      var Element = document.getElementById(this.Name);
-      IsVisible = true;
-      if (IsVisible == true) {
-        Element.style.display = '';
-      } else {
-        Element.style.display = 'none';
-      }
-    },
-    Hide() {
-      var Element = document.getElementById(this.Name);
-      IsVisible = false;
-      if (IsVisible == true) {
-        Element.style.display = '';
-      } else {
-        Element.style.display = 'none';
-      }
+    OnChange(e) {
+      this.$emit('OnChange', this.Name, e.target.checked);
     }
   }
 }
+
+/* ========== Chain Checking (PUT THIS ON THE CALLING SIDE)
+function MCheckBoxesChain(name, value) {
+  let Instance = this;
+  let ThePermission = Instance.Permissions.find(Permission => Permission.name === name);
+  if (!ThePermission) return
+
+  if (value) {
+    CheckParents(ThePermission)
+  } else {
+    UncheckChildren(ThePermission)
+  }
+
+  //#region Functions
+  function CheckParents(ThePermission) {
+    if (!ThePermission) return
+
+    Instance.MCheckBoxesRefs[ThePermission.name]?.Set(true)
+
+    let ParentPermission = Instance.Permissions.find(Permission => Permission.id === ThePermission.parent_permission_id)
+    CheckParents(ParentPermission)
+  }
+  function UncheckChildren(ThePermission) {
+    if (!ThePermission) return
+
+    Instance.MCheckBoxesRefs[ThePermission.name]?.Set(false)
+
+    let ChildPermissions = Instance.Permissions.filter(
+      Permission => Permission.parent_permission_id === ThePermission.id
+    )
+    ChildPermissions.forEach(child => UncheckChildren(child))
+  }
+  //#endregion
+}
+*/
 </script>
 
 <style>
@@ -145,8 +132,26 @@ export default {
 }
 
 .MCheckBox {
+  display: flex;
   user-select: none;
   width: min-content;
+}
+
+.MCheckBox:not([parent]) {
+  margin-top: 5px;
+}
+
+.MCheckBoxSubIcon {
+  display: none;
+  width: 15px;
+  height: 12px;
+  margin: 0 8px 0 5px;
+  border-right: 1px solid #888;
+  border-bottom: 1px solid #888;
+}
+
+.MCheckBox[parent] .MCheckBoxSubIcon {
+  display: flex;
 }
 
 .MCheckBox input {
@@ -221,8 +226,6 @@ export default {
 .MCheckBox input:disabled:checked+label .MCheckBoxMarkBox {
   border-color: var(--LabelDisabledBGChecked);
 }
-
-
 
 @keyframes CheckAnimation {
   0% {
