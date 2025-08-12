@@ -360,7 +360,11 @@ export default {
       Parameters.append('pid', this.selectedRowData.pid)
       Parameters.append('name', this.selectedRowData.name)
       Parameters.append('request_type', this.selectedRowData.request_type)
-      Parameters.append('request_status', 'دفع الكتروني')
+      if (this.selectedRowData.type == 1) {
+        Parameters.append('request_status', 'دفع الكتروني')
+      } else {
+        Parameters.append('request_status', 'قيد الكشف')
+      }
       Parameters.append(
         'maintenance_detail',
         this.selectedRowData.maintenance_detail
