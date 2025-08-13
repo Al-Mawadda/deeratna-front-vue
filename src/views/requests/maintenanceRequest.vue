@@ -105,11 +105,12 @@
           id="ConvertFromStatementToPaymentBTN"
           @click="ConvertFromStatementToPayment()"
         >
-          تحويل من كشف الى دفع
+          تحويل من كشف الى انجاز ودفع
         </div>
         <div
           v-show="
-            selectedRowData.request_status == 'تم الدفع' ||
+            (selectedRowData.request_status == 'تم الدفع' &&
+              selectedRowData.completion_status != 'تم الانجاز') ||
             (selectedRowData.type == 2 &&
               selectedRowData.request_status == 'دفع الكتروني')
           "
@@ -471,6 +472,10 @@ export default {
       Parameters.append('pid', this.selectedRowData.pid)
       Parameters.append('name', this.selectedRowData.name)
       Parameters.append('type', this.selectedRowData.type)
+      Parameters.append(
+        'completion_status',
+        this.selectedRowData.completion_status
+      )
       //Parameters.append('request_status', 'تم')
       Parameters.append(
         'note',
