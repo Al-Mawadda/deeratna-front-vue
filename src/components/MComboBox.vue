@@ -19,27 +19,20 @@ export default {
   },
   data() {
     return {
+      Element: null,
       MComboBox: null,
-      IsDisabled: this.Disabled,
+      IsDisabled: false,
       SelectedItems: [],
       MCBItems: this.Items,
     }
   },
   watch: {
-    Disabled: {
-      handler(newValue) {
-        this.IsDisabled = newValue
-        this.EnableDisable()
-      },
-      deep: true,
-    },
     Items: {
       handler(newValue) {
         nextTick(() => {
           if (this.Items) {
-            var Element = document.getElementById(this.Name)
             this.MComboBox = this.MComboBoxBuild(
-              Element,
+              this.Element,
               newValue,
               this.ItemsName,
               this.Label,
@@ -53,13 +46,21 @@ export default {
       },
       deep: true,
     },
+    Disabled: {
+      handler(newValue) {
+        this.IsDisabled = newValue;
+        this.EnableDisable();
+      },
+      deep: true,
+    },
   },
   mounted() {
-    var Element = document.getElementById(this.Name)
+    this.Element = document.getElementById(this.Name)
+    this.IsDisabled = this.Disabled;
 
     this.EnableDisable()
     this.MComboBox = this.MComboBoxBuild(
-      Element,
+      this.Element,
       this.Items,
       this.ItemsName,
       this.Label,
@@ -506,29 +507,32 @@ export default {
       }
     },
     EnableDisable() {
-      if (this.IsDisabled == true) {
-        document.getElementById(this.Name).setAttribute('MCBDisabled', true)
-      } else {
-        document.getElementById(this.Name).removeAttribute('MCBDisabled')
-      }
+      setTimeout(() => {
+        if (this.IsDisabled == true) {
+          this.Element.setAttribute('MCBDisabled', true)
+        } else {
+          this.Element.removeAttribute('MCBDisabled');
+        }
+      }, 100);
     },
-    Get() {
-      return this.SelectedItems ?? []
+    Get(Column = null) {
+      if (Column == null) {
+        return this.SelectedItems ?? []
+      } else {
+        return this.SelectedItems.map(item => item[Column]);
+      }
     },
     GetValue() {
-      return document
-        .getElementById(this.Name)
-        .querySelector('.MComboBoxValueInput').value
+      return this.Element.querySelector('.MComboBoxValueInput').value
     },
     GetID() {
-      if (!document.getElementById(this.Name).getAttribute('SelectionID')) {
+      if (!this.Element.getAttribute('SelectionID')) {
         return []
       }
-      return document.getElementById(this.Name).getAttribute('SelectionID')
+      return this.Element.getAttribute('SelectionID')
     },
     Set(Data, DataColumn = null, ItemsColumn = null) {
       let Instance = this
-      var Element = document.getElementById(Instance.Name)
       setTimeout(() => {
         Instance.SelectedItems = []
         var ItemsArrayType = ''
@@ -639,24 +643,26 @@ export default {
 
         const MCBValueChange = new CustomEvent('MCBValueChange', {
           detail: {
-            MCBID: Element.getAttribute('SelectionID'),
-            MCBValue: Element.querySelector('.MComboBoxValueInput').value,
+            MCBID: Instance.Element.getAttribute('SelectionID'),
+            MCBValue: Instance.Element.querySelector('.MComboBoxValueInput').value,
             MCBData: Instance.SelectedItems,
           },
         })
-        Element.dispatchEvent(MCBValueChange)
+        Instance.Element.dispatchEvent(MCBValueChange)
         Instance.MComboBox.PopulateSelections()
       }, 100)
     },
     SetValue(TheValue) {
+      let Instance = this;
       setTimeout(() => {
-        document.getElementById(this.Name).querySelector('.MComboBoxValueInput').value = TheValue;
-        document.getElementById(this.Name).setAttribute('valid', true);
+        Instance.Element.querySelector('.MComboBoxValueInput').value = TheValue;
+        Instance.Element.setAttribute('valid', true);
       }, 100);
     },
     SetID(TheValue) {
+      let Instance = this;
       setTimeout(() => {
-        document.getElementById(this.Name).setAttribute('SelectionID', TheValue)
+        Instance.Element.setAttribute('SelectionID', TheValue)
       }, 100)
     },
     Disable() {
@@ -995,12 +1001,15 @@ export default {
 .MComboBox[MCBDisabled] .MComboBoxChevron {
   border-right-style: dashed;
 }
+
 .MComboBox[MCBDisabled] .MComboBoxChevron {
   border-color: var(--MComboBoxDisabled) !important;
 }
+
 .MComboBox[MCBDisabled] .MComboBoxChevron svg {
   fill: var(--MComboBoxDisabled) !important;
 }
+
 .MComboBox[MCBDisabled] .MComboBoxBG {
   border: 1px dashed var(--MComboBoxDisabled) !important;
 }

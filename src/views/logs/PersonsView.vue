@@ -11,21 +11,15 @@
 <script>
 import { ref } from 'vue';
 import { api } from '../../axios';
-import { useAuthStore } from '../../stores/auth';
 import { useGlobalsStore } from '../../stores/Globals.js';
 
 export default {
   setup() {
-    const authStore = useAuthStore()
     const GlobalsStore = ref(useGlobalsStore());
-    const hasPermission = permission =>
-      authStore.user && authStore.user.permissions.includes(permission)
+
 
     return {
       GlobalsStore,
-
-      hasPermission,
-
       PersonsLogTB: ref(null),
       PersonsLogTBData: ref([]),
       PersonsLogTBColumns: [

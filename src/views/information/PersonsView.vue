@@ -1,6 +1,7 @@
 <template>
   <div class="ComponentWrapper">
-    <RouterLink to="/persons/add" class="MButton" id="AddPersonBTN">اضافة شخص</RouterLink>
+    <RouterLink to="/persons/add" class="MButton" v-show="GlobalsStore.CheckPermissions('persons_add')"
+      id="AddPersonBTN">اضافة شخص</RouterLink>
     <div class="MButton" id="ReloadPersonsBTN">اعادة تحميل البيانات</div>
     <MTable ref="PersonsTB" :Name="'PersonsTB'" :DataArray="PersonsTBData" :Columns="PersonsTBColumns"
       :Sums="PersonsTBSums" :GetDataFunction="GetPersonsData" :RowsCount="PersonsTBRowsCount" :RowsPerPage="10">
@@ -31,20 +32,16 @@
 <script>
 import { ref } from 'vue'
 import { api } from '../../axios'
-import { useAuthStore } from '../../stores/auth'
 import { useGlobalsStore } from '../../stores/Globals.js';
 
 export default {
   setup() {
-    const authStore = useAuthStore()
     const GlobalsStore = ref(useGlobalsStore());
-    const hasPermission = permission =>
-      authStore.user && authStore.user.permissions.includes(permission)
+    const UserData = ref(useGlobalsStore().User)
+
 
     return {
       GlobalsStore,
-
-      hasPermission,
       Birth: ref(null),
       identificationIssuingDate: ref(null),
       ContractDate: ref(null),
@@ -85,7 +82,7 @@ export default {
           name: 'relations.compound',
           label: 'مدينة الساكن',
           filter: 'combo',
-          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
+          filter_items: UserData.value?.department_id == 1 ? (GlobalsStore.value.ComboBoxes?.Compounds ?? []) : (UserData.value?.compounds ?? []),
         },
         {
           name: 'relations.address',
@@ -99,7 +96,7 @@ export default {
           name: 'study',
           label: 'التحصيل الدراسي',
         },
-        
+
         {
           name: 'relations.guardian_name',
           label: 'اسم صاحب العقار',

@@ -386,7 +386,7 @@
           </div>
         </div>
       </div>
-      <div class="MStepContent" :Label="'المستمسكات'">
+      <div class="MStepContent" :Visible="GlobalsStore.CheckPermissions('persons_documents')" :Label="'المستمسكات'">
         <div class="ImagesSection">
           <div class="MGroupTitle">المستمسكات</div>
           <div class="MImage" required="true">
@@ -698,9 +698,13 @@
         </div>
       </div>
     </MStepper>
-    <div class="ComponentButtons">
-      <div class="MButton" id="SaveBTN" @click="Save">حفظ</div>
-      <div class="MButton" id="DeleteBTN" @click="Delete">حذف</div>
+    <div class="ComponentButtons"
+      v-show="(Operation == 'ADD' && GlobalsStore.CheckPermissions('persons_add')) || (Operation == 'EDIT' && GlobalsStore.CheckPermissions('persons_edit'))">
+      <div class="MButton" id="SaveBTN"
+        v-show="(Operation == 'ADD' && GlobalsStore.CheckPermissions('persons_add')) || (Operation == 'EDIT' && GlobalsStore.CheckPermissions('persons_edit'))"
+        @click="Save">حفظ</div>
+      <div class="MButton" id="DeleteBTN"
+        v-show="Operation == 'EDIT' && GlobalsStore.CheckPermissions('persons_delete')" @click="Delete">حذف</div>
     </div>
   </div>
 </template>
@@ -712,8 +716,10 @@ import { useGlobalsStore } from '../../stores/Globals.js';
 
 export default {
   setup() {
+    const GlobalsStore = ref(useGlobalsStore())
+
     return {
-      GlobalsStore: ref(useGlobalsStore()),
+      GlobalsStore,
       Operation: ref(''),
       Images: ref([]),
       ID: ref(0),
@@ -820,7 +826,7 @@ export default {
   },
   mounted() {
     this.ServerPath = GetServerPath();
-
+    this.Operation = this.$route.meta.Operation;
     this.GenderItems = this.GlobalsStore.ComboBoxes['Gender'];
     this.IdentificationTypeItems = this.GlobalsStore.ComboBoxes['IdentificationType'];
     this.StudyItems = this.GlobalsStore.ComboBoxes['Study'];
@@ -829,7 +835,6 @@ export default {
     this.RECompoundItems = this.GlobalsStore.ComboBoxes['Compounds'];
     this.PersonRelationsItems = this.GlobalsStore.ComboBoxes['Relations'];
     this.REHousingStatusItems = this.GlobalsStore.ComboBoxes['HousingStatus'];
-    this.Operation = this.$route.meta.Operation;
     this.ContractorWorkPlaceItems = this.GlobalsStore.ComboBoxes['Compounds'];
     this.Occupancies = this.GlobalsStore.ComboBoxes['Occupancies'];
     this.REOccupancyItems = this.Occupancies;
@@ -1220,7 +1225,6 @@ export default {
       Instance.RealEstatesTBData = Instance.RealEstates.filter(TheRealEstate => TheRealEstate.ActionType !== "DELETE");
     });
     //#endregion
-
   },
   methods: {
     ComponentLoad() {
@@ -1229,17 +1233,12 @@ export default {
         e.value = '';
       });
 
-      if (this.$route.meta.Operation == 'ADD') {
-        document.getElementById('ID').style.display = 'none';
-        document.getElementById('DeleteBTN').style.display = 'none';
-        this.BuildImages();
-      }
       if (this.$route.meta.Operation == 'EDIT') {
         this.ID = this.GlobalsStore.MArray['id'];
 
-        document.getElementById('ID').style.display = 'flex';
-        document.getElementById('DeleteBTN').style.display = 'flex';
-
+        if (!this.GlobalsStore.CheckPermissions('persons_edit')) {
+          this.DisableAllInputs();
+        }
         //#region Fields
         document.getElementById('ID').querySelector('input').value = this.GlobalsStore.MArray['id'];
         document.getElementById('Name').querySelector('input').value = this.GlobalsStore.MArray['name'];
@@ -1316,7 +1315,6 @@ export default {
 
         //#region Images
         this.Images = this.GlobalsStore.MArray['images'];
-        this.BuildImages();
         //#endregion
 
         //#region Attachments
@@ -1324,6 +1322,7 @@ export default {
         this.BuildAttachments();
         //#endregion
       }
+      this.BuildImages();
     },
     Save() {
       window.ShowLoading();
@@ -1745,6 +1744,33 @@ export default {
         this.RelationItems = this.RelationItems.filter(TheRelation => TheRelation != 'سائق');
       }
     },
+    DisableAllInputs() {
+      setTimeout(() => {
+        document.querySelectorAll('input').forEach(function (e) {
+          e.disabled = true;
+        });
+
+        this.Attributes.Disable();
+        this.IdentificationType.Disable();
+        this.Study.Disable();
+        this.Relation.Disable();
+        this.RelationAddress.Disable();
+        this.CardStatus.Disable();
+
+        this.EmployeeStartDate.Disable();
+        this.CardExpire.Disable();
+
+        document.querySelector('.MTable').style.pointerEvents = 'none';
+
+        document.querySelectorAll('.MImage .MButton').forEach(e => {
+          e.style.display = 'none';
+        });
+        if (document.querySelector('.AddAttachment')) {
+          document.querySelector('.AddAttachment').style.display = 'none';
+        }
+
+      }, 10);
+    },
     async NFCCardsDetection() {
       let Instance = this;
       /* eslint-disable */
@@ -1809,7 +1835,10 @@ export default {
 }
 
 .ComponentButtons {
-  margin-top: 25px;
+  border-top: 1px solid #888;
+  margin-top: 30px;
+  padding-top: 15px;
+  width: 90%;
 }
 
 #AddAttachmentInput {

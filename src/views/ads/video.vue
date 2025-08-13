@@ -1,6 +1,6 @@
 <template>
   <div class="ComponentWrapper">
-    <div v-if="hasPermission('ads_video_create')" class="MGroup">
+    <div v-if="GlobalsStore.CheckPermissions('compounds_ads_videos_add')" class="MGroup">
       <form @submit.prevent="postSliderAd" class="MGroup">
         <div class="MField" id="name">
           <input v-model="formData.name" type="text" required />
@@ -33,7 +33,7 @@
       </form>
 
       <table
-        v-if="hasPermission('ads_video_view')"
+        v-if="GlobalsStore.CheckPermissions('compounds_ads_videos')"
         class="table table-bordered"
       >
         <thead>
@@ -57,7 +57,7 @@
             </td>
             <td>
               <button
-                v-if="hasPermission('ads_video_delete')"
+                v-if="GlobalsStore.CheckPermissions('compounds_ads_videos_delete')"
                 class="btn btn-danger"
                 @click="deleteRow(row)"
               >
@@ -70,26 +70,20 @@
     </div>
 
     <!-- Form Section -->
-    <div v-if="hasPermission('ads_video_create')" class="form-section"></div>
+    <div v-if="GlobalsStore.CheckPermissions('compounds_ads_videos_add')" class="form-section"></div>
   </div>
 </template>
 
 <script>
 import { ref, onMounted } from 'vue'
 import { api } from '../../axios'
-import { useAuthStore } from '../../stores/auth'
 import { ShowLoading, HideLoading } from '@/MJS.js'
+import { useGlobalsStore } from '../../stores/Globals.js';
+
 export default {
   name: 'PostSliderAd',
   setup() {
-    const authStore = useAuthStore()
-
-    // Check permission
-    const hasPermission = permission => {
-      return authStore.user && authStore.user.permissions.includes(permission)
-    }
-
-    // Form data
+    const GlobalsStore = ref(useGlobalsStore())
     const formData = ref({
       name: '',
       compound: '',
@@ -163,9 +157,8 @@ export default {
     onMounted(fetchTableData)
 
     return {
-      // Handle file upload
+      GlobalsStore,
       handleFileUpload,
-      hasPermission,
       formData,
       tableData,
       postSliderAd,

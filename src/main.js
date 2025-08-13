@@ -6,7 +6,6 @@ import { HideModal } from '@/MJS.js'
 
 import App from './App.vue'
 import router from './router'
-import { useAuthStore } from './stores/auth'
 import { useGlobalsStore } from './stores/Globals.js'
 import { api } from './axios'
 
@@ -70,14 +69,9 @@ app.directive('OnlyNumbers', {
   },
 });
 
-const authStore = useAuthStore()
-if (authStore.token) {
-  authStore.getUser().catch(() => {
-    authStore.logout()
-  })
-}
+const GlobalsStore = useGlobalsStore();
 
-const GlobalsStore = useGlobalsStore()
+GlobalsStore.InitializeAuth();
 
 async function initializeApp() {
   try {

@@ -2,7 +2,7 @@
   <div class="ComponentWrapper">
     <div class="MGroup">
       <div class="MGroupTitle">معلومات العقار</div>
-      <div class="MField" id="ID">
+      <div class="MField" id="ID" v-show="Operation == 'EDIT'">
         <input disabled type="text" required>
         <label>الرمز</label>
         <div class="MFieldBG"></div>
@@ -15,8 +15,13 @@
       </div>
     </div>
     <div class="ComponentButtons">
-      <div class="MButton" id="SaveBTN" @click="Save">حفظ</div>
-      <div class="MButton" id="DeleteBTN" @click="Delete">حذف</div>
+      <div class="MButton" id="SaveBTN"
+        v-show="(Operation == 'ADD' && GlobalsStore.CheckPermissions('real_estates_add')) || (Operation == 'EDIT' && GlobalsStore.CheckPermissions('real_estates_edit'))"
+        @click="Save">حفظ
+      </div>
+      <div class="MButton" id="DeleteBTN"
+        v-show="Operation == 'EDIT' && GlobalsStore.CheckPermissions('real_estates_delete')" @click="Delete">
+        حذف</div>
     </div>
   </div>
 </template>
@@ -32,6 +37,7 @@ export default {
 
     return {
       GlobalsStore,
+      Operation: ref(''),
       ID: ref(0),
       Compound: ref(null),
       CompoundItems: ref([]),
@@ -39,6 +45,7 @@ export default {
   },
   mounted() {
     this.CompoundItems = this.GlobalsStore.ComboBoxes['Compounds'];
+    this.Operation = this.$route.meta.Operation;
     this.ComponentLoad();
   },
   methods: {
@@ -47,33 +54,29 @@ export default {
         e.value = '';
       });
 
-      if (this.$route.meta.Operation == 'ADD') {
-        document.getElementById('ID').style.display = 'none';
-        document.getElementById('DeleteBTN').style.display = 'none';
-      }
-
-      if (this.$route.meta.Operation == 'EDIT') {
+      if (this.Operation == 'EDIT') {
         this.ID = this.GlobalsStore.MArray['id'];
-        document.getElementById('ID').style.display = 'flex';
-        document.getElementById('DeleteBTN').style.display = 'flex';
+
+        if (!this.GlobalsStore.CheckPermissions('real_estates_edit')) {
+          this.DisableAllInputs();
+        }
 
         document.getElementById('ID').querySelector('input').value = this.GlobalsStore.MArray['id'];
-        this.Compound.Set(this.GlobalsStore.MArray['compound']);
         document.getElementById('Address').querySelector('input').value = this.GlobalsStore.MArray['address'];
+
+        this.Compound.Set(this.GlobalsStore.MArray['compound']);
       }
     },
     Save() {
       window.ShowLoading();
 
-      var Operation = this.$route.meta.Operation;
-
       var Parameters = new FormData();
 
-      Parameters.append('id', this.ID);      
+      Parameters.append('id', this.ID);
       Parameters.append('compound', this.Compound.GetValue());
       Parameters.append('address', document.getElementById('Address').querySelector('input').value);
 
-      if (Operation == 'ADD') {
+      if (this.Operation == 'ADD') {
         api.post('AddRealEstate', Parameters, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -92,7 +95,7 @@ export default {
         });
       }
 
-      if (Operation == 'EDIT') {
+      if (this.Operation == 'EDIT') {
         api.post('EditRealEstate', Parameters, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -138,6 +141,13 @@ export default {
       }
       window.ShowChoose('هل انت متاكد من عملية الحذف؟', YesFunction, NoFunction);
     },
+    DisableAllInputs() {
+      document.querySelectorAll('input').forEach(function (e) {
+        e.disabled = true;
+      });
+
+      this.Compound.Disable();
+    }
   }
 }
 </script>

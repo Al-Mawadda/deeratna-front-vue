@@ -77,75 +77,37 @@
         </div>
       </div>
       <div class="MSidebarContent">
-        <RouterLink to="/" class="MSidebarItem">
-          <div class="MSidebarItemIcon">
-            <svg viewBox="0 0 1000 1000">
-              <path class="st0" d="M878.7,457.6L878.7,457.6c-4.3-6.7-9.9-12.3-15.4-17.8l-0.5-0.5c-24.3-24.3-48.6-48.6-72.9-72.9l-2.6-2.6
-	c-74-73.9-150.5-150.4-225.7-225.9c-21.5-21.6-42.4-30.3-67.7-28.2c-16.7,1.4-29.8,6.4-41.3,15.6c-4.6,3.7-8.8,7.8-13,12
-	C364.5,212.6,289.3,287.8,214.1,363l-38.8,38.8c-4.4,4.4-8.8,8.8-13.2,13.1l-0.1,0.1c-9.7,9.6-19.7,19.6-29.4,29.6
-	c-30.3,31.2-31.6,74.9-3.1,106.2c14.2,15.6,33.2,23.8,56.5,24.2c5.3,0.1,5.9,1.3,5.8,6.6c-0.2,26.7-0.2,53.9-0.1,80.1
-	c0,8.7,0,17.3,0,26.2l0,1.3l0,22.3c0,28.6,0,58.3,0,87.8c0,1.6,0.2,3.3,0.4,4.7c0.2,1.2,0.3,2.5,0.3,3.6
-	c0.3,21.1,9.9,42.3,26.4,58.2c16.6,16,38.1,24.8,60.7,24.8c0.6,0,1.2,0,1.8,0c26.8-0.5,53.8-0.4,79.8-0.3l7.2,0
-	c9.3,0,19.9,0.1,30,0.1c22,0,31.8-9.9,31.8-32c0-20.6,0-41.3,0-61.9v-0.4c0-36.8,0-74.9,0-112.9c0-20.7,13.8-34.7,34.3-34.9
-	c16.1-0.1,32.6-0.1,47.1-0.1l5.1,0c6.5,0,13,0,19.5,0c5.6,0,9.7,0.7,13.3,2.4c13.9,6.3,20.9,17.6,20.9,33.5c0,27.4,0,54.8,0,82.3
-	v2.4c0,30.7,0,61.4,0,92.1c0,18.7,10.8,29.5,29.7,29.5l22.6,0c32.6,0,66.3,0.1,99.9-0.1c34.2-0.1,66-21.7,79.3-53.8
-	c6.2-14.9,7-30.1,7.1-44.3c0.1-48.1,0.1-97.7,0.1-141.4V650c0-20.8,0-41.7,0-62.5l0-2.8c0-3.4,0-7.9,0.5-9c0.8-0.3,3.7-0.5,5.4-0.6
-	c1.7-0.1,3.9-0.2,6.4-0.4c29.2-2.6,50.7-17.1,61.9-41.7C895.1,506.9,893.5,480.8,878.7,457.6z M754.8,636l0,4.4c0,12,0,24,0,35.9
-	c0,14.9,0,29.8,0,44.8c0,25.9,0,51.7,0,77.6c0,12-3.5,21.7-10,28.3c-6.6,6.5-16.4,10-28.5,10.1c-10.1,0-20.4,0-31,0l-2.5,0
-	c-17.3,0-35.1,0-52.6,0.2l-0.4,0c-2.3,0-3.7-0.3-4.3-0.9c-0.6-0.6-0.9-2.2-0.9-4.7c0.2-42.8,0.2-86.2,0.1-128.1l0-16.2
-	c0-26-7.3-46.8-22.4-63.5c-17-19-38.2-29-62.9-29.7c-11.5-0.3-23.7-0.4-37.3-0.4c-15.3,0-29.8,0.2-40.7,0.4
-	c-43.3,0.7-80.6,35.4-84.8,79c-0.6,6.8-1,14-1,22.2c0,10.8,0,21.6,0,32.3l0,2.2c0,33.4,0,68,0.1,102.3c0,2.4-0.3,3.9-0.8,4.5
-	c-0.4,0.4-1.4,0.8-4.2,0.8c-16.6-0.2-33.5-0.2-48.5-0.1l-3.1,0c-11.8,0-24,0-36.1,0c-23.1-0.1-37.4-14.6-37.4-37.8
-	c0-51.5,0-103.1,0-154.6v-2.5c0-29.5,0-59,0-88.4c0-22.7-9.6-32.4-32.1-32.4c-2.6,0-5.2,0-7.8,0l-1.9,0c-5.7,0-11.6,0-17.4-0.1
-	c-10.8-0.2-17.9-4.6-21.6-13.3c-3.9-9.1-2-17.3,5.8-25.1l64-64c81.1-81.1,165-165,249.1-249c10.5-10.5,22.5-10.4,33.1,0.1
-	c110.9,110.8,220.2,220.1,312.5,312.5c8.1,8.1,10.2,16.7,6.1,25.6c-4,8.8-11.3,13.1-22.3,13.1l-4,0c-8.6,0-17.6-0.1-26.5,0
-	c-17.2,0.3-27.9,11-27.9,28.2C754.8,578.3,754.8,607.6,754.8,636z" />
-            </svg>
-          </div>
-          <div class="MSidebarItemText">الرئيسية</div>
-        </RouterLink>
-
-        <div class="MSidebarItemsGroup" v-for="(group, index) in groups" :key="index"
-          :class="{ ActiveMSidebarItemsGroup: activeGroup === index }">
-          <div class="MSidebarItemsGroupHeader" @click="toggleGroup(index)" v-if="hasPermission(group.permission)">
-            <div class="MSidebarItemsGroupHeaderIcon">
-              <svg viewBox="0 0 1000 1000">
-                <path
-                  d="M32.5751,788.7824V211.2176c.4424-2.07.9516-4.1287,1.3177-6.2124Q50.8071,108.7208,134.4761,58.4338c23.7386-14.21,49.8239-21.72,76.868-26.3343H787.783c1.7622.4128,3.5055.95,5.2892,1.2207,102.05,15.4958,174.7022,104.653,174.3515,203.2226-.6249,175.6362-.17,351.2762-.1917,526.9147a185.3023,185.3023,0,0,1-1.6414,28.1843c-9.6307,62.972-41.3242,111.4826-94.547,146.026-25.4118,16.493-53.658,25.2666-83.2606,30.2327H211.3441c-1.7579-.4124-3.4994-.9221-5.2761-1.2232q-94.12-15.9526-144.8625-96.9542C45.6806,844.879,37.392,817.4412,32.5751,788.7824ZM91.6473,500q0,115.1454.0264,230.2907c.0107,14.6025-.04,29.1733,1.3085,43.79,5.0006,54.2107,32.046,93.3735,79.5649,118.7788,23.1418,12.3723,48.438,15.74,74.1462,15.7673q238.9617.2537,477.9239.0531c16.3955-.0057,32.7623.04,49.1782-1.2934,32.7849-2.6628,61.1831-14.98,85.4227-36.8613,34.2976-30.9615,48.22-70.6964,48.2367-116.0187q.0893-240.7995-.0054-481.599c-.0049-15.8191-.0246-31.6078-1.2774-47.4468-2.5988-32.8552-14.8543-61.3264-36.6519-85.6488-30.8453-34.4182-70.4837-48.4683-115.7178-48.4912Q512.56,91.1985,271.318,91.3151c-15.1811.0042-30.3311-.0277-45.5289,1.3072-47.8046,4.199-84.3857,26.751-110.8138,66.4126-17.3366,26.0175-23.1453,55.39-23.237,86.0015C91.4837,330.0237,91.65,415.0122,91.6473,500Z" />
-                <path
-                  d="M587.0957,265.3569c54.6981-.0018,109.3974.1832,164.093-.1844,9.0949-.0612,12.4315,2.4838,11.9283,11.8344-.7187,13.3585-.354,26.7859-.1506,40.1792.0889,5.852-2.25,8.1651-8.0753,8.0745-13.0632-.2032-26.1323-.0257-39.199-.0253q-145.4056.0047-290.8114-.0057c-13.5256-.0017-13.5433-.0394-13.569-13.4669-.0228-11.8744.4232-23.7691-.1419-35.6163-.4-8.3807,2.6125-10.9839,10.9215-10.94C477.0915,265.5,532.0939,265.3586,587.0957,265.3569Z" />
-                <path
-                  d="M587.1657,529.9366c-54.6981.0018-109.3973-.1816-164.0929.1832-9.0737.06-12.45-2.4475-11.943-11.82.7229-13.358.3541-26.7857.1515-40.179-.0883-5.84,2.2229-8.1858,8.0615-8.0881,12.4552.2084,24.9167.0254,37.3756.025q146.3172-.0047,292.6345.0057c13.5394.0016,13.5571.0391,13.5831,13.4527.0231,11.8743-.4193,23.7687.1411,35.6163.3954,8.3588-2.5759,11-10.9064,10.9549C697.17,529.7916,642.1676,529.9348,587.1657,529.9366Z" />
-                <path
-                  d="M588.0447,674.77c54.3941-.0015,108.7895.1889,163.181-.1875,9.1519-.0633,12.3811,2.5816,11.8891,11.8744-.7074,13.36-.3541,26.7862-.1485,40.1794.09,5.8857-2.3205,8.1074-8.1119,8.0382-15.4953-.1852-30.9945-.0264-46.4922-.0259q-141.7592.0051-283.5183-.0059c-13.49-.0018-13.5071-.04-13.5324-13.5036-.0222-11.8743.433-23.77-.144-35.616-.4111-8.4377,2.7068-10.9427,10.96-10.9C477.4324,674.9085,532.7389,674.7713,588.0447,674.77Z" />
-                <path
-                  d="M295.2566,236.1331c10.0285,0,20.06-.1683,30.0845.038,16.6164.342,28.7024,12.33,28.9028,28.98q.3627,30.14,0,60.2867c-.2005,16.6494-12.2863,28.7583-28.9037,28.9591q-30.0808.3635-60.1692,0c-16.6168-.2008-28.7023-12.31-28.9026-28.96q-.3627-30.14,0-60.2867c.2-16.6493,12.2871-28.6367,28.9038-28.9785C275.1963,235.9649,285.2282,236.1331,295.2566,236.1331Z" />
-                <path
-                  d="M295.21,559.16c-10.0284-.0009-20.06.1708-30.0845-.04-16.5984-.3484-28.6626-12.3576-28.8591-29.0235q-.3555-30.14.0037-60.2867c.2044-16.6315,12.3138-28.7185,28.9473-28.9154q30.081-.3561,60.1691.0037c16.5992.2048,28.6626,12.3378,28.8591,29.0037q.3553,30.14-.0038,60.2867c-.2043,16.6316-12.3143,28.5991-28.9472,28.9346C315.27,559.3261,305.2385,559.1611,295.21,559.16Z" />
-                <path
-                  d="M295.2561,763.8668c-10.0284,0-20.06.1682-30.0845-.0379-16.6165-.3418-28.7029-12.33-28.9033-28.979q-.3627-30.14,0-60.2867c.2-16.65,12.2861-28.7589,28.9031-28.96q30.081-.3634,60.1692,0c16.617.2008,28.7028,12.31,28.9032,28.9595q.3628,30.14,0,60.2867c-.2,16.65-12.2866,28.6373-28.9031,28.9791C315.3165,764.035,305.2846,763.8668,295.2561,763.8668Z" />
-              </svg>
+        <template v-for="(item, idx) in SidebarItems" :key="idx">
+          <router-link v-if="!item.items" :to="item.route"
+            v-show="!item.permission || GlobalsStore.CheckPermissions(item.permission)" class="MSidebarItem"
+            active-class="router-link-active" exact-active-class="router-link-exact-active">
+            <div class="MSidebarItemIcon" v-html="item.icon" />
+            <div class="MSidebarItemText">{{ item.text }}</div>
+          </router-link>
+          <div
+            v-else-if="item.items.some(child => !child.permission || GlobalsStore.CheckPermissions(child.permission))"
+            class="MSidebarItemsGroup" :class="{ ActiveMSidebarItemsGroup: activeGroup === idx }">
+            <div class="MSidebarItemsGroupHeader" @click="toggleGroup(idx)">
+              <div class="MSidebarItemsGroupHeaderIcon" v-html="item.icon" />
+              <div class="MSidebarItemsGroupHeaderText">
+                {{ item.text }}
+              </div>
+              <div class="MSidebarItemsGroupHeaderArrow">
+                <svg viewBox="0 0 1000 1000">
+                  <polygon points="333.8,75.7 241.9,167.7 574.2,500 241.9,832.3 333.8,924.3 758.1,500" />
+                </svg>
+              </div>
             </div>
-            <div class="MSidebarItemsGroupHeaderText">{{ group.text }}</div>
-            <div class="MSidebarItemsGroupHeaderArrow">
-              <svg viewBox="0 0 1000 1000">
-                <polygon points="333.8,75.7 241.9,167.7 574.2,500 241.9,832.3 333.8,924.3 758.1,500 " />
-              </svg>
+            <div class="MSidebarItems">
+              <router-link v-for="child in item.items" :key="child.route"
+                v-show="!child.permission || GlobalsStore.CheckPermissions(child.permission)" :to="child.route"
+                class="MSidebarItem" active-class="router-link-active" exact-active-class="router-link-exact-active">
+                <div class="MSidebarItemIcon" v-html="child.icon || ''" />
+                <div class="MSidebarItemText">{{ child.text }}</div>
+              </router-link>
             </div>
           </div>
-          <div class="MSidebarItems" v-if="hasPermission(group.permission)">
-            <div v-for="(item, i) in group.items">
-              <RouterLink :key="i" :to="item.route" class="MSidebarItem" v-if="hasPermission(item.permission)">
-                <div class="MSidebarItemIcon">
-                  <svg viewBox="0 0 1000 1000">
-                    <!-- Item Icon -->
-                  </svg>
-                </div>
-                <div class="MSidebarItemText">{{ item.text }}</div>
-              </RouterLink>
-            </div>
-          </div>
-        </div>
+        </template>
       </div>
       <div class="MSidebarFooter">
         <div style="display: none" class="MSidebarItem">
@@ -184,325 +146,183 @@
 </template>
 
 <script>
-import { useAuthStore } from '../stores/auth'
+import { api } from '../axios.js';
+import { useGlobalsStore } from '../stores/Globals.js'
 import { ref } from 'vue'
 export default {
   setup() {
-    const authStore = useAuthStore()
-    const activeGroup = ref(null)
-
-    const groups = ref([
-      //============= التسويق ===============
+    const GlobalsStore = useGlobalsStore();
+    const GroupIcon = '<svg viewBox="0 0 1000 1000"><path d="M32.5751,788.7824V211.2176c.4424-2.07.9516-4.1287,1.3177-6.2124Q50.8071,108.7208,134.4761,58.4338c23.7386-14.21,49.8239-21.72,76.868-26.3343H787.783c1.7622.4128,3.5055.95,5.2892,1.2207,102.05,15.4958,174.7022,104.653,174.3515,203.2226-.6249,175.6362-.17,351.2762-.1917,526.9147a185.3023,185.3023,0,0,1-1.6414,28.1843c-9.6307,62.972-41.3242,111.4826-94.547,146.026-25.4118,16.493-53.658,25.2666-83.2606,30.2327H211.3441c-1.7579-.4124-3.4994-.9221-5.2761-1.2232q-94.12-15.9526-144.8625-96.9542C45.6806,844.879,37.392,817.4412,32.5751,788.7824ZM91.6473,500q0,115.1454.0264,230.2907c.0107,14.6025-.04,29.1733,1.3085,43.79,5.0006,54.2107,32.046,93.3735,79.5649,118.7788,23.1418,12.3723,48.438,15.74,74.1462,15.7673q238.9617.2537,477.9239.0531c16.3955-.0057,32.7623.04,49.1782-1.2934,32.7849-2.6628,61.1831-14.98,85.4227-36.8613,34.2976-30.9615,48.22-70.6964,48.2367-116.0187q.0893-240.7995-.0054-481.599c-.0049-15.8191-.0246-31.6078-1.2774-47.4468-2.5988-32.8552-14.8543-61.3264-36.6519-85.6488-30.8453-34.4182-70.4837-48.4683-115.7178-48.4912Q512.56,91.1985,271.318,91.3151c-15.1811.0042-30.3311-.0277-45.5289,1.3072-47.8046,4.199-84.3857,26.751-110.8138,66.4126-17.3366,26.0175-23.1453,55.39-23.237,86.0015C91.4837,330.0237,91.65,415.0122,91.6473,500Z"></path><path d="M587.0957,265.3569c54.6981-.0018,109.3974.1832,164.093-.1844,9.0949-.0612,12.4315,2.4838,11.9283,11.8344-.7187,13.3585-.354,26.7859-.1506,40.1792.0889,5.852-2.25,8.1651-8.0753,8.0745-13.0632-.2032-26.1323-.0257-39.199-.0253q-145.4056.0047-290.8114-.0057c-13.5256-.0017-13.5433-.0394-13.569-13.4669-.0228-11.8744.4232-23.7691-.1419-35.6163-.4-8.3807,2.6125-10.9839,10.9215-10.94C477.0915,265.5,532.0939,265.3586,587.0957,265.3569Z"></path><path d="M587.1657,529.9366c-54.6981.0018-109.3973-.1816-164.0929.1832-9.0737.06-12.45-2.4475-11.943-11.82.7229-13.358.3541-26.7857.1515-40.179-.0883-5.84,2.2229-8.1858,8.0615-8.0881,12.4552.2084,24.9167.0254,37.3756.025q146.3172-.0047,292.6345.0057c13.5394.0016,13.5571.0391,13.5831,13.4527.0231,11.8743-.4193,23.7687.1411,35.6163.3954,8.3588-2.5759,11-10.9064,10.9549C697.17,529.7916,642.1676,529.9348,587.1657,529.9366Z"></path><path d="M588.0447,674.77c54.3941-.0015,108.7895.1889,163.181-.1875,9.1519-.0633,12.3811,2.5816,11.8891,11.8744-.7074,13.36-.3541,26.7862-.1485,40.1794.09,5.8857-2.3205,8.1074-8.1119,8.0382-15.4953-.1852-30.9945-.0264-46.4922-.0259q-141.7592.0051-283.5183-.0059c-13.49-.0018-13.5071-.04-13.5324-13.5036-.0222-11.8743.433-23.77-.144-35.616-.4111-8.4377,2.7068-10.9427,10.96-10.9C477.4324,674.9085,532.7389,674.7713,588.0447,674.77Z"></path><path d="M295.2566,236.1331c10.0285,0,20.06-.1683,30.0845.038,16.6164.342,28.7024,12.33,28.9028,28.98q.3627,30.14,0,60.2867c-.2005,16.6494-12.2863,28.7583-28.9037,28.9591q-30.0808.3635-60.1692,0c-16.6168-.2008-28.7023-12.31-28.9026-28.96q-.3627-30.14,0-60.2867c.2-16.6493,12.2871-28.6367,28.9038-28.9785C275.1963,235.9649,285.2282,236.1331,295.2566,236.1331Z"></path><path d="M295.21,559.16c-10.0284-.0009-20.06.1708-30.0845-.04-16.5984-.3484-28.6626-12.3576-28.8591-29.0235q-.3555-30.14.0037-60.2867c.2044-16.6315,12.3138-28.7185,28.9473-28.9154q30.081-.3561,60.1691.0037c16.5992.2048,28.6626,12.3378,28.8591,29.0037q.3553,30.14-.0038,60.2867c-.2043,16.6316-12.3143,28.5991-28.9472,28.9346C315.27,559.3261,305.2385,559.1611,295.21,559.16Z"></path><path d="M295.2561,763.8668c-10.0284,0-20.06.1682-30.0845-.0379-16.6165-.3418-28.7029-12.33-28.9033-28.979q-.3627-30.14,0-60.2867c.2-16.65,12.2861-28.7589,28.9031-28.96q30.081-.3634,60.1692,0c16.617.2008,28.7028,12.31,28.9032,28.9595q.3628,30.14,0,60.2867c-.2,16.65-12.2866,28.6373-28.9031,28.9791C315.3165,764.035,305.2846,763.8668,295.2561,763.8668Z"></path></svg>';
+    const HomeIcon = '<svg viewBox="0 0 1000 1000"><path class="st0" d="M878.7,457.6L878.7,457.6c-4.3-6.7-9.9-12.3-15.4-17.8l-0.5-0.5c-24.3-24.3-48.6-48.6-72.9-72.9l-2.6-2.6c-74-73.9-150.5-150.4-225.7-225.9c-21.5-21.6-42.4-30.3-67.7-28.2c-16.7,1.4-29.8,6.4-41.3,15.6c-4.6,3.7-8.8,7.8-13,12C364.5,212.6,289.3,287.8,214.1,363l-38.8,38.8c-4.4,4.4-8.8,8.8-13.2,13.1l-0.1,0.1c-9.7,9.6-19.7,19.6-29.4,29.6c-30.3,31.2-31.6,74.9-3.1,106.2c14.2,15.6,33.2,23.8,56.5,24.2c5.3,0.1,5.9,1.3,5.8,6.6c-0.2,26.7-0.2,53.9-0.1,80.1c0,8.7,0,17.3,0,26.2l0,1.3l0,22.3c0,28.6,0,58.3,0,87.8c0,1.6,0.2,3.3,0.4,4.7c0.2,1.2,0.3,2.5,0.3,3.6c0.3,21.1,9.9,42.3,26.4,58.2c16.6,16,38.1,24.8,60.7,24.8c0.6,0,1.2,0,1.8,0c26.8-0.5,53.8-0.4,79.8-0.3l7.2,0c9.3,0,19.9,0.1,30,0.1c22,0,31.8-9.9,31.8-32c0-20.6,0-41.3,0-61.9v-0.4c0-36.8,0-74.9,0-112.9c0-20.7,13.8-34.7,34.3-34.9c16.1-0.1,32.6-0.1,47.1-0.1l5.1,0c6.5,0,13,0,19.5,0c5.6,0,9.7,0.7,13.3,2.4c13.9,6.3,20.9,17.6,20.9,33.5c0,27.4,0,54.8,0,82.3v2.4c0,30.7,0,61.4,0,92.1c0,18.7,10.8,29.5,29.7,29.5l22.6,0c32.6,0,66.3,0.1,99.9-0.1c34.2-0.1,66-21.7,79.3-53.8c6.2-14.9,7-30.1,7.1-44.3c0.1-48.1,0.1-97.7,0.1-141.4V650c0-20.8,0-41.7,0-62.5l0-2.8c0-3.4,0-7.9,0.5-9c0.8-0.3,3.7-0.5,5.4-0.6c1.7-0.1,3.9-0.2,6.4-0.4c29.2-2.6,50.7-17.1,61.9-41.7C895.1,506.9,893.5,480.8,878.7,457.6z M754.8,636l0,4.4c0,12,0,24,0,35.9c0,14.9,0,29.8,0,44.8c0,25.9,0,51.7,0,77.6c0,12-3.5,21.7-10,28.3c-6.6,6.5-16.4,10-28.5,10.1c-10.1,0-20.4,0-31,0l-2.5,0c-17.3,0-35.1,0-52.6,0.2l-0.4,0c-2.3,0-3.7-0.3-4.3-0.9c-0.6-0.6-0.9-2.2-0.9-4.7c0.2-42.8,0.2-86.2,0.1-128.1l0-16.2c0-26-7.3-46.8-22.4-63.5c-17-19-38.2-29-62.9-29.7c-11.5-0.3-23.7-0.4-37.3-0.4c-15.3,0-29.8,0.2-40.7,0.4c-43.3,0.7-80.6,35.4-84.8,79c-0.6,6.8-1,14-1,22.2c0,10.8,0,21.6,0,32.3l0,2.2c0,33.4,0,68,0.1,102.3c0,2.4-0.3,3.9-0.8,4.5c-0.4,0.4-1.4,0.8-4.2,0.8c-16.6-0.2-33.5-0.2-48.5-0.1l-3.1,0c-11.8,0-24,0-36.1,0c-23.1-0.1-37.4-14.6-37.4-37.8c0-51.5,0-103.1,0-154.6v-2.5c0-29.5,0-59,0-88.4c0-22.7-9.6-32.4-32.1-32.4c-2.6,0-5.2,0-7.8,0l-1.9,0c-5.7,0-11.6,0-17.4-0.1c-10.8-0.2-17.9-4.6-21.6-13.3c-3.9-9.1-2-17.3,5.8-25.1l64-64c81.1-81.1,165-165,249.1-249c10.5-10.5,22.5-10.4,33.1,0.1c110.9,110.8,220.2,220.1,312.5,312.5c8.1,8.1,10.2,16.7,6.1,25.6c-4,8.8-11.3,13.1-22.3,13.1l-4,0c-8.6,0-17.6-0.1-26.5,0c-17.2,0.3-27.9,11-27.9,28.2C754.8,578.3,754.8,607.6,754.8,636z"></path></svg>';
+    const activeGroup = ref(null);
+    const toggleGroup = idx => { activeGroup.value = activeGroup.value === idx ? null : idx }
+    const SidebarItems = ref([
+      //#region الرئيسية
+      { text: 'الرئيسية', icon: HomeIcon, route: '/' },
+      //#endregion
+      //#region التسويق
       {
-        text: 'العقود',
-        permission: 'ads_view_all',
+        text: 'التسويق',
+        icon: GroupIcon,
         items: [
-          {
-            text: 'ادخال عقد جديد',
-            route: '/contracts/add',
-            permission: 'ads_video_view',
-          },
-        ],
+          { text: 'ادخال عقد جديد', route: '/contracts/add', permission: 'sales_contracts' },
+          { text: 'العقارات', route: '/real_estates', permission: 'real_estates' },
+          { text: 'المالكين', route: '/sales/owners', permission: 'sales_owners' },
+          { text: 'المستاجرين', route: '/sales/tenants', permission: 'sales_tenants' }
+        ]
       },
-      //============= المعلومات =============
+      //#endregion
+      //#region المعلومات
       {
         text: 'المعلومات',
-        permission: 'information',
+        icon: GroupIcon,
         items: [
-          {
-            text: 'معلومات الاشخاص',
-            route: '/persons',
-            permission: 'information',
-          },
-          {
-            text: 'بطاقات الدخول',
-            route: '/nfc_cards',
-            permission: 'information',
-          },
-          {
-            text: ' ملصقات السيارات',
-            route: '/car_labels',
-            permission: 'information',
-          },
-          {
-            text: 'العقارات',
-            route: '/real_estates',
-            permission: 'information',
-          },
-          {
-            text: 'المالكين',
-            route: '/sales/owners',
-            permission: 'information',
-          },
-          {
-            text: 'المستاجرين',
-            route: '/sales/tenants',
-            permission: 'information',
-          },
-        ],
+          { text: 'معلومات الاشخاص', route: '/persons', permission: 'persons' },
+          { text: 'بطاقات الدخول', route: '/nfc_cards', permission: 'nfc_cards' },
+          { text: 'ملصقات السيارات', route: '/car_labels', permission: 'cars_labels' }
+        ]
       },
-      //============= الانترنت ===============
+      //#endregion
+      //#region الانترنت
       {
         text: 'الانترنت',
-        permission: 'internet_view_all',
+        icon: GroupIcon,
         items: [
-          {
-            text: 'بيانات المشتركين',
-            route: '/internet/subscribers',
-            permission: 'subscribers_view',
-          },
-          {
-            text: 'الاشتراكات',
-            route: '/internet/profile',
-            permission: 'profile_view',
-          },
-          {
-            text: 'صيانات الانترنت',
-            route: '/internet/maintenance_list',
-            permission: 'internet_maintenance_list',
-          },
-        ],
+          { text: 'بيانات المشتركين', route: '/internet/subscribers', permission: 'internet_subscribers' },
+          { text: 'الاشتراكات', route: '/internet/profile', permission: 'internet_profiles' },
+          { text: 'صيانات الانترنت', route: '/internet/maintenance_list', permission: 'internet_maintenance_list' }
+        ]
       },
-      //============= الاعلانات ===============
+      //#endregion
+      //#region الاعلانات
       {
         text: 'الاعلانات',
-        permission: 'ads_view_all',
+        icon: GroupIcon,
         items: [
-          {
-            text: 'فيديوات المدن',
-            route: '/ads/video',
-            permission: 'ads_video_view',
-          },
-          {
-            text: 'الاعلانات الواجهة الرئيسية',
-            route: '/ads/main',
-            permission: 'ads_main_view',
-          },
-          {
-            text: 'الاعلانات الخدمات',
-            route: '/ads/services',
-            permission: 'ads_ser_view',
-          },
-          {
-            text: 'الاعلانات  المولد',
-            route: '/ads/energy',
-            permission: 'ads_ene_view',
-          },
-          {
-            text: 'الاعلانات الفديو',
-            route: '/ads/Home-secondVideo',
-            permission: 'ads_ene_view',
-          },
-          {
-            text: 'ارسال اشعار',
-            route: '/ads/send-deeratna-notification',
-            permission: 'send-deeratna-notification',
-          },
-        ],
+          { text: 'فيديوات المدن', route: '/ads/video', permission: 'compounds_ads_videos' },
+          { text: 'الاعلانات الواجهة الرئيسية', route: '/ads/main', permission: 'main_screen_ads_videos' },
+          { text: 'الاعلانات الخدمات', route: '/ads/services', permission: 'services_ads_videos' },
+          { text: 'الاعلانات المولد', route: '/ads/energy', permission: 'electricity_ads_videos' },
+          { text: 'الاعلانات الفيديو', route: '/ads/Home-secondVideo', permission: 'main_screen_second_ads_videos' },
+          { text: 'ارسال اشعار', route: '/ads/send-deeratna-notification', permission: 'deeratna_notification_send' }
+        ]
       },
-      //============= الطلبات ===============
+      //#endregion
+      //#region الطلبات
       {
         text: 'الطلبات',
-        permission: 'request_view',
+        icon: GroupIcon,
         items: [
-          {
-            text: 'ادارة المعلومات',
-            route: '/information-requests',
-            permission: 'info_view',
-          },
-          {
-            text: 'بطاقات الدخول',
-            route: '/nfc-cards-requests',
-            permission: 'entry_card_view',
-          },
-          {
-            text: 'ملصق السيارة',
-            route: '/cars-label-requests',
-            permission: 'car_label_view',
-          },
-          {
-            text: 'الانترنيت',
-            route: '/internet-requests',
-            permission: 'internet_requests_view',
-          },
-          {
-            text: 'صيانة المنازل',
-            route: '/maintenance-requests',
-            permission: 'maintenance-requests_view',
-          },
-          {
-            text: 'صيانة الانترنت',
-            route: '/internet-maintenance-requests',
-            permission: 'internetـmaintenanceـrequests_view',
-          },
-        ],
+          { text: 'ادارة المعلومات', route: '/information-requests', permission: 'information_requests' },
+          { text: 'بطاقات الدخول', route: '/nfc-cards-requests', permission: 'nfc_cards_requests' },
+          { text: 'ملصق السيارة', route: '/cars-label-requests', permission: 'car_label_requests' },
+          { text: 'الانترنت', route: '/internet-requests', permission: 'internet_requests' },
+          { text: 'صيانة المنازل', route: '/maintenance-requests', permission: 'maintenance_requests' },
+          { text: 'صيانة الانترنت', route: '/internet-maintenance-requests', permission: 'internet_maintenance_requests_view' }
+        ]
       },
-      //============= الدفع الالكتروني' ======
+      //#endregion
+      //#region الدفع الالكتروني
       {
         text: 'الدفع الالكتروني',
-        permission: 'on_pay_view',
+        icon: GroupIcon,
         items: [
-          {
-            text: 'الاقساط',
-            route: '/installment-payment',
-            permission: 'on_pay_inst',
-          },
-          {
-            text: 'الخدمات',
-            route: '/services-payment',
-            permission: 'on_pay_ser',
-          },
-          {
-            text: 'المولد',
-            route: '/electricity-payment',
-            permission: 'on_pay_ene',
-          },
-          //  { text: "طلب بطاقات الدخول", route: "/nfccardadd-payment", permission: "on_pay_nfcadd" },
-          {
-            text: 'بطاقات الدخول',
-            route: '/nfccard-payment',
-            permission: 'on_pay_nfcrenew',
-          },
-          // { text: "طلب ملصق السيارة", route: "/carlabeladd-payment", permission: "on_pay_caradd" },
-          {
-            text: ' ملصق السيارة',
-            route: '/carlabele-payment',
-            permission: 'on_pay_carrenew',
-          },
-          {
-            text: 'الانترنيت',
-            route: '/internet-payment',
-            permission: 'on_pay_internet',
-          },
-          {
-            text: 'صيانة الانترنت',
-            route: '/internet-maintenance-payment',
-            permission: 'on_pay_internet_maintenance',
-          },
-          {
-            text: 'صيانة المنازل',
-            route: '/maintenance-payment',
-            permission: 'on_pay_maintenance',
-          },
-        ],
+          { text: 'الاقساط', route: '/installment-payment', permission: 'installments_payments' },
+          { text: 'الخدمات', route: '/services-payment', permission: 'services_payments' },
+          { text: 'المولد', route: '/electricity-payment', permission: 'electricity_payments' },
+          { text: 'بطاقات الدخول', route: '/nfccard-payment', permission: 'nfc_cards_payments' },
+          { text: 'ملصق السيارة', route: '/carlabele-payment', permission: 'cars_labels_payments' },
+          { text: 'الانترنت', route: '/internet-payment', permission: 'internet_payments' },
+          { text: 'الصيانة', route: '/maintenance-payment', permission: 'maintenance_payments' }
+        ]
       },
-      //============= الكمب =================
+      //#endregion
+      //#region الكمب
       {
         text: 'الكمب',
-        permission: 'camps',
+        icon: GroupIcon,
         items: [
-          {
-            text: 'الكمبات',
-            route: '/camps',
-            permission: 'camps',
-          },
-          {
-            text: 'المتعهدين',
-            route: '/camps/contractors',
-            permission: 'camps',
-          },
-          {
-            text: 'العمال',
-            route: '/camps/workers',
-            permission: 'camps',
-          },
-        ],
+          { text: 'الكمبات', route: '/camps', permission: 'camps' },
+          { text: 'المتعهدين', route: '/camps/contractors', permission: 'camps' },
+          { text: 'العمال', route: '/camps/workers', permission: 'camps' }
+        ]
       },
-      //============= خطار ==================
+      //#endregion
+      //#region خطار
       {
         text: 'خطار',
-        permission: 'qr_view',
+        icon: GroupIcon,
         items: [
-          {
-            text: 'معلومات المشتركين',
-            route: '/qr-customers',
-            permission: 'qr_customers',
-          },
-          {
-            text: 'بيانات ال QR',
-            route: '/qr-data',
-            permission: 'qr_security',
-          },
-          {
-            text: 'الاشعارات',
-            route: '/qr-notification',
-            permission: 'qr_notification',
-          },
-          {
-            text: 'ارسال اشعار',
-            route: '/send-qr-notification',
-            permission: 'send-qr-notification',
-          },
-        ],
+          { text: 'معلومات المشتركين', route: '/qr-customers', permission: 'qr_subscribers' },
+          { text: 'بيانات ال QR', route: '/qr-data', permission: 'qr_readings' },
+          { text: 'الاشعارات', route: '/qr-notification', permission: 'qr_notifications' },
+          { text: 'ارسال اشعار', route: '/send-qr-notification', permission: 'qr_notification_send' }
+        ]
       },
-      //============= المستخدمين=============
-      {
-        text: 'المستخدمين',
-        permission: 'users_view',
-        items: [
-          {
-            text: 'مستخدمي لوحة التحكم',
-            route: '/users',
-            permission: 'users_view',
-          },
-          {
-            text: 'مستخدمي تطبيق ديرتنا',
-            route: '/deeratna_app_users',
-            permission: 'users_view',
-          },
-        ],
-      },
-      //============= الادارة المحلية ===============
+      //#endregion
+      //#region الادارة المحلية
       {
         text: 'الادارة المحلية',
-        permission: 'local_management_view',
+        icon: GroupIcon,
+
         items: [
-          {
-            text: 'قائمة الصيانات',
-            route: '/localmanagement/maintenance_list',
-            permission: 'maintenance_list',
-          },
-        ],
+          { text: 'قائمة الصيانات', route: '/localmanagement/maintenance_list', permission: 'maintenance_list' }
+        ]
       },
-      //============= السجل =============
+      //#endregion
+      //#region المستخدمين
+      {
+        text: 'المستخدمين',
+        icon: GroupIcon,
+        items: [
+          { text: 'لوحة التحكم', route: '/users', permission: 'users' },
+          { text: 'تطبيق ديرتنا', route: '/deeratna_app_users', permission: 'deeratna_app_users' }
+        ]
+      },
+      //#endregion
+      //#region السجل
       {
         text: 'السجل',
-        permission: 'information',
+        icon: GroupIcon,
+
         items: [
-          {
-            text: 'التحديث التلقائي',
-            route: '/logs/auto_updates',
-            permission: 'information',
-          },
-          {
-            text: 'معلومات الاشخاص',
-            route: '/logs/persons',
-            permission: 'information',
-          },
-        ],
-      },
-    ])
-
-    const hasPermission = permission => {
-      return authStore.user && authStore.user.permissions.includes(permission)
-    }
-
-    const toggleGroup = index => {
-      activeGroup.value = activeGroup.value === index ? null : index
-    }
+          { text: 'التحديث التلقائي', route: '/logs/auto_updates', permission: 'auto_updates_logs' },
+          { text: 'معلومات الاشخاص', route: '/logs/persons', permission: 'persons_logs' }
+        ]
+      }
+      //#endregion
+    ]);
 
     return {
-      groups,
+      GlobalsStore,
       activeGroup,
       toggleGroup,
-      hasPermission,
+      SidebarItems,
     }
+  },
+  mounted() {
+    document.querySelector('.MSidebarBody').addEventListener("click", function () {
+      document.querySelector('.MSidebar').classList.toggle('CollapsedMSidebar');
+      document.querySelector('.MainContent').classList.toggle('FullMainContent');
+      document.querySelector('.MHeader').classList.toggle('FullMHeader');
+      document.querySelector('.MSidebarBody').style.display = 'none';
+    });
   },
   methods: {
     Logout() {
-      const authStore = useAuthStore()
-      authStore.logout()
-      this.$router.push({ name: 'Login' })
+      window.ShowLoading();
+      api.post("Logout").then(response => {
+        if (response.data == 'تمت العملية بنجاح') {
+          this.GlobalsStore.ClearAuth()
+          this.$router.push({ name: 'Login' })
+        } else {
+          window.ShowMessage(response.data);
+        }
+        window.HideLoading();
+      }).catch(error => {
+        window.HideLoading();
+        window.ShowMessage(error);
+      });
     },
   },
 }
@@ -531,7 +351,7 @@ export default {
   overflow: hidden;
   position: absolute;
   box-shadow: -5px 0 5px 0px rgba(0, 0, 0, 0.1);
-  z-index: 10;
+  z-index: 11;
 }
 
 .MSidebar ::-webkit-scrollbar {
@@ -664,6 +484,7 @@ export default {
   margin-bottom: 6px;
   border-radius: 5px;
   background-color: var(--MSidebarItemsGroupHeader);
+  transition-duration: 0.3s;
 }
 
 .MSidebarItemsGroupHeader {

@@ -55,19 +55,14 @@
 <script>
 import { ref } from 'vue'
 import { api } from '../../axios'
-import { useAuthStore } from '../../stores/auth'
 import { ShowMessage } from '@/MJS.js'
 import { useGlobalsStore } from '../../stores/Globals.js'
 
 export default {
   setup() {
-    const authStore = useAuthStore()
-    const hasPermission = permission =>
-      authStore.user && authStore.user.permissions.includes(permission)
     const GlobalsStore = ref(useGlobalsStore())
 
     return {
-      hasPermission,
       InstallmentsTB: ref(null),
       InstallmentsTBData: ref([]),
       InstallmentsTBColumns: [

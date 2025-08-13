@@ -63,6 +63,12 @@ export default {
             MStepHeaderID++;
           }
         }
+        
+        //Remove The Header Line If It Is The Last
+        if (Element.querySelector('.MStepperHeader > div:last-child').classList.contains('MStepperHeaderLine')) {
+          Element.querySelector('.MStepperHeader > div:last-child').remove();
+        }
+
         Element.querySelector('.MStepHeader[MStepID="' + CurrentStep + '"]').classList.add('ActiveMStepHeader');
         Element.querySelectorAll('.MStepHeader').forEach(function (e) {
           if (MaxStepWidth < e.offsetWidth) {

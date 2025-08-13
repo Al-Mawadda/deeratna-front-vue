@@ -100,9 +100,18 @@
           رفض
         </div>
         <div
+          v-show="selectedRowData.request_status == 'قيد الكشف'"
+          class="MButton"
+          id="ConvertFromStatementToPaymentBTN"
+          @click="ConvertFromStatementToPayment()"
+        >
+          تحويل من كشف الى دفع
+        </div>
+        <div
           v-show="
-            selectedRowData.request_status != 'مرفوض' ||
-            selectedRowData.request_status != 'تم'
+            selectedRowData.request_status == 'تم الدفع' ||
+            (selectedRowData.type == 2 &&
+              selectedRowData.request_status == 'دفع الكتروني')
           "
           class="MButton"
           id="CloseRequestBTN"
@@ -182,19 +191,14 @@
 <script>
 import { ref } from 'vue'
 import { api, GetServerPath } from '../../axios'
-import { useAuthStore } from '../../stores/auth'
 import { useGlobalsStore } from '../../stores/Globals.js'
 import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 
 export default {
   setup() {
-    const authStore = useAuthStore()
-    const hasPermission = permission =>
-      authStore.user && authStore.user.permissions.includes(permission)
     const GlobalsStore = ref(useGlobalsStore())
 
     return {
-      hasPermission,
       IDImage: ref(''),
       MaintenanceRequestModal: ref(null),
       MaintenanceRequestRejectModal: ref(null),
@@ -236,6 +240,10 @@ export default {
           label: 'تفاصيل الطلب',
         },
         {
+          name: 'type_description',
+          label: 'النوع',
+        },
+        {
           name: 'price',
           label: 'المبلغ',
           sum: true,
@@ -244,6 +252,14 @@ export default {
         {
           name: 'request_status',
           label: 'حالة الطلب',
+        },
+        {
+          name: 'completion_status',
+          label: 'حاله الانجاز',
+        },
+        {
+          name: 'pay_type',
+          label: 'نوع الدفع',
         },
         {
           name: 'note',
@@ -360,6 +376,7 @@ export default {
       Parameters.append('pid', this.selectedRowData.pid)
       Parameters.append('name', this.selectedRowData.name)
       Parameters.append('request_type', this.selectedRowData.request_type)
+      Parameters.append('type', this.selectedRowData.type)
       if (this.selectedRowData.type == 1) {
         Parameters.append('request_status', 'دفع الكتروني')
       } else {
@@ -398,8 +415,53 @@ export default {
           } else ShowMessage('حدث خطأ غير متوقع')
         })
     },
+    ConvertFromStatementToPayment() {
+      ShowLoading()
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id)
+      Parameters.append('pid', this.selectedRowData.pid)
+      Parameters.append('name', this.selectedRowData.name)
+      Parameters.append('request_type', this.selectedRowData.request_type)
+      Parameters.append('type', this.selectedRowData.type)
+      Parameters.append('request_status', 'دفع الكتروني')
+      Parameters.append(
+        'maintenance_detail',
+        this.selectedRowData.maintenance_detail
+      )
+      Parameters.append(
+        'note',
+        document.getElementById('note').querySelector('input').value
+      )
+      Parameters.append(
+        'price',
+        document.getElementById('Price').querySelector('input').value
+      )
+
+      api
+        .put(`MaintenanceRequests/` + this.selectedRowData.id, Parameters)
+        .then(response => {
+          HideLoading()
+          if (response.data.success == true) {
+            this.MaintenanceRequestsTB.LoadMTable()
+            this.MaintenanceRequestModal.Hide()
+          } else {
+            HideLoading()
+            ShowMessage(response.data.message)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          if (error.response && error.response.status === 422) {
+            const firstError = Object.values(error.response.data.errors)[0][0]
+            ShowMessage(firstError)
+          } else ShowMessage('حدث خطأ غير متوقع')
+        })
+    },
     CloseRequest() {
-      if (this.selectedRowData.request_status != 'تم الدفع') {
+      if (
+        this.selectedRowData.request_status != 'تم الدفع' &&
+        this.selectedRowData.type == 1
+      ) {
         ShowMessage('لا يمكن غلق الطلب الا بعد اجراء عملية الدفع')
         return
       }
@@ -408,7 +470,8 @@ export default {
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append('pid', this.selectedRowData.pid)
       Parameters.append('name', this.selectedRowData.name)
-      Parameters.append('request_status', 'تم')
+      Parameters.append('type', this.selectedRowData.type)
+      //Parameters.append('request_status', 'تم')
       Parameters.append(
         'note',
         document.getElementById('note').querySelector('input').value
