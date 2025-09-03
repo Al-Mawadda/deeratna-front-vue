@@ -288,8 +288,7 @@ export default {
         items: [
           { text: 'التحديث التلقائي', route: '/logs/auto_updates', permission: 'auto_updates_logs' },
           { text: 'معلومات الاشخاص', route: '/logs/persons', permission: 'persons_logs' },
-          { text: 'بطاقات الاشخاص', route: '/logs/nfc_cards', permission: 'persons_logs' }
-
+          { text: 'بطاقات الاشخاص', route: '/logs/nfc_cards', permission: 'nfc_cards_logs' }
         ]
       }
       //#endregion

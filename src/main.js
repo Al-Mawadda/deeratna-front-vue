@@ -19,6 +19,7 @@ import MRadioButton from './components/MRadioButton.vue'
 import MCheckBox from './components/MCheckBox.vue'
 import MStepper from './components/MStepper.vue'
 import MTime from './components/MTime.vue'
+import RFIDField from "./components/RFIDField.vue";
 
 const app = createApp(App)
 
@@ -32,6 +33,7 @@ app.component('MTable', MTable)
 app.component('MPrompts', MPrompts)
 app.component('MStepper', MStepper)
 app.component('MTime', MTime)
+app.component('RFIDField', RFIDField)
 app.use(createPinia())
 
 app.use(router)
