@@ -140,7 +140,11 @@
       </div>
     </MModal>
 
-    <div class="MButton" id="GetMaintenanceRequestsBTN">عرض البيانات</div>
+    <div class="MButton" id="GetMaintenanceRequestsBTN">عرض كافة البيانات</div>
+    <div class="MButton" id="GetMaintenanceRequestsDontPayBTN">
+      عرض المنجز غير المدفوع
+    </div>
+
     <div class="MGroup">
       <MDate
         ref="MaintenanceRequestsFromDate"
@@ -194,6 +198,7 @@ import { ref } from 'vue'
 import { api, GetServerPath } from '../../axios'
 import { useGlobalsStore } from '../../stores/Globals.js'
 import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
+var RequestStatusData = 0
 
 export default {
   setup() {
@@ -320,8 +325,29 @@ export default {
       'click',
       function () {
         ShowLoading()
+        RequestStatusData = 1
         this.MaintenanceRequestsTB.ReLoadMTable()
         HideLoading()
+      }.bind(this)
+    )
+    document
+      .getElementById('GetMaintenanceRequestsDontPayBTN')
+      .addEventListener(
+        'click',
+        function () {
+          RequestStatusData = 2
+          ShowLoading()
+          this.MaintenanceRequestsTB.ReLoadMTable()
+          HideLoading()
+        }.bind(this)
+      )
+    document.getElementById('RejectBTN').addEventListener(
+      'click',
+      function () {
+        document
+          .getElementById('RejectionReason')
+          .querySelector('input').value = ''
+        this.NfcCardRequestRejectModal.Show()
       }.bind(this)
     )
     // View Requist
@@ -353,8 +379,12 @@ export default {
   },
   methods: {
     GetMaintenanceRequestsData(MTable) {
+      let APIName = 'MaintenanceRequests'
+      if (RequestStatusData == 2) {
+        APIName = 'GetMaintenanceRequestsDontPayAndDone'
+      }
       api
-        .get('MaintenanceRequests', {
+        .get(APIName, {
           params: {
             MTable: MTable,
             MaintenanceRequestFrom: this.MaintenanceRequestsFromDate.Get()[0],
