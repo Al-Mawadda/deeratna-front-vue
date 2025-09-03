@@ -421,6 +421,7 @@ export default {
       Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
       Parameters.append('note', document.getElementById('note').querySelector('input').value)
       Parameters.append('price', document.getElementById('Price').querySelector('input').value)
+      Parameters.append('AcceptType', 'AcceptPayAfterJob')
 
       api
         .put(`MaintenanceRequests/` + this.selectedRowData.id, Parameters)
