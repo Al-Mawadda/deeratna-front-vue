@@ -2,13 +2,7 @@
   <div class="ComponentWrapper">
     <!-- ========= MaintenanceRequest Model======== -->
 
-    <MModal
-      ref="MaintenanceRequestModal"
-      :Name="'MaintenanceRequestModal'"
-      :Title="
-        ' طلب ' + selectedRowData.request_type + ' ' + selectedRowData.name
-      "
-    >
+    <MModal ref="MaintenanceRequestModal" :Name="'MaintenanceRequestModal'" :Title="' طلب ' + selectedRowData.request_type + ' ' + selectedRowData.name">
       <!-- ============= details Table =============== -->
 
       <table cellpadding="0" cellspacing="0" class="RequestsMTable">
@@ -53,83 +47,30 @@
           </tr>
         </tbody>
       </table>
-      <MTable
-        ref="MaintenanceRequestTimeTB"
-        :Name="'MaintenanceRequestTimeTB'"
-        :DataArray="MaintenanceRequestTimeTBData"
-        :Columns="MaintenanceRequestTimeTBColumns"
-        :Sums="MaintenanceRequestTimeTBSums"
-        :GetDataFunction="GetMaintenanceRequestTimeData"
-        :RowsCount="MaintenanceRequestTimeTBRowsCount"
-        :RowsPerPage="101"
-        :ShowFilterRow="false"
-      >
-      </MTable>
+      <MTable ref="MaintenanceRequestTimeTB" :Name="'MaintenanceRequestTimeTB'" :DataArray="MaintenanceRequestTimeTBData" :Columns="MaintenanceRequestTimeTBColumns" :Sums="MaintenanceRequestTimeTBSums" :GetDataFunction="GetMaintenanceRequestTimeData" :RowsCount="MaintenanceRequestTimeTBRowsCount" :RowsPerPage="101" :ShowFilterRow="false"></MTable>
       <div class="MField" id="note">
         <input type="text" required />
         <label>تمت الموافقة على طلب الصيانة ليوم</label>
         <div class="MFieldBG"></div>
       </div>
       <div class="MField" id="Price" v-OnlyNumbers>
-        <input
-          :disabled="
-            selectedRowData.request_status == 'تم الدفع' ||
-            selectedRowData.request_status == 'تم'
-          "
-          type="text"
-        />
+        <input :disabled="selectedRowData.request_status == 'تم الدفع' || selectedRowData.request_status == 'تم'" type="text" />
         <label>السعر</label>
         <div class="MFieldBG"></div>
       </div>
 
       <div class="ModalButtons">
-        <div
-          v-show="selectedRowData.request_status == 'قيد المراجعة'"
-          class="MButton"
-          id="AcceptBTN"
-          @click="AcceptRequest()"
-        >
-          موافق
-        </div>
-        <div
-          v-show="selectedRowData.request_status == 'قيد المراجعة'"
-          class="MButton"
-          id="RejectBTN"
-          @click="RejectRequest"
-        >
-          رفض
-        </div>
-        <div
-          v-show="selectedRowData.request_status == 'قيد الكشف'"
-          class="MButton"
-          id="ConvertFromStatementToPaymentBTN"
-          @click="ConvertFromStatementToPayment()"
-        >
-          تحويل من كشف الى انجاز ودفع
-        </div>
-        <div
-          v-show="
-            (selectedRowData.request_status == 'تم الدفع' &&
-              selectedRowData.completion_status != 'تم الانجاز') ||
-            (selectedRowData.type == 2 &&
-              selectedRowData.request_status == 'دفع الكتروني')
-          "
-          class="MButton"
-          id="CloseRequestBTN"
-          @click="CloseRequest()"
-        >
-          تحديث وغلق الطلب
-        </div>
+        <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="AcceptBTN" @click="AcceptRequest()">موافق</div>
+        <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="AcceptWithPayBTN" @click="AcceptWithPayRequest()">موافق مع الدفع</div>
+        <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN" @click="RejectRequest">رفض</div>
+        <div v-show="selectedRowData.request_status == 'قيد الكشف'" class="MButton" id="ConvertFromStatementToPaymentBTN" @click="ConvertFromStatementToPayment()">تحويل من كشف الى انجاز ودفع</div>
+        <div v-show="(selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status != 'تم الانجاز') || (selectedRowData.type == 2 && selectedRowData.request_status == 'دفع الكتروني')" class="MButton" id="CloseRequestBTN" @click="CloseRequest()">تحديث وغلق الطلب</div>
       </div>
     </MModal>
 
     <!-- ========= Reject Model======== -->
 
-    <MModal
-      ref="MaintenanceRequestRejectModal"
-      :Name="'MaintenanceRequestRejectModal'"
-      :Title="'رفض الطلب'"
-    >
+    <MModal ref="MaintenanceRequestRejectModal" :Name="'MaintenanceRequestRejectModal'" :Title="'رفض الطلب'">
       <div class="MField" id="RejectionReason">
         <input type="text" required />
         <label>سبب الرفض</label>
@@ -141,29 +82,12 @@
     </MModal>
 
     <div class="MButton" id="GetMaintenanceRequestsBTN">عرض كافة البيانات</div>
-    <div class="MButton" id="GetMaintenanceRequestsDontPayBTN">
-      عرض المنجز غير المدفوع
-    </div>
+    <div class="MButton" id="GetMaintenanceRequestsDontPayBTN">عرض المنجز غير المدفوع</div>
 
     <div class="MGroup">
-      <MDate
-        ref="MaintenanceRequestsFromDate"
-        :Name="'MaintenanceRequestsFromDate'"
-        :Label="'التاريخ'"
-        :Range="true"
-        :Clearable="true"
-      ></MDate>
+      <MDate ref="MaintenanceRequestsFromDate" :Name="'MaintenanceRequestsFromDate'" :Label="'التاريخ'" :Range="true" :Clearable="true"></MDate>
     </div>
-    <MTable
-      ref="MaintenanceRequestsTB"
-      :Name="'MaintenanceRequestsTB'"
-      :DataArray="MaintenanceRequestsTBData"
-      :Columns="MaintenanceRequestsTBColumns"
-      :Sums="MaintenanceRequestsTBSums"
-      :GetDataFunction="GetMaintenanceRequestsData"
-      :RowsCount="MaintenanceRequestsTBRowsCount"
-      :RowsPerPage="10"
-    >
+    <MTable ref="MaintenanceRequestsTB" :Name="'MaintenanceRequestsTB'" :DataArray="MaintenanceRequestsTBData" :Columns="MaintenanceRequestsTBColumns" :Sums="MaintenanceRequestsTBSums" :GetDataFunction="GetMaintenanceRequestsData" :RowsCount="MaintenanceRequestsTBRowsCount" :RowsPerPage="10">
       <template v-slot:options>
         <!-- View Videosdffhroif Option -->
         <div class="MTableOption" OptionEventName="ViewItem">
@@ -330,23 +254,19 @@ export default {
         HideLoading()
       }.bind(this)
     )
-    document
-      .getElementById('GetMaintenanceRequestsDontPayBTN')
-      .addEventListener(
-        'click',
-        function () {
-          RequestStatusData = 2
-          ShowLoading()
-          this.MaintenanceRequestsTB.ReLoadMTable()
-          HideLoading()
-        }.bind(this)
-      )
+    document.getElementById('GetMaintenanceRequestsDontPayBTN').addEventListener(
+      'click',
+      function () {
+        RequestStatusData = 2
+        ShowLoading()
+        this.MaintenanceRequestsTB.ReLoadMTable()
+        HideLoading()
+      }.bind(this)
+    )
     document.getElementById('RejectBTN').addEventListener(
       'click',
       function () {
-        document
-          .getElementById('RejectionReason')
-          .querySelector('input').value = ''
+        document.getElementById('RejectionReason').querySelector('input').value = ''
         this.NfcCardRequestRejectModal.Show()
       }.bind(this)
     )
@@ -359,12 +279,9 @@ export default {
         //if (this.selectedRowData.request_type != 'تجديد') {}
 
         document.getElementById('note').querySelector('input').value = ''
-        document.getElementById('note').querySelector('input').value =
-          this.selectedRowData.note
-        document.getElementById('Price').querySelector('input').value =
-          this.selectedRowData.price
-        this.MaintenanceRequestTimeTBData =
-          this.selectedRowData.maintenance_time
+        document.getElementById('note').querySelector('input').value = this.selectedRowData.note
+        document.getElementById('Price').querySelector('input').value = this.selectedRowData.price
+        this.MaintenanceRequestTimeTBData = this.selectedRowData.maintenance_time
 
         this.MaintenanceRequestModal.Show()
       }.bind(this)
@@ -408,24 +325,49 @@ export default {
       Parameters.append('name', this.selectedRowData.name)
       Parameters.append('request_type', this.selectedRowData.request_type)
       Parameters.append('type', this.selectedRowData.type)
+      Parameters.append('AcceptType', 'AcceptPayAfterJob')
       if (this.selectedRowData.type == 1) {
         Parameters.append('request_status', 'دفع الكتروني')
       } else {
         Parameters.append('request_status', 'قيد الكشف')
       }
-      Parameters.append(
-        'maintenance_detail',
-        this.selectedRowData.maintenance_detail
-      )
-      Parameters.append(
-        'note',
-        document.getElementById('note').querySelector('input').value
-      )
-      Parameters.append(
-        'price',
-        document.getElementById('Price').querySelector('input').value
-      )
+      Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
+      Parameters.append('note', document.getElementById('note').querySelector('input').value)
+      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
 
+      api
+        .put(`MaintenanceRequests/` + this.selectedRowData.id, Parameters)
+        .then(response => {
+          HideLoading()
+          if (response.data.success == true) {
+            this.MaintenanceRequestsTB.LoadMTable()
+            this.MaintenanceRequestModal.Hide()
+          } else {
+            HideLoading()
+            ShowMessage(response.data.message)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          if (error.response && error.response.status === 422) {
+            const firstError = Object.values(error.response.data.errors)[0][0]
+            ShowMessage(firstError)
+          } else ShowMessage('حدث خطأ غير متوقع')
+        })
+    },
+    AcceptWithPayRequest() {
+      ShowLoading()
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id)
+      Parameters.append('pid', this.selectedRowData.pid)
+      Parameters.append('name', this.selectedRowData.name)
+      Parameters.append('request_type', this.selectedRowData.request_type)
+      Parameters.append('type', this.selectedRowData.type)
+      Parameters.append('request_status', 'دفع الكتروني')
+      Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
+      Parameters.append('note', document.getElementById('note').querySelector('input').value)
+      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
+      Parameters.append('AcceptType', 'AcceptPayBeforeJob')
       api
         .put(`MaintenanceRequests/` + this.selectedRowData.id, Parameters)
         .then(response => {
@@ -455,18 +397,9 @@ export default {
       Parameters.append('request_type', this.selectedRowData.request_type)
       Parameters.append('type', this.selectedRowData.type)
       Parameters.append('request_status', 'دفع الكتروني')
-      Parameters.append(
-        'maintenance_detail',
-        this.selectedRowData.maintenance_detail
-      )
-      Parameters.append(
-        'note',
-        document.getElementById('note').querySelector('input').value
-      )
-      Parameters.append(
-        'price',
-        document.getElementById('Price').querySelector('input').value
-      )
+      Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
+      Parameters.append('note', document.getElementById('note').querySelector('input').value)
+      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
 
       api
         .put(`MaintenanceRequests/` + this.selectedRowData.id, Parameters)
@@ -489,10 +422,7 @@ export default {
         })
     },
     CloseRequest() {
-      if (
-        this.selectedRowData.request_status != 'تم الدفع' &&
-        this.selectedRowData.type == 1
-      ) {
+      if (this.selectedRowData.request_status != 'تم الدفع' && this.selectedRowData.type == 1) {
         ShowMessage('لا يمكن غلق الطلب الا بعد اجراء عملية الدفع')
         return
       }
@@ -502,15 +432,9 @@ export default {
       Parameters.append('pid', this.selectedRowData.pid)
       Parameters.append('name', this.selectedRowData.name)
       Parameters.append('type', this.selectedRowData.type)
-      Parameters.append(
-        'completion_status',
-        this.selectedRowData.completion_status
-      )
+      Parameters.append('completion_status', this.selectedRowData.completion_status)
       //Parameters.append('request_status', 'تم')
-      Parameters.append(
-        'note',
-        document.getElementById('note').querySelector('input').value
-      )
+      Parameters.append('note', document.getElementById('note').querySelector('input').value)
       api
         .put(`CloseMaintenanceRequests/` + this.selectedRowData.id, Parameters)
         .then(response => {
@@ -536,10 +460,7 @@ export default {
 
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
-      Parameters.append(
-        'Reason',
-        document.getElementById('RejectionReason').querySelector('input').value
-      )
+      Parameters.append('Reason', document.getElementById('RejectionReason').querySelector('input').value)
 
       api
         .post('RejectMaintenanceRequests', Parameters, {
