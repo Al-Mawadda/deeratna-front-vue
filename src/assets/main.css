@@ -74,10 +74,29 @@ body {
   margin: 5px;
 }
 
+.MButton svg {
+  transition-duration: 0.3s;
+  fill: #fff;
+}
+
 .MButton:hover {
-  background-color: var(--MButtonBG);
+  background-color: var(--MButtonBGHover);
   color: var(--PrimaryColor);
   fill: var(--PrimaryColor);
+}
+
+.MButton:hover svg {
+  fill: var(--PrimaryColor);
+}
+
+.MButton[disabled=true] {
+  background-color: var(--MButtonBGDisabled);
+  color: var(--MButtonTextDisabled);
+  pointer-events: none;
+}
+
+.MButton[disabled=true] svg {
+  fill: var(--MButtonTextDisabled);
 }
 
 /* #endregion */
@@ -212,11 +231,11 @@ body {
   justify-content: center;
   align-items: center;
 }
+
 .MFieldBTN svg {
   display: flex;
   width: 60%;
   height: 60%;
-  fill: #fff;
 }
 
 .MField input:focus~.MFieldBG,
@@ -841,4 +860,5 @@ input[type='file'] {
 .MImage[required] .DeleteMImage {
   display: none;
 }
+
 /* #endregion */

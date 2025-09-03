@@ -730,12 +730,19 @@ export default {
                 '</div></div>'
             }
             if (Columns[ArrayCounter]['type'] == 'image') {
-              ContentCodeBlock +=
+              if (DisplayArray[x][y] != '') {
+                              ContentCodeBlock +=
                 '<div class="MTableCell"><div class="MTableData MTableCellImage"><div class="MTableCellImageZoom">' +
                 SearchIcon +
                 '</div><img src="' +
                 DisplayArray[x][y] +
                 '"/></div></div>'
+              } else {
+                              ContentCodeBlock +=
+                '<div class="MTableCell"><div class="MTableData MTableCellImage"><div class="MTableCellImageZoom">' +
+                SearchIcon +
+                '</div></div></div>'
+              }
             }
 
             //Build Totals Array

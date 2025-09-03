@@ -424,6 +424,12 @@ const router = createRouter({
       name: 'PersonsLog',
       meta: { RequiresAuth: true, HeaderTitle: 'سجل معلومات الاشخاص' },
     },
+    {
+      path: '/logs/nfc_cards',
+      component: () => import('../views/logs/NFCCardsView.vue'),
+      name: 'NFCCardsLog',
+      meta: { RequiresAuth: true, HeaderTitle: 'سجل بطاقات الاشخاص' },
+    },
     //#endregion
 
     //#region local_management

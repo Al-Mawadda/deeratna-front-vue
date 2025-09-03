@@ -73,11 +73,10 @@
       </table>
       <div class="MGroup ModalMGroup" v-show="selectedRowData.department_id == 3 || UserData.department_id == 1">
         <div class="MField" id="NFCID">
-          <input disabled type="text" required />
+          <input :disabled="!(selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.department_id == 3 && (UserData.department_id == 1 || UserData.department_id == 3))" type="text" required />
           <label>رمز البطاقة</label>
           <div class="MFieldBG"></div>
         </div>
-
         <MDate
           :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
           v-show="selectedRowData.request_type == 'اضافة' || selectedRowData.request_type == 'تمديد'" ref="CardExpire"

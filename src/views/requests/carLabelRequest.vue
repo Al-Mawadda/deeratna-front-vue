@@ -48,8 +48,7 @@
           </tr>
         </tbody>
       </table>
-      <div class="MGroup ModalMGroup" v-show="selectedRowData.department_id == 3 || UserData.department_id == 1
-        ">
+      <div class="MGroup ModalMGroup" v-show="selectedRowData.department_id == 3 || UserData.department_id == 1">
         <div class="MField" id="LabelCode">
           <input :disabled="!(
               selectedRowData.request_status == 'قيد المراجعة' &&

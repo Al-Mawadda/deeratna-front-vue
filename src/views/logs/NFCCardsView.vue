@@ -1,8 +1,13 @@
 <template>
   <div class="ComponentWrapper">
-    <div class="MButton" id="ReloadPersonsLogBTN">اعادة تحميل البيانات</div>
-    <MTable ref="PersonsLogTB" :Name="'PersonsLogTB'" :DataArray="PersonsLogTBData" :Columns="PersonsLogTBColumns"
-      :GetDataFunction="GetPersonsLogData" :RowsCount="PersonsLogTBRowsCount" :RowsPerPage="10">
+    <div class="MButton" id="ReloadNFCCardsLogBTN">اعادة تحميل البيانات</div>
+    <div class="MGroup">
+      <MDate ref="NFCCardsDate" :Name="'NFCCardsDate'" :Label="'التاريخ'" :Range="true" :Clearable="true"></MDate>
+      <div class="MButton" id="GetNFCCardsLogDataBTN">عرض البيانات</div>
+    </div>
+
+    <MTable ref="NFCCardsLogTB" :Name="'NFCCardsLogTB'" :DataArray="NFCCardsLogTBData" :Columns="NFCCardsLogTBColumns"
+      :GetDataFunction="GetNFCCardsLogData" :RowsCount="NFCCardsLogTBRowsCount" :RowsPerPage="10">
     </MTable>
   </div>
 </template>
@@ -19,12 +24,13 @@ export default {
 
     return {
       GlobalsStore,
-      PersonsLogTB: ref(null),
-      PersonsLogTBData: ref([]),
-      PersonsLogTBColumns: [
+      NFCCardsLogTB: ref(null),
+      NFCCardsLogTBData: ref([]),
+      NFCCardsDate: ref(null),
+      NFCCardsLogTBColumns: [
         {
-          name: 'id',
-          label: '#',
+          name: 'pid',
+          label: 'الرمز',
         },
         {
           name: 'name',
@@ -42,11 +48,15 @@ export default {
         },
         {
           name: 'relations.relation',
-          label: 'المدينة',
+          label: 'العلاقة',
         },
         {
-          name: 'phone',
-          label: 'رقم الهاتف',
+          name: 'card_status',
+          label: 'الحالة',
+        },
+        {
+          name: 'card_notes',
+          label: 'الملاحظات',
         },
         {
           name: 'attributes.attribute',
@@ -58,7 +68,7 @@ export default {
           name: 'action_type',
           label: 'العملية',
           filter: 'combo',
-          filter_items: ['EDIT','ADD','DELETE'],
+          filter_items: ['EDIT', 'ADD', 'DELETE'],
         },
         {
           name: 'action_date',
@@ -70,29 +80,33 @@ export default {
           label: 'الوقت',
         },
       ],
-      PersonsLogTBRowsCount: ref(0),
+      NFCCardsLogTBRowsCount: ref(0),
     }
   },
   mounted() {
-    this.PersonsLogTB.LoadMTable()
+    this.NFCCardsLogTB.LoadMTable()
 
     let Instance = this;
 
-    document.getElementById('ReloadPersonsLogBTN').addEventListener('click', function () {
-      Instance.PersonsLogTB.ReLoadMTable();
+    document.getElementById('ReloadNFCCardsLogBTN').addEventListener('click', function () {
+      Instance.NFCCardsLogTB.ReLoadMTable();
+    });
+    document.getElementById('GetNFCCardsLogDataBTN').addEventListener('click', function () {
+      Instance.NFCCardsLogTB.LoadMTable();
     });
   },
   methods: {
-    GetPersonsLogData(MTable) {
+    GetNFCCardsLogData(MTable) {
       api
-        .get('GetPersonsLogData', {
+        .get('GetNFCCardsLogData', {
           params: {
+            RangeDates: this.NFCCardsDate.Get(),
             MTable: MTable,
           },
         })
         .then(response => {
-          this.PersonsLogTBData = response.data.data
-          this.PersonsLogTBRowsCount = response.data.total
+          this.NFCCardsLogTBData = response.data.data
+          this.NFCCardsLogTBRowsCount = response.data.total
         })
         .catch(error => {
           window.ShowMessage('حدث خطا', error)
@@ -101,3 +115,8 @@ export default {
   },
 }
 </script>
+<style scoped>
+#NFCCardsDate {
+  max-width: 300px;
+}
+</style>

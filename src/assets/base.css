@@ -31,7 +31,9 @@
   /* #endregion */
 
   /* #region MButton */
-  --MButtonBG: rgba(0, 0, 0, 0.1);
+  --MButtonBGHover: rgba(25, 118, 210, 0.2);
+  --MButtonBGDisabled: rgba(0, 0, 0, 0.1);
+  --MButtonTextDisabled: #999;
   /* #endregion */
 
   /* #region MGroup */
@@ -77,7 +79,9 @@
   /* #endregion */
 
   /* #region MButton */
-  --MButtonBG: rgba(255, 255, 255, 0.1);
+  --MButtonBGHover: rgba(25, 118, 210, 0.2);
+  --MButtonBGDisabled: rgba(255, 255, 255, 0.1);
+  --MButtonTextDisabled: #bbb;
   /* #endregion */
 
   /* #region MGroup */
