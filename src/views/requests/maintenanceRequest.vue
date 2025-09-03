@@ -28,6 +28,10 @@
             <td>{{ selectedRowData.address }}</td>
           </tr>
           <tr>
+            <td>الهاتف</td>
+            <td>{{ selectedRowData.phone }}</td>
+          </tr>
+          <tr>
             <td>السعر</td>
             <td>{{ selectedRowData.price }}</td>
           </tr>
@@ -83,6 +87,7 @@
 
     <div class="MButton" id="GetMaintenanceRequestsBTN">عرض كافة البيانات</div>
     <div class="MButton" id="GetMaintenanceRequestsDontPayBTN">عرض المنجز غير المدفوع</div>
+    <div class="MButton" id="GetMaintenanceRequestsNotcompletedPayBTN">عرض غير المنجز تم الدفع</div>
 
     <div class="MGroup">
       <MDate ref="MaintenanceRequestsFromDate" :Name="'MaintenanceRequestsFromDate'" :Label="'التاريخ'" :Range="true" :Clearable="true"></MDate>
@@ -196,6 +201,10 @@ export default {
           label: 'الملاحظات',
         },
         {
+          name: 'warranty_expire',
+          label: 'فترة الضمان',
+        },
+        {
           name: 'created_at',
           label: 'التاريخ',
           filter: 'date',
@@ -263,6 +272,15 @@ export default {
         HideLoading()
       }.bind(this)
     )
+    document.getElementById('GetMaintenanceRequestsNotcompletedPayBTN').addEventListener(
+      'click',
+      function () {
+        RequestStatusData = 3
+        ShowLoading()
+        this.MaintenanceRequestsTB.ReLoadMTable()
+        HideLoading()
+      }.bind(this)
+    )
     document.getElementById('RejectBTN').addEventListener(
       'click',
       function () {
@@ -299,6 +317,9 @@ export default {
       let APIName = 'MaintenanceRequests'
       if (RequestStatusData == 2) {
         APIName = 'GetMaintenanceRequestsDontPayAndDone'
+      }
+      if (RequestStatusData == 3) {
+        APIName = 'GetMaintenanceRequestsDontCompletedAndPay'
       }
       api
         .get(APIName, {
