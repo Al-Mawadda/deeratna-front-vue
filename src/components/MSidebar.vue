@@ -218,7 +218,7 @@ export default {
           { text: 'ملصق السيارة', route: '/cars-label-requests', permission: 'car_label_requests' },
           { text: 'الانترنت', route: '/internet-requests', permission: 'internet_requests' },
           { text: 'صيانة المنازل', route: '/maintenance-requests', permission: 'maintenance_requests' },
-          { text: 'صيانة الانترنت', route: '/internet-maintenance-requests', permission: 'internet_maintenance_requests_view' }
+          { text: 'صيانة الانترنت', route: '/internet-maintenance-requests', permission: 'internet_maintenance_requests' }
         ]
       },
       //#endregion
