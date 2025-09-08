@@ -1,18 +1,8 @@
 <template>
   <div class="ComponentWrapper">
     <!-- ===============  add subsc Model  ========= -->
-    <MModal
-      ref="AddSubscriberModal"
-      :Name="'AddSubscriberModal'"
-      :Title="'اضافة مشترك جديد'"
-    >
-      <MComboBox
-        ref="Compounds"
-        :Name="'Compounds'"
-        :Label="' اسم المدينة *'"
-        :Items="CompoundsItems"
-      >
-      </MComboBox>
+    <MModal ref="AddSubscriberModal" :Name="'AddSubscriberModal'" :Title="'اضافة مشترك جديد'">
+      <MComboBox ref="Compounds" :Name="'Compounds'" :Label="' اسم المدينة *'" :Items="CompoundsItems"></MComboBox>
       <div class="MField" id="Name">
         <input ref="Name" type="text" required />
         <label>اسم المالك *</label>
@@ -38,22 +28,8 @@
         <label>هاتف المشترك *</label>
         <div class="MFieldBG"></div>
       </div>
-      <MComboBox
-        ref="CompanyName"
-        :Name="'CompanyName'"
-        :Label="' اسم الشركة *'"
-        :Items="CompanyNameItems"
-        :ItemsName="'company_name'"
-      >
-      </MComboBox>
-      <MComboBox
-        ref="SubscriptionType"
-        :Name="'SubscriptionType'"
-        :Label="' نوع الاشتراك *'"
-        :Items="SubscriptionTypeItems"
-        :ItemsName="'subscription_type'"
-      >
-      </MComboBox>
+      <MComboBox ref="CompanyName" :Name="'CompanyName'" :Label="' اسم الشركة *'" :Items="CompanyNameItems" :ItemsName="'company_name'"></MComboBox>
+      <MComboBox ref="SubscriptionType" :Name="'SubscriptionType'" :Label="' نوع الاشتراك *'" :Items="SubscriptionTypeItems" :ItemsName="'subscription_type'"></MComboBox>
       <div class="MField" id="Price" v-OnlyNumbers>
         <input ref="Price" type="text" required />
         <label>السعر</label>
@@ -73,27 +49,10 @@
     <div class="MButton" id="AddInternetSubscribersBTN">ادخال مشترك</div>
     <div class="MButton" id="GetInternetSubscribersBTN">عرض البيانات</div>
     <div class="MGroup">
-      <MDate
-        ref="InternetSubscribersFromDate"
-        :Name="'InternetSubscribersFromDate'"
-        :Label="'تاريخ من'"
-      ></MDate>
-      <MDate
-        ref="InternetSubscribersToDate"
-        :Name="'InternetSubscribersToDate'"
-        :Label="'تاريخ الى'"
-      ></MDate>
+      <MDate ref="InternetSubscribersFromDate" :Name="'InternetSubscribersFromDate'" :Label="'تاريخ من'"></MDate>
+      <MDate ref="InternetSubscribersToDate" :Name="'InternetSubscribersToDate'" :Label="'تاريخ الى'"></MDate>
     </div>
-    <MTable
-      ref="InternetSubscribersTB"
-      :Name="'InternetSubscribersTB'"
-      :DataArray="InternetSubscribersTBData"
-      :Columns="InternetSubscribersTBColumns"
-      :Sums="InternetSubscribersTBSums"
-      :GetDataFunction="GetInternetSubscribersData"
-      :RowsCount="InternetSubscribersTBRowsCount"
-      :RowsPerPage="10"
-    >
+    <MTable ref="InternetSubscribersTB" :Name="'InternetSubscribersTB'" :DataArray="InternetSubscribersTBData" :Columns="InternetSubscribersTBColumns" :Sums="InternetSubscribersTBSums" :GetDataFunction="GetInternetSubscribersData" :RowsCount="InternetSubscribersTBRowsCount" :RowsPerPage="10">
       <template v-slot:options>
         <!-- View Videosdffhroif Option -->
         <div class="MTableOption" OptionEventName="EditItem">
@@ -215,6 +174,16 @@ export default {
           type: 'currency',
         },
         {
+          name: 'internet_activation_date',
+          label: 'تاريخ التفعيل',
+          filter: 'date',
+        },
+        {
+          name: 'internet_expire_date',
+          label: 'تاريخ الانتهاء',
+          filter: 'date',
+        },
+        {
           name: 'created_at',
           label: 'التاريخ',
           filter: 'date',
@@ -257,9 +226,7 @@ export default {
       'MCBValueChange',
       function () {
         var companyname = this.CompanyName.Get()[0]['company_name']
-        var CompanyProfiles = this.CompanyNameItems.filter(
-          item => item.company_name == companyname
-        )
+        var CompanyProfiles = this.CompanyNameItems.filter(item => item.company_name == companyname)
         this.SubscriptionTypeItems = CompanyProfiles
       }.bind(this)
     )
@@ -267,8 +234,7 @@ export default {
     document.getElementById('SubscriptionType').addEventListener(
       'MCBValueChange',
       function () {
-        document.getElementById('Price').querySelector('input').value =
-          this.SubscriptionType.Get()[0]['price']
+        document.getElementById('Price').querySelector('input').value = this.SubscriptionType.Get()[0]['price']
       }.bind(this)
     )
     // EditItem
@@ -279,25 +245,15 @@ export default {
         this.Operation = 2
         this.ID = this.selectedRowData.id
         this.Compounds.Set(this.selectedRowData.compound)
-        document.getElementById('Name').querySelector('input').value =
-          this.selectedRowData.name
-        document.getElementById('SubscriberName').querySelector('input').value =
-          this.selectedRowData.subscriber_name
-        document.getElementById('Address').querySelector('input').value =
-          this.selectedRowData.address
-        document.getElementById('Phone').querySelector('input').value =
-          this.selectedRowData.phone
-        document
-          .getElementById('SubscriberPhone')
-          .querySelector('input').value = this.selectedRowData.subscriber_phone
-        document.getElementById('Notes').querySelector('input').value =
-          this.selectedRowData.notes
+        document.getElementById('Name').querySelector('input').value = this.selectedRowData.name
+        document.getElementById('SubscriberName').querySelector('input').value = this.selectedRowData.subscriber_name
+        document.getElementById('Address').querySelector('input').value = this.selectedRowData.address
+        document.getElementById('Phone').querySelector('input').value = this.selectedRowData.phone
+        document.getElementById('SubscriberPhone').querySelector('input').value = this.selectedRowData.subscriber_phone
+        document.getElementById('Notes').querySelector('input').value = this.selectedRowData.notes
         this.CompanyName.Set(this.selectedRowData.company_name, 'company_name')
         setTimeout(() => {
-          this.SubscriptionType.Set(
-            this.selectedRowData.subscription_type,
-            'subscription_type'
-          )
+          this.SubscriptionType.Set(this.selectedRowData.subscription_type, 'subscription_type')
         }, '100')
         this.AddSubscriberModal.Show()
       }.bind(this)
@@ -365,46 +321,16 @@ export default {
     SavePerson() {
       ShowLoading()
       var Parameters = new FormData()
-      Parameters.append(
-        'compound',
-        document.getElementById('Compounds').querySelector('input').value
-      )
-      Parameters.append(
-        'name',
-        document.getElementById('Name').querySelector('input').value
-      )
-      Parameters.append(
-        'subscriber_name',
-        document.getElementById('SubscriberName').querySelector('input').value
-      )
-      Parameters.append(
-        'address',
-        document.getElementById('Address').querySelector('input').value
-      )
-      Parameters.append(
-        'phone',
-        document.getElementById('Phone').querySelector('input').value
-      )
-      Parameters.append(
-        'subscriber_phone',
-        document.getElementById('SubscriberPhone').querySelector('input').value
-      )
-      Parameters.append(
-        'company_name',
-        document.getElementById('CompanyName').querySelector('input').value
-      )
-      Parameters.append(
-        'subscription_type',
-        document.getElementById('SubscriptionType').querySelector('input').value
-      )
-      Parameters.append(
-        'price',
-        document.getElementById('Price').querySelector('input').value
-      )
-      Parameters.append(
-        'notes',
-        document.getElementById('Notes').querySelector('input').value
-      )
+      Parameters.append('compound', document.getElementById('Compounds').querySelector('input').value)
+      Parameters.append('name', document.getElementById('Name').querySelector('input').value)
+      Parameters.append('subscriber_name', document.getElementById('SubscriberName').querySelector('input').value)
+      Parameters.append('address', document.getElementById('Address').querySelector('input').value)
+      Parameters.append('phone', document.getElementById('Phone').querySelector('input').value)
+      Parameters.append('subscriber_phone', document.getElementById('SubscriberPhone').querySelector('input').value)
+      Parameters.append('company_name', document.getElementById('CompanyName').querySelector('input').value)
+      Parameters.append('subscription_type', document.getElementById('SubscriptionType').querySelector('input').value)
+      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
+      Parameters.append('notes', document.getElementById('Notes').querySelector('input').value)
 
       //=========post ============
       if (this.Operation == 1) {

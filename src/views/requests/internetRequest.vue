@@ -2,16 +2,7 @@
   <div class="ComponentWrapper">
     <!-- ========= InternetRequest Model======== -->
 
-    <MModal
-      ref="InternetRequestModal"
-      :Name="'InternetRequestModal'"
-      :Title="
-        ' طلب ' +
-        selectedRowData.request_type +
-        ' اشتراك انترنت ' +
-        selectedRowData.name
-      "
-    >
+    <MModal ref="InternetRequestModal" :Name="'InternetRequestModal'" :Title="' طلب ' + selectedRowData.request_type + ' اشتراك انترنت ' + selectedRowData.name">
       <!-- ============= details Table =============== -->
 
       <table cellpadding="0" cellspacing="0" class="RequestsMTable">
@@ -86,36 +77,19 @@
         <label>رقم هاتف الاشتراك</label>
         <div class="MFieldBG"></div>
       </div>
-      <MComboBox
-        ref="CompanyName"
-        :Name="'CompanyName'"
-        :Label="' اسم الشركة *'"
-        :Items="CompanyNamesItems"
-        :ItemsName="'company_name'"
-      >
-      </MComboBox>
-      <MComboBox
-        ref="SubscriptionType"
-        :Name="'SubscriptionType'"
-        :Label="' نوع الاشتراك *'"
-        :Items="SubscriptionTypeItems"
-        :ItemsName="'subscription_type'"
-      >
-      </MComboBox>
+      <MComboBox ref="CompanyName" :Name="'CompanyName'" :Label="' اسم الشركة *'" :Items="CompanyNamesItems" :ItemsName="'company_name'"></MComboBox>
+      <MComboBox ref="SubscriptionType" :Name="'SubscriptionType'" :Label="' نوع الاشتراك *'" :Items="SubscriptionTypeItems" :ItemsName="'subscription_type'"></MComboBox>
       <div class="MField" id="Price">
         <input type="text" required disabled />
         <label>السعر</label>
         <div class="MFieldBG"></div>
       </div>
+      <MDate :Disabled="!(selectedRowData.request_status == 'قيد المراجعة')" v-show="selectedRowData.request_type == 'تجديد'" ref="InternetActivationDate" :Name="'InternetActivationDate'" :Label="'تاريخ التفعيل'"></MDate>
+      <MDate :Disabled="!(selectedRowData.request_status == 'قيد المراجعة')" v-show="selectedRowData.request_type == 'تجديد'" ref="InternetExpireDate" :Name="'InternetExpireDate'" :Label="'تاريخ الانتهاء'"></MDate>
+
       <!--========== The Images ==========-->
-      <div
-        v-show="selectedRowData.request_type != 'تجديد'"
-        class="ImagesContainer"
-      >
-        <div
-          class="InformationRequestImage"
-          v-if="selectedRowData.id_image != ''"
-        >
+      <div v-show="selectedRowData.request_type != 'تجديد'" class="ImagesContainer">
+        <div class="InformationRequestImage" v-if="selectedRowData.id_image != ''">
           <div class="InformationRequestImageTitle">بطاقة موحدة</div>
           <div class="InformationRequestImagePreview" @click="ShowImage">
             <div class="InformationRequestImagePreviewOverlay">
@@ -129,10 +103,7 @@
             <img :src="IDImage" />
           </div>
         </div>
-        <div
-          class="InformationRequestImage"
-          v-if="selectedRowData.id_image_back != ''"
-        >
+        <div class="InformationRequestImage" v-if="selectedRowData.id_image_back != ''">
           <div class="InformationRequestImageTitle">ضهر البطاقة الموحدة</div>
           <div class="InformationRequestImagePreview" @click="ShowImage">
             <div class="InformationRequestImagePreviewOverlay">
@@ -146,10 +117,7 @@
             <img :src="IDImageBack" />
           </div>
         </div>
-        <div
-          class="InformationRequestImage"
-          v-if="selectedRowData.housing_image != ''"
-        >
+        <div class="InformationRequestImage" v-if="selectedRowData.housing_image != ''">
           <div class="InformationRequestImageTitle">بطاقة السكن</div>
           <div class="InformationRequestImagePreview" @click="ShowImage">
             <div class="InformationRequestImagePreviewOverlay">
@@ -163,10 +131,7 @@
             <img :src="HousingImage" />
           </div>
         </div>
-        <div
-          class="InformationRequestImage"
-          v-if="selectedRowData.housing_image_back != ''"
-        >
+        <div class="InformationRequestImage" v-if="selectedRowData.housing_image_back != ''">
           <div class="InformationRequestImageTitle">ضهر بطاقة السكن</div>
           <div class="InformationRequestImagePreview" @click="ShowImage">
             <div class="InformationRequestImagePreviewOverlay">
@@ -182,49 +147,15 @@
         </div>
       </div>
       <div class="ModalButtons">
-        <div
-          v-show="
-            (selectedRowData.request_type == 'نصب' &&
-              selectedRowData.request_status == 'قيد المراجعة') ||
-            (selectedRowData.request_type == 'تجديد' &&
-              selectedRowData.request_status != 'تم')
-          "
-          class="MButton"
-          id="AcceptBTN"
-          @click="AcceptRequest()"
-        >
-          موافق
-        </div>
-        <div
-          v-show="selectedRowData.request_status == 'قيد المراجعة'"
-          class="MButton"
-          id="RejectBTN"
-          @click="RejectRequest"
-        >
-          رفض
-        </div>
-        <div
-          v-show="
-            selectedRowData.request_type == 'نصب' ||
-            (selectedRowData.request_type == 'تجديد' &&
-              selectedRowData.request_status == 'قيد العمل')
-          "
-          class="MButton"
-          id="CloseRequestBTN"
-          @click="CloseRequest()"
-        >
-          تحديث وغلق الطلب
-        </div>
+        <div v-show="(selectedRowData.request_type == 'نصب' && selectedRowData.request_status == 'قيد المراجعة') || (selectedRowData.request_type == 'تجديد' && selectedRowData.request_status != 'تم')" class="MButton" id="AcceptBTN" @click="AcceptRequest()">موافق</div>
+        <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN" @click="RejectRequest">رفض</div>
+        <div v-show="selectedRowData.request_type == 'نصب' || (selectedRowData.request_type == 'تجديد' && selectedRowData.request_status == 'قيد العمل')" class="MButton" id="CloseRequestBTN" @click="CloseRequest()">تحديث وغلق الطلب</div>
       </div>
     </MModal>
 
     <!-- ========= Reject Model======== -->
 
-    <MModal
-      ref="InternetRequestRejectModal"
-      :Name="'InternetRequestRejectModal'"
-      :Title="'رفض الطلب'"
-    >
+    <MModal ref="InternetRequestRejectModal" :Name="'InternetRequestRejectModal'" :Title="'رفض الطلب'">
       <div class="MField" id="RejectionReason">
         <input type="text" required />
         <label>سبب الرفض</label>
@@ -237,24 +168,9 @@
 
     <div class="MButton" id="GetInternetRequestsBTN">عرض البيانات</div>
     <div class="MGroup">
-      <MDate
-        ref="InternetRequestsFromDate"
-        :Name="'InternetRequestsFromDate'"
-        :Label="'التاريخ'"
-        :Range="true"
-        :Clearable="true"
-      ></MDate>
+      <MDate ref="InternetRequestsFromDate" :Name="'InternetRequestsFromDate'" :Label="'التاريخ'" :Range="true" :Clearable="true"></MDate>
     </div>
-    <MTable
-      ref="InternetRequestsTB"
-      :Name="'InternetRequestsTB'"
-      :DataArray="InternetRequestsTBData"
-      :Columns="InternetRequestsTBColumns"
-      :Sums="InternetRequestsTBSums"
-      :GetDataFunction="GetInternetRequestsData"
-      :RowsCount="InternetRequestsTBRowsCount"
-      :RowsPerPage="10"
-    >
+    <MTable ref="InternetRequestsTB" :Name="'InternetRequestsTB'" :DataArray="InternetRequestsTBData" :Columns="InternetRequestsTBColumns" :Sums="InternetRequestsTBSums" :GetDataFunction="GetInternetRequestsData" :RowsCount="InternetRequestsTBRowsCount" :RowsPerPage="10">
       <template v-slot:options>
         <!-- View Videosdffhroif Option -->
         <div class="MTableOption" OptionEventName="ViewItem">
@@ -296,6 +212,8 @@ export default {
 
     return {
       IDImage: ref(''),
+      InternetActivationDate: ref(null),
+      InternetExpireDate: ref(null),
       InternetRequestModal: ref(null),
       InternetRequestRejectModal: ref(null),
       HousingImage: ref(''),
@@ -399,48 +317,37 @@ export default {
       'ViewItem',
       function (data) {
         this.selectedRowData = this.selectedRowData = data.detail.RowData
-        // this.CompanyName.Clear()
-        // this.SubscriptionType.Clear()
-        document.getElementById('SubscriberName').querySelector('input').value =
-          this.selectedRowData.subscriber_name
-        document
-          .getElementById('SubscriberPhone')
-          .querySelector('input').value = this.selectedRowData.subscriber_phone
+
+        this.InternetActivationDate.Clear()
+        this.InternetExpireDate.Clear()
+        document.getElementById('SubscriberName').querySelector('input').value = this.selectedRowData.subscriber_name
+        document.getElementById('SubscriberPhone').querySelector('input').value = this.selectedRowData.subscriber_phone
         document.getElementById('Price').querySelector('input').value = 0
 
-        if (
-          this.selectedRowData.company_name &&
-          this.selectedRowData.company_name != ''
-        ) {
-          this.CompanyName.Set(
-            this.selectedRowData.company_name,
-            'company_name'
-          )
+        if (this.selectedRowData.request_type == 'تجديد' && this.selectedRowData.request_status == 'قيد المراجعة') {
+          const now = new Date()
+          this.InternetActivationDate.Set(now.toISOString().split('T')[0])
+
+          // إضافة شهر واحد على التاريخ الحالي
+          const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate())
+          this.InternetExpireDate.Set(nextMonth.toISOString().split('T')[0])
+        } else {
+          this.InternetActivationDate.Set(this.selectedRowData.label_issue)
+          this.InternetExpireDate.Set(this.selectedRowData.label_expire)
+        }
+
+        if (this.selectedRowData.company_name && this.selectedRowData.company_name != '') {
+          this.CompanyName.Set(this.selectedRowData.company_name, 'company_name')
           setTimeout(() => {
-            this.SubscriptionType.Set(
-              this.selectedRowData.subscription_type,
-              'subscription_type'
-            )
+            this.SubscriptionType.Set(this.selectedRowData.subscription_type, 'subscription_type')
           }, '100')
         }
 
         if (this.selectedRowData.request_type == 'نصب') {
-          this.IDImage =
-            'https://www.app.deeratna.net/backend/public/storage/internet_images/id/' +
-            this.selectedRowData.id +
-            '.jpg'
-          this.IDImageBack =
-            'https://www.app.deeratna.net/backend/public/storage/internet_images/id_back/' +
-            this.selectedRowData.id +
-            '.jpg'
-          this.HousingImage =
-            'https://www.app.deeratna.net/backend/public/storage/internet_images/housing/' +
-            this.selectedRowData.id +
-            '.jpg'
-          this.HousingImageBack =
-            'https://www.app.deeratna.net/backend/public/storage/internet_images/housing_back/' +
-            this.selectedRowData.id +
-            '.jpg'
+          this.IDImage = 'https://www.app.deeratna.net/backend/public/storage/internet_images/id/' + this.selectedRowData.id + '.jpg'
+          this.IDImageBack = 'https://www.app.deeratna.net/backend/public/storage/internet_images/id_back/' + this.selectedRowData.id + '.jpg'
+          this.HousingImage = 'https://www.app.deeratna.net/backend/public/storage/internet_images/housing/' + this.selectedRowData.id + '.jpg'
+          this.HousingImageBack = 'https://www.app.deeratna.net/backend/public/storage/internet_images/housing_back/' + this.selectedRowData.id + '.jpg'
         }
 
         this.InternetRequestModal.Show()
@@ -458,9 +365,7 @@ export default {
       'MCBValueChange',
       function () {
         var companyname = this.CompanyName.Get()[0]['MCBIName']
-        var CompanyProfiles = this.CompanyNameItems.filter(
-          item => item.company_name == companyname
-        )
+        var CompanyProfiles = this.CompanyNameItems.filter(item => item.company_name == companyname)
         this.SubscriptionTypeItems = CompanyProfiles
       }.bind(this)
     )
@@ -468,8 +373,7 @@ export default {
     document.getElementById('SubscriptionType').addEventListener(
       'MCBValueChange',
       function () {
-        document.getElementById('Price').querySelector('input').value =
-          this.SubscriptionType.Get()[0]['price']
+        document.getElementById('Price').querySelector('input').value = this.SubscriptionType.Get()[0]['price']
       }.bind(this)
     )
   },
@@ -516,30 +420,17 @@ export default {
 
       if (this.selectedRowData.request_type == 'تجديد') {
         Parameters.append('request_status', 'تم')
+        Parameters.append('internet_activation_date', this.InternetActivationDate.Get())
+        Parameters.append('internet_expire_date', this.InternetExpireDate.Get())
       } else {
         Parameters.append('request_status', 'قيد العمل')
       }
 
-      Parameters.append(
-        'subscriber_name',
-        document.getElementById('SubscriberName').querySelector('input').value
-      )
-      Parameters.append(
-        'subscriber_phone',
-        document.getElementById('SubscriberPhone').querySelector('input').value
-      )
-      Parameters.append(
-        'company_name',
-        document.getElementById('CompanyName').querySelector('input').value
-      )
-      Parameters.append(
-        'subscription_type',
-        document.getElementById('SubscriptionType').querySelector('input').value
-      )
-      Parameters.append(
-        'price',
-        document.getElementById('Price').querySelector('input').value
-      )
+      Parameters.append('subscriber_name', document.getElementById('SubscriberName').querySelector('input').value)
+      Parameters.append('subscriber_phone', document.getElementById('SubscriberPhone').querySelector('input').value)
+      Parameters.append('company_name', document.getElementById('CompanyName').querySelector('input').value)
+      Parameters.append('subscription_type', document.getElementById('SubscriptionType').querySelector('input').value)
+      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
 
       api
         .put(`internetrequests/` + this.selectedRowData.id, Parameters)
@@ -569,26 +460,11 @@ export default {
       Parameters.append('customer_id', this.selectedRowData.customer_id)
       Parameters.append('name', this.selectedRowData.name)
       Parameters.append('request_status', 'تم')
-      Parameters.append(
-        'subscriber_name',
-        document.getElementById('SubscriberName').querySelector('input').value
-      )
-      Parameters.append(
-        'subscriber_phone',
-        document.getElementById('SubscriberPhone').querySelector('input').value
-      )
-      Parameters.append(
-        'company_name',
-        document.getElementById('CompanyName').querySelector('input').value
-      )
-      Parameters.append(
-        'subscription_type',
-        document.getElementById('SubscriptionType').querySelector('input').value
-      )
-      Parameters.append(
-        'price',
-        document.getElementById('Price').querySelector('input').value
-      )
+      Parameters.append('subscriber_name', document.getElementById('SubscriberName').querySelector('input').value)
+      Parameters.append('subscriber_phone', document.getElementById('SubscriberPhone').querySelector('input').value)
+      Parameters.append('company_name', document.getElementById('CompanyName').querySelector('input').value)
+      Parameters.append('subscription_type', document.getElementById('SubscriptionType').querySelector('input').value)
+      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
       api
         .put(`internetrequests/` + this.selectedRowData.id, Parameters)
         .then(response => {
@@ -614,10 +490,7 @@ export default {
 
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
-      Parameters.append(
-        'Reason',
-        document.getElementById('RejectionReason').querySelector('input').value
-      )
+      Parameters.append('Reason', document.getElementById('RejectionReason').querySelector('input').value)
 
       api
         .post('RejectInternetRequests', Parameters, {
@@ -641,10 +514,7 @@ export default {
         })
     },
     ShowImage(e) {
-      let ImagePath = e.target
-        .closest('.InformationRequestImage')
-        .querySelector('img')
-        .getAttribute('src')
+      let ImagePath = e.target.closest('.InformationRequestImage').querySelector('img').getAttribute('src')
       window.open(ImagePath)
     },
   },
