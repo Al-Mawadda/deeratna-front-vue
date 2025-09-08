@@ -280,6 +280,16 @@ export default {
           type: 'currency',
         },
         {
+          name: 'internet_activation_date',
+          label: 'تاريخ التفعيل',
+          filter: 'date',
+        },
+        {
+          name: 'internet_expire_date',
+          label: 'تاريخ الانتهاء',
+          filter: 'date',
+        },
+        {
           name: 'request_type',
           label: 'نوع الطلب',
         },
