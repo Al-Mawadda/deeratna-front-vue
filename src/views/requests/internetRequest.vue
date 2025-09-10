@@ -68,24 +68,24 @@
         </tbody>
       </table>
       <div class="MField" id="SubscriberName">
-        <input type="text" required />
+        <input :Disabled="selectedRowData.request_status == 'تم'" type="text" required />
         <label>اسم المشترك</label>
         <div class="MFieldBG"></div>
       </div>
       <div class="MField" id="SubscriberPhone" v-OnlyNumbers>
-        <input type="text" required />
+        <input :Disabled="selectedRowData.request_status == 'تم'" type="text" required />
         <label>رقم هاتف الاشتراك</label>
         <div class="MFieldBG"></div>
       </div>
-      <MComboBox ref="CompanyName" :Name="'CompanyName'" :Label="' اسم الشركة *'" :Items="CompanyNamesItems" :ItemsName="'company_name'"></MComboBox>
-      <MComboBox ref="SubscriptionType" :Name="'SubscriptionType'" :Label="' نوع الاشتراك *'" :Items="SubscriptionTypeItems" :ItemsName="'subscription_type'"></MComboBox>
+      <MComboBox :Disabled="selectedRowData.request_status == 'تم'" ref="CompanyName" :Name="'CompanyName'" :Label="' اسم الشركة *'" :Items="CompanyNamesItems" :ItemsName="'company_name'"></MComboBox>
+      <MComboBox :Disabled="selectedRowData.request_status == 'تم'" ref="SubscriptionType" :Name="'SubscriptionType'" :Label="' نوع الاشتراك *'" :Items="SubscriptionTypeItems" :ItemsName="'subscription_type'"></MComboBox>
       <div class="MField" id="Price">
         <input type="text" required disabled />
         <label>السعر</label>
         <div class="MFieldBG"></div>
       </div>
-      <MDate :Disabled="!(selectedRowData.request_status == 'قيد المراجعة')" v-show="selectedRowData.request_type == 'تجديد'" ref="InternetActivationDate" :Name="'InternetActivationDate'" :Label="'تاريخ التفعيل'"></MDate>
-      <MDate :Disabled="!(selectedRowData.request_status == 'قيد المراجعة')" v-show="selectedRowData.request_type == 'تجديد'" ref="InternetExpireDate" :Name="'InternetExpireDate'" :Label="'تاريخ الانتهاء'"></MDate>
+      <MDate v-show="selectedRowData.request_type == 'تجديد'" ref="InternetActivationDate" :Name="'InternetActivationDate'" :Label="'تاريخ التفعيل'"></MDate>
+      <MDate v-show="selectedRowData.request_type == 'تجديد'" ref="InternetExpireDate" :Name="'InternetExpireDate'" :Label="'تاريخ الانتهاء'"></MDate>
 
       <!--========== The Images ==========-->
       <div v-show="selectedRowData.request_type != 'تجديد'" class="ImagesContainer">
@@ -149,7 +149,7 @@
       <div class="ModalButtons">
         <div v-show="(selectedRowData.request_type == 'نصب' && selectedRowData.request_status == 'قيد المراجعة') || (selectedRowData.request_type == 'تجديد' && selectedRowData.request_status != 'تم')" class="MButton" id="AcceptBTN" @click="AcceptRequest()">موافق</div>
         <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN" @click="RejectRequest">رفض</div>
-        <div v-show="selectedRowData.request_type == 'نصب' || (selectedRowData.request_type == 'تجديد' && selectedRowData.request_status == 'قيد العمل')" class="MButton" id="CloseRequestBTN" @click="CloseRequest()">تحديث وغلق الطلب</div>
+        <div v-show="selectedRowData.request_type == 'نصب' || selectedRowData.request_type == 'تجديد'" class="MButton" id="CloseRequestBTN" @click="CloseRequest()">تحديث وغلق الطلب</div>
       </div>
     </MModal>
 
@@ -337,15 +337,14 @@ export default {
         if (this.selectedRowData.request_type == 'تجديد' && this.selectedRowData.request_status == 'قيد المراجعة') {
           const now = new Date()
           this.InternetActivationDate.Set(now.toISOString().split('T')[0])
-
-          // نفس اليوم من الشهر القادم
           const nextMonth = new Date(now)
           nextMonth.setMonth(nextMonth.getMonth() + 1)
-
           this.InternetExpireDate.Set(nextMonth.toISOString().split('T')[0])
-        } else {
-          this.InternetActivationDate.Set(this.selectedRowData.InternetActivationDate)
-          this.InternetExpireDate.Set(this.selectedRowData.InternetExpireDate)
+        }
+
+        if (this.selectedRowData.request_type == 'تجديد' && this.selectedRowData.request_status == 'تم') {
+          this.InternetActivationDate.Set(this.selectedRowData.internet_activation_date)
+          this.InternetExpireDate.Set(this.selectedRowData.internet_expire_date)
         }
 
         if (this.selectedRowData.company_name && this.selectedRowData.company_name != '') {
@@ -477,6 +476,10 @@ export default {
       Parameters.append('company_name', document.getElementById('CompanyName').querySelector('input').value)
       Parameters.append('subscription_type', document.getElementById('SubscriptionType').querySelector('input').value)
       Parameters.append('price', document.getElementById('Price').querySelector('input').value)
+      if (this.selectedRowData.request_type == 'تجديد' && this.selectedRowData.request_status == 'تم') {
+        Parameters.append('internet_activation_date', this.InternetActivationDate.Get())
+        Parameters.append('internet_expire_date', this.InternetExpireDate.Get())
+      }
       api
         .put(`internetrequests/` + this.selectedRowData.id, Parameters)
         .then(response => {
