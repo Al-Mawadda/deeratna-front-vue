@@ -206,8 +206,7 @@ const router = createRouter({
     },
     {
       path: '/internet-maintenance-requests',
-      component: () =>
-        import('../views/requests/internetMaintenanceRequest.vue'),
+      component: () => import('../views/requests/internetMaintenanceRequest.vue'),
       name: 'internetmaintenanceRequest',
       meta: { RequiresAuth: true, HeaderTitle: 'صيانة الانترنيت' },
     },
@@ -347,7 +346,7 @@ const router = createRouter({
       name: 'Users',
       meta: {
         RequiresAuth: true,
-        HeaderTitle: 'ادارة المستخدمين'
+        HeaderTitle: 'ادارة المستخدمين',
       },
     },
     {
@@ -440,11 +439,20 @@ const router = createRouter({
       meta: { RequiresAuth: true, HeaderTitle: 'قائمة الصيانات' },
     },
     //#endregion
+
+    //#region Reports
+    {
+      path: '/reports/payments',
+      component: () => import('../views/reports/PaymentsTotal.vue'),
+      name: 'paymentsTotal',
+      meta: { RequiresAuth: true, HeaderTitle: 'التقارير' },
+    },
+    //#endregion Reports
   ],
 })
 
 router.beforeEach((to, from, next) => {
-  const GlobalsStore = useGlobalsStore();
+  const GlobalsStore = useGlobalsStore()
 
   if (to.meta.RequiresAuth && !GlobalsStore.IsAuthenticated) {
     next({ name: 'Login' })
