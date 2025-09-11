@@ -11,16 +11,16 @@
       <h2 class="title">مجاميع الدفع الالكتروني</h2>
 
       <div class="buttons">
-        <button class="btn" @click="exportExcel">Export to Excel</button>
-        <button class="btn" @click="printTable">Print</button>
+        <button class="btn" @click="exportExcel">تصدير الى اكسل</button>
+        <button class="btn" @click="printTable">طبـاعـــــة</button>
       </div>
 
       <div class="table-wrapper">
         <table ref="transactionTable" class="styled-table">
           <thead>
             <tr>
-              <th>Payment Name</th>
-              <th>Total Amount</th>
+              <th>اسم العملية</th>
+              <th>المبلغ</th>
             </tr>
           </thead>
           <tbody>
@@ -31,7 +31,7 @@
           </tbody>
           <tfoot>
             <tr>
-              <th>Total</th>
+              <th>المجموع الكلي</th>
               <th>{{ formatCurrency(totalAmount) }}</th>
             </tr>
           </tfoot>
@@ -144,9 +144,9 @@ export default {
 .title {
   text-align: center;
   margin-bottom: 20px;
-  font-size: 15px;
-  color: #00d1b2;
-  font-family: 'MFontR';
+  font-size: 18px;
+  color: white;
+  font-family: 'MFontB';
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
@@ -166,6 +166,8 @@ export default {
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s;
+  font-family: 'MFontB';
+  font-size: 15px;
 }
 .btn:hover {
   background-color: #00b89a;
@@ -190,6 +192,8 @@ export default {
 .styled-table td {
   padding: 12px 20px;
   text-align: center;
+  font-family: 'MFontB';
+  font-size: 18px;
 }
 
 .styled-table thead tr {
