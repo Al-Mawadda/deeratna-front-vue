@@ -171,6 +171,12 @@ const router = createRouter({
       name: 'send-deeratna-notification',
       meta: { RequiresAuth: true, HeaderTitle: 'ارسال اشعار ديرتنا ' },
     },
+    {
+      path: '/ads/send-whatsapp-message',
+      component: () => import('../views/ads/SendWhatsAppMessage.vue'),
+      name: 'send-whatsapp-message',
+      meta: { RequiresAuth: true, HeaderTitle: 'ارسال رسائل وتس اب ' },
+    },
     //#endregion
 
     //#region Requests

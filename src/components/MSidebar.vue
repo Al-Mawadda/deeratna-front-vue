@@ -186,6 +186,7 @@ export default {
           { text: 'الاعلانات المولد', route: '/ads/energy', permission: 'electricity_ads_videos' },
           { text: 'الاعلانات الفيديو', route: '/ads/Home-secondVideo', permission: 'main_screen_second_ads_videos' },
           { text: 'ارسال اشعار', route: '/ads/send-deeratna-notification', permission: 'deeratna_notification_send' },
+          { text: 'ارسال رسائل وتس اب', route: '/ads/send-whatsapp-message', permission: 'send-whatsapp-message' },
         ],
       },
       //#endregion

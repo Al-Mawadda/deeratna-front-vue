@@ -322,18 +322,6 @@ export default {
         document.getElementById('SubscriberPhone').querySelector('input').value = this.selectedRowData.subscriber_phone
         document.getElementById('Price').querySelector('input').value = 0
 
-        // if (this.selectedRowData.request_type == 'تجديد' && this.selectedRowData.request_status == 'قيد المراجعة') {
-        //   const now = new Date()
-        //   this.InternetActivationDate.Set(now.toISOString().split('T')[0])
-
-        //   // إضافة شهر واحد على التاريخ الحالي
-        //   const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate())
-        //   this.InternetExpireDate.Set(nextMonth.toISOString().split('T')[0])
-        // } else {
-        //   this.InternetActivationDate.Set(this.selectedRowData.InternetActivationDate)
-        //   this.InternetExpireDate.Set(this.selectedRowData.InternetExpireDate)
-        // }
-
         if (this.selectedRowData.request_type == 'تجديد' && this.selectedRowData.request_status == 'قيد المراجعة') {
           const now = new Date()
           this.InternetActivationDate.Set(now.toISOString().split('T')[0])

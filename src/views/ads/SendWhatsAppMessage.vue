@@ -16,7 +16,7 @@
 <script>
 import { api } from '../../axios'
 import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
-import { ref } from 'vue'
+import { ref} from 'vue'
 import { useGlobalsStore } from '../../stores/Globals.js'
 
 export default {
@@ -40,7 +40,7 @@ export default {
       Parameters.append('compounds', JSON.stringify(this.Compounds.Get('MCBIName')))
 
       api
-        .post('deeratna-notification-all', Parameters, {
+        .post('sendWhatsAppMessageForCompounds', Parameters, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
