@@ -62,7 +62,7 @@
         <label>السعر</label>
         <div class="MFieldBG"></div>
       </div>
-      <MComboBox v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة'" :Disabled="selectedRowData.request_status == 'تم' || selectedRowData.request_status == 'تم الدفع'" ref="MaintenanceType" :Name="'MaintenanceType'" :Label="'  نوع الصيانة *'" :Items="MaintenanceItems"></MComboBox>
+      <!-- <MComboBox v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة'" :Disabled="selectedRowData.request_status == 'تم' || selectedRowData.request_status == 'تم الدفع'" ref="MaintenanceType" :Name="'MaintenanceType'" :Label="'  نوع الصيانة *'" :Items="MaintenanceItems"></MComboBox> -->
 
       <!-- ========= Btn ===============-->
       <div class="ModalButtons">
@@ -148,8 +148,8 @@ export default {
 
     return {
       GlobalsStore: ref(useGlobalsStore()),
-      MaintenanceType: ref(null),
-      MaintenanceItems: ref([]),
+      //MaintenanceType: ref(null),
+      //MaintenanceItems: ref([]),
       IDImage: ref(''),
       MaintenanceRequestModal: ref(null),
       MaintenanceRequestRejectModal: ref(null),
@@ -269,7 +269,7 @@ export default {
   },
   mounted() {
     this.MaintenanceRequestsTB.LoadMTable()
-    this.MaintenanceItems = this.GlobalsStore.ComboBoxes['MaintenanceType']
+    //this.MaintenanceItems = this.GlobalsStore.ComboBoxes['MaintenanceType']
 
     // display Data between two date
     document.getElementById('GetMaintenanceRequestsBTN').addEventListener(
@@ -317,7 +317,7 @@ export default {
         document.getElementById('note').querySelector('input').value = ''
         document.getElementById('note').querySelector('input').value = this.selectedRowData.note
         document.getElementById('Price').querySelector('input').value = this.selectedRowData.price
-        this.MaintenanceType.Set(this.selectedRowData.type_description)
+        //this.MaintenanceType.Set(this.selectedRowData.type_description)
         this.MaintenanceRequestTimeTBData = this.selectedRowData.maintenance_time
 
         this.MaintenanceRequestModal.Show()
