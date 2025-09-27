@@ -62,13 +62,26 @@
         <label>السعر</label>
         <div class="MFieldBG"></div>
       </div>
+      <MComboBox v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة'" :Disabled="selectedRowData.request_status == 'تم' || selectedRowData.request_status == 'تم الدفع'" ref="MaintenanceType" :Name="'MaintenanceType'" :Label="'  نوع الصيانة *'" :Items="MaintenanceItems"></MComboBox>
 
+      <!-- ========= Btn ===============-->
       <div class="ModalButtons">
-        <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="AcceptBTN" @click="AcceptRequest()">موافق</div>
-        <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="AcceptWithPayBTN" @click="AcceptWithPayRequest()">موافق مع الدفع</div>
+        <!-- ===== الثابته -->
+        <div v-show="selectedRowData.type_description == 'ثابتة' && selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="AcceptConstantBTN" @click="AcceptConstantRequest()">موافق (ثابته)</div>
+        <div v-show="selectedRowData.type_description == 'ثابتة' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status != 'تم الانجاز'" class="MButton" id="CloseConstantRequestBTN" @click="CloseConstantRequest()">تحديث وغلق الطلب (ثابتة)</div>
+        <!-- ============= -->
+        <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptToDetectionBTN" @click="AcceptToDetectionRequest()">موافق (تحويل الى كشف)</div>
+        <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptToPayBTN" @click="AcceptToPayRequest()">موافق (تحويل الى دفع الكتروني)</div>
+
+        <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد الكشف'" class="MButton" id="ConvertFromDetectionToAnjazAndPaymentRequestBTN" @click="ConvertFromDetectionToAnjazAndPaymentRequest()">تحويل من كشف الى تم الانجاز ودفع الكتروني</div>
+        <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'دفع الكتروني' && selectedRowData.completion_status == 'تم الانجاز'" class="MButton" id="CloseOtherRequestBTN" @click="CloseOtherRequest()">استلام المبلغ كاش وغلق الطلب</div>
+
+        <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد الكشف'" class="MButton" id="ReturnToUnderReviewBTN" @click="ReturnToUnderReview()">اعادة الى قيد المراجعة</div>
+        <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status != 'تم الانجاز' && selectedRowData.pay_type == 'الكتروني'" class="MButton" id="ConvertToAnjazAndCloseRequestBTN" @click="ConvertToAnjazAndCloseRequest()">تحويل الى انجاز وغلق الطلب</div>
+
+        <!-- <div v-show="selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptBTN" @click="AcceptRequest()">موافق</div> -->
         <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN" @click="RejectRequest">رفض</div>
-        <div v-show="selectedRowData.request_status == 'قيد الكشف'" class="MButton" id="ConvertFromStatementToPaymentBTN" @click="ConvertFromStatementToPayment()">تحويل من كشف الى انجاز ودفع</div>
-        <div v-show="(selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status != 'تم الانجاز') || (selectedRowData.type == 2 && selectedRowData.request_status == 'دفع الكتروني')" class="MButton" id="CloseRequestBTN" @click="CloseRequest()">تحديث وغلق الطلب</div>
+        <!-- <div v-show="(selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status != 'تم الانجاز') || (selectedRowData.type == 2 && selectedRowData.request_status == 'دفع الكتروني')" class="MButton" id="CloseRequestBTN" @click="CloseRequest()">تحديث وغلق الطلب</div> -->
       </div>
     </MModal>
 
@@ -134,6 +147,9 @@ export default {
     const GlobalsStore = ref(useGlobalsStore())
 
     return {
+      GlobalsStore: ref(useGlobalsStore()),
+      MaintenanceType: ref(null),
+      MaintenanceItems: ref([]),
       IDImage: ref(''),
       MaintenanceRequestModal: ref(null),
       MaintenanceRequestRejectModal: ref(null),
@@ -253,6 +269,8 @@ export default {
   },
   mounted() {
     this.MaintenanceRequestsTB.LoadMTable()
+    this.MaintenanceItems = this.GlobalsStore.ComboBoxes['MaintenanceType']
+
     // display Data between two date
     document.getElementById('GetMaintenanceRequestsBTN').addEventListener(
       'click',
@@ -299,6 +317,7 @@ export default {
         document.getElementById('note').querySelector('input').value = ''
         document.getElementById('note').querySelector('input').value = this.selectedRowData.note
         document.getElementById('Price').querySelector('input').value = this.selectedRowData.price
+        this.MaintenanceType.Set(this.selectedRowData.type_description)
         this.MaintenanceRequestTimeTBData = this.selectedRowData.maintenance_time
 
         this.MaintenanceRequestModal.Show()
@@ -338,26 +357,93 @@ export default {
           ShowMessage(error)
         })
     },
-    AcceptRequest() {
+
+    // Constant Request
+    AcceptConstantRequest() {
       ShowLoading()
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append('pid', this.selectedRowData.pid)
-      Parameters.append('name', this.selectedRowData.name)
-      Parameters.append('request_type', this.selectedRowData.request_type)
-      Parameters.append('type', this.selectedRowData.type)
-      Parameters.append('AcceptType', 'AcceptPayAfterJob')
-      if (this.selectedRowData.type == 1) {
-        Parameters.append('request_status', 'دفع الكتروني')
-      } else {
-        Parameters.append('request_status', 'قيد الكشف')
+      Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
+      Parameters.append('note', document.getElementById('note').querySelector('input').value)
+      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
+
+      api
+        .post('AcceptMaintenanceConstantRequests', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          HideLoading()
+          if (response.data.success == true) {
+            this.MaintenanceRequestsTB.LoadMTable()
+            this.MaintenanceRequestModal.Hide()
+          } else {
+            HideLoading()
+            ShowMessage(response.data.message)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          if (error.response && error.response.status === 422) {
+            const firstError = Object.values(error.response.data.errors)[0][0]
+            ShowMessage(firstError)
+          } else ShowMessage('حدث خطأ غير متوقع')
+        })
+    },
+    CloseConstantRequest() {
+      if (this.selectedRowData.request_status != 'تم الدفع' && this.selectedRowData.type == 1) {
+        ShowMessage('لا يمكن غلق الطلب الا بعد اجراء عملية الدفع')
+        return
       }
+      ShowLoading()
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id)
+      Parameters.append('completion_status', this.selectedRowData.completion_status)
+      Parameters.append('note', document.getElementById('note').querySelector('input').value)
+      api
+        .post('CloseMaintenanceConstantRequests', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          HideLoading()
+          if (response.data.success == true) {
+            this.MaintenanceRequestsTB.LoadMTable()
+            this.MaintenanceRequestModal.Hide()
+          } else {
+            HideLoading()
+            ShowMessage(response.data.message)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          if (error.response && error.response.status === 422) {
+            const firstError = Object.values(error.response.data.errors)[0][0]
+            ShowMessage(firstError)
+          } else ShowMessage('حدث خطأ غير متوقع')
+        })
+    },
+    // ================
+
+    // Other Request
+    AcceptToDetectionRequest() {
+      ShowLoading()
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id)
+      Parameters.append('pid', this.selectedRowData.pid)
       Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
       Parameters.append('note', document.getElementById('note').querySelector('input').value)
       Parameters.append('price', document.getElementById('Price').querySelector('input').value)
 
       api
-        .put(`MaintenanceRequests/` + this.selectedRowData.id, Parameters)
+        .post('AcceptToDetectionMaintenanceRequests', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
         .then(response => {
           HideLoading()
           if (response.data.success == true) {
@@ -376,55 +462,21 @@ export default {
           } else ShowMessage('حدث خطأ غير متوقع')
         })
     },
-    AcceptWithPayRequest() {
+    ConvertFromDetectionToAnjazAndPaymentRequest() {
       ShowLoading()
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append('pid', this.selectedRowData.pid)
-      Parameters.append('name', this.selectedRowData.name)
-      Parameters.append('request_type', this.selectedRowData.request_type)
-      Parameters.append('type', this.selectedRowData.type)
-      Parameters.append('request_status', 'دفع الكتروني')
       Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
       Parameters.append('note', document.getElementById('note').querySelector('input').value)
       Parameters.append('price', document.getElementById('Price').querySelector('input').value)
-      Parameters.append('AcceptType', 'AcceptPayBeforeJob')
-      api
-        .put(`MaintenanceRequests/` + this.selectedRowData.id, Parameters)
-        .then(response => {
-          HideLoading()
-          if (response.data.success == true) {
-            this.MaintenanceRequestsTB.LoadMTable()
-            this.MaintenanceRequestModal.Hide()
-          } else {
-            HideLoading()
-            ShowMessage(response.data.message)
-          }
-        })
-        .catch(error => {
-          HideLoading()
-          if (error.response && error.response.status === 422) {
-            const firstError = Object.values(error.response.data.errors)[0][0]
-            ShowMessage(firstError)
-          } else ShowMessage('حدث خطأ غير متوقع')
-        })
-    },
-    ConvertFromStatementToPayment() {
-      ShowLoading()
-      var Parameters = new FormData()
-      Parameters.append('RequestID', this.selectedRowData.id)
-      Parameters.append('pid', this.selectedRowData.pid)
-      Parameters.append('name', this.selectedRowData.name)
-      Parameters.append('request_type', this.selectedRowData.request_type)
-      Parameters.append('type', this.selectedRowData.type)
-      Parameters.append('request_status', 'دفع الكتروني')
-      Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
-      Parameters.append('note', document.getElementById('note').querySelector('input').value)
-      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
-      Parameters.append('AcceptType', 'AcceptPayAfterJob')
 
       api
-        .put(`MaintenanceRequests/` + this.selectedRowData.id, Parameters)
+        .post('ConvertFromDetectionToAnjazAndPayment', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
         .then(response => {
           HideLoading()
           if (response.data.success == true) {
@@ -443,7 +495,101 @@ export default {
           } else ShowMessage('حدث خطأ غير متوقع')
         })
     },
-    CloseRequest() {
+    CloseOtherRequest() {
+      ShowLoading()
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id)
+      Parameters.append('pid', this.selectedRowData.pid)
+      Parameters.append('completion_status', this.selectedRowData.completion_status)
+      Parameters.append('note', document.getElementById('note').querySelector('input').value)
+      api
+        .post('CloseMaintenanceOtherRequests', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          HideLoading()
+          if (response.data.success == true) {
+            this.MaintenanceRequestsTB.LoadMTable()
+            this.MaintenanceRequestModal.Hide()
+          } else {
+            HideLoading()
+            ShowMessage(response.data.message)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          if (error.response && error.response.status === 422) {
+            const firstError = Object.values(error.response.data.errors)[0][0]
+            ShowMessage(firstError)
+          } else ShowMessage('حدث خطأ غير متوقع')
+        })
+    },
+    ReturnToUnderReview() {
+      ShowLoading()
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id)
+      Parameters.append('pid', this.selectedRowData.pid)
+
+      api
+        .post('ReturnToUnderReviewMaintenanceRequests', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          HideLoading()
+          if (response.data.success == true) {
+            this.MaintenanceRequestsTB.LoadMTable()
+            this.MaintenanceRequestModal.Hide()
+          } else {
+            HideLoading()
+            ShowMessage(response.data.message)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          if (error.response && error.response.status === 422) {
+            const firstError = Object.values(error.response.data.errors)[0][0]
+            ShowMessage(firstError)
+          } else ShowMessage('حدث خطأ غير متوقع')
+        })
+    },
+
+    AcceptToPayRequest() {
+      ShowLoading()
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id)
+      Parameters.append('pid', this.selectedRowData.pid)
+      Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
+      Parameters.append('note', document.getElementById('note').querySelector('input').value)
+      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
+      api
+        .post('AcceptToPayMaintenanceRequest', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          HideLoading()
+          if (response.data.success == true) {
+            this.MaintenanceRequestsTB.LoadMTable()
+            this.MaintenanceRequestModal.Hide()
+          } else {
+            HideLoading()
+            ShowMessage(response.data.message)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          if (error.response && error.response.status === 422) {
+            const firstError = Object.values(error.response.data.errors)[0][0]
+            ShowMessage(firstError)
+          } else ShowMessage('حدث خطأ غير متوقع')
+        })
+    },
+    ConvertToAnjazAndCloseRequest() {
       if (this.selectedRowData.request_status != 'تم الدفع' && this.selectedRowData.type == 1) {
         ShowMessage('لا يمكن غلق الطلب الا بعد اجراء عملية الدفع')
         return
@@ -452,13 +598,13 @@ export default {
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append('pid', this.selectedRowData.pid)
-      Parameters.append('name', this.selectedRowData.name)
-      Parameters.append('type', this.selectedRowData.type)
-      Parameters.append('completion_status', this.selectedRowData.completion_status)
-      //Parameters.append('request_status', 'تم')
       Parameters.append('note', document.getElementById('note').querySelector('input').value)
       api
-        .put(`CloseMaintenanceRequests/` + this.selectedRowData.id, Parameters)
+        .post('ConvertToAnjazAndCloseMaintenanceRequest', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
         .then(response => {
           HideLoading()
           if (response.data.success == true) {
@@ -477,6 +623,114 @@ export default {
           } else ShowMessage('حدث خطأ غير متوقع')
         })
     },
+    //======================
+
+    // AcceptRequest() {
+    //   ShowLoading()
+    //   var Parameters = new FormData()
+    //   Parameters.append('RequestID', this.selectedRowData.id)
+    //   Parameters.append('pid', this.selectedRowData.pid)
+    //   Parameters.append('name', this.selectedRowData.name)
+    //   Parameters.append('request_type', this.selectedRowData.request_type)
+    //   Parameters.append('type', this.selectedRowData.type)
+    //   Parameters.append('AcceptType', 'AcceptPayAfterJob')
+    //   if (this.selectedRowData.type == 1) {
+    //     Parameters.append('request_status', 'دفع الكتروني')
+    //   } else {
+    //     Parameters.append('request_status', 'قيد الكشف')
+    //   }
+    //   Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
+    //   Parameters.append('note', document.getElementById('note').querySelector('input').value)
+    //   Parameters.append('price', document.getElementById('Price').querySelector('input').value)
+
+    //   api
+    //     .put(`MaintenanceRequests/` + this.selectedRowData.id, Parameters)
+    //     .then(response => {
+    //       HideLoading()
+    //       if (response.data.success == true) {
+    //         this.MaintenanceRequestsTB.LoadMTable()
+    //         this.MaintenanceRequestModal.Hide()
+    //       } else {
+    //         HideLoading()
+    //         ShowMessage(response.data.message)
+    //       }
+    //     })
+    //     .catch(error => {
+    //       HideLoading()
+    //       if (error.response && error.response.status === 422) {
+    //         const firstError = Object.values(error.response.data.errors)[0][0]
+    //         ShowMessage(firstError)
+    //       } else ShowMessage('حدث خطأ غير متوقع')
+    //     })
+    // },
+    // AcceptWithPayRequest() {
+    //   ShowLoading()
+    //   var Parameters = new FormData()
+    //   Parameters.append('RequestID', this.selectedRowData.id)
+    //   Parameters.append('pid', this.selectedRowData.pid)
+    //   Parameters.append('name', this.selectedRowData.name)
+    //   Parameters.append('request_type', this.selectedRowData.request_type)
+    //   Parameters.append('type', this.selectedRowData.type)
+    //   Parameters.append('request_status', 'دفع الكتروني')
+    //   Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
+    //   Parameters.append('note', document.getElementById('note').querySelector('input').value)
+    //   Parameters.append('price', document.getElementById('Price').querySelector('input').value)
+    //   Parameters.append('AcceptType', 'AcceptPayBeforeJob')
+    //   api
+    //     .put(`MaintenanceRequests/` + this.selectedRowData.id, Parameters)
+    //     .then(response => {
+    //       HideLoading()
+    //       if (response.data.success == true) {
+    //         this.MaintenanceRequestsTB.LoadMTable()
+    //         this.MaintenanceRequestModal.Hide()
+    //       } else {
+    //         HideLoading()
+    //         ShowMessage(response.data.message)
+    //       }
+    //     })
+    //     .catch(error => {
+    //       HideLoading()
+    //       if (error.response && error.response.status === 422) {
+    //         const firstError = Object.values(error.response.data.errors)[0][0]
+    //         ShowMessage(firstError)
+    //       } else ShowMessage('حدث خطأ غير متوقع')
+    //     })
+    // },
+
+    // CloseRequest() {
+    //   if (this.selectedRowData.request_status != 'تم الدفع' && this.selectedRowData.type == 1) {
+    //     ShowMessage('لا يمكن غلق الطلب الا بعد اجراء عملية الدفع')
+    //     return
+    //   }
+    //   ShowLoading()
+    //   var Parameters = new FormData()
+    //   Parameters.append('RequestID', this.selectedRowData.id)
+    //   Parameters.append('pid', this.selectedRowData.pid)
+    //   Parameters.append('name', this.selectedRowData.name)
+    //   Parameters.append('type', this.selectedRowData.type)
+    //   Parameters.append('completion_status', this.selectedRowData.completion_status)
+    //   //Parameters.append('request_status', 'تم')
+    //   Parameters.append('note', document.getElementById('note').querySelector('input').value)
+    //   api
+    //     .put(`CloseMaintenanceRequests/` + this.selectedRowData.id, Parameters)
+    //     .then(response => {
+    //       HideLoading()
+    //       if (response.data.success == true) {
+    //         this.MaintenanceRequestsTB.LoadMTable()
+    //         this.MaintenanceRequestModal.Hide()
+    //       } else {
+    //         HideLoading()
+    //         ShowMessage(response.data.message)
+    //       }
+    //     })
+    //     .catch(error => {
+    //       HideLoading()
+    //       if (error.response && error.response.status === 422) {
+    //         const firstError = Object.values(error.response.data.errors)[0][0]
+    //         ShowMessage(firstError)
+    //       } else ShowMessage('حدث خطأ غير متوقع')
+    //     })
+    // },
     SaveRejectRequest() {
       ShowLoading()
 
