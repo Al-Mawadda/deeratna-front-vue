@@ -13,11 +13,12 @@
       <h2 class="title">مجاميع الدفع الالكتروني</h2>
 
       <div class="buttons">
+        <button class="btn" @click="exportPDF" :disabled="!groupedTransactions.length">تصدير PDF</button>
         <button class="btn" @click="exportExcel" :disabled="!groupedTransactions.length">تصدير الى اكسل</button>
         <button class="btn" @click="printAll" :disabled="!groupedTransactions.length">طبـاعـــــة</button>
       </div>
 
-      <div class="table-wrapper" v-if="groupedTransactions.length">
+      <div class="table-wrapper" v-if="groupedTransactions.length" ref="pdfRoot">
         <!-- كروب لكل خدمة -->
         <div v-for="group in groupedTransactions" :key="group.payment_key" class="group-block" ref="groupBlocks">
           <h3 class="group-title">{{ group.payment_label }}</h3>
@@ -83,6 +84,8 @@ import { ref } from 'vue'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
 import { api } from '../../axios'
+import { jsPDF } from 'jspdf'
+import html2canvas from 'html2canvas'
 
 export default {
   name: 'TransactionsByServiceGrouped',
@@ -140,6 +143,48 @@ export default {
   methods: {
     formatCurrency(value) {
       return new Intl.NumberFormat('en-US').format(Number(value || 0))
+    },
+
+    exportPDF() {
+      // نحفظ منطقة الطباعة (الكروبات + الملخص)
+      const root = this.$refs.pdfRoot
+      if (!root) return
+
+      // نرفع scale لتحسين الدقة
+      html2canvas(root, { scale: 2, useCORS: true, backgroundColor: '#1e1e2f' })
+        .then(canvas => {
+          const imgData = canvas.toDataURL('image/png')
+
+          // إعدادات A4 بالميليمتر
+          const pdf = new jsPDF('p', 'mm', 'a4')
+          const pageWidth = 210
+          const pageHeight = 297
+
+          // احسب أبعاد الصورة داخل الـ PDF
+          const imgWidth = pageWidth
+          const imgHeight = (canvas.height * imgWidth) / canvas.width
+
+          let heightLeft = imgHeight
+          let position = 0
+
+          // الصفحة الأولى
+          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
+          heightLeft -= pageHeight
+
+          // صفحات إضافية لو المحتوى طويل
+          while (heightLeft > 0) {
+            position = heightLeft - imgHeight
+            pdf.addPage()
+            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
+            heightLeft -= pageHeight
+          }
+
+          pdf.save('transactions_by_service.pdf')
+        })
+        .catch(err => {
+          console.error('PDF export failed:', err)
+          alert('تعذر إنشاء ملف الـ PDF. حاول مجدداً أو اطبع كـ PDF من المتصفح.')
+        })
     },
 
     // بناء باراميترات التاريخ من MDate
