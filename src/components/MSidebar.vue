@@ -272,12 +272,15 @@ export default {
         ],
       },
       //#endregion
-      //#region السجل
+      //#region التقارير
       {
         text: 'التقارير',
         icon: GroupIcon,
 
-        items: [{ text: 'مجموع الدفع الالكتروني', route: '/reports/payments', permission: 'report_payment_total' }],
+        items: [
+          { text: 'مجاميع الدفع الالكتروني', route: '/reports/payments', permission: 'report_payment_total' },
+          { text: 'مجاميع الدفع الالكتروني حسب المدن', route: '/reports/payments_by_compound', permission: 'payments_by_compound' },
+        ],
       },
       //#endregion
     ])

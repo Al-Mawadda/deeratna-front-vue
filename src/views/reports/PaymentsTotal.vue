@@ -19,18 +19,21 @@
         <table ref="transactionTable" class="styled-table">
           <thead>
             <tr>
+              <th>التسلسل</th>
               <th>اسم العملية</th>
               <th>المبلغ</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="item in transactions" :key="item.payment_name">
+              <td>{{ item.row_number }}</td>
               <td>{{ item.payment_name }}</td>
               <td>{{ formatCurrency(item.total_amount) }}</td>
             </tr>
           </tbody>
           <tfoot>
             <tr>
+              <th></th>
               <th>المجموع الكلي</th>
               <th>{{ formatCurrency(totalAmount) }}</th>
             </tr>
