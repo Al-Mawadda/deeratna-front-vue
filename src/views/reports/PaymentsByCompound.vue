@@ -10,51 +10,51 @@
     </div>
 
     <div class="container">
-      <h2 class="title">{{ reportTitle }}</h2>
-
       <div class="buttons">
         <button class="btn" @click="exportPDF" :disabled="!pivotRows.length">تصدير PDF</button>
         <button class="btn" @click="exportExcel" :disabled="!pivotRows.length">تصدير الى اكسل</button>
         <button class="btn" @click="printAll" :disabled="!pivotRows.length">طبـاعـــــة</button>
       </div>
+      <div class="print-area" v-if="pivotRows.length" ref="pdfRoot">
+        <h2 class="title">{{ reportTitle }}</h2>
 
-      <!-- الجدول المحوري (مثل الصورة) -->
-      <div class="table-wrapper" v-if="pivotRows.length" ref="pdfRoot">
-        <table class="styled-table pivot">
-          <thead>
-            <tr>
-              <th class="head-cell city">المدينة</th>
-              <th class="head-cell" v-for="k in pivotKeysShown" :key="'h_' + k">
-                {{ labelsMap[k] || k }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(r, idx) in pivotRows" :key="`row_${idx}`">
-              <td class="city">{{ r.city }}</td>
-              <td v-for="k in pivotKeysShown" :key="`c_${idx}_${k}`">
-                {{ formatCurrency(r[k] || 0) }}
-              </td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <!-- صف مجموع الأعمدة (مثل الصف الأصفر بالصورة) -->
-            <tr class="totals-row">
-              <th class="city">المجموع</th>
-              <th v-for="k in pivotKeysShown" :key="'t_' + k">
-                {{ formatCurrency(colTotals[k] || 0) }}
-              </th>
-            </tr>
-            <!-- صف الإجمالي الكلي -->
-            <tr class="grand-row">
-              <th class="city">الإجمالي الكلي</th>
-              <th :colspan="pivotKeysShown.length">{{ formatCurrency(grandTotal) }}</th>
-            </tr>
-          </tfoot>
-        </table>
+        <div class="table-wrapper">
+          <table class="styled-table pivot">
+            <thead>
+              <tr>
+                <th class="head-cell city">المدينة</th>
+                <th class="head-cell" v-for="k in pivotKeysShown" :key="'h_' + k">
+                  {{ labelsMap[k] || k }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(r, idx) in pivotRows" :key="`row_${idx}`">
+                <td class="city">{{ r.city }}</td>
+                <td v-for="k in pivotKeysShown" :key="`c_${idx}_${k}`">
+                  {{ formatCurrency(r[k] || 0) }}
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="totals-row">
+                <th class="city">المجموع</th>
+                <th v-for="k in pivotKeysShown" :key="'t_' + k">
+                  {{ formatCurrency(colTotals[k] || 0) }}
+                </th>
+              </tr>
+              <tr class="grand-row">
+                <th class="city">الإجمالي الكلي</th>
+                <th class="grand-amount" :colspan="pivotKeysShown.length">
+                  {{ formatCurrency(grandTotal) }}
+                </th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
       </div>
 
-      <div v-else class="empty-state">لا توجد بيانات للعرض. اختر تاريخاً ثم اضغط "عرض البيانات".</div>
+      <div v-if="!pivotRows.length" class="empty-state">لا توجد بيانات للعرض. اختر تاريخاً ثم اضغط "عرض البيانات".</div>
     </div>
   </div>
 </template>
@@ -157,8 +157,8 @@ export default {
         const sameMonth = to && from.getFullYear() === to.getFullYear() && from.getMonth() === to.getMonth()
         const mm = (from.getMonth() + 1).toString()
         const yyyy = from.getFullYear().toString()
-        if (sameMonth) return `الدفع الالكتروني من خلال البرنامج لشهر ${mm}/${yyyy}`
-        if (to) return `الدفع الالكتروني من خلال البرنامج للفترة ${from.toLocaleDateString('ar')} - ${to.toLocaleDateString('ar')}`
+        if (sameMonth) return `الدفع الالكتروني لتطبيق ديرتنا للشهر ${mm}/${yyyy}`
+        if (to) return `الدفع الالكتروني  لتطبيق ديرتنا للفترة ${from.toLocaleDateString('ar')} - ${to.toLocaleDateString('ar')}`
       }
       return 'الدفع الالكتروني من خلال البرنامج'
     },
@@ -252,25 +252,34 @@ export default {
     exportPDF() {
       const root = this.$refs.pdfRoot
       if (!root) return
-      html2canvas(root, { scale: 2, useCORS: true, backgroundColor: '#ffffff' })
+
+      html2canvas(root, {
+        scale: Math.max(2, window.devicePixelRatio || 2),
+        useCORS: true,
+        backgroundColor: '#ffffff',
+      })
         .then(canvas => {
-          const imgData = canvas.toDataURL('image/png')
           const pdf = new jsPDF('p', 'mm', 'a4')
-          const pageWidth = 210,
-            pageHeight = 297
-          const imgWidth = pageWidth - 20
-          const imgHeight = (canvas.height * imgWidth) / canvas.width
-          let heightLeft = imgHeight,
-            position = 10
-          pdf.text(this.reportTitle, 10, 10, { align: 'left' })
-          pdf.addImage(imgData, 'PNG', 10, position + 5, imgWidth, imgHeight)
-          heightLeft -= pageHeight - position
+          const pageW = pdf.internal.pageSize.getWidth()
+          const pageH = pdf.internal.pageSize.getHeight()
+
+          const imgW = pageW - 20 // هوامش 10 مم يمين ويسار
+          const imgH = (canvas.height * imgW) / canvas.width
+          const imgData = canvas.toDataURL('image/png')
+
+          let heightLeft = imgH
+          let y = 10 // هامش علوي
+
+          pdf.addImage(imgData, 'PNG', 10, y, imgW, imgH)
+          heightLeft -= pageH - y
+
           while (heightLeft > 0) {
-            position = heightLeft - imgHeight + 10
+            y = heightLeft - imgH + 10
             pdf.addPage()
-            pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight)
-            heightLeft -= pageHeight
+            pdf.addImage(imgData, 'PNG', 10, y, imgW, imgH)
+            heightLeft -= pageH
           }
+
           pdf.save('transactions_pivot.pdf')
         })
         .catch(err => {
@@ -423,7 +432,28 @@ export default {
   background-color: #ffe36e; /* أصفر أدكن قليلاً */
   font-weight: bold;
 }
+/* تكبير حجم مبلغ الإجمالي الكلي */
+.styled-table.pivot tfoot tr.grand-row .grand-amount {
+  font-size: 21px; /* أكبر من باقي الخلايا */
+  font-weight: 900; /* سماكة أعلى */
+  padding-top: 16px; /* مساحة رأسية أكبر لظهور الرقم أوضح */
+  padding-bottom: 16px;
+  line-height: 1.2;
+}
 
+/* (اختياري) خلّي عنوان الخانة بحجمه العادي */
+.styled-table.pivot tfoot tr.grand-row .city {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.print-area {
+  background: #fff;
+  padding-top: 8px;
+}
+.title {
+  margin-bottom: 12px;
+}
 /* لا توجد بيانات */
 .empty-state {
   text-align: center;

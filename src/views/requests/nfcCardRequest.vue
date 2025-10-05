@@ -1,21 +1,7 @@
 <template>
   <div class="ComponentWrapper">
-    <MModal
-      ref="NfcCardRequestModal"
-      :Name="'NfcCardRequestModal'"
-      :Title="
-        ' طلب ' +
-        selectedRowData.request_type +
-        ' بطاقة ' +
-        selectedRowData.name
-      "
-    >
-      <table
-        cellpadding="0"
-        cellspacing="0"
-        class="RequestsMTable"
-        id="NfcCardRequestsTable"
-      >
+    <MModal ref="NfcCardRequestModal" :Name="'NfcCardRequestModal'" :Title="' طلب ' + selectedRowData.request_type + ' بطاقة ' + selectedRowData.name">
+      <table cellpadding="0" cellspacing="0" class="RequestsMTable" id="NfcCardRequestsTable">
         <thead>
           <tr>
             <th>الحقل</th>
@@ -43,21 +29,11 @@
             <td>رقم الهاتف</td>
             <td>{{ selectedRowData.phone }}</td>
           </tr>
-          <tr
-            v-show="
-              selectedRowData.request_type == 'اضافة' &&
-              selectedRowData.attributes.includes('سائق')
-            "
-          >
+          <tr v-show="selectedRowData.request_type == 'اضافة' && selectedRowData.attributes.includes('سائق')">
             <td>وقت السماح من</td>
             <td>{{ selectedRowData.allowed_time_from }}</td>
           </tr>
-          <tr
-            v-show="
-              selectedRowData.request_type == 'اضافة' &&
-              selectedRowData.attributes.includes('سائق')
-            "
-          >
+          <tr v-show="selectedRowData.request_type == 'اضافة' && selectedRowData.attributes.includes('سائق')">
             <td>وقت السماح الى</td>
             <td>{{ selectedRowData.allowed_time_to }}</td>
           </tr>
@@ -77,75 +53,42 @@
           <label>رمز البطاقة</label>
           <div class="MFieldBG"></div>
         </div>
-        <MDate
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
-          v-show="selectedRowData.request_type == 'اضافة' || selectedRowData.request_type == 'تمديد'" ref="CardExpire"
-          :Name="'CardExpire'" :Label="'تاريخ الانتهاء'"></MDate>
+        <MDate :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" v-show="selectedRowData.request_type == 'اضافة' || selectedRowData.request_type == 'تمديد'" ref="CardExpire" :Name="'CardExpire'" :Label="'تاريخ الانتهاء'"></MDate>
       </div>
 
       <div class="MGroup ModalMGroup" id="GatesMGroup" v-show="selectedRowData.request_type == 'اضافة' && (selectedRowData.department_id == 3 || UserData.department_id == 1)">
-        <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'Amal1-1Box'" :Label="'الامل 1-البوابة 1'"></MCheckBox>
-        <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'Amal1-2Box'" :Label="'الامل 1-البوابة 2'"></MCheckBox>
-        <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'Amal2-1Box'" :Label="'الامل 2-البوابة 1'"></MCheckBox>
-        <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'Amal2-2Box'" :Label="'الامل 2-البوابة 2'"></MCheckBox>
-        <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'Amaal-1Box'" :Label="'الامال-البوابة 1'"></MCheckBox>
-        <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'Amaal-2Box'" :Label="'الامال-البوابة 2'"></MCheckBox>
-        <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'jawhara-1Box'" :Label="'جوهرة البصرة-البوابة 1'"></MCheckBox>
-        <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'jawhara-2Box'" :Label="'جوهرة البصرة-البوابة 2'"></MCheckBox>
-        <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'eye-1Box'" :Label="'عين البصرة-البوابة 1'"></MCheckBox>
-        <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'eye-2Box'" :Label="'عين البصرة-البوابة 2'"></MCheckBox>
-        <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'dura-1Box'" :Label="'درة البصرة-البوابة 1'"></MCheckBox>
-        <MCheckBox
-          :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
-          :Name="'dura-2Box'" :Label="'درة البصرة-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal1-1Box'" :Label="'الامل 1-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal1-2Box'" :Label="'الامل 1-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal2-1Box'" :Label="'الامل 2-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal2-2Box'" :Label="'الامل 2-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amaal-1Box'" :Label="'الامال-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amaal-2Box'" :Label="'الامال-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'jawhara-1Box'" :Label="'جوهرة البصرة-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'jawhara-2Box'" :Label="'جوهرة البصرة-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'eye-1Box'" :Label="'عين البصرة-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'eye-2Box'" :Label="'عين البصرة-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'dura-1Box'" :Label="'درة البصرة-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'dura-2Box'" :Label="'درة البصرة-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'shruq-1Box'" :Label="'الشروق-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'shruq-2Box'" :Label="'الشروق-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'rafah-1Box'" :Label="'الرفاه-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'rafah-2Box'" :Label="'الرفاه-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'nasim-1Box'" :Label="'النسيم-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'nasim-2Box'" :Label="'النسيم-البوابة 2'"></MCheckBox>
       </div>
 
       <div class="ModalButtons">
         <div v-show="GlobalsStore.CheckPermissions('nfc_cards_requests_accept')">
-          <div
-            v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == selectedRowData.department_id || UserData.department_id == 1)"
-            class="MButton" id="AcceptBTN" @click="AcceptRequest">
-            قبول
-          </div>
+          <div v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == selectedRowData.department_id || UserData.department_id == 1)" class="MButton" id="AcceptBTN" @click="AcceptRequest">قبول</div>
         </div>
         <div v-show="GlobalsStore.CheckPermissions('nfc_cards_requests_reject')">
-          <div
-            v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == selectedRowData.department_id || UserData.department_id == 1)"
-            class="MButton" id="RejectBTN" @click="RejectRequest">
-            رفض
-          </div>
+          <div v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == selectedRowData.department_id || UserData.department_id == 1)" class="MButton" id="RejectBTN" @click="RejectRequest">رفض</div>
         </div>
       </div>
     </MModal>
 
     <!-- ========= Reject Model======== -->
-    <MModal
-      ref="NfcCardRequestRejectModal"
-      :Name="'NfcCardRequestRejectModal'"
-      :Title="'رفض الطلب'"
-    >
+    <MModal ref="NfcCardRequestRejectModal" :Name="'NfcCardRequestRejectModal'" :Title="'رفض الطلب'">
       <div class="MField" id="RejectionReason">
         <input type="text" required />
         <label>سبب الرفض</label>
@@ -157,29 +100,12 @@
     </MModal>
 
     <div class="MButton" id="GetNfcCardRequestsBTN">عرض كافة البيانات</div>
-    <div class="MButton" id="GetNfcCardRequestsUnderReviewBTN">
-      عرض قيد المراجعة
-    </div>
+    <div class="MButton" id="GetNfcCardRequestsUnderReviewBTN">عرض قيد المراجعة</div>
     <div class="MGroup">
-      <MDate
-        ref="NfcCardRequestsFromDate"
-        :Name="'NfcCardRequestsFromDate'"
-        :Label="'التاريخ'"
-        :Range="true"
-        :Clearable="true"
-      ></MDate>
+      <MDate ref="NfcCardRequestsFromDate" :Name="'NfcCardRequestsFromDate'" :Label="'التاريخ'" :Range="true" :Clearable="true"></MDate>
     </div>
 
-    <MTable
-      ref="NfcCardRequestsTB"
-      :Name="'NfcCardRequestsTB'"
-      :DataArray="NfcCardRequestsTBData"
-      :Columns="NfcCardRequestsTBColumns"
-      :Sums="NfcCardRequestsTBSums"
-      :GetDataFunction="GetNfcCardRequestsData"
-      :RowsCount="NfcCardRequestsTBRowsCount"
-      :RowsPerPage="10"
-    >
+    <MTable ref="NfcCardRequestsTB" :Name="'NfcCardRequestsTB'" :DataArray="NfcCardRequestsTBData" :Columns="NfcCardRequestsTBColumns" :Sums="NfcCardRequestsTBSums" :GetDataFunction="GetNfcCardRequestsData" :RowsCount="NfcCardRequestsTBRowsCount" :RowsPerPage="10">
       <template v-slot:options>
         <!-- View Videosdffhroif Option -->
         <div class="MTableOption" OptionEventName="ViewItem">
@@ -240,7 +166,7 @@ export default {
           name: 'compound',
           label: 'المدينة',
           filter: 'combo',
-          filter_items: UserData.value?.department_id == 1 ? (GlobalsStore.value.ComboBoxes?.Compounds ?? []) : (UserData.value?.compounds ?? []),
+          filter_items: UserData.value?.department_id == 1 ? GlobalsStore.value.ComboBoxes?.Compounds ?? [] : UserData.value?.compounds ?? [],
         },
         {
           name: 'name',
@@ -296,7 +222,7 @@ export default {
     }
   },
   mounted() {
-    this.NfcCardRequestsTB.LoadMTable();
+    this.NfcCardRequestsTB.LoadMTable()
     document.getElementById('GetNfcCardRequestsBTN').addEventListener(
       'click',
       function () {
@@ -304,21 +230,17 @@ export default {
         this.NfcCardRequestsTB.ReLoadMTable()
       }.bind(this)
     )
-    document
-      .getElementById('GetNfcCardRequestsUnderReviewBTN')
-      .addEventListener(
-        'click',
-        function () {
-          RequestStatusData = 0
-          this.NfcCardRequestsTB.ReLoadMTable()
-        }.bind(this)
-      )
+    document.getElementById('GetNfcCardRequestsUnderReviewBTN').addEventListener(
+      'click',
+      function () {
+        RequestStatusData = 0
+        this.NfcCardRequestsTB.ReLoadMTable()
+      }.bind(this)
+    )
     document.getElementById('RejectBTN').addEventListener(
       'click',
       function () {
-        document
-          .getElementById('RejectionReason')
-          .querySelector('input').value = ''
+        document.getElementById('RejectionReason').querySelector('input').value = ''
         this.NfcCardRequestRejectModal.Show()
       }.bind(this)
     )
@@ -332,50 +254,35 @@ export default {
           e.checked = false
         })
 
-        document.getElementById('NFCID').querySelector('input').value =
-          this.selectedRowData.nfc_id
+        document.getElementById('NFCID').querySelector('input').value = this.selectedRowData.nfc_id
 
-        if (
-          this.selectedRowData.request_type == 'اضافة' &&
-          this.selectedRowData.request_status == 'قيد المراجعة'
-        ) {
+        if (this.selectedRowData.request_type == 'اضافة' && this.selectedRowData.request_status == 'قيد المراجعة') {
           const now = new Date()
-          const nextYear = new Date(
-            now.getFullYear() + 1,
-            now.getMonth(),
-            now.getDate()
-          )
+          const nextYear = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate())
           this.CardExpire.Set(nextYear.toISOString().split('T')[0]) // assuming Set() takes a string in YYYY-MM-DD format
         } else {
           this.CardExpire.Set(this.selectedRowData.card_expire)
         }
 
-        if (
-          this.selectedRowData.request_type == 'تمديد' &&
-          this.selectedRowData.request_status == 'قيد المراجعة'
-        ) {
+        if (this.selectedRowData.request_type == 'تمديد' && this.selectedRowData.request_status == 'قيد المراجعة') {
           // Parse old_CardExpire and add 1 year
           const oldDate = new Date(this.selectedRowData.old_card_expire)
-          const nextYear = new Date(
-            oldDate.getFullYear() + 1,
-            oldDate.getMonth(),
-            oldDate.getDate()
-          )
+          const nextYear = new Date(oldDate.getFullYear() + 1, oldDate.getMonth(), oldDate.getDate())
 
-        this.CardExpire.Set(nextYear.toISOString().split('T')[0]) // Format as YYYY-MM-DD
-      } else {
-        this.CardExpire.Set(this.selectedRowData.card_expire)
-      }
-      this.selectedRowData.gates.split('|').forEach(function (e) {
-        document.querySelectorAll('.MCheckBox').forEach(function (d) {
-          if (e == d.querySelector('.MCheckBoxText').innerHTML) {
-            d.querySelector('input').checked = true
-          }
+          this.CardExpire.Set(nextYear.toISOString().split('T')[0]) // Format as YYYY-MM-DD
+        } else {
+          this.CardExpire.Set(this.selectedRowData.card_expire)
+        }
+        this.selectedRowData.gates.split('|').forEach(function (e) {
+          document.querySelectorAll('.MCheckBox').forEach(function (d) {
+            if (e == d.querySelector('.MCheckBoxText').innerHTML) {
+              d.querySelector('input').checked = true
+            }
+          })
         })
-      })
-      this.NFCCardsDetection();
-      this.NfcCardRequestModal.Show()
-    }.bind(this)
+        this.NFCCardsDetection()
+        this.NfcCardRequestModal.Show()
+      }.bind(this)
     )
   },
 
@@ -404,15 +311,12 @@ export default {
     },
     AcceptRequest() {
       ShowLoading()
-      var GatesCheckBoxes = document
-        .getElementById('GatesMGroup')
-        .querySelectorAll('.MCheckBox')
+      var GatesCheckBoxes = document.getElementById('GatesMGroup').querySelectorAll('.MCheckBox')
 
       this.Gates = ''
       for (var i = 0; i < GatesCheckBoxes.length; i++) {
         if (GatesCheckBoxes[i].querySelector('input').checked) {
-          const gateText =
-            GatesCheckBoxes[i].querySelector('.MCheckBoxText').innerHTML
+          const gateText = GatesCheckBoxes[i].querySelector('.MCheckBoxText').innerHTML
 
           // Add the gate text with a separator only if this.Gates is not empty
           this.Gates += this.Gates ? '|' + gateText : gateText
@@ -421,10 +325,7 @@ export default {
 
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
-      Parameters.append(
-        'NFCCardID',
-        document.getElementById('NFCID').querySelector('input').value
-      )
+      Parameters.append('NFCCardID', document.getElementById('NFCID').querySelector('input').value)
       Parameters.append('NFCCardExpire', this.CardExpire.Get())
       Parameters.append('Gates', this.Gates)
 
@@ -453,10 +354,7 @@ export default {
 
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
-      Parameters.append(
-        'Reason',
-        document.getElementById('RejectionReason').querySelector('input').value
-      )
+      Parameters.append('Reason', document.getElementById('RejectionReason').querySelector('input').value)
 
       api
         .post('RejectNFCCardRequest', Parameters, {
@@ -486,28 +384,31 @@ export default {
         const ndef = new NDEFReader()
         await ndef.scan()
 
-        ndef.removeEventListener('reading', null);
-        ndef.addEventListener("reading", function ({ serialNumber }) {
+        ndef.removeEventListener('reading', null)
+        ndef.addEventListener('reading', function ({ serialNumber }) {
           if (document.getElementById('NfcCardRequestModal').classList.contains('MModalActive')) {
             if (Instance.selectedRowData.request_status == 'قيد المراجعة' && Instance.selectedRowData.request_type == 'اضافة' && (Instance.UserData.department_id == 1 || (Instance.UserData.department_id == 3 && Instance.selectedRowData.department_id == 3))) {
-              document.getElementById('NFCID').querySelector('input').value = serialNumber;
+              document.getElementById('NFCID').querySelector('input').value = serialNumber
             }
           }
-        });
-      }
-      catch {
+        })
+      } catch {
         if (typeof ufRequest !== 'function') {
-          return;
+          return
         }
-        ufRequest("ReaderOpen", function () { });
+        ufRequest('ReaderOpen', function () {})
         setInterval(function () {
           ufRequest('GetCardIdEx', function () {
             var serialNumber = ufResponse().CardUid
             if (typeof serialNumber != 'undefined') {
-              serialNumber = parseInt(ufResponse().CardUid).toString(16).match(/.{1,2}/g).join(':').toLowerCase();
+              serialNumber = parseInt(ufResponse().CardUid)
+                .toString(16)
+                .match(/.{1,2}/g)
+                .join(':')
+                .toLowerCase()
               if (document.getElementById('NfcCardRequestModal').classList.contains('MModalActive')) {
                 if (Instance.selectedRowData.request_status == 'قيد المراجعة' && Instance.selectedRowData.request_type == 'اضافة' && (Instance.UserData.department_id == 1 || (Instance.UserData.department_id == 3 && Instance.selectedRowData.department_id == 3))) {
-                  document.getElementById('NFCID').querySelector('input').value = serialNumber;
+                  document.getElementById('NFCID').querySelector('input').value = serialNumber
                 }
               }
             }
