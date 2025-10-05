@@ -69,12 +69,12 @@
         <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'eye-2Box'" :Label="'عين البصرة-البوابة 2'"></MCheckBox>
         <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'dura-1Box'" :Label="'درة البصرة-البوابة 1'"></MCheckBox>
         <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'dura-2Box'" :Label="'درة البصرة-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'shruq-1Box'" :Label="'الشروق-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'shruq-2Box'" :Label="'الشروق-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'rafah-1Box'" :Label="'الرفاه-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'rafah-2Box'" :Label="'الرفاه-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'nasim-1Box'" :Label="'النسيم-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'nasim-2Box'" :Label="'النسيم-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'shruq-1Box'" :Label="'الشروق-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'shruq-2Box'" :Label="'الشروق-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'rafah-1Box'" :Label="'الرفاه-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'rafah-2Box'" :Label="'الرفاه-البوابة 2'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'nasim-1Box'" :Label="'النسيم-البوابة 1'"></MCheckBox>
+        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'nasim-2Box'" :Label="'النسيم-البوابة 2'"></MCheckBox>
       </div>
 
       <div class="ModalButtons">
