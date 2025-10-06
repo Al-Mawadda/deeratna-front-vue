@@ -280,6 +280,7 @@ export default {
         items: [
           { text: 'مجاميع الدفع الالكتروني', route: '/reports/payments', permission: 'report_payment_total' },
           { text: 'مجاميع الدفع الالكتروني حسب المدن', route: '/reports/payments_by_compound', permission: 'payments_by_compound' },
+          { text: 'الدفع حسب نوع الشركة', route: '/reports/payment_by_payment_companies', permission: 'payment_by_payment_companies' },
         ],
       },
       //#endregion
