@@ -62,31 +62,36 @@
         <label>السعر</label>
         <div class="MFieldBG"></div>
       </div>
-      <!-- <MComboBox v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة'" :Disabled="selectedRowData.request_status == 'تم' || selectedRowData.request_status == 'تم الدفع'" ref="MaintenanceType" :Name="'MaintenanceType'" :Label="'  نوع الصيانة *'" :Items="MaintenanceItems"></MComboBox> -->
+      <!-- <MCheckBox v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة'" @OnChange="IsChanges" :Name="'ChangeBox'" :Label="'تغييرات'"></MCheckBox> -->
 
       <!-- ========= Btn ===============-->
       <div class="ModalButtons">
-        <!-- ===== الثابته -->
+        <!-- ============= الثابته ==============-->
         <div v-show="selectedRowData.type_description == 'ثابتة' && selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="AcceptConstantBTN" @click="AcceptConstantRequest()">موافق (ثابته)</div>
         <div v-show="selectedRowData.type_description == 'ثابتة' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status != 'تم الانجاز'" class="MButton" id="CloseConstantRequestBTN" @click="CloseConstantRequest()">تحديث وغلق الطلب (ثابتة)</div>
-        <!-- ============= -->
-        <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptToDetectionBTN" @click="AcceptToDetectionRequest()">موافق (تحويل الى كشف)</div>
-        <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptToPayBTN" @click="AcceptToPayRequest()">موافق (تحويل الى دفع الكتروني)</div>
+
+        <!-- ============== اخــرى ============= -->
+        <!-- موافق تحويل الى كشف -->
+        <div v-show="isVisable && selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptToDetectionBTN" @click="AcceptToDetectionRequest()">موافق (تحويل الى كشف)</div>
+        <!-- موافق تحويل الى دفع الكتروني -->
+        <div v-show="isVisable && selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptToPayBTN" @click="AcceptToPayRequest()">موافق (تحويل الى دفع الكتروني)</div>
 
         <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد الكشف'" class="MButton" id="ConvertFromDetectionToAnjazAndPaymentRequestBTN" @click="ConvertFromDetectionToAnjazAndPaymentRequest()">تحويل من كشف الى تم الانجاز ودفع الكتروني</div>
         <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'دفع الكتروني' && selectedRowData.completion_status == 'تم الانجاز'" class="MButton" id="CloseOtherRequestBTN" @click="CloseOtherRequest()">استلام المبلغ كاش وغلق الطلب</div>
-
         <!-- اعادة قيد المراجعة -->
-        <!-- <div v-show="selectedRowData.type_description == 'اخرى' && (selectedRowData.request_status == 'قيد الكشف' || (selectedRowData.request_status == 'دفع الكتروني' && selectedRowData.completion_status == 'تم الانجاز'))" class="MButton" id="ReturnToUnderReviewBTN" @click="ReturnToUnderReview()">اعادة الى قيد المراجعة</div> -->
         <div v-show="selectedRowData.type_description == 'اخرى' && (selectedRowData.request_status == 'قيد الكشف' || (selectedRowData.request_status == 'دفع الكتروني' && selectedRowData.completion_status == 'تم الانجاز'))" class="MButton" id="ReturnToUnderReviewBTN" @click="ReturnToUnderReview()">
           {{ selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'دفع الكتروني' && selectedRowData.completion_status == 'تم الانجاز' ? 'تحديث السعر' : 'اعادة الى قيد المراجعة' }}
         </div>
-
+        <!-- غلق الطلب  -->
         <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status != 'تم الانجاز' && selectedRowData.pay_type == 'الكتروني'" class="MButton" id="ConvertToAnjazAndCloseRequestBTN" @click="ConvertToAnjazAndCloseRequest()">تحويل الى انجاز وغلق الطلب</div>
 
-        <!-- <div v-show="selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptBTN" @click="AcceptRequest()">موافق</div> -->
-        <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN" @click="RejectRequest">رفض</div>
-        <!-- <div v-show="(selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status != 'تم الانجاز') || (selectedRowData.type == 2 && selectedRowData.request_status == 'دفع الكتروني')" class="MButton" id="CloseRequestBTN" @click="CloseRequest()">تحديث وغلق الطلب</div> -->
+        <!-- التغييرات -->
+        <!-- موافق تحويل الى تغييرات واستلام كاش -->
+        <div v-show="isVisable == false && selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptToChangesKashBTN" @click="AcceptToChangesKashRequest()">موافق (تحويل الى تغييرات واستلام المبلغ كاش)</div>
+        <div v-show="isVisable == false && selectedRowData.type_description == 'تغييرات' && selectedRowData.request_status == 'قيد العمل' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptToChangesKashBTN" @click="AcceptToChangesKashRequest()">موافق (تحويل الى تغييرات واستلام المبلغ كاش)</div>
+
+        <!--  رفـــض  -->
+        <div v-show="isVisable && selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN" @click="RejectRequest">رفض</div>
       </div>
     </MModal>
 
@@ -106,6 +111,7 @@
     <div class="MButton" id="GetMaintenanceRequestsBTN">عرض كافة البيانات</div>
     <div class="MButton" id="GetMaintenanceRequestsDontPayBTN">عرض المنجز غير المدفوع</div>
     <div class="MButton" id="GetMaintenanceRequestsNotcompletedPayBTN">عرض غير المنجز تم الدفع</div>
+    <div class="MButton" id="GetMaintenanceRequestsDetectionAndDontCompletedBTN">عرض قيد الكشف غير منجز</div>
 
     <div class="MGroup">
       <MDate ref="MaintenanceRequestsFromDate" :Name="'MaintenanceRequestsFromDate'" :Label="'التاريخ'" :Range="true" :Clearable="true"></MDate>
@@ -160,6 +166,7 @@ export default {
       MaintenanceRequestRejectModal: ref(null),
       MaintenanceRequestsTB: ref(null),
       MaintenanceRequestsTBData: ref([]),
+      isVisable: ref(true),
       MaintenanceRequestsTBColumns: [
         {
           name: 'id',
@@ -304,6 +311,16 @@ export default {
         HideLoading()
       }.bind(this)
     )
+    document.getElementById('GetMaintenanceRequestsDetectionAndDontCompletedBTN').addEventListener(
+      'click',
+      function () {
+        RequestStatusData = 4
+        ShowLoading()
+        this.MaintenanceRequestsTB.ReLoadMTable()
+        HideLoading()
+      }.bind(this)
+    )
+
     document.getElementById('RejectBTN').addEventListener(
       'click',
       function () {
@@ -344,6 +361,9 @@ export default {
       }
       if (RequestStatusData == 3) {
         APIName = 'GetMaintenanceRequestsDontCompletedAndPay'
+      }
+      if (RequestStatusData == 4) {
+        APIName = 'GetMaintenanceRequestsDetectionAndDontCompleted'
       }
       api
         .get(APIName, {
@@ -431,7 +451,7 @@ export default {
           } else ShowMessage('حدث خطأ غير متوقع')
         })
     },
-    // ================
+    // ======================
 
     // Other Request
     AcceptToDetectionRequest() {
@@ -445,6 +465,38 @@ export default {
 
       api
         .post('AcceptToDetectionMaintenanceRequests', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          HideLoading()
+          if (response.data.success == true) {
+            this.MaintenanceRequestsTB.LoadMTable()
+            this.MaintenanceRequestModal.Hide()
+          } else {
+            HideLoading()
+            ShowMessage(response.data.message)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          if (error.response && error.response.status === 422) {
+            const firstError = Object.values(error.response.data.errors)[0][0]
+            ShowMessage(firstError)
+          } else ShowMessage('حدث خطأ غير متوقع')
+        })
+    },
+    AcceptToPayRequest() {
+      ShowLoading()
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id)
+      Parameters.append('pid', this.selectedRowData.pid)
+      Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
+      Parameters.append('note', document.getElementById('note').querySelector('input').value)
+      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
+      api
+        .post('AcceptToPayMaintenanceRequest', Parameters, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -562,39 +614,6 @@ export default {
           } else ShowMessage('حدث خطأ غير متوقع')
         })
     },
-
-    AcceptToPayRequest() {
-      ShowLoading()
-      var Parameters = new FormData()
-      Parameters.append('RequestID', this.selectedRowData.id)
-      Parameters.append('pid', this.selectedRowData.pid)
-      Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
-      Parameters.append('note', document.getElementById('note').querySelector('input').value)
-      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
-      api
-        .post('AcceptToPayMaintenanceRequest', Parameters, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then(response => {
-          HideLoading()
-          if (response.data.success == true) {
-            this.MaintenanceRequestsTB.LoadMTable()
-            this.MaintenanceRequestModal.Hide()
-          } else {
-            HideLoading()
-            ShowMessage(response.data.message)
-          }
-        })
-        .catch(error => {
-          HideLoading()
-          if (error.response && error.response.status === 422) {
-            const firstError = Object.values(error.response.data.errors)[0][0]
-            ShowMessage(firstError)
-          } else ShowMessage('حدث خطأ غير متوقع')
-        })
-    },
     ConvertToAnjazAndCloseRequest() {
       if (this.selectedRowData.request_status != 'تم الدفع' && this.selectedRowData.type == 1) {
         ShowMessage('لا يمكن غلق الطلب الا بعد اجراء عملية الدفع')
@@ -629,7 +648,46 @@ export default {
           } else ShowMessage('حدث خطأ غير متوقع')
         })
     },
+    // ======================
 
+    //Change
+    IsChanges(name, Value) {
+      this.isVisable = !Value
+    },
+    AcceptToChangesKashRequest() {
+      ShowLoading()
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id)
+      Parameters.append('pid', this.selectedRowData.pid)
+      Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
+      Parameters.append('note', document.getElementById('note').querySelector('input').value)
+      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
+
+      api
+        .post('AcceptToChangesAndKashRequest', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          HideLoading()
+          if (response.data.success == true) {
+            this.MaintenanceRequestsTB.LoadMTable()
+            this.MaintenanceRequestModal.Hide()
+          } else {
+            HideLoading()
+            ShowMessage(response.data.message)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          if (error.response && error.response.status === 422) {
+            const firstError = Object.values(error.response.data.errors)[0][0]
+            ShowMessage(firstError)
+          } else ShowMessage('حدث خطأ غير متوقع')
+        })
+    },
+    // ======================
     SaveRejectRequest() {
       ShowLoading()
 
