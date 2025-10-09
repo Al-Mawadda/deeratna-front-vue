@@ -62,8 +62,13 @@
         <label>السعر</label>
         <div class="MFieldBG"></div>
       </div>
-      <!-- <MCheckBox v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة'" @OnChange="IsChanges" :Name="'ChangeBox'" :Label="'تغييرات'"></MCheckBox> -->
+      <div v-show="selectedRowData.type_description == 'تغييرات' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status != 'تم الانجاز'" class="MField" id="PriceSpent" v-OnlyNumbers>
+        <input type="text" />
+        <label>المبلغ المصروف</label>
+        <div class="MFieldBG"></div>
+      </div>
 
+      <MCheckBox v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة'" @OnChange="IsChanges" :Name="'ChangeBox'" :Label="'تغييرات'"></MCheckBox>
       <!-- ========= Btn ===============-->
       <div class="ModalButtons">
         <!-- ============= الثابته ==============-->
@@ -85,10 +90,14 @@
         <!-- غلق الطلب  -->
         <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status != 'تم الانجاز' && selectedRowData.pay_type == 'الكتروني'" class="MButton" id="ConvertToAnjazAndCloseRequestBTN" @click="ConvertToAnjazAndCloseRequest()">تحويل الى انجاز وغلق الطلب</div>
 
-        <!-- التغييرات -->
+        <!-- ================ التغييرات ==========-->
         <!-- موافق تحويل الى تغييرات واستلام كاش -->
-        <div v-show="isVisable == false && selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptToChangesKashBTN" @click="AcceptToChangesKashRequest()">موافق (تحويل الى تغييرات واستلام المبلغ كاش)</div>
-        <div v-show="isVisable == false && selectedRowData.type_description == 'تغييرات' && selectedRowData.request_status == 'قيد العمل' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptToChangesKashBTN" @click="AcceptToChangesKashRequest()">موافق (تحويل الى تغييرات واستلام المبلغ كاش)</div>
+        <div v-show="isVisable == false && selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptAndConvertToChangesBTN" @click="AcceptAndConvertToChangesRequest()">موافق (تحويل الى تغييرات)</div>
+        <div v-show="selectedRowData.type_description == 'تغييرات' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="ReceiveTheAmountRequestBTN" @click="ReceiveTheAmountRequest()">استلام المبلغ كاش</div>
+        <div v-show="selectedRowData.type_description == 'تغييرات' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status == 'غير منجز' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="InputPayChangeAndCloseBTN" @click="InputPayChangeAndCloseRequest()">ادخال المصروف وغلق الطلب</div>
+        <div v-show="selectedRowData.type_description == 'تغييرات' && selectedRowData.completion_status == 'غير منجز'" class="MButton" id="PrintReceiptBTN" @click="PrintReceipt()">طباعة وصل قبض</div>
+
+        <!-- ================== -->
 
         <!--  رفـــض  -->
         <div v-show="isVisable && selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN" @click="RejectRequest">رفض</div>
@@ -112,6 +121,7 @@
     <div class="MButton" id="GetMaintenanceRequestsDontPayBTN">عرض المنجز غير المدفوع</div>
     <div class="MButton" id="GetMaintenanceRequestsNotcompletedPayBTN">عرض غير المنجز تم الدفع</div>
     <div class="MButton" id="GetMaintenanceRequestsDetectionAndDontCompletedBTN">عرض قيد الكشف غير منجز</div>
+    <div class="MButton" id="GetMaintenanceChangesRequestsBTN">عرض التغييرات</div>
 
     <div class="MGroup">
       <MDate ref="MaintenanceRequestsFromDate" :Name="'MaintenanceRequestsFromDate'" :Label="'التاريخ'" :Range="true" :Clearable="true"></MDate>
@@ -210,6 +220,18 @@ export default {
           name: 'price',
           label: 'المبلغ',
           sum: true,
+          type: 'currency',
+        },
+        {
+          name: 'price_spent',
+          label: 'المبلغ المصروف',
+          sum: true,
+          type: 'currency',
+        },
+        {
+          name: 'net_amount',
+          label: 'المبلغ الصافي',
+          //sum: true,
           type: 'currency',
         },
         {
@@ -320,7 +342,15 @@ export default {
         HideLoading()
       }.bind(this)
     )
-
+    document.getElementById('GetMaintenanceChangesRequestsBTN').addEventListener(
+      'click',
+      function () {
+        RequestStatusData = 5
+        ShowLoading()
+        this.MaintenanceRequestsTB.ReLoadMTable()
+        HideLoading()
+      }.bind(this)
+    )
     document.getElementById('RejectBTN').addEventListener(
       'click',
       function () {
@@ -334,11 +364,11 @@ export default {
       function (data) {
         this.selectedRowData = this.selectedRowData = data.detail.RowData
 
-        //if (this.selectedRowData.request_type != 'تجديد') {}
-
         document.getElementById('note').querySelector('input').value = ''
         document.getElementById('note').querySelector('input').value = this.selectedRowData.note
         document.getElementById('Price').querySelector('input').value = this.selectedRowData.price
+        document.getElementById('PriceSpent').querySelector('input').value = this.selectedRowData.price_spent
+
         //this.MaintenanceType.Set(this.selectedRowData.type_description)
         this.MaintenanceRequestTimeTBData = this.selectedRowData.maintenance_time
 
@@ -354,6 +384,14 @@ export default {
     )
   },
   methods: {
+    computeNet(row) {
+      const parseMoney = v => {
+        if (v === null || v === undefined) return 0
+        if (typeof v === 'string') return Number(v.replace(/,/g, '')) || 0
+        return Number(v) || 0
+      }
+      return parseMoney(row?.price) - parseMoney(row?.price_spent)
+    },
     GetMaintenanceRequestsData(MTable) {
       let APIName = 'MaintenanceRequests'
       if (RequestStatusData == 2) {
@@ -365,6 +403,9 @@ export default {
       if (RequestStatusData == 4) {
         APIName = 'GetMaintenanceRequestsDetectionAndDontCompleted'
       }
+      if (RequestStatusData == 5) {
+        APIName = 'GetMaintenanceChanges'
+      }
       api
         .get(APIName, {
           params: {
@@ -375,7 +416,19 @@ export default {
         })
         .then(response => {
           this.MaintenanceRequestsTBRowsCount = response.data.total
-          this.MaintenanceRequestsTBData = response.data.data
+
+          const parseMoney = v => {
+            if (v === null || v === undefined) return 0
+            if (typeof v === 'string') return Number(v.replace(/,/g, '')) || 0
+            return Number(v) || 0
+          }
+
+          const rows = response.data.data.map(r => ({
+            ...r,
+            net_amount: parseMoney(r.price) - parseMoney(r.price_spent),
+          }))
+
+          this.MaintenanceRequestsTBData = rows
           this.MaintenanceRequestsTBSums = response.data.sums
         })
         .catch(error => {
@@ -654,17 +707,16 @@ export default {
     IsChanges(name, Value) {
       this.isVisable = !Value
     },
-    AcceptToChangesKashRequest() {
+    AcceptAndConvertToChangesRequest() {
       ShowLoading()
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append('pid', this.selectedRowData.pid)
       Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
       Parameters.append('note', document.getElementById('note').querySelector('input').value)
-      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
 
       api
-        .post('AcceptToChangesAndKashRequest', Parameters, {
+        .post('AcceptAndConvertToChanges', Parameters, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -687,7 +739,217 @@ export default {
           } else ShowMessage('حدث خطأ غير متوقع')
         })
     },
+    ReceiveTheAmountRequest() {
+      ShowLoading()
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id)
+      Parameters.append('pid', this.selectedRowData.pid)
+      Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
+      Parameters.append('note', document.getElementById('note').querySelector('input').value)
+      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
+
+      api
+        .post('ReceiveTheAmountChanges', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          HideLoading()
+          if (response.data.success == true) {
+            this.MaintenanceRequestsTB.LoadMTable()
+            this.MaintenanceRequestModal.Hide()
+          } else {
+            HideLoading()
+            ShowMessage(response.data.message)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          if (error.response && error.response.status === 422) {
+            const firstError = Object.values(error.response.data.errors)[0][0]
+            ShowMessage(firstError)
+          } else ShowMessage('حدث خطأ غير متوقع')
+        })
+    },
+    InputPayChangeAndCloseRequest() {
+      ShowLoading()
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id)
+      Parameters.append('pid', this.selectedRowData.pid)
+      Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
+      Parameters.append('note', document.getElementById('note').querySelector('input').value)
+      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
+      Parameters.append('price_spent', document.getElementById('PriceSpent').querySelector('input').value)
+
+      api
+        .post('InputPayChangeAndClose', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          HideLoading()
+          if (response.data.success == true) {
+            this.MaintenanceRequestsTB.LoadMTable()
+            this.MaintenanceRequestModal.Hide()
+          } else {
+            HideLoading()
+            ShowMessage(response.data.message)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          if (error.response && error.response.status === 422) {
+            const firstError = Object.values(error.response.data.errors)[0][0]
+            ShowMessage(firstError)
+          } else ShowMessage('حدث خطأ غير متوقع')
+        })
+    },
+
+    PrintReceipt() {
+      if (!this.selectedRowData || !this.selectedRowData.id) {
+        ShowMessage('لا توجد بيانات للطلب لطباعتها')
+        return
+      }
+
+      const r = this.selectedRowData
+      const parseMoney = v => {
+        if (v === null || v === undefined) return 0
+        if (typeof v === 'string') return Number(v.replace(/,/g, '')) || 0
+        return Number(v) || 0
+      }
+      const formatIQD = amt => parseMoney(amt).toLocaleString('ar-IQ', { maximumFractionDigits: 0 }) + ' د.ع'
+
+      // بيانات الـ QR فقط (من دون أي تغيير في التصميم)
+      const qrData = JSON.stringify({
+        id: r.id ?? '',
+        pid: r.pid ?? '',
+        phone: (r.phone ?? '').toString().replace(/\s/g, ''),
+        price: parseMoney(r.price),
+      })
+
+      const html = `
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <title>صيانة المنازل (التغييرات)</title>
+  <style>
+    @page { size: A4; margin: 14mm; }
+    body { font-family: MFontB, "Segoe UI", Arial, sans-serif; direction: rtl; color: #111; }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    .header { text-align: center; margin-bottom: 16px; }
+    .title { font-size: 22px; font-weight: 700; }
+    .meta { font-size: 12px; color: #555; margin-top: 6px; }
+    .box { border: 1px solid #ccc; border-radius: 8px; padding: 12px 14px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+    th, td { padding: 10px 8px; border-bottom: 1px dashed #ddd; vertical-align: top; font-size: 14px; }
+    th { text-align: right; width: 30%; color: #333; }
+    .total { font-weight: 700; font-size: 18px; }
+    .footer { display: flex; justify-content: space-between; margin-top: 18px; font-size: 16px; }
+    .sig { width: 48%; border-top: 1px solid #aaa; text-align: center; padding-top: 6px; height: 40px; }
+    .note { margin-top: 10px; font-size: 12px; color: #666; }
+    @media print {
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div class="title">وصل قبض (صيانة المنازل)</div>
+      <div class="meta">
+        التاريخ: ${new Date().toLocaleString('ar-IQ')}
+      </div>
+    </div>
+
+    <div class="box">
+      <table>
+        <tr>
+          <th>رقم الوصل</th>
+          <td>${r.id ?? ''}</td>
+        </tr>
+        <tr>
+          <th>المدينة</th>
+          <td>${r.compound ?? ''}</td>
+        </tr>
+        <tr>
+          <th>رقم الهاتف</th>
+          <td>${r.phone ?? ''}</td>
+        </tr>
+        <tr>
+          <th>العنوان</th>
+          <td>${r.address ?? ''}</td>
+        </tr>
+        <tr>
+          <th>تفاصيل الطلب</th>
+          <td>${r.maintenance_detail ?? ''}</td>
+        </tr>
+        <tr>
+          <th class="total">المبلغ</th>
+          <td class="total">${formatIQD(r.price)}</td>
+        </tr>
+      </table>
+
+      <br></br>
+
+      <!-- ✅ QR Code فقط، بدون أي تغييرات شكلية -->
+      <div id="receiptQR"></div>
+
+      <br></br>
+
+      <div class="footer" style="font-size: 18px">
+        <div class="sig">توقيع المستلم</div>
+        <div class="sig">توقيع الإدارة</div>
+      </div>
+    </div>
+
+    <br></br>
+
+    <div class="no-print" style="text-align:center; margin-top:14px;">
+      <button onclick="window.print()">طباعة</button>
+      <button onclick="window.close()">إغلاق</button>
+    </div>
+  </div>
+</body>
+</html>`
+
+      const w = window.open('', '_blank', 'width=900,height=800')
+      if (!w) {
+        ShowMessage('لم يتم فتح نافذة الطباعة (قد يكون محظورًا من المتصفح).')
+        return
+      }
+      w.document.open()
+      w.document.write(html)
+      w.document.close()
+      w.focus()
+
+      // تحميل مكتبة QR فقط ورسمها داخل #receiptQR (لا تغيير آخر)
+      const s = w.document.createElement('script')
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'
+      s.onload = () => {
+        try {
+          const el = w.document.getElementById('receiptQR')
+          new w.QRCode(el, {
+            text: qrData,
+            width: 140,
+            height: 140,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: w.QRCode.CorrectLevel.M,
+          })
+        } catch (e) {
+          console.error(e)
+        }
+
+        // نفس سلوكك السابق: لا نطبع تلقائياً (السطر أدناه متروك كما هو لديك)
+        // setTimeout(() => { w.print() }, 300)
+      }
+      w.document.head.appendChild(s)
+    },
     // ======================
+
     SaveRejectRequest() {
       ShowLoading()
 
