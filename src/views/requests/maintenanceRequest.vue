@@ -52,23 +52,28 @@
         </tbody>
       </table>
       <MTable ref="MaintenanceRequestTimeTB" :Name="'MaintenanceRequestTimeTB'" :DataArray="MaintenanceRequestTimeTBData" :Columns="MaintenanceRequestTimeTBColumns" :Sums="MaintenanceRequestTimeTBSums" :GetDataFunction="GetMaintenanceRequestTimeData" :RowsCount="MaintenanceRequestTimeTBRowsCount" :RowsPerPage="101" :ShowFilterRow="false"></MTable>
-      <div class="MField" id="note">
-        <input type="text" required />
-        <label>تمت الموافقة على طلب الصيانة ليوم</label>
-        <div class="MFieldBG"></div>
+
+      <div style="width: 100%; display: flex; flex-wrap: wrap">
+        <div class="MField" id="note">
+          <input type="text" required />
+          <label>تمت الموافقة على طلب الصيانة ليوم</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="Price" v-OnlyNumbers>
+          <input :disabled="selectedRowData.request_status == 'تم الدفع' || selectedRowData.request_status == 'تم'" type="text" />
+          <label>السعر</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div v-show="selectedRowData.type_description == 'تغييرات' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status != 'تم الانجاز'" class="MField" id="PriceSpent" v-OnlyNumbers>
+          <input type="text" />
+          <label>المبلغ المصروف</label>
+          <div class="MFieldBG"></div>
+        </div>
       </div>
-      <div class="MField" id="Price" v-OnlyNumbers>
-        <input :disabled="selectedRowData.request_status == 'تم الدفع' || selectedRowData.request_status == 'تم'" type="text" />
-        <label>السعر</label>
-        <div class="MFieldBG"></div>
-      </div>
-      <div v-show="selectedRowData.type_description == 'تغييرات' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status != 'تم الانجاز'" class="MField" id="PriceSpent" v-OnlyNumbers>
-        <input type="text" />
-        <label>المبلغ المصروف</label>
-        <div class="MFieldBG"></div>
+      <div style="width: 100%; display: flex; justify-content: flex-start">
+        <MCheckBox ref="ChangeBox" v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة'" @OnChange="IsChanges" :Name="'ChangeBox'" :Label="'تغييرات'"></MCheckBox>
       </div>
 
-      <MCheckBox v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة'" @OnChange="IsChanges" :Name="'ChangeBox'" :Label="'تغييرات'"></MCheckBox>
       <!-- ========= Btn ===============-->
       <div class="ModalButtons">
         <!-- ============= الثابته ==============-->
@@ -95,7 +100,8 @@
         <div v-show="isVisable == false && selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptAndConvertToChangesBTN" @click="AcceptAndConvertToChangesRequest()">موافق (تحويل الى تغييرات)</div>
         <div v-show="selectedRowData.type_description == 'تغييرات' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="ReceiveTheAmountRequestBTN" @click="ReceiveTheAmountRequest()">استلام المبلغ كاش</div>
         <div v-show="selectedRowData.type_description == 'تغييرات' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status == 'غير منجز' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="InputPayChangeAndCloseBTN" @click="InputPayChangeAndCloseRequest()">ادخال المصروف وغلق الطلب</div>
-        <div v-show="selectedRowData.type_description == 'تغييرات' && selectedRowData.completion_status == 'غير منجز'" class="MButton" id="PrintReceiptBTN" @click="PrintReceipt()">طباعة وصل قبض</div>
+        <!-- <div v-show="selectedRowData.type_description == 'تغييرات' && selectedRowData.completion_status == 'غير منجز'" class="MButton" id="PrintReceiptBTN" @click="PrintReceipt()">طباعة وصل قبض</div> -->
+        <div class="MButton" id="PrintReceiptBTN" @click="PrintReceipt()">طباعة وصل قبض</div>
 
         <!-- ================== -->
 
@@ -177,6 +183,7 @@ export default {
       MaintenanceRequestsTB: ref(null),
       MaintenanceRequestsTBData: ref([]),
       isVisable: ref(true),
+      ChangeBox: ref(null),
       MaintenanceRequestsTBColumns: [
         {
           name: 'id',
@@ -364,6 +371,8 @@ export default {
       function (data) {
         this.selectedRowData = this.selectedRowData = data.detail.RowData
 
+        this.ChangeBox.Set(false)
+        this.isVisable = true
         document.getElementById('note').querySelector('input').value = ''
         document.getElementById('note').querySelector('input').value = this.selectedRowData.note
         document.getElementById('Price').querySelector('input').value = this.selectedRowData.price
@@ -834,7 +843,7 @@ export default {
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <title>صيانة المنازل (التغييرات)</title>
+  <title>صيانة المنازل</title>
   <style>
     @page { size: A4; margin: 14mm; }
     body { font-family: MFontB, "Segoe UI", Arial, sans-serif; direction: rtl; color: #111; }

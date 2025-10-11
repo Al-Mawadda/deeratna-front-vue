@@ -465,6 +465,12 @@ const router = createRouter({
       name: 'PaymentByPaymentCompanies',
       meta: { RequiresAuth: true, HeaderTitle: 'التقارير' },
     },
+    {
+      path: '/reports/payment_maintenance_changes',
+      component: () => import('../views/reports/PaymentMaintenanceChanges.vue'),
+      name: 'PaymentMaintenanceChanges',
+      meta: { RequiresAuth: true, HeaderTitle: 'التقارير' },
+    },
     //#endregion Reports
   ],
 })
