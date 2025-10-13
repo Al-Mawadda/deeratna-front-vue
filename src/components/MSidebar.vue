@@ -281,7 +281,7 @@ export default {
           { text: 'مجاميع الدفع الالكتروني', route: '/reports/payments', permission: 'report_payment_total' },
           { text: 'مجاميع الدفع الالكتروني حسب المدن', route: '/reports/payments_by_compound', permission: 'payments_by_compound' },
           { text: 'الدفع حسب نوع الشركة', route: '/reports/payment_by_payment_companies', permission: 'payment_by_payment_companies' },
-          { text: 'صيانة المنازل (التغييرات)', route: '/reports/payment_maintenance_changes', permission: 'payment_maintenance_changes' },
+          { text: 'صيانة المنازل', route: '/reports/payment_maintenance_changes', permission: 'payment_maintenance_changes' },
         ],
       },
       //#endregion

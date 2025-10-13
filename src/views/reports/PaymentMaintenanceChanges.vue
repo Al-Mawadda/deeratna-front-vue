@@ -20,13 +20,14 @@
       </div>
 
       <div class="buttons">
-        <button class="btn" @click="exportPDF" :disabled="!rowsSorted.length">تصدير PDF</button>
-        <button class="btn" @click="exportExcel" :disabled="!rowsSorted.length">تصدير الى اكسل</button>
-        <button class="btn" @click="printAll" :disabled="!rowsSorted.length">طبـاعـــــة</button>
+        <button class="btn" @click="exportPDF" :disabled="!hasAnyData">تصدير PDF</button>
+        <button class="btn" @click="exportExcel" :disabled="!hasAnyData">تصدير الى اكسل</button>
+        <button class="btn" @click="printAll" :disabled="!hasAnyData">طبـاعـــــة</button>
       </div>
 
-      <div class="print-root" v-if="rowsSorted.length" ref="printRoot">
-        <div class="pdf-section">
+      <div class="print-root" v-if="hasAnyData" ref="printRoot">
+        <!-- الصفحة 1: تغييرات الصيانة (حسب المدن) -->
+        <div class="pdf-section" v-if="rowsSorted.length">
           <h2 class="title">{{ reportTitle }}</h2>
 
           <div class="table-wrapper">
@@ -40,7 +41,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(r, idx) in rowsSorted" :key="'row_' + idx">
+                <tr v-for="(r, idx) in rowsSorted" :key="'chg_' + idx">
                   <td class="city">{{ r.city }}</td>
                   <td>{{ formatCurrency(r.sum_received) }}</td>
                   <td>{{ formatCurrency(r.sum_spent) }}</td>
@@ -55,7 +56,7 @@
                   <th>{{ formatCurrency(totals.net_amount) }}</th>
                 </tr>
                 <tr class="grand-row">
-                  <th class="city">الإجمالي الكلي</th>
+                  <th class="city">مجموع المبلغ</th>
                   <th class="grand-amount" colspan="3">
                     {{ formatCurrency(grandTotal) }}
                   </th>
@@ -64,9 +65,49 @@
             </table>
           </div>
         </div>
+
+        <!-- الصفحة 2: جميع مبالغ الكاش (pay_type = 'كاش') حسب المدن -->
+        <div class="pdf-section" v-if="cashRowsSorted.length">
+          <h2 class="title">{{ reportTitleCash }}</h2>
+
+          <div class="table-wrapper">
+            <table class="styled-table pivot" :style="tableVars">
+              <thead>
+                <tr>
+                  <th class="head-cell city">المدينة</th>
+                  <th class="head-cell">المبلغ المستلم</th>
+                  <th class="head-cell">المبلغ المصروف</th>
+                  <th class="head-cell">المبلغ الصافي</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(r, idx) in cashRowsSorted" :key="'cash_' + idx">
+                  <td class="city">{{ r.city }}</td>
+                  <td>{{ formatCurrency(r.sum_received) }}</td>
+                  <td>{{ formatCurrency(r.sum_spent) }}</td>
+                  <td>{{ formatCurrency(r.net_amount) }}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="totals-row">
+                  <th class="city">المجموع</th>
+                  <th>{{ formatCurrency(cashTotals.sum_received) }}</th>
+                  <th>{{ formatCurrency(cashTotals.sum_spent) }}</th>
+                  <th>{{ formatCurrency(cashTotals.net_amount) }}</th>
+                </tr>
+                <tr class="grand-row">
+                  <th class="city">مجموع المبلغ</th>
+                  <th class="grand-amount" colspan="3">
+                    {{ formatCurrency(cashGrandTotal) }}
+                  </th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
       </div>
 
-      <div v-else class="empty-state">لا توجد بيانات «تغييرات» للعرض. اختر تاريخاً ثم اضغط "عرض البيانات".</div>
+      <div v-else class="empty-state">لا توجد بيانات للعرض. اختر تاريخاً ثم اضغط "عرض البيانات".</div>
     </div>
   </div>
 </template>
@@ -83,8 +124,13 @@ export default {
   name: 'MaintenanceChangesAmountsByCompound',
   data() {
     return {
+      // الصفحة 1
       rows: [], // { city, sum_received, sum_spent, net_amount }
-      headerFontSize: 16, // تحكم بحجم خط رؤوس الأعمدة
+
+      // الصفحة 2 (كاش)
+      cashRows: [], // { city, sum_received, sum_spent, net_amount }
+
+      headerFontSize: 16,
       cityPins: ['الامل 1', 'الامل 2', 'الامل 3', 'الامال'],
       loading: false,
       errorMsg: '',
@@ -98,6 +144,11 @@ export default {
       return { '--th-font-size': this.headerFontSize + 'px' }
     },
 
+    hasAnyData() {
+      return this.rowsSorted.length || this.cashRowsSorted.length
+    },
+
+    // ===== الصفحة 1 (تغييرات) =====
     rowsSorted() {
       const arr = Array.isArray(this.rows) ? [...this.rows] : []
       arr.sort((a, b) => {
@@ -108,7 +159,6 @@ export default {
       })
       return arr
     },
-
     totals() {
       return this.rowsSorted.reduce(
         (acc, r) => {
@@ -120,17 +170,49 @@ export default {
         { sum_received: 0, sum_spent: 0, net_amount: 0 }
       )
     },
-
-    // نفس أسلوبك: إجمالي كلي = مجموع كل الأعمدة
     grandTotal() {
-      return Number(this.totals.sum_received) + Number(this.totals.sum_spent) + Number(this.totals.net_amount)
+      // المطلوب: الإجمالي الكلي = مجموع المبلغ الصافي فقط
+      return Number(this.totals.net_amount || 0)
     },
 
+    // ===== الصفحة 2 (كاش) =====
+    cashRowsSorted() {
+      const arr = Array.isArray(this.cashRows) ? [...this.cashRows] : []
+      arr.sort((a, b) => {
+        const ia = this.cityIndex(a.city),
+          ib = this.cityIndex(b.city)
+        if (ia !== ib) return ia - ib
+        return (a.city || '').localeCompare(b.city || '', 'ar', { numeric: true, sensitivity: 'base' })
+      })
+      return arr
+    },
+    cashTotals() {
+      return this.cashRowsSorted.reduce(
+        (acc, r) => {
+          acc.sum_received += Number(r.sum_received || 0)
+          acc.sum_spent += Number(r.sum_spent || 0)
+          acc.net_amount += Number(r.net_amount || 0)
+          return acc
+        },
+        { sum_received: 0, sum_spent: 0, net_amount: 0 }
+      )
+    },
+    cashGrandTotal() {
+      return Number(this.cashTotals.net_amount || 0)
+    },
+
+    // ===== عناوين =====
     reportTitle() {
       const [from, to] = this.getPickedDates()
       if (from && to && this.sameMonth(from, to)) return `مبالغ تغييرات الصيانة حسب المدينة للشهر ${from.getMonth() + 1}/${from.getFullYear()}`
       if (from && to) return `مبالغ تغييرات الصيانة حسب المدينة للفترة ${from.toLocaleDateString('ar')} - ${to.toLocaleDateString('ar')}`
       return 'مبالغ تغييرات الصيانة حسب المدينة'
+    },
+    reportTitleCash() {
+      const [from, to] = this.getPickedDates()
+      if (from && to && this.sameMonth(from, to)) return `مبالغ صيانة المنازل (كاش) حسب المدينة للشهر ${from.getMonth() + 1}/${from.getFullYear()}`
+      if (from && to) return `مبالغ صيانة المنازل (كاش) حسب المدينة للفترة ${from.toLocaleDateString('ar')} - ${to.toLocaleDateString('ar')}`
+      return 'مبالغ صيانة المنازل (كاش) حسب المدينة'
     },
   },
   methods: {
@@ -188,29 +270,66 @@ export default {
     handleFetch() {
       this.loading = true
       this.errorMsg = ''
+      const params = this.buildDateParams()
+
+      // الصفحة 1: تغييرات
       api
-        .get('getMaintenanceChangesAmountsByCompound', { params: this.buildDateParams() })
+        .get('getMaintenanceChangesAmountsByCompound', { params })
         .then(res => {
           if (res.data?.success) {
             const arr = Array.isArray(res.data.data) ? res.data.data : []
             this.rows = arr.map(x => ({
               city: x.city ?? x.compound ?? 'غير محدد',
-              sum_received: Number(x.sum_received ?? 0),
-              sum_spent: Number(x.sum_spent ?? 0),
-              net_amount: Number(x.net_amount ?? 0),
+              sum_received: Number(x.sum_received ?? x.total_received ?? 0),
+              sum_spent: Number(x.sum_spent ?? x.total_spent ?? 0),
+              net_amount: Number(
+                x.net_amount ??
+                  x.total_amount ?? // في حال كان الراوت يُرجِّع الصافي بهذا الاسم
+                  (x.sum_received ?? x.total_received ?? 0) - (x.sum_spent ?? x.total_spent ?? 0)
+              ),
             }))
           } else {
             this.rows = []
-            this.errorMsg = res.data?.message || 'لا توجد بيانات.'
           }
         })
-        .catch(err => {
+        .catch(() => {
           this.rows = []
-          this.errorMsg = 'فشل الطلب: ' + (err?.message || err)
         })
-        .finally(() => (this.loading = false))
+        .finally(() => {
+          this.loading = false
+        })
+
+      // الصفحة 2: كاش
+      api
+        .get('getMaintenanceCashByCompound', { params }) // ← الراوت الذي ذكرتَه
+        .then(res => {
+          if (res.data?.success) {
+            const arr = Array.isArray(res.data.data) ? res.data.data : []
+            this.cashRows = arr.map(x => {
+              const received = Number(x.sum_received ?? x.total_received ?? x.price_total ?? x.total_price ?? 0)
+              const spent = Number(x.sum_spent ?? x.total_spent ?? x.price_spent_total ?? 0)
+              const net = Number(
+                x.net_amount ??
+                  x.total_amount ?? // بعض الإصدارات تُرجّع الصافي بهذا الاسم
+                  received - spent
+              )
+              return {
+                city: x.city ?? x.compound ?? 'غير محدد',
+                sum_received: received,
+                sum_spent: spent,
+                net_amount: net,
+              }
+            })
+          } else {
+            this.cashRows = []
+          }
+        })
+        .catch(() => {
+          this.cashRows = []
+        })
     },
 
+    // يصدر كل الأقسام الموجودة (واحدة تلو الأخرى)
     async exportPDF() {
       const root = this.$refs.printRoot
       if (!root) return
@@ -218,59 +337,88 @@ export default {
         await document.fonts.ready.catch(() => {})
       }
 
+      const sections = Array.from(root.querySelectorAll('.pdf-section'))
       const pdf = new jsPDF('p', 'mm', 'a4')
-      const pageW = pdf.internal.pageSize.getWidth(),
-        pageH = pdf.internal.pageSize.getHeight()
-      const sec = root.querySelector('.pdf-section')
+      const pageW = pdf.internal.pageSize.getWidth()
+      const pageH = pdf.internal.pageSize.getHeight()
+      let first = true
 
-      const canvas = await html2canvas(sec, { scale: Math.max(2, window.devicePixelRatio || 2), useCORS: true, backgroundColor: '#ffffff' })
-      const imgW = pageW - 20,
-        imgH = (canvas.height * imgW) / canvas.width
-      const imgData = canvas.toDataURL('image/png')
+      for (const sec of sections) {
+        const canvas = await html2canvas(sec, { scale: Math.max(2, window.devicePixelRatio || 2), useCORS: true, backgroundColor: '#ffffff' })
+        const imgW = pageW - 20
+        const imgH = (canvas.height * imgW) / canvas.width
+        const imgData = canvas.toDataURL('image/png')
 
-      let heightLeft = imgH,
-        y = 10
-      pdf.addImage(imgData, 'PNG', 10, y, imgW, imgH)
-      heightLeft -= pageH - y
-      while (heightLeft > 0) {
-        y = heightLeft - imgH + 10
-        pdf.addPage()
+        let heightLeft = imgH
+        let y = 10
+
+        if (!first) pdf.addPage()
+        first = false
+
         pdf.addImage(imgData, 'PNG', 10, y, imgW, imgH)
-        heightLeft -= pageH
+        heightLeft -= pageH - y
+        while (heightLeft > 0) {
+          y = heightLeft - imgH + 10
+          pdf.addPage()
+          pdf.addImage(imgData, 'PNG', 10, y, imgW, imgH)
+          heightLeft -= pageH
+        }
       }
-      pdf.save('maintenance_changes_amounts_by_compound.pdf')
+      pdf.save('maintenance_amounts_by_compound.pdf')
     },
 
     exportExcel() {
-      if (!this.rowsSorted.length) return
+      if (!this.hasAnyData) return
       const wb = XLSX.utils.book_new()
 
-      const data = this.rowsSorted.map(r => ({
-        المدينة: r.city,
-        'المبلغ المستلم': r.sum_received,
-        'المبلغ المصروف': r.sum_spent,
-        'المبلغ الصافي': r.net_amount,
-      }))
-      // صف المجموع
-      data.push({
-        المدينة: 'المجموع',
-        'المبلغ المستلم': this.totals.sum_received,
-        'المبلغ المصروف': this.totals.sum_spent,
-        'المبلغ الصافي': this.totals.net_amount,
-      })
-      // صف الإجمالي الكلي (نفس أسلوبك)
-      data.push({
-        المدينة: 'الإجمالي الكلي',
-        'المبلغ المستلم': '',
-        'المبلغ المصروف': '',
-        'المبلغ الصافي': '',
-        'الإجمالي العام': this.grandTotal,
-      })
+      // Sheet 1: تغييرات
+      if (this.rowsSorted.length) {
+        const data1 = this.rowsSorted.map(r => ({
+          المدينة: r.city,
+          'المبلغ المستلم': r.sum_received,
+          'المبلغ المصروف': r.sum_spent,
+          'المبلغ الصافي': r.net_amount,
+        }))
+        data1.push({
+          المدينة: 'المجموع',
+          'المبلغ المستلم': this.totals.sum_received,
+          'المبلغ المصروف': this.totals.sum_spent,
+          'المبلغ الصافي': this.totals.net_amount,
+        })
+        data1.push({
+          المدينة: 'مجموع المبلغ الكلي',
+          'المبلغ المستلم': '',
+          'المبلغ المصروف': '',
+          'المبلغ الصافي': this.grandTotal,
+        })
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(data1, { header: ['المدينة', 'المبلغ المستلم', 'المبلغ المصروف', 'المبلغ الصافي'] }), 'تغييرات الصيانة')
+      }
 
-      const ws = XLSX.utils.json_to_sheet(data, { header: ['المدينة', 'المبلغ المستلم', 'المبلغ المصروف', 'المبلغ الصافي', 'الإجمالي العام'] })
-      XLSX.utils.book_append_sheet(wb, ws, 'تغييرات الصيانة')
+      // Sheet 2: كاش
+      if (this.cashRowsSorted.length) {
+        const data2 = this.cashRowsSorted.map(r => ({
+          المدينة: r.city,
+          'المبلغ المستلم': r.sum_received,
+          'المبلغ المصروف': r.sum_spent,
+          'المبلغ الصافي': r.net_amount,
+        }))
+        data2.push({
+          المدينة: 'المجموع',
+          'المبلغ المستلم': this.cashTotals.sum_received,
+          'المبلغ المصروف': this.cashTotals.sum_spent,
+          'المبلغ الصافي': this.cashTotals.net_amount,
+        })
+        data2.push({
+          المدينة: 'مجموع المبلغ الكلي',
+          'المبلغ المستلم': '',
+          'المبلغ المصروف': '',
+          'المبلغ الصافي': this.cashGrandTotal,
+        })
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(data2, { header: ['المدينة', 'المبلغ المستلم', 'المبلغ المصروف', 'المبلغ الصافي'] }), 'صيانة كاش')
+      }
+
       const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
-      saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'maintenance_changes_amounts_by_compound.xlsx')
+      saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'maintenance_amounts_by_compound.xlsx')
     },
 
     printAll() {
@@ -381,7 +529,7 @@ export default {
 }
 .styled-table.pivot thead th {
   font-size: var(--th-font-size, 16px);
-} /* يتحكم بها السلايدر */
+}
 .styled-table.pivot .head-cell.city,
 .styled-table.pivot td.city {
   font-weight: bold;
