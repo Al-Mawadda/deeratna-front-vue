@@ -77,8 +77,8 @@
         <label>رقم هاتف الاشتراك</label>
         <div class="MFieldBG"></div>
       </div>
-      <MComboBox :Disabled="selectedRowData.request_status == 'تم'" ref="CompanyName" :Name="'CompanyName'" :Label="' اسم الشركة *'" :Items="CompanyNamesItems" :ItemsName="'company_name'"></MComboBox>
-      <MComboBox :Disabled="selectedRowData.request_status == 'تم'" ref="SubscriptionType" :Name="'SubscriptionType'" :Label="' نوع الاشتراك *'" :Items="SubscriptionTypeItems" :ItemsName="'subscription_type'"></MComboBox>
+      <MComboBox :Clearable="true" :Disabled="selectedRowData.request_status == 'تم'" ref="CompanyName" :Name="'CompanyName'" :Label="' اسم الشركة *'" :Items="CompanyNamesItems" :ItemsName="'company_name'"></MComboBox>
+      <MComboBox :Clearable="true" :Disabled="selectedRowData.request_status == 'تم'" ref="SubscriptionType" :Name="'SubscriptionType'" :Label="' نوع الاشتراك *'" :Items="SubscriptionTypeItems" :ItemsName="'subscription_type'"></MComboBox>
       <div class="MField" id="Price">
         <input type="text" required disabled />
         <label>السعر</label>
@@ -320,6 +320,9 @@ export default {
         this.InternetExpireDate.Clear()
         document.getElementById('SubscriberName').querySelector('input').value = this.selectedRowData.subscriber_name
         document.getElementById('SubscriberPhone').querySelector('input').value = this.selectedRowData.subscriber_phone
+        this.CompanyName.Set(this.selectedRowData.company_name, 'company_name')
+        this.SubscriptionType.Set(this.selectedRowData.subscription_type, 'subscription_type')
+
         document.getElementById('Price').querySelector('input').value = 0
 
         if (this.selectedRowData.request_type == 'تجديد' && this.selectedRowData.request_status == 'قيد المراجعة') {
