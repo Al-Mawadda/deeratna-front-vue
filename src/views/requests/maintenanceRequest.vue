@@ -107,6 +107,8 @@
 
         <!--  رفـــض  -->
         <div v-show="isVisable && selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN" @click="RejectRequest">رفض</div>
+        <!--  ارسال اشعار  -->
+        <div v-show="selectedRowData.request_status != 'تم الدفع'" class="MButton" id="SendNotificationBTN" @click="SendNotificationRequest">ارسال اشعار الى الساكن</div>
       </div>
     </MModal>
 
@@ -120,6 +122,19 @@
       </div>
       <div class="ModalButtons">
         <div class="MButton" id="SaveBTN" @click="SaveRejectRequest">حفظ</div>
+      </div>
+    </MModal>
+
+    <!-- ========= send Notification Model======== -->
+
+    <MModal ref="MaintenanceRequestSendNotificationModal" :Name="'MaintenanceRequestSendNotificationModal'" :Title="'ارسال اشعار الى الساكن'">
+      <div class="MField" id="TheNotification">
+        <input type="text" required />
+        <label>الاشعار</label>
+        <div class="MFieldBG"></div>
+      </div>
+      <div class="ModalButtons">
+        <div class="MButton" id="SaveBTN" @click="SendNotification">ارسال</div>
       </div>
     </MModal>
 
@@ -180,6 +195,7 @@ export default {
       IDImage: ref(''),
       MaintenanceRequestModal: ref(null),
       MaintenanceRequestRejectModal: ref(null),
+      MaintenanceRequestSendNotificationModal: ref(null),
       MaintenanceRequestsTB: ref(null),
       MaintenanceRequestsTBData: ref([]),
       isVisable: ref(true),
@@ -358,13 +374,13 @@ export default {
         HideLoading()
       }.bind(this)
     )
-    document.getElementById('RejectBTN').addEventListener(
-      'click',
-      function () {
-        document.getElementById('RejectionReason').querySelector('input').value = ''
-        this.NfcCardRequestRejectModal.Show()
-      }.bind(this)
-    )
+    // document.getElementById('RejectBTN').addEventListener(
+    //   'click',
+    //   function () {
+    //     document.getElementById('RejectionReason').querySelector('input').value = ''
+    //     this.NfcCardRequestRejectModal.Show()
+    //   }.bind(this)
+    // )
     // View Requist
     document.getElementById('MaintenanceRequestsTB').addEventListener(
       'ViewItem',
@@ -389,6 +405,12 @@ export default {
       'click',
       function () {
         this.MaintenanceRequestRejectModal.Show()
+      }.bind(this)
+    )
+    document.getElementById('SendNotificationBTN').addEventListener(
+      'click',
+      function () {
+        this.MaintenanceRequestSendNotificationModal.Show()
       }.bind(this)
     )
   },
@@ -822,23 +844,41 @@ export default {
         return
       }
 
-      const r = this.selectedRowData
-      const parseMoney = v => {
-        if (v === null || v === undefined) return 0
-        if (typeof v === 'string') return Number(v.replace(/,/g, '')) || 0
-        return Number(v) || 0
-      }
-      const formatIQD = amt => parseMoney(amt).toLocaleString('ar-IQ', { maximumFractionDigits: 0 }) + ' د.ع'
+      ShowLoading()
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id)
+      Parameters.append('pid', this.selectedRowData.pid)
+      Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
+      Parameters.append('note', document.getElementById('note').querySelector('input').value)
+      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
+      Parameters.append('price_spent', document.getElementById('PriceSpent').querySelector('input').value)
 
-      // بيانات الـ QR فقط (من دون أي تغيير في التصميم)
-      const qrData = JSON.stringify({
-        id: r.id ?? '',
-        pid: r.pid ?? '',
-        phone: (r.phone ?? '').toString().replace(/\s/g, ''),
-        price: parseMoney(r.price),
-      })
+      api
+        .post('MaintenanceReceiveVoucher', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          HideLoading()
+          if (response.data.success == true) {
+            const r = this.selectedRowData
+            const parseMoney = v => {
+              if (v === null || v === undefined) return 0
+              if (typeof v === 'string') return Number(v.replace(/,/g, '')) || 0
+              return Number(v) || 0
+            }
+            const formatIQD = amt => parseMoney(amt).toLocaleString('ar-IQ', { maximumFractionDigits: 0 }) + ' د.ع'
 
-      const html = `
+            // بيانات الـ QR فقط (من دون أي تغيير في التصميم)
+            const qrData = JSON.stringify({
+              id: r.id ?? '',
+              pid: r.pid ?? '',
+              phone: (r.phone ?? '').toString().replace(/\s/g, ''),
+              price: parseMoney(r.price),
+            })
+
+            const html = `
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
@@ -924,38 +964,51 @@ export default {
 </body>
 </html>`
 
-      const w = window.open('', '_blank', 'width=900,height=800')
-      if (!w) {
-        ShowMessage('لم يتم فتح نافذة الطباعة (قد يكون محظورًا من المتصفح).')
-        return
-      }
-      w.document.open()
-      w.document.write(html)
-      w.document.close()
-      w.focus()
+            const w = window.open('', '_blank', 'width=900,height=800')
+            if (!w) {
+              ShowMessage('لم يتم فتح نافذة الطباعة (قد يكون محظورًا من المتصفح).')
+              return
+            }
+            w.document.open()
+            w.document.write(html)
+            w.document.close()
+            w.focus()
 
-      // تحميل مكتبة QR فقط ورسمها داخل #receiptQR (لا تغيير آخر)
-      const s = w.document.createElement('script')
-      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'
-      s.onload = () => {
-        try {
-          const el = w.document.getElementById('receiptQR')
-          new w.QRCode(el, {
-            text: qrData,
-            width: 140,
-            height: 140,
-            colorDark: '#000000',
-            colorLight: '#ffffff',
-            correctLevel: w.QRCode.CorrectLevel.M,
-          })
-        } catch (e) {
-          console.error(e)
-        }
+            // تحميل مكتبة QR فقط ورسمها داخل #receiptQR (لا تغيير آخر)
+            const s = w.document.createElement('script')
+            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'
+            s.onload = () => {
+              try {
+                const el = w.document.getElementById('receiptQR')
+                new w.QRCode(el, {
+                  text: qrData,
+                  width: 140,
+                  height: 140,
+                  colorDark: '#000000',
+                  colorLight: '#ffffff',
+                  correctLevel: w.QRCode.CorrectLevel.M,
+                })
+              } catch (e) {
+                console.error(e)
+              }
 
-        // نفس سلوكك السابق: لا نطبع تلقائياً (السطر أدناه متروك كما هو لديك)
-        // setTimeout(() => { w.print() }, 300)
-      }
-      w.document.head.appendChild(s)
+              // نفس سلوكك السابق: لا نطبع تلقائياً (السطر أدناه متروك كما هو لديك)
+              // setTimeout(() => { w.print() }, 300)
+            }
+            w.document.head.appendChild(s)
+            // this.MaintenanceRequestModal.Hide()
+          } else {
+            HideLoading()
+            ShowMessage(response.data.message)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          if (error.response && error.response.status === 422) {
+            const firstError = Object.values(error.response.data.errors)[0][0]
+            ShowMessage(firstError)
+          } else ShowMessage('حدث خطأ غير متوقع')
+        })
     },
     // ======================
 
@@ -977,6 +1030,35 @@ export default {
           if (response.data == 'تمت العملية بنجاح') {
             this.MaintenanceRequestModal.Hide()
             this.MaintenanceRequestRejectModal.Hide()
+            this.MaintenanceRequestsTB.LoadMTable()
+          } else {
+            ShowMessage(response.data)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          ShowMessage(error)
+        })
+    },
+
+    SendNotification() {
+      ShowLoading()
+
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id)
+      Parameters.append('Reason', document.getElementById('TheNotification').querySelector('input').value)
+
+      api
+        .post('SendNotificationMaintenance', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          HideLoading()
+          if (response.data == 'تمت العملية بنجاح') {
+            this.MaintenanceRequestModal.Hide()
+            this.MaintenanceRequestSendNotificationModal.Hide()
             this.MaintenanceRequestsTB.LoadMTable()
           } else {
             ShowMessage(response.data)
