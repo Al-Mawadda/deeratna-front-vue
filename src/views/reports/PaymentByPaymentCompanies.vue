@@ -10,6 +10,18 @@
     </div>
 
     <div class="container">
+      <!-- أدوات التحكم بالأعمدة -->
+      <div class="controls">
+        <div class="control-row cols">
+          <span class="label">الأعمدة:</span>
+          <label v-for="k in pivotKeysOrder" :key="'col_' + k" class="checkbox">
+            <input type="checkbox" :value="k" v-model="selectedColumns" />
+            <span>{{ serviceLabels[k] || k }}</span>
+          </label>
+          <button class="small-btn" @click="selectAll" :disabled="isAllSelected">تحديد الكل</button>
+          <button class="small-btn" @click="clearAll" :disabled="!selectedColumns.length">إعادة الضبط</button>
+        </div>
+      </div>
       <div class="buttons">
         <button class="btn" @click="exportPDF" :disabled="!sections.length">تصدير PDF</button>
         <button class="btn" @click="exportExcel" :disabled="!sections.length">تصدير الى اكسل</button>
@@ -105,6 +117,8 @@ export default {
 
       // تثبيت ترتيب مدن الأمل
       cityPins: ['الامل 1', 'الامل 2', 'الامل 3', 'الامال'],
+      // الأعمدة المختارة
+      selectedColumns: [],
     }
   },
   setup() {
@@ -114,8 +128,13 @@ export default {
     }
   },
   computed: {
+    isAllSelected() {
+      return this.selectedColumns.length === this.pivotKeysOrder.length
+    },
     pivotKeysShown() {
-      return this.pivotKeysOrder
+      const sel = Array.isArray(this.selectedColumns) ? this.selectedColumns : []
+      const filtered = this.pivotKeysOrder.filter(k => sel.includes(k))
+      return filtered.length ? filtered : this.pivotKeysOrder
     },
 
     // عنوان عام (بدون اسم الشركة، لأن كل صفحة لها اسمها)
@@ -226,6 +245,19 @@ export default {
     formatCurrency(v) {
       return new Intl.NumberFormat('en-US').format(Number(v || 0))
     },
+    selectAll() {
+      this.selectedColumns = [...this.pivotKeysOrder]
+      this.persistSelected()
+    },
+    clearAll() {
+      this.selectedColumns = [...this.pivotKeysOrder]
+      this.persistSelected()
+    },
+    persistSelected() {
+      try {
+        localStorage.setItem('PaymentByPaymentCompanies.selectedColumns', JSON.stringify(this.selectedColumns))
+      } catch {}
+    },
 
     // ترتيب خاص لمدن الأمل
     normalizeCity(s) {
@@ -309,7 +341,7 @@ export default {
         await document.fonts.ready.catch(() => {})
       }
 
-      const pdf = new jsPDF('p', 'mm', 'a4')
+      const pdf = new jsPDF('l', 'mm', 'a4')
       const pageW = pdf.internal.pageSize.getWidth()
       const pageH = pdf.internal.pageSize.getHeight()
       let firstPage = true
@@ -389,6 +421,33 @@ export default {
 </script>
 
 <style scoped>
+/* أدوات التحكم */
+.controls {
+  background: #f7f9fb;
+  border: 1px solid #e0e6ef;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 12px;
+}
+.control-row.cols {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+.control-row.cols .label {
+  font-family: 'MFontB';
+  color: #333;
+}
+.checkbox { display: inline-flex; align-items: center; gap: 6px; }
+.small-btn {
+  background: #e8eef7;
+  border: 1px solid #cfd8ea;
+  color: #222;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
 /* الحاوية */
 .container {
   max-width: 1200px;
@@ -498,3 +557,21 @@ export default {
   font-family: 'MFontB';
 }
 </style>
+  created() {
+    const key = 'PaymentByPaymentCompanies.selectedColumns'
+    try {
+      const saved = JSON.parse(localStorage.getItem(key) || 'null')
+      if (Array.isArray(saved) && saved.length) {
+        this.selectedColumns = saved.filter(k => this.pivotKeysOrder.includes(k))
+      }
+    } catch {}
+    if (!this.selectedColumns.length) this.selectedColumns = [...this.pivotKeysOrder]
+  },
+  watch: {
+    selectedColumns: {
+      handler() {
+        this.persistSelected()
+      },
+      deep: true,
+    },
+  },

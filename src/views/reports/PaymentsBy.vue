@@ -10,6 +10,18 @@
     </div>
 
     <div class="container">
+      <!-- أدوات التحكم بالأعمدة -->
+      <div class="controls">
+        <div class="control-row cols">
+          <span class="label">الأعمدة:</span>
+          <label v-for="k in pivotKeysOrder" :key="'col_' + k" class="checkbox">
+            <input type="checkbox" :value="k" v-model="selectedColumns" />
+            <span>{{ labelsMap[k] || k }}</span>
+          </label>
+          <button class="small-btn" @click="selectAll" :disabled="isAllSelected">تحديد الكل</button>
+          <button class="small-btn" @click="clearAll" :disabled="!selectedColumns.length">إعادة الضبط</button>
+        </div>
+      </div>
       <div class="buttons">
         <button class="btn" @click="exportPDF" :disabled="!pivotRows.length">تصدير PDF</button>
         <button class="btn" @click="exportExcel" :disabled="!pivotRows.length">تصدير الى اكسل</button>
@@ -94,7 +106,17 @@ export default {
         'Car Label': 'ملصق السيارات', // أو "ليبل السيارات"
         'NFC Card': 'باجات الدخول', // أو "الباجات"
       },
+      // الأعمدة المختارة للعرض
+      selectedColumns: [],
     }
+  },
+  watch: {
+    selectedColumns: {
+      handler() {
+        this.persistSelected()
+      },
+      deep: true,
+    },
   },
   setup() {
     return {
@@ -102,10 +124,25 @@ export default {
       pdfRoot: ref(null),
     }
   },
+  created() {
+    const key = 'PaymentsBy.selectedColumns'
+    try {
+      const saved = JSON.parse(localStorage.getItem(key) || 'null')
+      if (Array.isArray(saved) && saved.length) {
+        this.selectedColumns = saved.filter(k => this.pivotKeysOrder.includes(k))
+      }
+    } catch {}
+    if (!this.selectedColumns.length) this.selectedColumns = [...this.pivotKeysOrder]
+  },
   computed: {
+    isAllSelected() {
+      return this.selectedColumns.length === this.pivotKeysOrder.length
+    },
     // نعرض كل الأعمدة دائماً
     pivotKeysShown() {
-      return this.pivotKeysOrder
+      const sel = Array.isArray(this.selectedColumns) ? this.selectedColumns : []
+      const filtered = this.pivotKeysOrder.filter(k => sel.includes(k))
+      return filtered.length ? filtered : this.pivotKeysOrder
     },
 
     // تجميع حسب المدينة ثم ملء الأعمدة كلها (حتى لو صفر)
@@ -166,6 +203,21 @@ export default {
   methods: {
     formatCurrency(value) {
       return new Intl.NumberFormat('en-US').format(Number(value || 0))
+    },
+
+    // إدارة اختيار الأعمدة
+    selectAll() {
+      this.selectedColumns = [...this.pivotKeysOrder]
+      this.persistSelected()
+    },
+    clearAll() {
+      this.selectedColumns = [...this.pivotKeysOrder]
+      this.persistSelected()
+    },
+    persistSelected() {
+      try {
+        localStorage.setItem('PaymentsBy.selectedColumns', JSON.stringify(this.selectedColumns))
+      } catch {}
     },
 
     normalizeCity(s) {
@@ -259,7 +311,7 @@ export default {
         backgroundColor: '#ffffff',
       })
         .then(canvas => {
-          const pdf = new jsPDF('p', 'mm', 'a4')
+          const pdf = new jsPDF('l', 'mm', 'a4')
           const pageW = pdf.internal.pageSize.getWidth()
           const pageH = pdf.internal.pageSize.getHeight()
 
@@ -342,6 +394,38 @@ export default {
 </script>
 
 <style scoped>
+/* أدوات التحكم */
+.controls {
+  background: #f7f9fb;
+  border: 1px solid #e0e6ef;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 12px;
+}
+.control-row.cols {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+.control-row.cols .label {
+  font-family: 'MFontB';
+  color: #333;
+}
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.small-btn {
+  background: #e8eef7;
+  border: 1px solid #cfd8ea;
+  color: #222;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 /* الحاوية */
 .container {
   max-width: 1200px;

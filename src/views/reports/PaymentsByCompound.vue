@@ -36,6 +36,17 @@
             <span>إظهار الصفحة 4: «صيانة المنازل (مجمّع)»</span>
           </label> -->
         </div>
+
+        <!-- أعمدة الخدمات (إظهار/إخفاء) -->
+        <div class="control-row cols">
+          <span class="label">الأعمدة:</span>
+          <label v-for="k in allAvailableColumns" :key="'col_' + k" class="checkbox">
+            <input type="checkbox" :value="k" v-model="selectedColumns" />
+            <span>{{ (labelsMapAll[k] || labelsMap[k] || (k === cashColKey ? cashColLabel : k)) }}</span>
+          </label>
+          <button class="small-btn" @click="selectAllCols" :disabled="isAllSelected">تحديد الكل</button>
+          <button class="small-btn" @click="clearAllCols" :disabled="!selectedColumns.length">إعادة الضبط</button>
+        </div>
       </div>
 
       <div class="buttons">
@@ -257,6 +268,8 @@ export default {
         MergedSingle: 180,
       },
       headerFontSize: 16,
+      // الأعمدة المختارة
+      selectedColumns: [],
 
       // التoggles
       showServices: true,
@@ -271,6 +284,17 @@ export default {
   setup() {
     return { PaymentsTotalReportFromDate: ref(null), printRoot: ref(null) }
   },
+  created() {
+    const key = 'PaymentsByCompound.selectedColumns'
+    try {
+      const saved = JSON.parse(localStorage.getItem(key) || 'null')
+      if (Array.isArray(saved) && saved.length) {
+        const allowed = new Set([...this.pivotKeysOrder, this.cashColKey])
+        this.selectedColumns = saved.filter(k => allowed.has(k))
+      }
+    } catch {}
+    if (!this.selectedColumns.length) this.selectedColumns = [...this.pivotKeysOrder, this.cashColKey]
+  },
   computed: {
     tableVars() {
       return { '--th-font-size': this.headerFontSize + 'px' }
@@ -280,8 +304,17 @@ export default {
       return (this.showServices && this.pivotRows.length) || (this.showServicesWithCashCol && this.pivotRowsWithCash.length) || (this.showMerged && this.mergedMaintenanceRows.length) || (this.showServicesWithMergedCol && this.pivotRowsWithMerged.length)
     },
 
+    allAvailableColumns() {
+      // مفاتيح الخدمات + عمود الكاش الاختياري
+      return [...this.pivotKeysOrder, this.cashColKey]
+    },
+    isAllSelected() {
+      return this.selectedColumns.length === this.allAvailableColumns.length
+    },
     pivotKeysShown() {
-      return this.pivotKeysOrder
+      const sel = Array.isArray(this.selectedColumns) ? this.selectedColumns : []
+      const filtered = this.pivotKeysOrder.filter(k => sel.includes(k))
+      return filtered.length ? filtered : this.pivotKeysOrder
     },
 
     /* ===== الصفحة 1: الإلكتروني حسب الخدمة ===== */
@@ -324,7 +357,9 @@ export default {
       const i = keys.indexOf('Maintenance')
       const already = keys.includes(this.cashColKey)
       if (i !== -1 && !already) keys.splice(i + 1, 0, this.cashColKey)
-      return keys
+      const sel = Array.isArray(this.selectedColumns) ? this.selectedColumns : []
+      const filtered = keys.filter(k => sel.includes(k))
+      return filtered.length ? filtered : keys
     },
     labelsMapAll() {
       return { ...this.labelsMap, [this.cashColKey]: this.cashColLabel }
@@ -443,8 +478,8 @@ export default {
 
     /* ===== الصفحة 4: الخدمات (صيانة المنازل = إلكتروني + كاش) ===== */
     pivotKeysShownWithMerged() {
-      // نفس ترتيب الخدمات الأصلي بدون إضافة عمود الكاش
-      return this.pivotKeysOrder
+      // نفس ترتيب الخدمات الأصلي (مصفّى حسب الاختيار)
+      return this.pivotKeysShown
     },
     pivotRowsWithMerged() {
       // اتحاد المدن من المعاملات + الكاش (حتى لو مدينة عندها كاش فقط)
@@ -515,6 +550,14 @@ export default {
       if (from && to && this.sameMonth(from, to)) return `مجموع مبالغ صيانة المنازل (الكتروني + كاش) للشهر ${from.getMonth() + 1}/${from.getFullYear()}`
       if (from && to) return `مجموع مبالغ صيانة المنازل للفترة ${from.toLocaleDateString('ar')} - ${to.toLocaleDateString('ar')}`
       return 'صيانة المنازل (مجمّع)'
+    },
+  },
+  watch: {
+    selectedColumns: {
+      handler() {
+        this.persistSelected()
+      },
+      deep: true,
     },
   },
   methods: {
@@ -632,7 +675,7 @@ export default {
         await document.fonts.ready.catch(() => {})
       }
 
-      const pdf = new jsPDF('p', 'mm', 'a4')
+      const pdf = new jsPDF('l', 'mm', 'a4')
       const pageW = pdf.internal.pageSize.getWidth()
       const pageH = pdf.internal.pageSize.getHeight()
       let first = true
@@ -742,6 +785,20 @@ export default {
       document.body.innerHTML = original
       window.location.reload()
     },
+    // إدارة اختيار الأعمدة
+    selectAllCols() {
+      this.selectedColumns = [...this.allAvailableColumns]
+      this.persistSelected()
+    },
+    clearAllCols() {
+      this.selectedColumns = [...this.allAvailableColumns]
+      this.persistSelected()
+    },
+    persistSelected() {
+      try {
+        localStorage.setItem('PaymentsByCompound.selectedColumns', JSON.stringify(this.selectedColumns))
+      } catch {}
+    },
   },
 }
 </script>
@@ -772,6 +829,20 @@ export default {
   gap: 8px;
   margin-bottom: 10px;
   font-family: 'MFontB';
+}
+.control-row.cols {
+  flex-wrap: wrap;
+  gap: 10px 14px;
+}
+.control-row.cols .label { color: #333; }
+.checkbox { display: inline-flex; align-items: center; gap: 6px; }
+.small-btn {
+  background: #e8eef7;
+  border: 1px solid #cfd8ea;
+  color: #222;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 .control-row .val {
   color: #444;
