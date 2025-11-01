@@ -214,6 +214,7 @@ export default {
       IDImage: ref(''),
       InternetActivationDate: ref(null),
       InternetExpireDate: ref(null),
+      SuppressExpireSync: ref(false),
       InternetRequestModal: ref(null),
       InternetRequestRejectModal: ref(null),
       HousingImage: ref(''),
@@ -326,16 +327,20 @@ export default {
         document.getElementById('Price').querySelector('input').value = 0
 
         if (this.selectedRowData.request_type == 'تجديد' && this.selectedRowData.request_status == 'قيد المراجعة') {
+          this.SuppressExpireSync = true
           const now = new Date()
           this.InternetActivationDate.Set(now.toISOString().split('T')[0])
-          const nextMonth = new Date(now)
-          nextMonth.setMonth(nextMonth.getMonth() + 1)
-          this.InternetExpireDate.Set(nextMonth.toISOString().split('T')[0])
+          const expire = new Date(now)
+          expire.setDate(expire.getDate() + 30)
+          this.InternetExpireDate.Set(expire.toISOString().split('T')[0])
+          this.SuppressExpireSync = false
         }
 
         if (this.selectedRowData.request_type == 'تجديد' && this.selectedRowData.request_status == 'تم') {
+          this.SuppressExpireSync = true
           this.InternetActivationDate.Set(this.selectedRowData.internet_activation_date)
           this.InternetExpireDate.Set(this.selectedRowData.internet_expire_date)
+          this.SuppressExpireSync = false
         }
 
         if (this.selectedRowData.company_name && this.selectedRowData.company_name != '') {
@@ -362,6 +367,15 @@ export default {
         this.InternetRequestRejectModal.Show()
       }.bind(this)
     )
+    // Auto-update expire when activation changes
+    document
+      .getElementById('InternetActivationDate')
+      .addEventListener(
+        'MDateValueChange',
+        function () {
+          this.UpdateExpireFromActivation()
+        }.bind(this)
+      )
     //load data to SubscriptionTypeItems
     document.getElementById('CompanyName').addEventListener(
       'MCBValueChange',
@@ -410,6 +424,32 @@ export default {
         .catch(error => {
           ShowMessage(error)
         })
+    },
+    UpdateExpireFromActivation() {
+      try {
+        if (this.SuppressExpireSync) return
+        if (this.selectedRowData.request_type != 'تجديد') return
+        const act = this.InternetActivationDate.Get()
+        if (!act || act === '') {
+          this.InternetExpireDate.Clear()
+          return
+        }
+        const parts = act.split('-')
+        if (parts.length !== 3) return
+        const y = parseInt(parts[0])
+        const m = parseInt(parts[1])
+        const d = parseInt(parts[2])
+        if (!y || !m || !d) return
+        const base = new Date(y, m - 1, d)
+        base.setDate(base.getDate() + 30)
+        const fy = base.getFullYear()
+        const fm = base.getMonth() + 1
+        const fd = base.getDate()
+        const formatted = `${fy}-${fm}-${fd}`
+        this.InternetExpireDate.Set(formatted)
+      } catch (e) {
+        // ignore formatting errors silently
+      }
     },
     AcceptRequest() {
       ShowLoading()
