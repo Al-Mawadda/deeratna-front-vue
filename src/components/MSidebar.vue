@@ -247,7 +247,10 @@ export default {
         text: 'الادارة المحلية',
         icon: GroupIcon,
 
-        items: [{ text: 'قائمة الصيانات', route: '/localmanagement/maintenance_list', permission: 'maintenance_list' }],
+        items: [
+          { text: 'قائمة الصيانات', route: '/localmanagement/maintenance_list', permission: 'maintenance_list' },
+          { text: 'حسابات طلبات الصيانة', route: '/localmanagement/maintenance_accounts', permission: 'maintenance_requests_accounts' },
+        ],
       },
       //#endregion
       //#region المستخدمين

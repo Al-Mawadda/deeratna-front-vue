@@ -444,6 +444,12 @@ const router = createRouter({
       name: 'maintenanceList',
       meta: { RequiresAuth: true, HeaderTitle: 'قائمة الصيانات' },
     },
+    {
+      path: '/localmanagement/maintenance_accounts',
+      component: () => import('../views/LocalManagement/maintenanceRequestManagment.vue'),
+      name: 'maintenanceRequestManagment',
+      meta: { RequiresAuth: true, HeaderTitle: 'طلبات الصيانة' },
+    },
     //#endregion
 
     //#region Reports
