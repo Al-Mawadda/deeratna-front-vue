@@ -90,8 +90,8 @@
         <!-- موافق تحويل الى دفع الكتروني -->
         <div v-show="isVisable && selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptToPayBTN" @click="AcceptToPayRequest()">موافق (تحويل الى دفع الكتروني)</div>
 
-        <!-- >تحويل من كشف الى تم الانجاز ودفع الكتروني-->
-        <!-- <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد الكشف'" class="MButton" id="ConvertFromDetectionToAnjazAndPaymentRequestBTN" @click="ConvertFromDetectionToAnjazAndPaymentRequest()">تحويل من كشف الى تم الانجاز ودفع الكتروني</div> -->
+        <!-- >تحويل من كشف الى تم الانجاز ('طلبات دون مبلغ')-->
+        <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد الكشف'" class="MButton" id="ConvertFromDetectionToAnjazAndPaymentRequestBTN" @click="ConvertFromDetectionToAnjazAndPaymentRequest()">تحويل من كشف الى تم الانجاز ('طلبات دون مبلغ')</div>
         <!-- >تحويل من كشف الى دفع الكتروني-->
         <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد الكشف'" class="MButton" id="ConvertFromDetectionToPaymentRequestBTN" @click="ConvertFromDetectionToPaymentRequest()">تحويل من كشف الى دفع الكتروني</div>
 
@@ -675,39 +675,39 @@ export default {
           } else ShowMessage('حدث خطأ غير متوقع')
         })
     },
-    // ConvertFromDetectionToAnjazAndPaymentRequest() {
-    //   ShowLoading()
-    //   var Parameters = new FormData()
-    //   Parameters.append('RequestID', this.selectedRowData.id)
-    //   Parameters.append('pid', this.selectedRowData.pid)
-    //   Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
-    //   Parameters.append('note', document.getElementById('note').querySelector('input').value)
-    //   Parameters.append('price', document.getElementById('Price').querySelector('input').value)
+    ConvertFromDetectionToAnjazAndPaymentRequest() {
+      ShowLoading()
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id)
+      Parameters.append('pid', this.selectedRowData.pid)
+      Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
+      Parameters.append('note', document.getElementById('note').querySelector('input').value)
+      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
 
-    //   api
-    //     .post('ConvertFromDetectionToAnjazAndPayment', Parameters, {
-    //       headers: {
-    //         'Content-Type': 'multipart/form-data',
-    //       },
-    //     })
-    //     .then(response => {
-    //       HideLoading()
-    //       if (response.data.success == true) {
-    //         this.MaintenanceRequestsTB.LoadMTable()
-    //         this.MaintenanceRequestModal.Hide()
-    //       } else {
-    //         HideLoading()
-    //         ShowMessage(response.data.message)
-    //       }
-    //     })
-    //     .catch(error => {
-    //       HideLoading()
-    //       if (error.response && error.response.status === 422) {
-    //         const firstError = Object.values(error.response.data.errors)[0][0]
-    //         ShowMessage(firstError)
-    //       } else ShowMessage('حدث خطأ غير متوقع')
-    //     })
-    // },
+      api
+        .post('ConvertFromDetectionToAnjazAndPayment', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          HideLoading()
+          if (response.data.success == true) {
+            this.MaintenanceRequestsTB.LoadMTable()
+            this.MaintenanceRequestModal.Hide()
+          } else {
+            HideLoading()
+            ShowMessage(response.data.message)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          if (error.response && error.response.status === 422) {
+            const firstError = Object.values(error.response.data.errors)[0][0]
+            ShowMessage(firstError)
+          } else ShowMessage('حدث خطأ غير متوقع')
+        })
+    },
     CloseOtherRequest() {
       ShowLoading()
       var Parameters = new FormData()
