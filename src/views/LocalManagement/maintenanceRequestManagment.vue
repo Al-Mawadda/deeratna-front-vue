@@ -76,7 +76,7 @@
 
       <!-- ========= Btn ===============-->
       <div class="ModalButtons">
-        <div v-show="selectedRowData.type_description != 'ثابتة' && selectedRowData.price == 0" class="MButton" id="ReceiptOfOrderPaymentKashBTN" @click="ReceiptOfOrderPaymentKash()">استلام المبلغ كاش</div>
+        <div v-show="selectedRowData.type_description != 'ثابتة' && (selectedRowData.price == 0 || selectedRowData.request_status == 'دفع الكتروني')" class="MButton" id="ReceiptOfOrderPaymentKashBTN" @click="ReceiptOfOrderPaymentKash()">استلام المبلغ كاش</div>
 
         <!-- ============= الثابته ==============-->
         <!-- <div v-show="selectedRowData.type_description == 'ثابتة' && selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="AcceptConstantBTN" @click="AcceptConstantRequest()">موافق (ثابته)</div> -->
