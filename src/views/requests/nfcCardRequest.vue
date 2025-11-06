@@ -145,7 +145,6 @@
 
     <!-- ========= Reject Model======== -->
     <MModal ref="NfcCardRequestRejectModal" :Name="'NfcCardRequestRejectModal'" :Title="'رفض الطلب'">
-    <MModal ref="NfcCardRequestRejectModal" :Name="'NfcCardRequestRejectModal'" :Title="'رفض الطلب'">
       <div class="MField" id="RejectionReason">
         <input type="text" required />
         <label>سبب الرفض</label>
