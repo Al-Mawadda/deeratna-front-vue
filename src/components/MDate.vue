@@ -533,11 +533,12 @@ export default {
       }
     },
     Clear() {
-      var Instance = this;
+      let Instance = this;
       Instance.SelectedDates = [];
       Instance.Element.querySelectorAll('.MDateInput').forEach(function (e) {
         e.value = '';
       });
+      Instance.Element.removeAttribute('valid');
     },
     Disable() {
       this.IsDisabled = true;

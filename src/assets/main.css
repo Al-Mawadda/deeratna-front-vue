@@ -701,7 +701,7 @@ input[type='file'] {
   margin: 10px 0;
 }
 
-.ImagesContainer .InformationRequestImage {
+.ImagesContainer .RequestImage {
   display: flex;
   border: 1px solid var(--MediumLightColor);
   border-radius: 5px;
@@ -712,7 +712,7 @@ input[type='file'] {
   height: min-content;
 }
 
-.ImagesContainer .InformationRequestImage .InformationRequestImageTitle {
+.ImagesContainer .RequestImage .RequestImageTitle {
   display: flex;
   width: 100%;
   padding: 5px 0 15px 0;
@@ -720,7 +720,7 @@ input[type='file'] {
   white-space: nowrap;
 }
 
-.ImagesContainer .InformationRequestImage .InformationRequestImagePreview {
+.ImagesContainer .RequestImage .RequestImagePreview {
   display: flex;
   width: 100%;
   border-radius: 5px;
@@ -729,7 +729,7 @@ input[type='file'] {
   position: relative;
 }
 
-.ImagesContainer .InformationRequestImage .InformationRequestImagePreview .InformationRequestImagePreviewOverlay {
+.ImagesContainer .RequestImage .RequestImagePreview .RequestImagePreviewOverlay {
   display: flex;
   position: absolute;
   top: 0;
@@ -745,17 +745,17 @@ input[type='file'] {
   border-radius: 5px;
 }
 
-.InformationRequestImagePreviewOverlay svg {
+.RequestImagePreviewOverlay svg {
   width: 40px;
   height: 40px;
   display: flex;
 }
 
-.ImagesContainer .InformationRequestImage .InformationRequestImagePreview .InformationRequestImagePreviewOverlay:hover {
+.ImagesContainer .RequestImage .RequestImagePreview .RequestImagePreviewOverlay:hover {
   opacity: 1;
 }
 
-.ImagesContainer .InformationRequestImage .InformationRequestImagePreview img {
+.ImagesContainer .RequestImage .RequestImagePreview img {
   width: 100%;
   height: 100%;
   object-fit: cover;

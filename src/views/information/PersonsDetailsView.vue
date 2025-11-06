@@ -1,8 +1,195 @@
 <template>
   <div class="ComponentWrapper">
-    <!--
-    <RFIDField :Name="'LabelCode'" :Label="'رمز الملصق'" />
-    -->
+    <MModal ref="CarDetailsModal" :Name="'CarDetailsModal'" :Title="'تفاصيل العجلة'">
+      <div class="MGroup ModalMGroup">
+        <div class="MGroupTitle">معلومات العجلة</div>
+        <div class="MField" id="CarNumber">
+          <input type="text" required />
+          <label>رقم العجلة</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="CarDetails">
+          <input type="text" required />
+          <label>تفاصيل العجلة</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <MComboBox ref="CarDocumentType" :Name="'CarDocumentType'" :Items="CarDocumentTypeItems" :Label="'نوع المستند'">
+        </MComboBox>
+        <div class="MField" id="CarNotes">
+          <input type="text" required />
+          <label>ملاحظات العجلة</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="CarCreation" v-show="CarDetailsModalType == 'EDIT'">
+          <input type="text" required disabled />
+          <label>تاريخ الانشاء</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="CarImages">
+          <div class="MImage" required="true">
+            <div class="MImagePreview">
+              <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
+              <div class="MImageButtons">
+                <div class="MImageBTN ShowMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
+	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
+	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
+	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
+	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
+	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
+	C553.9,663.3,657.6,553.1,656.9,424.3z" />
+                  </svg>
+                </div>
+                <div class="MImageBTN DeleteMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
+	c15.3-15.2,23.8-28.8,27.3-43.8v-25.9c-5.5-21.4-16.3-36.2-34-46.4c-9.8-5.6-21.2-8.6-32.9-8.6h0h0c-16.4,0-32,5.7-43.9,15.9
+	c-3.4,2.9-6.9,6.2-11.4,10.8C705.4,199,646.3,258.1,589.2,315.2l-60,60c-6.6,6.6-14.9,14.9-28.9,14.9c-13.9,0-22.2-8.2-28.8-14.9
+	c-21-21-42.1-42.1-63.1-63.1C351.6,255.3,292.8,196.5,235,138.6c-16.5-16.5-33.9-24.2-54.7-24.2c-1,0-2,0-3,0.1
+	c-15.1,0.5-30.8,7.8-43,20c-12.2,12.2-19.5,27.9-20,43c-0.7,22.2,6.9,40.5,24.2,57.7c57.5,57.2,115.8,115.6,172.1,172
+	c21.3,21.3,42.6,42.6,63.9,64c6.8,6.8,15.3,15.3,15.3,29.5c0,14.1-8.5,22.6-15.4,29.4c-21,21-41.9,41.9-62.9,62.9
+	C255,649.5,196.3,708.2,138.5,765.8c-16.6,16.6-24.3,33.6-24.1,53.6c0.3,30,20.5,56.5,49.1,64.6c2.1,0.6,4.2,1.2,6.2,1.7h25.4
+	c15.1-3.6,28.7-12.1,43.8-27.3c57.4-57.8,115.9-116.3,172.5-172.8c20.1-20.1,40.2-40.2,60.3-60.3c6.2-6.2,14.7-14.7,28.6-14.7
+	c13.9,0,22.4,8.5,28.6,14.7c20.1,20.1,40.2,40.2,60.4,60.3c56.6,56.5,115.1,115,172.5,172.8c15.1,15.2,28.7,23.8,43.8,27.3h26
+	c21.4-5.4,36.2-16.3,46.6-34.2c3.3-5.6,5.4-12.8,7.6-20.4v-25.5c-3.6-15-12.1-28.7-27.3-43.8c-57.8-57.4-116.3-116-172.9-172.6
+	c-20.1-20.1-40.1-40.2-60.2-60.2C619.1,522.8,610.6,514.3,610.6,500.4z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="MImagePicker">
+              <label class="MButton" for="CarLicenceImage">السنوية</label>
+              <input id="CarLicenceImage" type="file" accept=".jpg" />
+            </div>
+          </div>
+          <div class="MImage" required="true">
+            <div class="MImagePreview">
+              <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
+              <div class="MImageButtons">
+                <div class="MImageBTN ShowMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
+	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
+	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
+	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
+	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
+	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
+	C553.9,663.3,657.6,553.1,656.9,424.3z" />
+                  </svg>
+                </div>
+                <div class="MImageBTN DeleteMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
+	c15.3-15.2,23.8-28.8,27.3-43.8v-25.9c-5.5-21.4-16.3-36.2-34-46.4c-9.8-5.6-21.2-8.6-32.9-8.6h0h0c-16.4,0-32,5.7-43.9,15.9
+	c-3.4,2.9-6.9,6.2-11.4,10.8C705.4,199,646.3,258.1,589.2,315.2l-60,60c-6.6,6.6-14.9,14.9-28.9,14.9c-13.9,0-22.2-8.2-28.8-14.9
+	c-21-21-42.1-42.1-63.1-63.1C351.6,255.3,292.8,196.5,235,138.6c-16.5-16.5-33.9-24.2-54.7-24.2c-1,0-2,0-3,0.1
+	c-15.1,0.5-30.8,7.8-43,20c-12.2,12.2-19.5,27.9-20,43c-0.7,22.2,6.9,40.5,24.2,57.7c57.5,57.2,115.8,115.6,172.1,172
+	c21.3,21.3,42.6,42.6,63.9,64c6.8,6.8,15.3,15.3,15.3,29.5c0,14.1-8.5,22.6-15.4,29.4c-21,21-41.9,41.9-62.9,62.9
+	C255,649.5,196.3,708.2,138.5,765.8c-16.6,16.6-24.3,33.6-24.1,53.6c0.3,30,20.5,56.5,49.1,64.6c2.1,0.6,4.2,1.2,6.2,1.7h25.4
+	c15.1-3.6,28.7-12.1,43.8-27.3c57.4-57.8,115.9-116.3,172.5-172.8c20.1-20.1,40.2-40.2,60.3-60.3c6.2-6.2,14.7-14.7,28.6-14.7
+	c13.9,0,22.4,8.5,28.6,14.7c20.1,20.1,40.2,40.2,60.4,60.3c56.6,56.5,115.1,115,172.5,172.8c15.1,15.2,28.7,23.8,43.8,27.3h26
+	c21.4-5.4,36.2-16.3,46.6-34.2c3.3-5.6,5.4-12.8,7.6-20.4v-25.5c-3.6-15-12.1-28.7-27.3-43.8c-57.8-57.4-116.3-116-172.9-172.6
+	c-20.1-20.1-40.1-40.2-60.2-60.2C619.1,522.8,610.6,514.3,610.6,500.4z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="MImagePicker">
+              <label class="MButton" for="CarLicenceBackImage">ظهر السنوية</label>
+              <input id="CarLicenceBackImage" type="file" accept=".jpg" />
+            </div>
+          </div>
+          <div class="MImage">
+            <div class="MImagePreview">
+              <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
+              <div class="MImageButtons">
+                <div class="MImageBTN ShowMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
+	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
+	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
+	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
+	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
+	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
+	C553.9,663.3,657.6,553.1,656.9,424.3z" />
+                  </svg>
+                </div>
+                <div class="MImageBTN DeleteMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
+	c15.3-15.2,23.8-28.8,27.3-43.8v-25.9c-5.5-21.4-16.3-36.2-34-46.4c-9.8-5.6-21.2-8.6-32.9-8.6h0h0c-16.4,0-32,5.7-43.9,15.9
+	c-3.4,2.9-6.9,6.2-11.4,10.8C705.4,199,646.3,258.1,589.2,315.2l-60,60c-6.6,6.6-14.9,14.9-28.9,14.9c-13.9,0-22.2-8.2-28.8-14.9
+	c-21-21-42.1-42.1-63.1-63.1C351.6,255.3,292.8,196.5,235,138.6c-16.5-16.5-33.9-24.2-54.7-24.2c-1,0-2,0-3,0.1
+	c-15.1,0.5-30.8,7.8-43,20c-12.2,12.2-19.5,27.9-20,43c-0.7,22.2,6.9,40.5,24.2,57.7c57.5,57.2,115.8,115.6,172.1,172
+	c21.3,21.3,42.6,42.6,63.9,64c6.8,6.8,15.3,15.3,15.3,29.5c0,14.1-8.5,22.6-15.4,29.4c-21,21-41.9,41.9-62.9,62.9
+	C255,649.5,196.3,708.2,138.5,765.8c-16.6,16.6-24.3,33.6-24.1,53.6c0.3,30,20.5,56.5,49.1,64.6c2.1,0.6,4.2,1.2,6.2,1.7h25.4
+	c15.1-3.6,28.7-12.1,43.8-27.3c57.4-57.8,115.9-116.3,172.5-172.8c20.1-20.1,40.2-40.2,60.3-60.3c6.2-6.2,14.7-14.7,28.6-14.7
+	c13.9,0,22.4,8.5,28.6,14.7c20.1,20.1,40.2,40.2,60.4,60.3c56.6,56.5,115.1,115,172.5,172.8c15.1,15.2,28.7,23.8,43.8,27.3h26
+	c21.4-5.4,36.2-16.3,46.6-34.2c3.3-5.6,5.4-12.8,7.6-20.4v-25.5c-3.6-15-12.1-28.7-27.3-43.8c-57.8-57.4-116.3-116-172.9-172.6
+	c-20.1-20.1-40.1-40.2-60.2-60.2C619.1,522.8,610.6,514.3,610.6,500.4z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="MImagePicker">
+              <label class="MButton" for="CarDocumentImage">مستند العجلة</label>
+              <input id="CarDocumentImage" type="file" accept=".jpg" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="MGroup ModalMGroup">
+        <div class="MGroupTitle">معلومات الملصق</div>
+        <RFIDField ref="CarLabelCode" :Name="'CarLabelCode'" :Clearable="true" :Label="'رمز الملصق'" />
+        <MDate ref="CarLabelExpire" :Name="'CarLabelExpire'" :Label="'صلاحية الملصق'"></MDate>
+        <MComboBox ref="CarLabelStatus" :Name="'CarLabelStatus'" :Items="CarLabelStatusItems" :Label="'حالة الملصق'">
+        </MComboBox>
+        <div class="MField" id="CarLabelSuspensionReason" v-show="CarLabelStatusValue == 'غير فعال'">
+          <input type="text" required />
+          <label>سبب الايقاف</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="CarLabelNotes">
+          <input type="text" required />
+          <label>ملاحظات الملصق</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MField" id="CarLabelCreation" v-show="CarDetailsModalType == 'EDIT'">
+          <input type="text" required disabled />
+          <label>تاريخ الانشاء</label>
+          <div class="MFieldBG"></div>
+        </div>
+        <div class="MGroupTitle" id="CarLabelGatesTitle">البوابات</div>
+        <div id="CarLabelGates">
+          <MCheckBox :Name="'CarLabel-Amal1-1'" :Label="'الامل 1 - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'CarLabel-Amal1-2'" :Label="'الامل 1 - البوابة 2'"></MCheckBox>
+          <MCheckBox :Name="'CarLabel-Amal2-1'" :Label="'الامل 2 - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'CarLabel-Amal2-2'" :Label="'الامل 2 - البوابة 2'"></MCheckBox>
+          <MCheckBox :Name="'CarLabel-Amaal-1'" :Label="'الامال - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'CarLabel-Amaal-2'" :Label="'الامال - البوابة 2'"></MCheckBox>
+          <MCheckBox :Name="'CarLabel-jawhara-1'" :Label="'جوهرة البصرة - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'CarLabel-jawhara-2'" :Label="'جوهرة البصرة - البوابة 2'"></MCheckBox>
+          <MCheckBox :Name="'CarLabel-eye-1'" :Label="'عين البصرة - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'CarLabel-eye-2'" :Label="'عين البصرة - البوابة 2'"></MCheckBox>
+          <MCheckBox :Name="'CarLabel-dura-1'" :Label="'درة البصرة - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'CarLabel-dura-2'" :Label="'درة البصرة - البوابة 2'"></MCheckBox>
+          <MCheckBox :Name="'CarLabel-shuruq-1'" :Label="'الشروق - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'CarLabel-shuruq-2'" :Label="'الشروق - البوابة 2'"></MCheckBox>
+          <MCheckBox :Name="'CarLabel-rafah-1'" :Label="'الرفاه - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'CarLabel-rafah-2'" :Label="'الرفاه - البوابة 2'"></MCheckBox>
+          <MCheckBox :Name="'CarLabel-nassem-1'" :Label="'النسيم - البوابة 1'"></MCheckBox>
+          <MCheckBox :Name="'CarLabel-nassem-2'" :Label="'النسيم - البوابة 2'"></MCheckBox>
+        </div>
+      </div>
+      <div class="ModalButtons">
+        <div v-show="GlobalsStore.CheckPermissions('nfc_cards_requests_accept')">
+          <div class="MButton" id="SaveCarBTN" @click="AcceptRequest">
+            حفظ
+          </div>
+        </div>
+      </div>
+    </MModal>
     <MStepper ref="PersonStepper" :Name="'PersonStepper'">
       <div class="MStepContent" :Label="'المعلومات'">
         <div class="MField" id="ID" v-show="Operation == 'EDIT'">
@@ -58,7 +245,7 @@
         <MDate ref="IdentificationIssuingDate" :Name="'IdentificationIssuingDate'" :Label="'تاريخ الاصدار'"
           v-show="CheckAttributes(['مالك', 'مستاجر'])"></MDate>
         <div class="MField" id="Phone"
-          v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])">
+          v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق', 'استثناء'])">
           <input type="text" required />
           <label>رقم الهاتف</label>
           <div class="MFieldBG"></div>
@@ -100,21 +287,9 @@
         <MDate ref="EmployeeStartDate" :Name="'EmployeeStartDate'" :Label="'تاريخ المباشرة'"
           v-show="CheckAttributes(['موظف'])"></MDate>
         <div class="MField" id="OutsideAddress"
-          v-show="CheckAttributes(['متعهد', 'كادر', 'عامل', 'موظف', 'زائر', 'سائق'])">
+          v-show="CheckAttributes(['متعهد', 'كادر', 'عامل', 'موظف', 'زائر', 'سائق', 'استثناء'])">
           <input type="text" required />
           <label>العنوان</label>
-          <div class="MFieldBG"></div>
-        </div>
-        <div class="MField" id="CarNumber"
-          v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])">
-          <input type="text" required />
-          <label>رقم العجلة</label>
-          <div class="MFieldBG"></div>
-        </div>
-        <div class="MField" id="CarDetails"
-          v-show="CheckAttributes(['مالك', 'مستاجر', 'متعهد', 'كادر', 'موظف', 'زائر', 'سائق'])">
-          <input type="text" required />
-          <label>تفاصيل العجلة</label>
           <div class="MFieldBG"></div>
         </div>
         <div class="MField" id="EMail" v-show="CheckAttributes(['مالك', 'مستاجر'])">
@@ -332,13 +507,18 @@
         <MTime ref="AllowedTimeTo" :Name="'AllowedTimeTo'" :Label="'الوقت المسموح الى'" :Clearable="true"
           v-show="CheckAttributes(['سائق'])"></MTime>
         <MComboBox ref="CardStatus" :Name="'CardStatus'" :Label="'حالة البطاقة'" :Items="CardStatusItems"></MComboBox>
+        <div class="MField" id="CardSuspensionReason" v-show="CardStatusValue == 'غير فعالة'">
+          <input type="text" required />
+          <label>سبب الايقاف</label>
+          <div class="MFieldBG"></div>
+        </div>
         <div class="MField" id="CardNotes">
           <input type="text" required />
           <label>ملاحظات البطاقة</label>
           <div class="MFieldBG"></div>
         </div>
         <div class="MGroupTitle" id="GatesTitle">البوابات</div>
-        <div id="Gates">
+        <div id="NFCCardGates">
           <MCheckBox :Name="'Amal1-1'" :Label="'الامل 1 - البوابة 1'"></MCheckBox>
           <MCheckBox :Name="'Amal1-2'" :Label="'الامل 1 - البوابة 2'"></MCheckBox>
           <MCheckBox :Name="'Amal2-1'" :Label="'الامل 2 - البوابة 1'"></MCheckBox>
@@ -359,24 +539,25 @@
           <MCheckBox :Name="'nassem-2'" :Label="'النسيم - البوابة 2'"></MCheckBox>
         </div>
         <div class="MGroupSeperator"></div>
-        <div class="MImage">
-          <div class="MImagePreview">
-            <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
-            <div class="MImageButtons">
-              <div class="MImageBTN ShowMImage">
-                <svg viewBox="0 0 1000 1000">
-                  <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
+        <div class="ImagesSection">
+          <div class="MImage">
+            <div class="MImagePreview">
+              <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
+              <div class="MImageButtons">
+                <div class="MImageBTN ShowMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
 	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
 	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
 	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
 	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
 	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
 	C553.9,663.3,657.6,553.1,656.9,424.3z" />
-                </svg>
-              </div>
-              <div class="MImageBTN DeleteMImage">
-                <svg viewBox="0 0 1000 1000">
-                  <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
+                  </svg>
+                </div>
+                <div class="MImageBTN DeleteMImage">
+                  <svg viewBox="0 0 1000 1000">
+                    <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
 	c15.3-15.2,23.8-28.8,27.3-43.8v-25.9c-5.5-21.4-16.3-36.2-34-46.4c-9.8-5.6-21.2-8.6-32.9-8.6h0h0c-16.4,0-32,5.7-43.9,15.9
 	c-3.4,2.9-6.9,6.2-11.4,10.8C705.4,199,646.3,258.1,589.2,315.2l-60,60c-6.6,6.6-14.9,14.9-28.9,14.9c-13.9,0-22.2-8.2-28.8-14.9
 	c-21-21-42.1-42.1-63.1-63.1C351.6,255.3,292.8,196.5,235,138.6c-16.5-16.5-33.9-24.2-54.7-24.2c-1,0-2,0-3,0.1
@@ -387,20 +568,19 @@
 	c13.9,0,22.4,8.5,28.6,14.7c20.1,20.1,40.2,40.2,60.4,60.3c56.6,56.5,115.1,115,172.5,172.8c15.1,15.2,28.7,23.8,43.8,27.3h26
 	c21.4-5.4,36.2-16.3,46.6-34.2c3.3-5.6,5.4-12.8,7.6-20.4v-25.5c-3.6-15-12.1-28.7-27.3-43.8c-57.8-57.4-116.3-116-172.9-172.6
 	c-20.1-20.1-40.1-40.2-60.2-60.2C619.1,522.8,610.6,514.3,610.6,500.4z" />
-                </svg>
+                  </svg>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="MImagePicker">
-            <label class="MButton" for="CertificateImage">التاييد</label>
-            <input id="CertificateImage" type="file" accept=".jpg" />
+            <div class="MImagePicker">
+              <label class="MButton" for="CertificateImage">التاييد</label>
+              <input id="CertificateImage" type="file" accept=".jpg" />
+            </div>
           </div>
         </div>
       </div>
-      <!--
       <div class="MStepContent" :Label="'العجلات'">
         <div class="MButton" id="AddCarBTN">اضافة عجلة</div>
-
         <MTable ref="CarsTB" :Name="'CarsTB'" :DataArray="CarsTBData" :Columns="CarsTBColumns" :Sums="CarsTBSums"
           :ShowFilterRow="false" :RowsPerPage="1000">
           <template v-slot:options>
@@ -456,127 +636,7 @@
             </div>
           </template>
         </MTable>
-       
-        <div class="TheCarsInfoWrapper">
-          <div class="MButton" id="AddCarBTN">اضافة عجلة</div>
-          <div class="CarsContainer">
-            <div class="TheCar">
-              <div class="TheCarInformationContainer">
-                <div class="TheCarData">
-                  <div class="MField" id="TheCarNumber">
-                    <input type="text" required disabled />
-                    <label>رقم العجلة</label>
-                    <div class="MFieldBG"></div>
-                  </div>
-                  <div class="MField" id="TheCarDetails">
-                    <input type="text" required disabled />
-                    <label>تفاصيل العجلة</label>
-                    <div class="MFieldBG"></div>
-                  </div>
-                  <div class="MField" id="TheCarDocumentType">
-                    <input type="text" required disabled />
-                    <label>نوع المستند</label>
-                    <div class="MFieldBG"></div>
-                  </div>
-                  <div class="MField" id="TheCarNotes">
-                    <textarea type="text" required rows="3" disabled></textarea>
-                    <label>ملاحظات العجلة</label>
-                    <div class="MFieldBG"></div>
-                  </div>
-                </div>
-                <div class="TheCarLabel">
-                  <div class="MField" id="TheCarLabelCode">
-                    <input type="text" required disabled />
-                    <label>رمز الملصق</label>
-                    <div class="MFieldBG"></div>
-                  </div>
-                  <div class="MField" id="TheCarLabelExpire">
-                    <input type="text" required disabled />
-                    <label>صلاحية الملصق</label>
-                    <div class="MFieldBG"></div>
-                  </div>
-                  <div class="MField" id="TheCarLabelStatus">
-                    <input type="text" required disabled />
-                    <label>حالة الملصق</label>
-                    <div class="MFieldBG"></div>
-                  </div>
-                  <div class="MField" id="TheCarLabelGates">
-                    <textarea type="text" required rows="3" disabled></textarea>
-                    <label>البوابات</label>
-                    <div class="MFieldBG"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="TheCarImages">
-                <div class="MImage" id="TheCarDriverLicense">
-                  <div class="MImagePreview">
-                    <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
-                    <div class="MImageButtons">
-                      <div class="MImageBTN ShowMImage">
-                        <svg viewBox="0 0 1000 1000">
-                          <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
-	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
-	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
-	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
-	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
-	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
-	C553.9,663.3,657.6,553.1,656.9,424.3z" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="MImageTitle">السنوية</div>
-                </div>
-                <div class="MImage" id="TheCarDriverLicenseBack">
-                  <div class="MImagePreview">
-                    <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
-                    <div class="MImageButtons">
-                      <div class="MImageBTN ShowMImage">
-                        <svg viewBox="0 0 1000 1000">
-                          <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
-	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
-	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
-	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
-	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
-	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
-	C553.9,663.3,657.6,553.1,656.9,424.3z" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="MImageTitle">ظهر السنوية</div>
-                </div>
-                <div class="MImage" id="TheCarDocument">
-                  <div class="MImagePreview">
-                    <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
-                    <div class="MImageButtons">
-                      <div class="MImageBTN ShowMImage">
-                        <svg viewBox="0 0 1000 1000">
-                          <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
-	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
-	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
-	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
-	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
-	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
-	C553.9,663.3,657.6,553.1,656.9,424.3z" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="MImageTitle">الوكالة</div>
-                </div>
-                <div class="TheCarButtons">
-                  <div class="MButton" id="EditTheCar">تعديل</div>
-                  <div class="MButton" id="DeleteTheCar">حذف</div>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
       </div>
-    -->
       <div class="MStepContent" :Visible="GlobalsStore.CheckPermissions('persons_documents')" :Label="'المستمسكات'">
         <div class="ImagesSection">
           <div class="MGroupTitle">المستمسكات</div>
@@ -691,7 +751,7 @@
               <input id="IDImageBack" type="file" accept=".jpg" />
             </div>
           </div>
-          <div class="MImage">
+          <div class="MImage" required="true">
             <div class="MImagePreview">
               <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
               <div class="MImageButtons">
@@ -728,7 +788,7 @@
               <input id="HousingImage" type="file" accept=".jpg" />
             </div>
           </div>
-          <div class="MImage">
+          <div class="MImage" required="true">
             <div class="MImagePreview">
               <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
               <div class="MImageButtons">
@@ -763,80 +823,6 @@
             <div class="MImagePicker">
               <label class="MButton" for="HousingImageBack">ظهر بطاقة السكن</label>
               <input id="HousingImageBack" type="file" accept=".jpg" />
-            </div>
-          </div>
-          <div class="MImage">
-            <div class="MImagePreview">
-              <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
-              <div class="MImageButtons">
-                <div class="MImageBTN ShowMImage">
-                  <svg viewBox="0 0 1000 1000">
-                    <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
-	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
-	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
-	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
-	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
-	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
-	C553.9,663.3,657.6,553.1,656.9,424.3z" />
-                  </svg>
-                </div>
-                <div class="MImageBTN DeleteMImage">
-                  <svg viewBox="0 0 1000 1000">
-                    <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
-	c15.3-15.2,23.8-28.8,27.3-43.8v-25.9c-5.5-21.4-16.3-36.2-34-46.4c-9.8-5.6-21.2-8.6-32.9-8.6h0h0c-16.4,0-32,5.7-43.9,15.9
-	c-3.4,2.9-6.9,6.2-11.4,10.8C705.4,199,646.3,258.1,589.2,315.2l-60,60c-6.6,6.6-14.9,14.9-28.9,14.9c-13.9,0-22.2-8.2-28.8-14.9
-	c-21-21-42.1-42.1-63.1-63.1C351.6,255.3,292.8,196.5,235,138.6c-16.5-16.5-33.9-24.2-54.7-24.2c-1,0-2,0-3,0.1
-	c-15.1,0.5-30.8,7.8-43,20c-12.2,12.2-19.5,27.9-20,43c-0.7,22.2,6.9,40.5,24.2,57.7c57.5,57.2,115.8,115.6,172.1,172
-	c21.3,21.3,42.6,42.6,63.9,64c6.8,6.8,15.3,15.3,15.3,29.5c0,14.1-8.5,22.6-15.4,29.4c-21,21-41.9,41.9-62.9,62.9
-	C255,649.5,196.3,708.2,138.5,765.8c-16.6,16.6-24.3,33.6-24.1,53.6c0.3,30,20.5,56.5,49.1,64.6c2.1,0.6,4.2,1.2,6.2,1.7h25.4
-	c15.1-3.6,28.7-12.1,43.8-27.3c57.4-57.8,115.9-116.3,172.5-172.8c20.1-20.1,40.2-40.2,60.3-60.3c6.2-6.2,14.7-14.7,28.6-14.7
-	c13.9,0,22.4,8.5,28.6,14.7c20.1,20.1,40.2,40.2,60.4,60.3c56.6,56.5,115.1,115,172.5,172.8c15.1,15.2,28.7,23.8,43.8,27.3h26
-	c21.4-5.4,36.2-16.3,46.6-34.2c3.3-5.6,5.4-12.8,7.6-20.4v-25.5c-3.6-15-12.1-28.7-27.3-43.8c-57.8-57.4-116.3-116-172.9-172.6
-	c-20.1-20.1-40.1-40.2-60.2-60.2C619.1,522.8,610.6,514.3,610.6,500.4z" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div class="MImagePicker">
-              <label class="MButton" for="DriverLicenceImage">سنوية السائق</label>
-              <input id="DriverLicenceImage" type="file" accept=".jpg" />
-            </div>
-          </div>
-          <div class="MImage">
-            <div class="MImagePreview">
-              <img :src="ServerPath + '/storage/Placeholder/1.svg'" />
-              <div class="MImageButtons">
-                <div class="MImageBTN ShowMImage">
-                  <svg viewBox="0 0 1000 1000">
-                    <path d="M942,880.2c-1.8,4.5-3.3,9.1-5.4,13.5c-20.7,45-74.8,57.1-112.8,25.3c-3.5-2.9-6.7-6.2-10-9.4
-	c-61.7-61.7-123.5-123.3-184.9-185.2c-6.1-6.1-10.2-6.4-17.2-1.8c-49.7,32.9-104.6,51.5-163.7,56.3c-74.4,6-144.4-9.3-209-47.5
-	c-76.4-45.2-130.2-109.8-157.9-193.9c-34-103.4-23.9-203.5,33-296.9c57.8-95,142.9-151.6,252.6-168.4
-	c95.7-14.6,183.7,7.9,261.7,65.3c78.8,57.9,126.4,136.1,141.6,232.6c13,82.2-2.2,159.9-43.9,232.1c-4.5,7.8-4.4,12.2,2.3,18.8
-	c61.2,60.6,121.8,121.7,182.9,182.4c13.9,13.7,25.7,28.3,30.7,47.6C942,860.7,942,870.5,942,880.2z M656.9,424.3
-	C658,295,552.1,185.7,419,185.4C288.9,185,179,288.9,179.4,424.5C179.8,559,286.1,662.8,417.9,663
-	C553.9,663.3,657.6,553.1,656.9,424.3z" />
-                  </svg>
-                </div>
-                <div class="MImageBTN DeleteMImage">
-                  <svg viewBox="0 0 1000 1000">
-                    <path d="M610.6,500.4c0-13.9,8.5-22.4,14.7-28.6c20.1-20.1,40.2-40.2,60.3-60.3c56.6-56.6,115-115.2,172.8-172.5
-	c15.3-15.2,23.8-28.8,27.3-43.8v-25.9c-5.5-21.4-16.3-36.2-34-46.4c-9.8-5.6-21.2-8.6-32.9-8.6h0h0c-16.4,0-32,5.7-43.9,15.9
-	c-3.4,2.9-6.9,6.2-11.4,10.8C705.4,199,646.3,258.1,589.2,315.2l-60,60c-6.6,6.6-14.9,14.9-28.9,14.9c-13.9,0-22.2-8.2-28.8-14.9
-	c-21-21-42.1-42.1-63.1-63.1C351.6,255.3,292.8,196.5,235,138.6c-16.5-16.5-33.9-24.2-54.7-24.2c-1,0-2,0-3,0.1
-	c-15.1,0.5-30.8,7.8-43,20c-12.2,12.2-19.5,27.9-20,43c-0.7,22.2,6.9,40.5,24.2,57.7c57.5,57.2,115.8,115.6,172.1,172
-	c21.3,21.3,42.6,42.6,63.9,64c6.8,6.8,15.3,15.3,15.3,29.5c0,14.1-8.5,22.6-15.4,29.4c-21,21-41.9,41.9-62.9,62.9
-	C255,649.5,196.3,708.2,138.5,765.8c-16.6,16.6-24.3,33.6-24.1,53.6c0.3,30,20.5,56.5,49.1,64.6c2.1,0.6,4.2,1.2,6.2,1.7h25.4
-	c15.1-3.6,28.7-12.1,43.8-27.3c57.4-57.8,115.9-116.3,172.5-172.8c20.1-20.1,40.2-40.2,60.3-60.3c6.2-6.2,14.7-14.7,28.6-14.7
-	c13.9,0,22.4,8.5,28.6,14.7c20.1,20.1,40.2,40.2,60.4,60.3c56.6,56.5,115.1,115,172.5,172.8c15.1,15.2,28.7,23.8,43.8,27.3h26
-	c21.4-5.4,36.2-16.3,46.6-34.2c3.3-5.6,5.4-12.8,7.6-20.4v-25.5c-3.6-15-12.1-28.7-27.3-43.8c-57.8-57.4-116.3-116-172.9-172.6
-	c-20.1-20.1-40.1-40.2-60.2-60.2C619.1,522.8,610.6,514.3,610.6,500.4z" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div class="MImagePicker">
-              <label class="MButton" for="DriverLicenceImageBack">ظهر سنوية السائق</label>
-              <input id="DriverLicenceImageBack" type="file" accept=".jpg" />
             </div>
           </div>
           <div class="MImage" :required="CheckAttributes(['موظف'])" v-show="CheckAttributes(['موظف'])">
@@ -934,7 +920,7 @@ export default {
       CardStatus: ref(null),
       CardStatusItems: ref([]),
       NFCID: ref(''),
-      Gates: ref(''),
+      CardStatusValue: ref(''),
 
       Relations: ref([]),
       PersonsRelationsGroup: ref(null),
@@ -1013,12 +999,12 @@ export default {
       CarsTBSums: ref([]),
       CarsTBColumns: [
         {
-          name: 'details',
-          label: 'تفاصيل العجلة',
-        },
-        {
           name: 'number',
           label: 'رقم العجلة',
+        },
+        {
+          name: 'details',
+          label: 'تفاصيل العجلة',
         },
         {
           name: 'document_type',
@@ -1029,28 +1015,37 @@ export default {
           label: 'رمز الملصق',
         },
         {
-          name: 'DriverLicenceImage',
+          name: 'CarLicenceImage',
           label: 'السنوية',
           type: 'image',
         },
         {
-          name: 'DriverLicenceImageBack',
+          name: 'CarLicenceBackImage',
           label: 'ظهر السنوية',
           type: 'image',
         },
         {
-          name: 'Document',
+          name: 'CarDocumentImage',
           label: 'المستند',
           type: 'image',
         },
       ],
+      CarLabelCode: ref(''),
+      TheCarImages: ref([]),
+      NewCarID: ref(1),
+      CarDetailsModal: ref(null),
+      CarLabelExpire: ref(null),
+      CarLabelStatus: ref(null),
+      CarLabelStatusItems: ref([]),
+      CarDocumentType: ref(null),
+      CarDocumentTypeItems: ref([]),
+      CarLabelStatusValue: ref(''),
+      CarDetailsModalType: ref('ADD'),
 
       Attachments: ref([]),
       ContractorWorkPlace: ref(null),
       ContractorWorkPlaceItems: ref([]),
       PersonRelationsItems: ref([]),
-      CarDocumentType: ref(null),
-      CarDocumentTypeItems: ref([]),
     }
   },
   mounted() {
@@ -1065,21 +1060,16 @@ export default {
     this.PersonRelationsItems = this.GlobalsStore.ComboBoxes['Relations']
     this.REHousingStatusItems = this.GlobalsStore.ComboBoxes['HousingStatus']
     this.ContractorWorkPlaceItems = this.GlobalsStore.ComboBoxes['Compounds']
-    this.CarDocumentTypeItems = this.GlobalsStore.ComboBoxes['CarDocumnetType']
+    this.CarDocumentTypeItems = this.GlobalsStore.ComboBoxes['CarDocumentType']
     this.Occupancies = this.GlobalsStore.ComboBoxes['Occupancies']
+    this.CarLabelStatusItems = this.GlobalsStore.ComboBoxes['CarLabelStatus']
     this.REOccupancyItems = this.Occupancies
 
     this.ComponentLoad()
     this.NFCCardsDetection()
     let Instance = this
 
-    document
-      .getElementById('NFCID')
-      .querySelector('.MFieldBTN')
-      .addEventListener('click', function () {
-        Instance.NFCID = ''
-      })
-
+    //#region Information
     document.getElementById('AllowedTimeFrom').addEventListener('MTimeValueChange', function () {
       let AllowedFrom = Instance.AllowedTimeFrom.Get()
       let AllowedTo = Instance.AllowedTimeTo.Get()
@@ -1091,7 +1081,6 @@ export default {
         }
       }
     })
-
 
     document.getElementById('AllowedTimeTo').addEventListener('MTimeValueChange', function () {
       let AllowedFrom = Instance.AllowedTimeFrom.Get()
@@ -1108,108 +1097,12 @@ export default {
     document.getElementById('Attributes').addEventListener('MCBValueChange', function () {
       Instance.OnAttributesChange()
     })
-
-    document.querySelectorAll('.MImage').forEach(function (MImage) {
-      MImage.querySelector('input')?.addEventListener('change', async function (e) {
-        if (e.target.files.length != 0) {
-          var Image = await Instance.CompressImage(e.target.files[0], 1500)
-          var Name = e.target.getAttribute('id')
-          var existingIndex = Instance.Images.findIndex(img => img.Name === Name)
-          if (existingIndex !== -1) {
-            Instance.Images[existingIndex].File = Image
-            Instance.Images[existingIndex].ActionType = 'ADD'
-          } else {
-            Instance.Images.push({
-              File: Image,
-              Name: Name,
-              ActionType: 'ADD',
-            })
-          }
-          Instance.BuildImages()
-          e.target.value = ''
-        }
-      })
-      MImage.querySelector('.DeleteMImage')?.addEventListener('click', function () {
-        if (!MImage.hasAttribute('required')) {
-          var Name = MImage.querySelector('input').getAttribute('id')
-          var existingIndex = Instance.Images.findIndex(img => img.Name === Name)
-          if (existingIndex !== -1) {
-            if (Instance.Images[existingIndex].ActionType == 'ADD') {
-              Instance.Images.splice(existingIndex, 1)
-            } else {
-              Instance.Images[existingIndex].File = ''
-              Instance.Images[existingIndex].ActionType = 'DELETE'
-            }
-          }
-          Instance.BuildImages()
-        }
-      })
-      MImage.querySelector('.ShowMImage')?.addEventListener('click', function () {
-        var Image = MImage.querySelector('img').getAttribute('src')
-        if (Image.startsWith('data:image')) {
-          var byteCharacters = atob(Image.split(',')[1])
-          var byteNumbers = new Array(byteCharacters.length)
-          for (var i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i)
-          }
-          var byteArray = new Uint8Array(byteNumbers)
-          var blob = new Blob([byteArray], { type: 'image/png' })
-
-          var blobUrl = URL.createObjectURL(blob)
-          window.open(blobUrl)
-        } else {
-          window.open(Image)
-        }
-      })
-    })
-
-    document.getElementById('AddAttachmentInput').addEventListener(
-      'change',
-      async function (e) {
-        if (e.target.files.length != 0) {
-          var AttachmentFile = e.target.files[0]
-          var FileExtension = AttachmentFile.name.split('.').pop().toLowerCase()
-          var FileName = AttachmentFile.name.replace(/\.[^/.]+$/, '')
-
-          if (['jpg', 'jpeg'].includes(FileExtension)) {
-            AttachmentFile = await this.CompressImage(AttachmentFile, 1500)
-            FileExtension = 'jpg'
-          } else {
-            window.ShowMessage('صيغة الملف غير مدعومة')
-            e.target.value = ''
-            return
-          }
-
-          var DuplicateAttachment = 0
-          this.Attachments.forEach(function (e) {
-            if (FileName === e['OriginalName'] || FileName === e['CurrentName']) {
-              DuplicateAttachment++
-            }
-          })
-
-          if (DuplicateAttachment === 0) {
-            this.Attachments.push({
-              File: AttachmentFile,
-              OriginalName: FileName,
-              CurrentName: FileName,
-              ActionType: 'ADD',
-            })
-            this.BuildAttachments()
-          } else {
-            window.ShowMessage('اسم المرفق مكرر')
-          }
-          e.target.value = ''
-        }
-      }.bind(this),
-    )
+    //#endregion
 
     //#region Relations
-    document
-      .getElementById('GuardianID')
-      .querySelector('.MFieldBTN')
-      .addEventListener('click', function () {
-        Instance.GetGuardians()
-      })
+    document.getElementById('GuardianID').querySelector('.MFieldBTN').addEventListener('click', function () {
+      Instance.GetGuardians()
+    })
 
     document.getElementById('AddRelation').addEventListener('click', function () {
       let RelationAddressID = ''
@@ -1465,6 +1358,327 @@ export default {
       Instance.RealEstatesTBData = Instance.RealEstates.filter(TheRealEstate => TheRealEstate.ActionType !== 'DELETE')
     })
     //#endregion
+
+    //#region NFC
+    document.getElementById('NFCID').querySelector('.MFieldBTN').addEventListener('click', function () {
+      Instance.NFCID = ''
+    })
+    document.getElementById('CardStatus').addEventListener('MCBValueChange', function () {
+      Instance.CardStatusValue = Instance.CardStatus.GetValue()
+    })
+    //#endregion
+
+    //#region Cars
+    document.getElementById('AddCarBTN').addEventListener('click', function () {
+      document.getElementById('CarDetailsModal').querySelectorAll('input').forEach(function (e) {
+        e.value = ''
+      })
+      document.getElementById('CarLabelGates').querySelectorAll('input').forEach(function (e) {
+        e.checked = false
+      })
+
+      document.getElementById('CarDetailsModal').removeAttribute('RowID');
+      document.getElementById('CarDetailsModal').setAttribute('ModalType', 'ADD');
+      Instance.CarDetailsModalType = 'ADD';
+
+      Instance.CarDocumentType.Clear();
+      Instance.CarLabelStatus.Clear();
+      Instance.CarLabelCode.Clear();
+      Instance.CarLabelExpire.Clear();
+      Instance.TheCarImages = [];
+
+      setTimeout(() => {
+        Instance.CarLabelStatusValue = Instance.CarLabelStatus.GetValue()
+      }, 100);
+
+      Instance.BuildCarsImages();
+      Instance.CarDetailsModal.Show();
+    })
+    document.getElementById('SaveCarBTN').addEventListener('click', function () {
+      let CarLabelGates = ''
+      let CarLabelGatesCheckBoxes = document.getElementById('CarLabelGates').querySelectorAll('.MCheckBox')
+      for (let i = 0; i < CarLabelGatesCheckBoxes.length; i++) {
+        if (CarLabelGatesCheckBoxes[i].querySelector('input').checked) {
+          const gateText = CarLabelGatesCheckBoxes[i].querySelector('.MCheckBoxText').innerHTML.replaceAll(' - ', '-')
+          CarLabelGates += CarLabelGates ? '|' + gateText : gateText
+        }
+      }
+
+      if (document.getElementById('CarDetailsModal').getAttribute('ModalType') == 'ADD') {
+        let CarData = {};
+
+        CarData['id'] = 'A' + Instance.NewCarID;
+        CarData['number'] = document.getElementById('CarNumber').querySelector('input').value;
+        CarData['details'] = document.getElementById('CarDetails').querySelector('input').value;
+        CarData['document_type'] = Instance.CarDocumentType.GetValue();
+        CarData['notes'] = document.getElementById('CarNotes').querySelector('input').value;
+
+        CarData['images'] = Instance.TheCarImages;
+        CarData['CarLicenceImage'] = Instance.TheCarImages.flat().find(i => i.Name === 'CarLicenceImage' && i.ActionType !== 'delete')?.File || "";
+        CarData['CarLicenceBackImage'] = Instance.TheCarImages.flat().find(i => i.Name === 'CarLicenceBackImage' && i.ActionType !== 'delete')?.File || "";
+        CarData['CarDocumentImage'] = Instance.TheCarImages.flat().find(i => i.Name === 'CarDocumentImage' && i.ActionType !== 'delete')?.File || "";
+
+        CarData['label_code'] = Instance.CarLabelCode.Get();
+        CarData['label_expire'] = Instance.CarLabelExpire.Get();
+        CarData['label_status'] = Instance.CarLabelStatus.GetValue();
+        CarData['label_suspension_reason'] = document.getElementById('CarLabelSuspensionReason').querySelector('input').value;
+        CarData['label_notes'] = document.getElementById('CarLabelNotes').querySelector('input').value;
+        CarData['label_gates'] = CarLabelGates;
+
+        CarData['ActionType'] = 'ADD';
+        Instance.Cars.push(CarData);
+        Instance.NewCarID++;
+      }
+      if (document.getElementById('CarDetailsModal').getAttribute('ModalType') == 'EDIT') {
+        let CarIndex = Instance.Cars.findIndex(item => item.id == document.getElementById('CarDetailsModal').getAttribute('RowID'));
+
+        Instance.Cars[CarIndex]['number'] = document.getElementById('CarNumber').querySelector('input').value;
+        Instance.Cars[CarIndex]['details'] = document.getElementById('CarDetails').querySelector('input').value;
+        Instance.Cars[CarIndex]['document_type'] = Instance.CarDocumentType.GetValue();
+        Instance.Cars[CarIndex]['notes'] = document.getElementById('CarNotes').querySelector('input').value;
+
+        Instance.Cars[CarIndex]['images'] = Instance.TheCarImages;
+        Instance.Cars[CarIndex]['CarLicenceImage'] = Instance.TheCarImages.flat().find(i => i.Name === 'CarLicenceImage' && i.ActionType !== 'delete')?.File || "";
+        Instance.Cars[CarIndex]['CarLicenceBackImage'] = Instance.TheCarImages.flat().find(i => i.Name === 'CarLicenceBackImage' && i.ActionType !== 'delete')?.File || "";
+        Instance.Cars[CarIndex]['CarDocumentImage'] = Instance.TheCarImages.flat().find(i => i.Name === 'CarDocumentImage' && i.ActionType !== 'delete')?.File || "";
+
+        Instance.Cars[CarIndex]['label_code'] = Instance.CarLabelCode.Get();
+        Instance.Cars[CarIndex]['label_expire'] = Instance.CarLabelExpire.Get();
+        Instance.Cars[CarIndex]['label_status'] = Instance.CarLabelStatus.GetValue();
+        Instance.Cars[CarIndex]['label_suspension_reason'] = document.getElementById('CarLabelSuspensionReason').querySelector('input').value;
+        Instance.Cars[CarIndex]['label_notes'] = document.getElementById('CarLabelNotes').querySelector('input').value;
+        Instance.Cars[CarIndex]['label_gates'] = CarLabelGates;
+
+        if (Instance.Cars[CarIndex]['ActionType'] == '') {
+          Instance.Cars[CarIndex]['ActionType'] = 'EDIT';
+        }
+
+      }
+      Instance.CarsTBData = Instance.Cars.filter(Car => Car.ActionType !== 'DELETE')
+      Instance.CarDetailsModal.Hide();
+    })
+    document.getElementById('CarsTB').addEventListener('EditItem', function (data) {
+      document.getElementById('CarDetailsModal').setAttribute('RowID', data.detail.RowData['id']);
+      document.getElementById('CarDetailsModal').setAttribute('ModalType', 'EDIT');
+      Instance.CarDetailsModalType = 'EDIT';
+
+      document.getElementById('CarDetailsModal').querySelectorAll('input').forEach(function (e) {
+        e.value = ''
+      })
+
+      document.getElementById('CarLabelGates').querySelectorAll('input').forEach(function (e) {
+        e.checked = false
+      })
+
+      Instance.CarDocumentType.Clear();
+      Instance.CarLabelStatus.Clear();
+      Instance.CarLabelCode.Clear();
+      Instance.CarLabelExpire.Clear();
+
+      document.getElementById('CarNumber').querySelector('input').value = data.detail.RowData['number']
+      document.getElementById('CarDetails').querySelector('input').value = data.detail.RowData['details']
+      document.getElementById('CarNotes').querySelector('input').value = data.detail.RowData['notes']
+      document.getElementById('CarCreation').querySelector('input').value = data.detail.RowData['created_at'] ? new Date(data.detail.RowData['created_at']).toISOString().split("T")[0] : ""
+      Instance.CarDocumentType.Set(data.detail.RowData['document_type']);
+      Instance.TheCarImages = data.detail.RowData.images.map(img => ({ ...img }));
+
+      Instance.BuildCarsImages();
+
+      document.getElementById('CarLabelSuspensionReason').querySelector('input').value = data.detail.RowData['label_suspension_reason']
+      document.getElementById('CarLabelNotes').querySelector('input').value = data.detail.RowData['label_notes']
+      document.getElementById('CarLabelCreation').querySelector('input').value = data.detail.RowData['label_creation'] ? new Date(data.detail.RowData['label_creation']).toISOString().split("T")[0] : ""
+      Instance.CarLabelExpire.Set(data.detail.RowData['label_expire']);
+      Instance.CarLabelCode.Set(data.detail.RowData['label_code']);
+      Instance.CarLabelStatus.Set(data.detail.RowData['label_status']);
+
+      // Populate NFCCardGates
+      let TheGates = data.detail.RowData['label_gates'].split('|')
+      let GatesCheckBoxes = document.getElementById('CarLabelGates').querySelectorAll('.MCheckBox')
+      for (let i = 0; i < TheGates.length; i++) {
+        let GateName = TheGates[i].replaceAll('-', ' - ')
+        for (let j = 0; j < GatesCheckBoxes.length; j++) {
+          if (GateName == GatesCheckBoxes[j].querySelector('.MCheckBoxText').innerHTML) {
+            GatesCheckBoxes[j].querySelector('input').checked = true
+          }
+        }
+      }
+
+      setTimeout(() => {
+        Instance.CarLabelStatusValue = Instance.CarLabelStatus.GetValue()
+      }, 100);
+
+      Instance.CarDetailsModal.Show();
+    })
+    document.getElementById('CarsTB').addEventListener('DeleteItem', function (data) {
+      for (let i = Instance.Cars.length - 1; i >= 0; i--) {
+        if (Instance.Cars[i]['id'] == data.detail.RowData['id']) {
+          if (Instance.Cars[i]['ActionType'] === 'ADD') {
+            Instance.Cars.splice(i, 1)
+          } else {
+            Instance.Cars[i]['ActionType'] = 'DELETE'
+          }
+          break
+        }
+      }
+
+      Instance.CarsTBData = Instance.Cars.filter(Car => Car.ActionType !== 'DELETE')
+    })
+    document.querySelectorAll('.CarImages .MImage').forEach(function (MImage) {
+      MImage.querySelector('input')?.addEventListener('change', async function (e) {
+        if (e.target.files.length != 0) {
+          var Image = await Instance.CompressImage(e.target.files[0], 1500)
+          var Name = e.target.getAttribute('id');
+
+          // Cars Images
+          let CarImageIndex = Instance.TheCarImages.findIndex(img => img.Name == Name)
+          if (CarImageIndex !== -1) {
+            Instance.TheCarImages[CarImageIndex].File = Image
+            Instance.TheCarImages[CarImageIndex].ActionType = 'ADD'
+          } else {
+            Instance.TheCarImages.push({
+              File: Image,
+              Name: Name,
+              ActionType: 'ADD',
+            })
+          }
+
+          Instance.BuildCarsImages()
+          e.target.value = ''
+        }
+      })
+      MImage.querySelector('.DeleteMImage')?.addEventListener('click', function () {
+        if (!MImage.hasAttribute('required')) {
+          var Name = MImage.querySelector('input').getAttribute('id')
+          var existingIndex = Instance.TheCarImages.findIndex(img => img.Name === Name)
+          if (existingIndex !== -1) {
+            if (Instance.TheCarImages[existingIndex].ActionType == 'ADD') {
+              Instance.TheCarImages.splice(existingIndex, 1)
+            } else {
+              Instance.TheCarImages[existingIndex].File = ''
+              Instance.TheCarImages[existingIndex].ActionType = 'DELETE'
+            }
+          }
+          Instance.BuildCarsImages()
+        }
+      })
+      MImage.querySelector('.ShowMImage')?.addEventListener('click', function () {
+        var Image = MImage.querySelector('img').getAttribute('src')
+        if (Image.startsWith('data:image')) {
+          var byteCharacters = atob(Image.split(',')[1])
+          var byteNumbers = new Array(byteCharacters.length)
+          for (var i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i)
+          }
+          var byteArray = new Uint8Array(byteNumbers)
+          var blob = new Blob([byteArray], { type: 'image/png' })
+
+          var blobUrl = URL.createObjectURL(blob)
+          window.open(blobUrl)
+        } else {
+          window.open(Image)
+        }
+      })
+    })
+    document.getElementById('CarLabelStatus').addEventListener('MCBValueChange', function () {
+      Instance.CarLabelStatusValue = Instance.CarLabelStatus.GetValue()
+    })
+    //#endregion
+
+    //#region Images & Attachments
+    document.getElementById('AddAttachmentInput').addEventListener('change', async function (e) {
+      if (e.target.files.length != 0) {
+        var AttachmentFile = e.target.files[0]
+        var FileExtension = AttachmentFile.name.split('.').pop().toLowerCase()
+        var FileName = AttachmentFile.name.replace(/\.[^/.]+$/, '')
+
+        if (['jpg', 'jpeg'].includes(FileExtension)) {
+          AttachmentFile = await this.CompressImage(AttachmentFile, 1500)
+          FileExtension = 'jpg'
+        } else {
+          window.ShowMessage('صيغة الملف غير مدعومة')
+          e.target.value = ''
+          return
+        }
+
+        var DuplicateAttachment = 0
+        this.Attachments.forEach(function (e) {
+          if (FileName === e['OriginalName'] || FileName === e['CurrentName']) {
+            DuplicateAttachment++
+          }
+        })
+
+        if (DuplicateAttachment === 0) {
+          this.Attachments.push({
+            File: AttachmentFile,
+            OriginalName: FileName,
+            CurrentName: FileName,
+            ActionType: 'ADD',
+          })
+          this.BuildAttachments()
+        } else {
+          window.ShowMessage('اسم المرفق مكرر')
+        }
+        e.target.value = ''
+      }
+    }.bind(this),
+    )
+    document.querySelectorAll('.ImagesSection .MImage').forEach(function (MImage) {
+      MImage.querySelector('input')?.addEventListener('change', async function (e) {
+        if (e.target.files.length != 0) {
+          var Image = await Instance.CompressImage(e.target.files[0], 1500)
+          var Name = e.target.getAttribute('id');
+
+          // Main Images
+          let existingIndex = Instance.Images.findIndex(img => img.Name === Name)
+          if (existingIndex !== -1) {
+            Instance.Images[existingIndex].File = Image
+            Instance.Images[existingIndex].ActionType = 'ADD'
+          } else {
+            Instance.Images.push({
+              File: Image,
+              Name: Name,
+              ActionType: 'ADD',
+            })
+          }
+
+          Instance.BuildImages()
+          e.target.value = ''
+        }
+      })
+      MImage.querySelector('.DeleteMImage')?.addEventListener('click', function () {
+        if (!MImage.hasAttribute('required')) {
+          var Name = MImage.querySelector('input').getAttribute('id')
+          var existingIndex = Instance.Images.findIndex(img => img.Name === Name)
+          if (existingIndex !== -1) {
+            if (Instance.Images[existingIndex].ActionType == 'ADD') {
+              Instance.Images.splice(existingIndex, 1)
+            } else {
+              Instance.Images[existingIndex].File = ''
+              Instance.Images[existingIndex].ActionType = 'DELETE'
+            }
+          }
+          Instance.BuildImages()
+        }
+      })
+      MImage.querySelector('.ShowMImage')?.addEventListener('click', function () {
+        var Image = MImage.querySelector('img').getAttribute('src')
+        if (Image.startsWith('data:image')) {
+          var byteCharacters = atob(Image.split(',')[1])
+          var byteNumbers = new Array(byteCharacters.length)
+          for (var i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i)
+          }
+          var byteArray = new Uint8Array(byteNumbers)
+          var blob = new Blob([byteArray], { type: 'image/png' })
+
+          var blobUrl = URL.createObjectURL(blob)
+          window.open(blobUrl)
+        } else {
+          window.open(Image)
+        }
+      })
+    })
+    //#endregion
   },
   methods: {
     ComponentLoad() {
@@ -1479,6 +1693,7 @@ export default {
         if (!this.GlobalsStore.CheckPermissions('persons_edit')) {
           this.DisableAllInputs()
         }
+
         //#region Fields
         document.getElementById('ID').querySelector('input').value = this.GlobalsStore.MArray['id']
         document.getElementById('Name').querySelector('input').value = this.GlobalsStore.MArray['name']
@@ -1496,8 +1711,6 @@ export default {
         document.getElementById('EmployeeDepartment').querySelector('input').value = this.GlobalsStore.MArray['employee_department']
         document.getElementById('JobTitle').querySelector('input').value = this.GlobalsStore.MArray['job_title']
         document.getElementById('OutsideAddress').querySelector('input').value = this.GlobalsStore.MArray['outside_address']
-        document.getElementById('CarNumber').querySelector('input').value = this.GlobalsStore.MArray['car_number']
-        document.getElementById('CarDetails').querySelector('input').value = this.GlobalsStore.MArray['car_details']
         document.getElementById('EMail').querySelector('input').value = this.GlobalsStore.MArray['email']
         document.getElementById('ContractorContractNo').querySelector('input').value = this.GlobalsStore.MArray['contractor_contract_no']
         document.getElementById('EntryPort').querySelector('input').value = this.GlobalsStore.MArray['entry_port']
@@ -1525,8 +1738,8 @@ export default {
         //#endregion
 
         //#region Cars
-        //this.Cars = this.GlobalsStore.MArray['cars']
-        //this.CarsTBData = this.GlobalsStore.MArray['cars']
+        this.Cars = this.GlobalsStore.MArray['cars']
+        this.CarsTBData = this.Cars
         //#endregion
 
         //#region Attributes
@@ -1546,10 +1759,15 @@ export default {
           this.AllowedTimeFrom.Set(this.GlobalsStore.MArray['nfc_card']['allowed_time_from'])
           this.AllowedTimeTo.Set(this.GlobalsStore.MArray['nfc_card']['allowed_time_to'])
           this.CardStatus.Set(this.GlobalsStore.MArray['nfc_card']['card_status'])
+          document.getElementById('CardSuspensionReason').querySelector('input').value = this.GlobalsStore.MArray['nfc_card']['suspension_reason']
           document.getElementById('CardNotes').querySelector('input').value = this.GlobalsStore.MArray['nfc_card']['card_notes']
-          // Populate Gates
+
+          setTimeout(() => {
+            this.CardStatusValue = this.CardStatus.GetValue()
+          }, 100);
+          // Populate NFCCardGates
           let TheGates = this.GlobalsStore.MArray['nfc_card']['gates'].split('|')
-          let GatesCheckBoxes = document.getElementById('Gates').querySelectorAll('.MCheckBox')
+          let GatesCheckBoxes = document.getElementById('NFCCardGates').querySelectorAll('.MCheckBox')
           for (let i = 0; i < TheGates.length; i++) {
             let GateName = TheGates[i].replaceAll('-', ' - ')
             for (let j = 0; j < GatesCheckBoxes.length; j++) {
@@ -1575,12 +1793,12 @@ export default {
     Save() {
       window.ShowLoading()
 
-      this.Gates = ''
-      var GatesCheckBoxes = document.getElementById('Gates').querySelectorAll('.MCheckBox')
-      for (var i = 0; i < GatesCheckBoxes.length; i++) {
-        if (GatesCheckBoxes[i].querySelector('input').checked) {
-          const gateText = GatesCheckBoxes[i].querySelector('.MCheckBoxText').innerHTML.replaceAll(' - ', '-')
-          this.Gates += this.Gates ? '|' + gateText : gateText
+      let NFCCardGates = ''
+      let NFCCardGatesCheckBoxes = document.getElementById('NFCCardGates').querySelectorAll('.MCheckBox')
+      for (let i = 0; i < NFCCardGatesCheckBoxes.length; i++) {
+        if (NFCCardGatesCheckBoxes[i].querySelector('input').checked) {
+          const gateText = NFCCardGatesCheckBoxes[i].querySelector('.MCheckBoxText').innerHTML.replaceAll(' - ', '-')
+          NFCCardGates += NFCCardGates ? '|' + gateText : gateText
         }
       }
 
@@ -1609,8 +1827,6 @@ export default {
       Parameters.append('job_title', document.getElementById('JobTitle').querySelector('input').value)
       Parameters.append('employee_start_date', this.EmployeeStartDate.Get())
       Parameters.append('outside_address', document.getElementById('OutsideAddress').querySelector('input').value)
-      Parameters.append('car_number', document.getElementById('CarNumber').querySelector('input').value)
-      Parameters.append('car_details', document.getElementById('CarDetails').querySelector('input').value)
       Parameters.append('email', document.getElementById('EMail').querySelector('input').value)
       Parameters.append('contractor_contract_no', document.getElementById('ContractorContractNo').querySelector('input').value)
       Parameters.append('entry_port', document.getElementById('EntryPort').querySelector('input').value)
@@ -1619,6 +1835,7 @@ export default {
 
       Parameters.append('Relations', JSON.stringify(this.Relations))
       Parameters.append('RealEstates', JSON.stringify(this.RealEstates))
+      Parameters.append('Cars', JSON.stringify(this.Cars))
       Parameters.append('Attributes', JSON.stringify(this.Attributes.GetValue().split(' | ')))
 
       //NFC Card
@@ -1630,8 +1847,9 @@ export default {
           allowed_time_from: this.AllowedTimeFrom.Get(),
           allowed_time_to: this.AllowedTimeTo.Get(),
           card_status: this.CardStatus.GetValue(),
+          suspension_reason: document.getElementById('CardSuspensionReason').querySelector('input').value,
           card_notes: document.getElementById('CardNotes').querySelector('input').value,
-          gates: this.Gates,
+          gates: NFCCardGates,
         }),
       )
 
@@ -1723,17 +1941,41 @@ export default {
     BuildImages() {
       let Instance = this
       //Empty All MImages
-      document.querySelectorAll('.MImage').forEach(function (MImage) {
+      document.querySelectorAll('.ImagesSection .MImage').forEach(function (MImage) {
         MImage.setAttribute('NoImage', true)
         MImage.querySelector('img').setAttribute('src', Instance.ServerPath + '/storage/Placeholder/1.svg')
       })
 
-      for (var i = 0; i < Instance.Images.length; i++) {
+      for (let i = 0; i < Instance.Images.length; i++) {
         let Image = Instance.Images[i]['File']
         let Name = Instance.Images[i]['Name']
         document.querySelectorAll('.MImage').forEach(function (MImage) {
           if (Name == MImage.querySelector('input').getAttribute('id')) {
             if (Instance.Images[i]['ActionType'] != 'DELETE') {
+              MImage.removeAttribute('NoImage')
+              setTimeout(function () {
+                MImage.querySelector('img').setAttribute('src', Image)
+              }, 10)
+            }
+          }
+        })
+      }
+    },
+    BuildCarsImages() {
+      let Instance = this;
+      //Empty All MImages
+      document.getElementById('CarDetailsModal').querySelectorAll('.MImage').forEach(function (MImage) {
+        MImage.setAttribute('NoImage', true)
+        MImage.querySelector('img').setAttribute('src', Instance.ServerPath + '/storage/Placeholder/1.svg')
+      })
+
+
+      for (let i = 0; i < Instance.TheCarImages.length; i++) {
+        let Image = Instance.TheCarImages[i]['File']
+        let Name = Instance.TheCarImages[i]['Name']
+        document.querySelectorAll('.MImage').forEach(function (MImage) {
+          if (Name == MImage.querySelector('input').getAttribute('id')) {
+            if (Instance.TheCarImages[i]['ActionType'] != 'DELETE') {
               MImage.removeAttribute('NoImage')
               setTimeout(function () {
                 MImage.querySelector('img').setAttribute('src', Image)
@@ -2141,26 +2383,30 @@ export default {
   color: red;
 }
 
-#GatesTitle {
+#GatesTitle,
+#CarLabelGatesTitle {
   margin-top: 10px;
   margin-bottom: 5px;
   justify-content: flex-start;
 }
 
-#Gates {
+#NFCCardGates,
+#CarLabelGates {
   display: flex;
   flex-wrap: wrap;
   max-width: 100%;
   margin: 0 7px;
 }
 
-#Gates .MCheckBox {
+#NFCCardGates .MCheckBox,
+#CarLabelGates .MCheckBox {
   display: flex;
-  width: 50%;
+  width: 25%;
+  min-width: 200px;
   margin: 3px 0;
 }
 
-.TheCarsInfoWrapper {
+.CarsInfoWrapper {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
@@ -2174,7 +2420,7 @@ export default {
   margin-top: 20px;
 }
 
-.TheCar {
+.Car {
   display: flex;
   width: 370px;
   flex-wrap: wrap;
@@ -2184,53 +2430,53 @@ export default {
   box-shadow: 0 2px 5px 1px #0000001a;
 }
 
-.TheCarInformationContainer {
+.CarInformationContainer {
   display: flex;
   width: 100%;
   flex-wrap: nowrap;
 }
 
-.TheCarData,
-.TheCarLabel {
+.CarData,
+.CarLabel {
   display: flex;
   flex-wrap: wrap;
 }
 
-.TheCarInformationContainer textarea {
+.CarInformationContainer textarea {
   resize: none;
 }
 
-.TheCarImages {
+.CarImages {
   display: flex;
   justify-content: center;
   width: 100%;
   flex-wrap: wrap;
 }
 
-.TheCar .MImagePreview {
+.Car .MImagePreview {
   display: flex;
   width: 100px;
   height: 100px;
 }
 
-.TheCar .MImageTitle {
+.Car .MImageTitle {
   display: flex;
   justify-content: center;
   width: 100%;
   margin: 0 0 5px 0;
 }
 
-.TheCarButtons {
+.CarButtons {
   display: flex;
   flex-wrap: wrap;
   margin-top: 20px;
 }
 
-#DeleteTheCar {
+#DeleteCar {
   background-color: red
 }
 
-#DeleteTheCar:hover {
+#DeleteCar:hover {
   background-color: var(--MButtonBG);
   color: red;
 }
