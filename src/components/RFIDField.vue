@@ -3,7 +3,7 @@
         <input type="text" disabled v-model="RFIDInput" required />
         <label>{{ Label }}</label>
         <div class="MFieldBG"></div>
-        <div class="RFIDBTN" id="RFIDClearBTN" @click="Clear" v-show="RFIDInput != ''">
+        <div class="RFIDBTN" id="RFIDClearBTN" @click="Clear" v-show="RFIDInput != '' && Clearable">
             <svg viewBox="0 0 1000 1000">
                 <path d="M922.1,147.7c0.5,14.9-10.1,31.1-24.9,45.8C800.4,290,703.8,386.8,607.1,483.5c-16.5,16.5-16.5,16.5,0.5,33.4
 		c97,97,194,194.1,291.1,291c17.4,17.3,27.2,36.8,22.7,61.9c-8.5,47.1-63.2,68.5-101.3,39.4c-5.5-4.2-10.5-9.3-15.4-14.2
@@ -14,7 +14,7 @@
 		C893.3,77.6,921.6,104.9,922.1,147.7z" />
             </svg>
         </div>
-        <div class="MButton RFIDBTN" @click="Read" @contextmenu.prevent="SelectDevice" :disabled="IsBusy">
+        <div class="MButton RFIDBTN" v-show="!Disabled" @click="Read" @contextmenu.prevent="SelectDevice" :disabled="IsBusy">
             <svg viewBox="0 0 1000 1000">
                 <path
                     d="M365.27,904.18H185.64c-24.7,0-45.84-8.79-63.43-26.38s-26.38-38.73-26.38-63.43V185.64c0-24.7,8.79-45.84,26.38-63.43
@@ -34,6 +34,8 @@ export default {
     props: {
         Name: { type: String, required: true },
         Label: { type: String, required: true },
+        Disabled: { type: Boolean, default: false },
+        Clearable: { type: Boolean, default: false },
     },
     data() {
         return {
@@ -99,8 +101,12 @@ export default {
                         if (status === 0xFD || status === 0xFE) continue
                         if (cmd !== 0x01) continue
 
-                        const data = f.slice(4, f.length - 2)
-                        this.RFIDInput = this.hex(data)
+                        const data = this.hex(f.slice(4, f.length - 2))
+                        if (data == '') {
+                            this.RFIDInput = '';
+                        } else {
+                            this.RFIDInput = parseInt(data.slice(-6), 16);
+                        }
                     }
                 }
             } finally {
@@ -172,6 +178,12 @@ export default {
                 }
             }
             return null
+        },
+        Get() {
+            return this.RFIDInput;
+        },
+        Set(Value) {
+            this.RFIDInput = Value;
         },
         Clear() {
             this.RFIDInput = '';

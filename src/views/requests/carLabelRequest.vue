@@ -1,6 +1,7 @@
 <template>
   <div class="ComponentWrapper">
-    <MModal ref="CarLabelRequestModal" :Name="'CarLabelRequestModal'" :Title="' طلب ' + selectedRowData.request_type + ' ملصق ' + selectedRowData.name">
+    <MModal ref="CarLabelRequestModal" :Name="'CarLabelRequestModal'"
+      :Title="' طلب ' + selectedRowData.request_type + ' ملصق ' + selectedRowData.name">
       <table cellpadding="0" cellspacing="0" class="RequestsMTable" id="CarsLabelRequestsTable">
         <thead>
           <tr>
@@ -34,12 +35,24 @@
             <td>{{ selectedRowData.car_details }}</td>
           </tr>
           <tr>
+            <td>نوع المستند</td>
+            <td>{{ selectedRowData.car_document_type }}</td>
+          </tr>
+          <tr v-if="selectedRowData.request_type == 'ايقاف'">
+            <td>سبب الايقاف</td>
+            <td>{{ selectedRowData.label_suspension_reason }}</td>
+          </tr>
+          <tr v-if="selectedRowData.request_type == 'اضافة'">
+            <td>اضافة مع ملصق</td>
+            <td>{{ +selectedRowData.label_add ? 'نعم' : 'كلا' }}</td>
+          </tr>
+          <tr>
             <td>رقم الهاتف</td>
             <td>{{ selectedRowData.phone }}</td>
           </tr>
           <tr>
             <td>الصفة</td>
-            <td>{{ selectedRowData.person_type }}</td>
+            <td>{{ selectedRowData.attributes }}</td>
           </tr>
           <tr v-show="selectedRowData.request_status == 'مرفوض'">
             <td>سبب الرفض</td>
@@ -47,43 +60,134 @@
           </tr>
         </tbody>
       </table>
-      <div class="MGroup ModalMGroup" v-show="selectedRowData.department_id == 3 || UserData.department_id == 1">
-        <div class="MField" id="LabelCode">
-          <input :disabled="!(selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.label_code == '' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" type="text" required />
-          <label>رمز الملصق</label>
-          <div class="MFieldBG"></div>
+      <div class="MGroup ModalMGroup"
+        v-show="selectedRowData.car_licence_image != '' || selectedRowData.car_licence_back_image != '' || selectedRowData.car_document_image != ''">
+        <div class="ImagesContainer">
+          <div class="RequestImage" v-if="selectedRowData.car_licence_image != ''">
+            <div class="RequestImageTitle">السنوية</div>
+            <div class="RequestImagePreview" @click="ShowImage(selectedRowData.car_licence_image)">
+              <div class="RequestImagePreviewOverlay">
+                <svg viewBox="0 0 1000 1000">
+                  <path
+                    d="M450.2565,36.0294c18.6849,2.9482,37.5594,5.0146,56.0247,8.9843C653.55,76.6735,769.4424,197.507,794.0276,345.7818c18.3481,110.6581-7.8676,210.2677-77.061,298.56-1.47,1.8753-2.8516,3.8192-4.6057,6.1761q38.9827,40.554,77.7513,80.8829,70.1942,72.9948,140.3751,146.0021c20.5779,21.4581,20.7684,51.8715.7262,71.1147-20.2148,19.409-50.1806,18.0733-70.9443-3.48Q753.6258,834.3367,647.148,723.4766c-2.08-2.1635-3.9735-4.5069-6.357-7.2263-7.1169,4.4964-13.6031,8.6938-20.1838,12.7375C404.2984,861.8989,117.8611,741.5022,61.5828,494.0268A374.2062,374.2062,0,0,1,279.3051,66.0859,359.6555,359.6555,0,0,1,394.45,37.5392a50.3221,50.3221,0,0,0,6.9671-1.51ZM426.2127,686.3013c152.993-.5451,276.6613-124.73,275.9217-277.0737-.7433-153.105-124.6084-276.1761-277.355-275.5773-152.2376.5968-275.5054,124.7523-275.0328,277.0133C150.22,563.0212,274.4127,686.8422,426.2127,686.3013Z"
+                    fill="white" />
+                </svg>
+              </div>
+              <img v-if="selectedRowData.car_licence_image" :src="ServerPath + '/storage/images/' + selectedRowData.car_licence_image
+                " />
+            </div>
+          </div>
+          <div class="RequestImage" v-if="selectedRowData.car_licence_back_image != ''">
+            <div class="RequestImageTitle">ضهر السنوية</div>
+            <div class="RequestImagePreview" @click="ShowImage(selectedRowData.car_licence_back_image)">
+              <div class="RequestImagePreviewOverlay">
+                <svg viewBox="0 0 1000 1000">
+                  <path
+                    d="M450.2565,36.0294c18.6849,2.9482,37.5594,5.0146,56.0247,8.9843C653.55,76.6735,769.4424,197.507,794.0276,345.7818c18.3481,110.6581-7.8676,210.2677-77.061,298.56-1.47,1.8753-2.8516,3.8192-4.6057,6.1761q38.9827,40.554,77.7513,80.8829,70.1942,72.9948,140.3751,146.0021c20.5779,21.4581,20.7684,51.8715.7262,71.1147-20.2148,19.409-50.1806,18.0733-70.9443-3.48Q753.6258,834.3367,647.148,723.4766c-2.08-2.1635-3.9735-4.5069-6.357-7.2263-7.1169,4.4964-13.6031,8.6938-20.1838,12.7375C404.2984,861.8989,117.8611,741.5022,61.5828,494.0268A374.2062,374.2062,0,0,1,279.3051,66.0859,359.6555,359.6555,0,0,1,394.45,37.5392a50.3221,50.3221,0,0,0,6.9671-1.51ZM426.2127,686.3013c152.993-.5451,276.6613-124.73,275.9217-277.0737-.7433-153.105-124.6084-276.1761-277.355-275.5773-152.2376.5968-275.5054,124.7523-275.0328,277.0133C150.22,563.0212,274.4127,686.8422,426.2127,686.3013Z"
+                    fill="white" />
+                </svg>
+              </div>
+              <img v-if="selectedRowData.car_licence_back_image"
+                :src="ServerPath + '/storage/images/' + selectedRowData.car_licence_back_image" />
+            </div>
+          </div>
+          <div class="RequestImage" v-if="selectedRowData.car_document_image != ''">
+            <div class="RequestImageTitle">المستند</div>
+            <div class="RequestImagePreview" @click="ShowImage(selectedRowData.car_document_image)">
+              <div class="RequestImagePreviewOverlay">
+                <svg viewBox="0 0 1000 1000">
+                  <path
+                    d="M450.2565,36.0294c18.6849,2.9482,37.5594,5.0146,56.0247,8.9843C653.55,76.6735,769.4424,197.507,794.0276,345.7818c18.3481,110.6581-7.8676,210.2677-77.061,298.56-1.47,1.8753-2.8516,3.8192-4.6057,6.1761q38.9827,40.554,77.7513,80.8829,70.1942,72.9948,140.3751,146.0021c20.5779,21.4581,20.7684,51.8715.7262,71.1147-20.2148,19.409-50.1806,18.0733-70.9443-3.48Q753.6258,834.3367,647.148,723.4766c-2.08-2.1635-3.9735-4.5069-6.357-7.2263-7.1169,4.4964-13.6031,8.6938-20.1838,12.7375C404.2984,861.8989,117.8611,741.5022,61.5828,494.0268A374.2062,374.2062,0,0,1,279.3051,66.0859,359.6555,359.6555,0,0,1,394.45,37.5392a50.3221,50.3221,0,0,0,6.9671-1.51ZM426.2127,686.3013c152.993-.5451,276.6613-124.73,275.9217-277.0737-.7433-153.105-124.6084-276.1761-277.355-275.5773-152.2376.5968-275.5054,124.7523-275.0328,277.0133C150.22,563.0212,274.4127,686.8422,426.2127,686.3013Z"
+                    fill="white" />
+                </svg>
+              </div>
+              <img v-if="selectedRowData.car_document_image" :src="ServerPath + '/storage/images/' + selectedRowData.car_document_image
+                " />
+            </div>
+          </div>
         </div>
-        <MDate :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" v-show="selectedRowData.request_type == 'اضافة'" ref="LabelIssue" :Name="'LabelIssue'" :Label="'تاريخ الانشاء'"></MDate>
-        <MDate :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" v-show="selectedRowData.request_type == 'اضافة' || selectedRowData.request_type == 'تمديد'" ref="LabelExpire" :Name="'LabelExpire'" :Label="'تاريخ الانتهاء'"></MDate>
       </div>
 
-      <div class="MGroup ModalMGroup" id="GatesMGroup" v-show="selectedRowData.request_type == 'اضافة' && (selectedRowData.department_id == 3 || UserData.department_id == 1)">
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal1-1Box'" :Label="'الامل 1-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal1-2Box'" :Label="'الامل 1-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal2-1Box'" :Label="'الامل 2-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="true || !(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amal2-2Box'" :Label="'الامل 2-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amaal-1Box'" :Label="'الامال-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="true || !(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'Amaal-2Box'" :Label="'الامال-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'jawhara-1Box'" :Label="'جوهرة البصرة-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="true || !(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'jawhara-2Box'" :Label="'جوهرة البصرة-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'eye-1Box'" :Label="'عين البصرة-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="true || !(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'eye-2Box'" :Label="'عين البصرة-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="!(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'dura-1Box'" :Label="'درة البصرة-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="true || !(selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))" :Name="'dura-2Box'" :Label="'درة البصرة-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="true || !(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'shruq-1Box'" :Label="'الشروق-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="true || !(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'shruq-2Box'" :Label="'الشروق-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="true || !(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'rafah-1Box'" :Label="'الرفاه-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="true || !(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'rafah-2Box'" :Label="'الرفاه-البوابة 2'"></MCheckBox>
-        <MCheckBox :Disabled="true || !(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'nasim-1Box'" :Label="'النسيم-البوابة 1'"></MCheckBox>
-        <MCheckBox :Disabled="true || !(selectedRowData.request_status == 'قيد المراجعة' && UserData.department_id == 1(UserData.department_id == 3 && selectedRowData.department_id == 3))" :Name="'nasim-2Box'" :Label="'النسيم-البوابة 2'"></MCheckBox>
+      <div class="MGroup ModalMGroup"
+        v-show="(((selectedRowData.request_type == 'اضافة' && selectedRowData.label_add == 1) && (selectedRowData.request_status == 'تم الدفع' || selectedRowData.request_status == 'تم')) || (selectedRowData.request_type == 'تمديد')) && (selectedRowData.department_id == 3 || UserData.department_id == 1)">
+        <RFIDField ref="LabelCode"
+          v-show="selectedRowData.request_type == 'اضافة' && (selectedRowData.request_status == 'تم الدفع' || selectedRowData.request_status == 'تم')"
+          :Disabled="!(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'LabelCode'" :Label="'رمز الملصق'" />
+        <MDate
+          v-show="(selectedRowData.request_type == 'اضافة' && (selectedRowData.request_status == 'تم الدفع' || selectedRowData.request_status == 'تم')) || selectedRowData.request_type == 'تمديد'"
+          :Disabled="!(((selectedRowData.request_status == 'تم الدفع' && selectedRowData.request_type == 'اضافة') || (selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.request_type == 'تمديد')) && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          ref="LabelExpire" :Name="'LabelExpire'" :Label="'تاريخ الانتهاء'"></MDate>
+      </div>
+
+      <div class="MGroup ModalMGroup" id="GatesMGroup"
+        v-show="((selectedRowData.request_type == 'اضافة' && selectedRowData.label_add == 1) && (selectedRowData.request_status == 'تم الدفع' || selectedRowData.request_status == 'تم')) && (selectedRowData.department_id == 3 || UserData.department_id == 1)">
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'Amal1-1Box'" :Label="'الامل 1-البوابة 1'"></MCheckBox>
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'Amal1-2Box'" :Label="'الامل 1-البوابة 2'"></MCheckBox>
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'Amal2-1Box'" :Label="'الامل 2-البوابة 1'"></MCheckBox>
+        <MCheckBox
+          :Disabled="true || !(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'Amal2-2Box'" :Label="'الامل 2-البوابة 2'"></MCheckBox>
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'Amaal-1Box'" :Label="'الامال-البوابة 1'"></MCheckBox>
+        <MCheckBox
+          :Disabled="true || !(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'Amaal-2Box'" :Label="'الامال-البوابة 2'"></MCheckBox>
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'jawhara-1Box'" :Label="'جوهرة البصرة-البوابة 1'"></MCheckBox>
+        <MCheckBox
+          :Disabled="true || !(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'jawhara-2Box'" :Label="'جوهرة البصرة-البوابة 2'"></MCheckBox>
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'eye-1Box'" :Label="'عين البصرة-البوابة 1'"></MCheckBox>
+        <MCheckBox
+          :Disabled="true || !(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'eye-2Box'" :Label="'عين البصرة-البوابة 2'"></MCheckBox>
+        <MCheckBox
+          :Disabled="!(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'dura-1Box'" :Label="'درة البصرة-البوابة 1'"></MCheckBox>
+        <MCheckBox
+          :Disabled="true || !(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'dura-2Box'" :Label="'درة البصرة-البوابة 2'"></MCheckBox>
+        <MCheckBox
+          :Disabled="true || !(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'shruq-1Box'" :Label="'الشروق-البوابة 1'"></MCheckBox>
+        <MCheckBox
+          :Disabled="true || !(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'shruq-2Box'" :Label="'الشروق-البوابة 2'"></MCheckBox>
+        <MCheckBox
+          :Disabled="true || !(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'rafah-1Box'" :Label="'الرفاه-البوابة 1'"></MCheckBox>
+        <MCheckBox
+          :Disabled="true || !(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'rafah-2Box'" :Label="'الرفاه-البوابة 2'"></MCheckBox>
+        <MCheckBox
+          :Disabled="true || !(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'nasim-1Box'" :Label="'النسيم-البوابة 1'"></MCheckBox>
+        <MCheckBox
+          :Disabled="true || !(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Name="'nasim-2Box'" :Label="'النسيم-البوابة 2'"></MCheckBox>
       </div>
 
       <div class="ModalButtons">
         <div v-show="GlobalsStore.CheckPermissions('car_label_requests_accept')">
-          <div v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == selectedRowData.department_id || UserData.department_id == 1)" class="MButton" id="AcceptBTN" @click="AcceptRequest">قبول</div>
+          <div
+            v-show="(selectedRowData.request_status == 'قيد المراجعة' || selectedRowData.request_status == 'تم الدفع') && (UserData.department_id == selectedRowData.department_id || UserData.department_id == 1)"
+            class="MButton" id="AcceptBTN" @click="AcceptRequest">قبول</div>
         </div>
         <div v-show="GlobalsStore.CheckPermissions('car_label_requests_accept')">
-          <div v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == selectedRowData.department_id || UserData.department_id == 1)" class="MButton" id="RejectBTN">رفض</div>
+          <div
+            v-show="(selectedRowData.request_status == 'قيد المراجعة') && (UserData.department_id == selectedRowData.department_id || UserData.department_id == 1)"
+            class="MButton" id="RejectBTN">رفض</div>
         </div>
       </div>
     </MModal>
@@ -136,7 +240,7 @@
 </template>
 <script>
 import { ref } from 'vue'
-import { api } from '../../axios'
+import { api, GetServerPath } from '../../axios'
 import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 import { useGlobalsStore } from '../../stores/Globals.js'
 var RequestStatusData = 0
@@ -149,6 +253,7 @@ export default {
     return {
       GlobalsStore,
       UserData,
+      ServerPath: GetServerPath(),
       CarLabelRequestModal: ref(null),
       CarLabelRequestRejectModal: ref(null),
       CarLabelRequestsTB: ref(null),
@@ -215,69 +320,54 @@ export default {
       CarLabelRequestsFromDate: ref(null),
       selectedRowData: ref([]),
       LabelCode: ref(''),
-      LabelIssue: ref(null),
       LabelExpire: ref(null),
       Gates: ref(''),
     }
   },
   mounted() {
+    let Instance = this;
     this.CarLabelRequestsTB.LoadMTable()
-    document.getElementById('GetCarLabelRequestsBTN').addEventListener(
-      'click',
-      function () {
-        RequestStatusData = 1
-        this.CarLabelRequestsTB.ReLoadMTable()
-      }.bind(this)
-    )
-    document.getElementById('GetCarLabelRequestsUnderReviewBTN').addEventListener(
-      'click',
-      function () {
-        RequestStatusData = 0
-        this.CarLabelRequestsTB.ReLoadMTable()
-      }.bind(this)
-    )
-    document.getElementById('RejectBTN').addEventListener(
-      'click',
-      function () {
-        this.CarLabelRequestRejectModal.Show()
-      }.bind(this)
-    )
+    document.getElementById('GetCarLabelRequestsBTN').addEventListener('click', function () {
+      RequestStatusData = 1
+      this.CarLabelRequestsTB.ReLoadMTable()
+    }.bind(this))
+    document.getElementById('GetCarLabelRequestsUnderReviewBTN').addEventListener('click', function () {
+      RequestStatusData = 0
+      this.CarLabelRequestsTB.ReLoadMTable()
+    }.bind(this))
+    document.getElementById('RejectBTN').addEventListener('click', function () {
+      this.CarLabelRequestRejectModal.Show()
+    }.bind(this))
+    document.getElementById('CarLabelRequestsTB').addEventListener('ViewItem', function (data) {
+      Instance.selectedRowData = data.detail.RowData
+      Instance.LabelCode.Clear();
+      Instance.LabelExpire.Clear();
 
-    document.getElementById('CarLabelRequestsTB').addEventListener(
-      'ViewItem',
-      function (data) {
-        this.selectedRowData = data.detail.RowData
-        document.getElementById('LabelCode').querySelector('input').value = ''
-        this.LabelIssue.Clear()
-        this.LabelExpire.Clear()
-        document.querySelectorAll('.MCheckBox input').forEach(function (e) {
-          e.checked = false
+      document.querySelectorAll('.MCheckBox input').forEach(function (e) {
+        e.checked = false
+      })
+
+      Instance.LabelCode.Set(Instance.selectedRowData.label_code)
+
+      if (this.selectedRowData.request_type == 'اضافة' && this.selectedRowData.request_status == 'قيد المراجعة') {
+        const now = new Date()
+
+        const nextYear = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate())
+        this.LabelExpire.Set(nextYear.toISOString().split('T')[0])
+      } else {
+        this.LabelExpire.Set(this.selectedRowData.label_expire)
+      }
+
+      this.selectedRowData.label_gates.split('|').forEach(function (e) {
+        document.querySelectorAll('.MCheckBox').forEach(function (d) {
+          if (e == d.querySelector('.MCheckBoxText').innerHTML) {
+            d.querySelector('input').checked = true
+          }
         })
+      })
 
-        document.getElementById('LabelCode').querySelector('input').value = this.selectedRowData.label_code
-
-        if (this.selectedRowData.request_type == 'اضافة' && this.selectedRowData.request_status == 'قيد المراجعة') {
-          const now = new Date()
-          this.LabelIssue.Set(now.toISOString().split('T')[0])
-
-          const nextYear = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate())
-          this.LabelExpire.Set(nextYear.toISOString().split('T')[0])
-        } else {
-          this.LabelIssue.Set(this.selectedRowData.label_issue)
-          this.LabelExpire.Set(this.selectedRowData.label_expire)
-        }
-
-        this.selectedRowData.gates.split('|').forEach(function (e) {
-          document.querySelectorAll('.MCheckBox').forEach(function (d) {
-            if (e == d.querySelector('.MCheckBoxText').innerHTML) {
-              d.querySelector('input').checked = true
-            }
-          })
-        })
-
-        this.CarLabelRequestModal.Show()
-      }.bind(this)
-    )
+      this.CarLabelRequestModal.Show()
+    }.bind(this))
   },
 
   methods: {
@@ -321,8 +411,7 @@ export default {
       }
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
-      Parameters.append('LabelCode', document.getElementById('LabelCode').querySelector('input').value)
-      Parameters.append('LabelIssue', this.LabelIssue.Get())
+      Parameters.append('LabelCode', this.LabelCode.Get())
       Parameters.append('LabelExpire', this.LabelExpire.Get())
       Parameters.append('Gates', this.Gates)
 
@@ -376,6 +465,10 @@ export default {
           HideLoading()
           ShowMessage(error)
         })
+    },
+    ShowImage(ImageName) {
+      var ImagePath = this.ServerPath + '/storage/images/' + ImageName
+      window.open(ImagePath)
     },
   },
 }

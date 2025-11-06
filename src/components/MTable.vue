@@ -210,7 +210,20 @@ export default {
               </div>
             </div>`
         } else {
-          FilterCodeBlock += `<div class="MTableCell" filtername="${Columns[j]['name']}">
+          if (Columns[j]['type'] == 'image') {
+            FilterCodeBlock += `<div class="MTableCell" filtername="${Columns[j]['name']}">
+                <div class="MTableFilterContent" style="display: none">
+                  <input class="MTableFilterInput" type="text" placeholder="" />
+                  <div class="MTableFilterBTN">
+                    <div class="MTableFilterIcon">${SearchIcon}</div>
+                  </div>
+                  <div class="MTableClearBTN">
+                  <div class="MTableFilterIcon">${ClearIcon}</div>
+                </div>
+              </div>
+            </div>`
+          } else {
+            FilterCodeBlock += `<div class="MTableCell" filtername="${Columns[j]['name']}">
                 <div class="MTableFilterContent">
                   <input class="MTableFilterInput" type="text" placeholder="" />
                   <div class="MTableFilterBTN">
@@ -221,6 +234,7 @@ export default {
                 </div>
               </div>
             </div>`
+          }
         }
       }
       FilterCodeBlock += '<div class="MTableRowOptionsPadding"></div></div>'
@@ -731,17 +745,14 @@ export default {
             }
             if (Columns[ArrayCounter]['type'] == 'image') {
               if (DisplayArray[x][y] != '') {
-                              ContentCodeBlock +=
-                '<div class="MTableCell"><div class="MTableData MTableCellImage"><div class="MTableCellImageZoom">' +
-                SearchIcon +
-                '</div><img src="' +
-                DisplayArray[x][y] +
-                '"/></div></div>'
+                ContentCodeBlock +=
+                  '<div class="MTableCell"><div class="MTableData MTableCellImage"><div class="MTableCellImageZoom">' +
+                  SearchIcon +
+                  '</div><img src="' +
+                  DisplayArray[x][y] +
+                  '"/></div></div>'
               } else {
-                              ContentCodeBlock +=
-                '<div class="MTableCell"><div class="MTableData MTableCellImage"><div class="MTableCellImageZoom">' +
-                SearchIcon +
-                '</div></div></div>'
+                ContentCodeBlock += '<div class="MTableCell"></div>';
               }
             }
 
@@ -1748,7 +1759,8 @@ export default {
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
-.MGroup .MTableWrapper, .MStepContent .MTableWrapper{
+.MGroup .MTableWrapper,
+.MStepContent .MTableWrapper {
   border: 1px solid #777;
 }
 

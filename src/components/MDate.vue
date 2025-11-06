@@ -539,13 +539,12 @@ export default {
       }
     },
     Clear() {
-      var Instance = this;
+      let Instance = this;
       Instance.SelectedDates = [];
       Instance.Element.querySelectorAll('.MDateInput').forEach(function (e) {
         e.value = '';
       });
-      const MDateValueChange = new CustomEvent('MDateValueChange');
-      Instance.Element.dispatchEvent(MDateValueChange);
+      Instance.Element.removeAttribute('valid');
     },
     Disable() {
       this.IsDisabled = true;
