@@ -138,16 +138,13 @@
           </div>
         </div>
         <div v-show="GlobalsStore.CheckPermissions('nfc_cards_requests_reject')">
-          <div
-            v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == selectedRowData.department_id || UserData.department_id == 1)"
-            class="MButton" id="RejectBTN" @click="RejectRequest">
-            رفض
-          </div>
+          <div v-show="selectedRowData.request_status == 'قيد المراجعة' && (UserData.department_id == selectedRowData.department_id || UserData.department_id == 1)" class="MButton" id="RejectBTN" @click="RejectRequest">رفض</div>
         </div>
       </div>
     </MModal>
 
     <!-- ========= Reject Model======== -->
+    <MModal ref="NfcCardRequestRejectModal" :Name="'NfcCardRequestRejectModal'" :Title="'رفض الطلب'">
     <MModal ref="NfcCardRequestRejectModal" :Name="'NfcCardRequestRejectModal'" :Title="'رفض الطلب'">
       <div class="MField" id="RejectionReason">
         <input type="text" required />
@@ -160,9 +157,7 @@
     </MModal>
 
     <div class="MButton" id="GetNfcCardRequestsBTN">عرض كافة البيانات</div>
-    <div class="MButton" id="GetNfcCardRequestsUnderReviewBTN">
-      عرض قيد المراجعة
-    </div>
+    <div class="MButton" id="GetNfcCardRequestsUnderReviewBTN">عرض قيد المراجعة</div>
     <div class="MGroup">
       <MDate ref="NfcCardRequestsFromDate" :Name="'NfcCardRequestsFromDate'" :Label="'التاريخ'" :Range="true"
         :Clearable="true"></MDate>
@@ -227,7 +222,7 @@ export default {
           name: 'compound',
           label: 'المدينة',
           filter: 'combo',
-          filter_items: UserData.value?.department_id == 1 ? (GlobalsStore.value.ComboBoxes?.Compounds ?? []) : (UserData.value?.compounds ?? []),
+          filter_items: UserData.value?.department_id == 1 ? GlobalsStore.value.ComboBoxes?.Compounds ?? [] : UserData.value?.compounds ?? [],
         },
         {
           name: 'name',
@@ -283,7 +278,7 @@ export default {
     }
   },
   mounted() {
-    this.NfcCardRequestsTB.LoadMTable();
+    this.NfcCardRequestsTB.LoadMTable()
     document.getElementById('GetNfcCardRequestsBTN').addEventListener(
       'click',
       function () {
@@ -291,21 +286,17 @@ export default {
         this.NfcCardRequestsTB.ReLoadMTable()
       }.bind(this)
     )
-    document
-      .getElementById('GetNfcCardRequestsUnderReviewBTN')
-      .addEventListener(
-        'click',
-        function () {
-          RequestStatusData = 0
-          this.NfcCardRequestsTB.ReLoadMTable()
-        }.bind(this)
-      )
+    document.getElementById('GetNfcCardRequestsUnderReviewBTN').addEventListener(
+      'click',
+      function () {
+        RequestStatusData = 0
+        this.NfcCardRequestsTB.ReLoadMTable()
+      }.bind(this)
+    )
     document.getElementById('RejectBTN').addEventListener(
       'click',
       function () {
-        document
-          .getElementById('RejectionReason')
-          .querySelector('input').value = ''
+        document.getElementById('RejectionReason').querySelector('input').value = ''
         this.NfcCardRequestRejectModal.Show()
       }.bind(this)
     )
@@ -319,35 +310,20 @@ export default {
           e.checked = false
         })
 
-        document.getElementById('NFCID').querySelector('input').value =
-          this.selectedRowData.nfc_id
+        document.getElementById('NFCID').querySelector('input').value = this.selectedRowData.nfc_id
 
-        if (
-          this.selectedRowData.request_type == 'اضافة' &&
-          this.selectedRowData.request_status == 'قيد المراجعة'
-        ) {
+        if (this.selectedRowData.request_type == 'اضافة' && this.selectedRowData.request_status == 'قيد المراجعة') {
           const now = new Date()
-          const nextYear = new Date(
-            now.getFullYear() + 1,
-            now.getMonth(),
-            now.getDate()
-          )
+          const nextYear = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate())
           this.CardExpire.Set(nextYear.toISOString().split('T')[0]) // assuming Set() takes a string in YYYY-MM-DD format
         } else {
           this.CardExpire.Set(this.selectedRowData.card_expire)
         }
 
-        if (
-          this.selectedRowData.request_type == 'تمديد' &&
-          this.selectedRowData.request_status == 'قيد المراجعة'
-        ) {
+        if (this.selectedRowData.request_type == 'تمديد' && this.selectedRowData.request_status == 'قيد المراجعة') {
           // Parse old_CardExpire and add 1 year
           const oldDate = new Date(this.selectedRowData.old_card_expire)
-          const nextYear = new Date(
-            oldDate.getFullYear() + 1,
-            oldDate.getMonth(),
-            oldDate.getDate()
-          )
+          const nextYear = new Date(oldDate.getFullYear() + 1, oldDate.getMonth(), oldDate.getDate())
 
           this.CardExpire.Set(nextYear.toISOString().split('T')[0]) // Format as YYYY-MM-DD
         } else {
@@ -391,15 +367,12 @@ export default {
     },
     AcceptRequest() {
       ShowLoading()
-      var GatesCheckBoxes = document
-        .getElementById('GatesMGroup')
-        .querySelectorAll('.MCheckBox')
+      var GatesCheckBoxes = document.getElementById('GatesMGroup').querySelectorAll('.MCheckBox')
 
       this.Gates = ''
       for (var i = 0; i < GatesCheckBoxes.length; i++) {
         if (GatesCheckBoxes[i].querySelector('input').checked) {
-          const gateText =
-            GatesCheckBoxes[i].querySelector('.MCheckBoxText').innerHTML
+          const gateText = GatesCheckBoxes[i].querySelector('.MCheckBoxText').innerHTML
 
           // Add the gate text with a separator only if this.Gates is not empty
           this.Gates += this.Gates ? '|' + gateText : gateText
@@ -408,10 +381,7 @@ export default {
 
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
-      Parameters.append(
-        'NFCCardID',
-        document.getElementById('NFCID').querySelector('input').value
-      )
+      Parameters.append('NFCCardID', document.getElementById('NFCID').querySelector('input').value)
       Parameters.append('NFCCardExpire', this.CardExpire.Get())
       Parameters.append('Gates', this.Gates)
 
@@ -440,10 +410,7 @@ export default {
 
       var Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
-      Parameters.append(
-        'Reason',
-        document.getElementById('RejectionReason').querySelector('input').value
-      )
+      Parameters.append('Reason', document.getElementById('RejectionReason').querySelector('input').value)
 
       api
         .post('RejectNFCCardRequest', Parameters, {
@@ -473,28 +440,31 @@ export default {
         const ndef = new NDEFReader()
         await ndef.scan()
 
-        ndef.removeEventListener('reading', null);
-        ndef.addEventListener("reading", function ({ serialNumber }) {
+        ndef.removeEventListener('reading', null)
+        ndef.addEventListener('reading', function ({ serialNumber }) {
           if (document.getElementById('NfcCardRequestModal').classList.contains('MModalActive')) {
             if (Instance.selectedRowData.request_status == 'قيد المراجعة' && Instance.selectedRowData.request_type == 'اضافة' && (Instance.UserData.department_id == 1 || (Instance.UserData.department_id == 3 && Instance.selectedRowData.department_id == 3))) {
-              document.getElementById('NFCID').querySelector('input').value = serialNumber;
+              document.getElementById('NFCID').querySelector('input').value = serialNumber
             }
           }
-        });
-      }
-      catch {
+        })
+      } catch {
         if (typeof ufRequest !== 'function') {
-          return;
+          return
         }
-        ufRequest("ReaderOpen", function () { });
+        ufRequest('ReaderOpen', function () {})
         setInterval(function () {
           ufRequest('GetCardIdEx', function () {
             var serialNumber = ufResponse().CardUid
             if (typeof serialNumber != 'undefined') {
-              serialNumber = parseInt(ufResponse().CardUid).toString(16).match(/.{1,2}/g).join(':').toLowerCase();
+              serialNumber = parseInt(ufResponse().CardUid)
+                .toString(16)
+                .match(/.{1,2}/g)
+                .join(':')
+                .toLowerCase()
               if (document.getElementById('NfcCardRequestModal').classList.contains('MModalActive')) {
                 if (Instance.selectedRowData.request_status == 'قيد المراجعة' && Instance.selectedRowData.request_type == 'اضافة' && (Instance.UserData.department_id == 1 || (Instance.UserData.department_id == 3 && Instance.selectedRowData.department_id == 3))) {
-                  document.getElementById('NFCID').querySelector('input').value = serialNumber;
+                  document.getElementById('NFCID').querySelector('input').value = serialNumber
                 }
               }
             }

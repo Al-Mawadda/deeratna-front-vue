@@ -171,6 +171,12 @@ const router = createRouter({
       name: 'send-deeratna-notification',
       meta: { RequiresAuth: true, HeaderTitle: 'ارسال اشعار ديرتنا ' },
     },
+    {
+      path: '/ads/send-whatsapp-message',
+      component: () => import('../views/ads/SendWhatsAppMessage.vue'),
+      name: 'send-whatsapp-message',
+      meta: { RequiresAuth: true, HeaderTitle: 'ارسال رسائل وتس اب ' },
+    },
     //#endregion
 
     //#region Requests
@@ -206,8 +212,7 @@ const router = createRouter({
     },
     {
       path: '/internet-maintenance-requests',
-      component: () =>
-        import('../views/requests/internetMaintenanceRequest.vue'),
+      component: () => import('../views/requests/internetMaintenanceRequest.vue'),
       name: 'internetmaintenanceRequest',
       meta: { RequiresAuth: true, HeaderTitle: 'صيانة الانترنيت' },
     },
@@ -347,7 +352,7 @@ const router = createRouter({
       name: 'Users',
       meta: {
         RequiresAuth: true,
-        HeaderTitle: 'ادارة المستخدمين'
+        HeaderTitle: 'ادارة المستخدمين',
       },
     },
     {
@@ -439,12 +444,45 @@ const router = createRouter({
       name: 'maintenanceList',
       meta: { RequiresAuth: true, HeaderTitle: 'قائمة الصيانات' },
     },
+    {
+      path: '/localmanagement/maintenance_accounts',
+      component: () => import('../views/LocalManagement/maintenanceRequestManagment.vue'),
+      name: 'maintenanceRequestManagment',
+      meta: { RequiresAuth: true, HeaderTitle: 'طلبات الصيانة' },
+    },
     //#endregion
+
+    //#region Reports
+    {
+      path: '/reports/payments',
+      component: () => import('../views/reports/PaymentsTotal.vue'),
+      name: 'paymentsTotal',
+      meta: { RequiresAuth: true, HeaderTitle: 'التقارير' },
+    },
+    {
+      path: '/reports/payments_by_compound',
+      component: () => import('../views/reports/PaymentsByCompound.vue'),
+      name: 'PaymentsByCompound',
+      meta: { RequiresAuth: true, HeaderTitle: 'التقارير' },
+    },
+    {
+      path: '/reports/payment_by_payment_companies',
+      component: () => import('../views/reports/PaymentByPaymentCompanies.vue'),
+      name: 'PaymentByPaymentCompanies',
+      meta: { RequiresAuth: true, HeaderTitle: 'التقارير' },
+    },
+    {
+      path: '/reports/payment_maintenance_changes',
+      component: () => import('../views/reports/PaymentMaintenanceChanges.vue'),
+      name: 'PaymentMaintenanceChanges',
+      meta: { RequiresAuth: true, HeaderTitle: 'التقارير' },
+    },
+    //#endregion Reports
   ],
 })
 
 router.beforeEach((to, from, next) => {
-  const GlobalsStore = useGlobalsStore();
+  const GlobalsStore = useGlobalsStore()
 
   if (to.meta.RequiresAuth && !GlobalsStore.IsAuthenticated) {
     next({ name: 'Login' })

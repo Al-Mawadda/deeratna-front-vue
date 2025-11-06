@@ -76,46 +76,42 @@
 
       <!-- ========= Btn ===============-->
       <div class="ModalButtons">
+        <div v-show="selectedRowData.type_description != 'ثابتة' && (selectedRowData.price == 0 || selectedRowData.request_status == 'دفع الكتروني')" class="MButton" id="ReceiptOfOrderPaymentKashBTN" @click="ReceiptOfOrderPaymentKash()">استلام المبلغ كاش</div>
+
         <!-- ============= الثابته ==============-->
-        <div v-show="selectedRowData.type_description == 'ثابتة' && selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="AcceptConstantBTN" @click="AcceptConstantRequest()">موافق (ثابته)</div>
+        <!-- <div v-show="selectedRowData.type_description == 'ثابتة' && selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="AcceptConstantBTN" @click="AcceptConstantRequest()">موافق (ثابته)</div> -->
         <div v-show="selectedRowData.type_description == 'ثابتة' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status != 'تم الانجاز'" class="MButton" id="CloseConstantRequestBTN" @click="CloseConstantRequest()">تحديث وغلق الطلب (ثابتة)</div>
 
         <!-- ============== اخــرى ============= -->
         <!-- موافق تحويل الى كشف -->
-        <div v-show="isVisable && selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptToDetectionBTN" @click="AcceptToDetectionRequest()">موافق (تحويل الى كشف)</div>
-
-        <!-- موافق تحديد يوم العمل (تم دفع المبلغ كاش) -->
-        <div v-show="isVisable && selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status == 'غير منجز' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptMaintenanceDateSpecifiedBTN" @click="AcceptMaintenanceDateSpecifiedRequest()">موافق (تحديد يوم العمل)</div>
-
+        <!-- <div v-show="isVisable && selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptToDetectionBTN" @click="AcceptToDetectionRequest()">موافق (تحويل الى كشف)</div> -->
         <!-- موافق تحويل الى دفع الكتروني -->
-        <div v-show="isVisable && selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptToPayBTN" @click="AcceptToPayRequest()">موافق (تحويل الى دفع الكتروني)</div>
+        <!-- <div v-show="isVisable && selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptToPayBTN" @click="AcceptToPayRequest()">موافق (تحويل الى دفع الكتروني)</div> -->
 
-        <!-- >تحويل من كشف الى تم الانجاز ('طلبات دون مبلغ')-->
-        <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد الكشف'" class="MButton" id="ConvertFromDetectionToAnjazAndPaymentRequestBTN" @click="ConvertFromDetectionToAnjazAndPaymentRequest()">تحويل من كشف الى تم الانجاز ('طلبات دون مبلغ')</div>
-        <!-- >تحويل من كشف الى دفع الكتروني-->
-        <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد الكشف'" class="MButton" id="ConvertFromDetectionToPaymentRequestBTN" @click="ConvertFromDetectionToPaymentRequest()">تحويل من كشف الى دفع الكتروني</div>
-
-        <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'دفع الكتروني' && selectedRowData.completion_status == 'تم الانجاز'" class="MButton" id="CloseOtherRequestBTN" @click="CloseOtherRequest()">استلام المبلغ كاش وغلق الطلب</div>
+        <!-- <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد الكشف'" class="MButton" id="ConvertFromDetectionToAnjazAndPaymentRequestBTN" @click="ConvertFromDetectionToAnjazAndPaymentRequest()">تحويل من كشف الى تم الانجاز ودفع الكتروني</div>
+        <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'دفع الكتروني' && selectedRowData.completion_status == 'تم الانجاز'" class="MButton" id="CloseOtherRequestBTN" @click="CloseOtherRequest()">استلام المبلغ كاش وغلق الطلب</div> -->
         <!-- اعادة قيد المراجعة -->
-        <div v-show="selectedRowData.type_description == 'اخرى' && (selectedRowData.request_status == 'قيد الكشف' || (selectedRowData.request_status == 'دفع الكتروني' && selectedRowData.completion_status == 'تم الانجاز'))" class="MButton" id="ReturnToUnderReviewBTN" @click="ReturnToUnderReview()">
+        <!-- <div v-show="selectedRowData.type_description == 'اخرى' && (selectedRowData.request_status == 'قيد الكشف' || (selectedRowData.request_status == 'دفع الكتروني' && selectedRowData.completion_status == 'تم الانجاز'))" class="MButton" id="ReturnToUnderReviewBTN" @click="ReturnToUnderReview()">
           {{ selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'دفع الكتروني' && selectedRowData.completion_status == 'تم الانجاز' ? 'تحديث السعر' : 'اعادة الى قيد المراجعة' }}
-        </div>
+        </div> -->
         <!-- غلق الطلب  -->
-        <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status != 'تم الانجاز' && (selectedRowData.pay_type == 'الكتروني' || selectedRowData.pay_type == 'كاش')" class="MButton" id="ConvertToAnjazAndCloseRequestBTN" @click="ConvertToAnjazAndCloseRequest()">تحويل الى انجاز وغلق الطلب</div>
+        <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status != 'تم الانجاز' && selectedRowData.pay_type == 'الكتروني'" class="MButton" id="ConvertToAnjazAndCloseRequestBTN" @click="ConvertToAnjazAndCloseRequest()">تحويل الى انجاز وغلق الطلب</div>
 
         <!-- ================ التغييرات ==========-->
         <!-- موافق تحويل الى تغييرات واستلام كاش -->
         <div v-show="isVisable == false && selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptAndConvertToChangesBTN" @click="AcceptAndConvertToChangesRequest()">موافق (تحويل الى تغييرات)</div>
         <div v-show="selectedRowData.type_description == 'تغييرات' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="ReceiveTheAmountRequestBTN" @click="ReceiveTheAmountRequest()">استلام المبلغ كاش</div>
         <div v-show="selectedRowData.type_description == 'تغييرات' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status == 'غير منجز' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="InputPayChangeAndCloseBTN" @click="InputPayChangeAndCloseRequest()">ادخال المصروف وغلق الطلب</div>
-        <!-- <div v-show="selectedRowData.request_status != 'قيد المراجعة'" class="MButton" id="PrintReceiptBTN" @click="PrintReceipt()">طباعة وصل قبض</div> -->
+        <!-- <div v-show="selectedRowData.type_description == 'تغييرات' && selectedRowData.completion_status == 'غير منجز'" class="MButton" id="PrintReceiptBTN" @click="PrintReceipt()">طباعة وصل قبض</div> -->
+
+        <div v-show="selectedRowData.price != 0" class="MButton" id="PrintReceiptBTN" @click="PrintReceipt()">طباعة وصل قبض</div>
 
         <!-- ================== -->
 
         <!--  رفـــض  -->
-        <div v-show="isVisable && selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN" @click="RejectRequest">رفض</div>
+        <!-- <div v-show="isVisable && selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN" @click="RejectRequest">رفض</div> -->
         <!--  ارسال اشعار  -->
-        <div v-show="selectedRowData.request_status != 'تم الدفع'" class="MButton" id="SendNotificationBTN" @click="SendNotificationRequest">ارسال اشعار الى الساكن</div>
+        <!-- <div v-show="selectedRowData.request_status != 'تم الدفع'" class="MButton" id="SendNotificationBTN" @click="SendNotificationRequest">ارسال اشعار الى الساكن</div> -->
       </div>
     </MModal>
 
@@ -408,18 +404,18 @@ export default {
       }.bind(this)
     )
     // RejectBTN
-    document.getElementById('RejectBTN').addEventListener(
-      'click',
-      function () {
-        this.MaintenanceRequestRejectModal.Show()
-      }.bind(this)
-    )
-    document.getElementById('SendNotificationBTN').addEventListener(
-      'click',
-      function () {
-        this.MaintenanceRequestSendNotificationModal.Show()
-      }.bind(this)
-    )
+    // document.getElementById('RejectBTN').addEventListener(
+    //   'click',
+    //   function () {
+    //     this.MaintenanceRequestRejectModal.Show()
+    //   }.bind(this)
+    // )
+    // document.getElementById('SendNotificationBTN').addEventListener(
+    //   'click',
+    //   function () {
+    //     this.MaintenanceRequestSendNotificationModal.Show()
+    //   }.bind(this)
+    // )
   },
   methods: {
     computeNet(row) {
@@ -471,6 +467,42 @@ export default {
         })
         .catch(error => {
           ShowMessage(error)
+        })
+    },
+
+    // الادارةه المحلية
+
+    ReceiptOfOrderPaymentKash() {
+      ShowLoading()
+      var Parameters = new FormData()
+      Parameters.append('RequestID', this.selectedRowData.id)
+      Parameters.append('pid', this.selectedRowData.pid)
+      Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
+      Parameters.append('note', document.getElementById('note').querySelector('input').value)
+      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
+
+      api
+        .post('ReceiptOfOrderPaymentKashWithoutAccept', Parameters, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          HideLoading()
+          if (response.data.success == true) {
+            this.MaintenanceRequestsTB.LoadMTable()
+            this.MaintenanceRequestModal.Hide()
+          } else {
+            HideLoading()
+            ShowMessage(response.data.message)
+          }
+        })
+        .catch(error => {
+          HideLoading()
+          if (error.response && error.response.status === 422) {
+            const firstError = Object.values(error.response.data.errors)[0][0]
+            ShowMessage(firstError)
+          } else ShowMessage('حدث خطأ غير متوقع')
         })
     },
 
@@ -578,38 +610,6 @@ export default {
           } else ShowMessage('حدث خطأ غير متوقع')
         })
     },
-    AcceptMaintenanceDateSpecifiedRequest() {
-      ShowLoading()
-      var Parameters = new FormData()
-      Parameters.append('RequestID', this.selectedRowData.id)
-      Parameters.append('pid', this.selectedRowData.pid)
-      Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
-      Parameters.append('note', document.getElementById('note').querySelector('input').value)
-
-      api
-        .post('AcceptMaintenanceDateSpecified', Parameters, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then(response => {
-          HideLoading()
-          if (response.data.success == true) {
-            this.MaintenanceRequestsTB.LoadMTable()
-            this.MaintenanceRequestModal.Hide()
-          } else {
-            HideLoading()
-            ShowMessage(response.data.message)
-          }
-        })
-        .catch(error => {
-          HideLoading()
-          if (error.response && error.response.status === 422) {
-            const firstError = Object.values(error.response.data.errors)[0][0]
-            ShowMessage(firstError)
-          } else ShowMessage('حدث خطأ غير متوقع')
-        })
-    },
     AcceptToPayRequest() {
       ShowLoading()
       var Parameters = new FormData()
@@ -618,39 +618,6 @@ export default {
       Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
       Parameters.append('note', document.getElementById('note').querySelector('input').value)
       Parameters.append('price', document.getElementById('Price').querySelector('input').value)
-      api
-        .post('AcceptToPayMaintenanceRequest', Parameters, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then(response => {
-          HideLoading()
-          if (response.data.success == true) {
-            this.MaintenanceRequestsTB.LoadMTable()
-            this.MaintenanceRequestModal.Hide()
-          } else {
-            HideLoading()
-            ShowMessage(response.data.message)
-          }
-        })
-        .catch(error => {
-          HideLoading()
-          if (error.response && error.response.status === 422) {
-            const firstError = Object.values(error.response.data.errors)[0][0]
-            ShowMessage(firstError)
-          } else ShowMessage('حدث خطأ غير متوقع')
-        })
-    },
-    ConvertFromDetectionToPaymentRequest() {
-      ShowLoading()
-      var Parameters = new FormData()
-      Parameters.append('RequestID', this.selectedRowData.id)
-      Parameters.append('pid', this.selectedRowData.pid)
-      Parameters.append('maintenance_detail', this.selectedRowData.maintenance_detail)
-      Parameters.append('note', document.getElementById('note').querySelector('input').value)
-      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
-
       api
         .post('AcceptToPayMaintenanceRequest', Parameters, {
           headers: {
@@ -1152,11 +1119,11 @@ export default {
 #MaintenanceRequestsFromDate {
   max-width: 400px;
 }
-#RejectBTN {
+/* #RejectBTN {
   background-color: red;
 }
 #RejectBTN:hover {
   color: red;
   background-color: var(--MButtonBG);
-}
+} */
 </style>
