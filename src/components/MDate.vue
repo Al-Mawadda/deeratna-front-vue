@@ -439,8 +439,6 @@ export default {
 
             Instance.ArrayToInput()
             Instance.InputValidate();
-            const MDateValueChange = new CustomEvent('MDateValueChange');
-            Instance.Element.dispatchEvent(MDateValueChange);
 
             Instance.Element.querySelector('.MDatePicker').style.display = 'none';
           }
@@ -473,8 +471,6 @@ export default {
 
             Instance.ArrayToInput();
             Instance.InputValidate();
-            const MDateValueChange = new CustomEvent('MDateValueChange');
-            Instance.Element.dispatchEvent(MDateValueChange);
           }
 
           Instance.PickerSelect();
@@ -534,18 +530,15 @@ export default {
 
         Instance.ArrayToInput();
         Instance.InputValidate();
-        const MDateValueChange = new CustomEvent('MDateValueChange');
-        Instance.Element.dispatchEvent(MDateValueChange);
       }
     },
     Clear() {
-      var Instance = this;
+      let Instance = this;
       Instance.SelectedDates = [];
       Instance.Element.querySelectorAll('.MDateInput').forEach(function (e) {
         e.value = '';
       });
-      const MDateValueChange = new CustomEvent('MDateValueChange');
-      Instance.Element.dispatchEvent(MDateValueChange);
+      Instance.Element.removeAttribute('valid');
     },
     Disable() {
       this.IsDisabled = true;
@@ -761,8 +754,6 @@ export default {
 
         this.MDatePickerBuild(YearTo, MonthTo);
       }
-      const MDateValueChange = new CustomEvent('MDateValueChange');
-      this.Element.dispatchEvent(MDateValueChange);
     },
     ShowMDatePicker() {
       const targetDiv = this.Element.querySelector('.MDatePicker');

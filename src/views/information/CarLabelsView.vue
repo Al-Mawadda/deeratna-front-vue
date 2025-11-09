@@ -23,70 +23,54 @@ export default {
       CarLabelsTBData: ref([]),
       CarLabelsTBColumns: [
         {
-          name: 'userId',
+          name: 'pid',
           label: '#',
         },
         {
-          name: 'userName',
+          name: 'name',
           label: 'الاسم',
         },
         {
-          name: 'cityName',
+          name: 'real_estates.compound',
           label: 'المدينة',
           filter: 'combo',
           filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
         },
         {
-          name: 'address',
+          name: 'real_estates.address',
           label: 'العنوان',
         },
         {
-          name: 'cardNumber',
-          label: 'رقم الملصق',
+          name: 'label_code',
+          label: 'رمز الملصق',
         },
         {
-          name: 'carNum',
+          name: 'number',
           label: 'رقم العجلة',
         },
         {
-          name: 'carDet',
+          name: 'details',
           label: 'تفاصيل العجلة',
         },
         {
-          name: 'objectt',
-          label: 'الصفة',
+          name: 'label_status',
+          label: 'الحالة',
         },
         {
-          name: 'privilege',
-          label: 'الصلاحية',
-        },
-                {
-          name: 'issDate',
-          label: 'تاريخ الانشاء',
-        },
-                {
-          name: 'expireDate',
+          name: 'label_expire',
           label: 'تاريخ الانتهاء',
         },
         {
-          name: 'phoneNum',
+          name: 'phone',
           label: 'رقم الهاتف',
         },
         {
-          name: 'reson',
+          name: 'label_suspension_reason',
           label: 'سبب التوقف',
         },
         {
-          name: 'note',
-          label: 'الملاحظات',
-        },
-        {
-          name: 'noteSp',
-          label: 'الملاحظات الخاصة',
-        },
-        {
-          name: 'isDelete',
-          label: 'محذوف',
+          name: 'attributes.attribute',
+          label: 'الصفة',
         },
       ],
       CarLabelsTBRowsCount: ref(0),

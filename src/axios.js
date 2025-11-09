@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const api = axios.create({
-  //baseURL: 'http://localhost:8000/api/',
-  baseURL: 'https://app.deeratna.net/backend/public/api/',
+  baseURL: 'http://localhost:8000/api/',
+  //baseURL: 'https://app.deeratna.net/backend/public/api/',
   //baseURL: 'https://test.deeratna.net/backend/public/api/',
   headers: {
     'Content-Type': 'application/json',
