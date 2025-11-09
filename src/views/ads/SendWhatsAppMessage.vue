@@ -1,6 +1,7 @@
 <template>
   <div class="ComponentWrapper">
     <MModal ref="MaintenanceRequestModal" :Name="'MaintenanceRequestModal'" :Title="'اضافة'">
+      <MComboBox ref="SendingType" :Name="'SendingType'" :Label="'نوع الارسال *'" :Items="SendingTypeItems"></MComboBox>
       <MComboBox ref="CompoundsModel" :Name="'CompoundsModel'" :Label="' اسم المدينة *'" :Items="CompoundsModelItems"></MComboBox>
       <div class="MField" id="template_id">
         <input ref="template_id" type="text" required />
@@ -70,7 +71,8 @@ export default {
       CompoundsItems: ref([]),
       CompoundsModel: ref(null),
       CompoundsModelItems: ref([]),
-
+      SendingType: ref(null),
+      SendingTypeItems: ref([]),
       MaintenanceRequestsTB: ref(null),
       MaintenanceRequestsTBData: ref([]),
       MaintenanceRequestModal: ref(null),
@@ -108,6 +110,7 @@ export default {
   mounted() {
     this.CompoundsItems = this.GlobalsStore.ComboBoxes['Compounds']
     this.CompoundsModelItems = this.GlobalsStore.ComboBoxes['Compounds']
+    this.SendingTypeItems = this.GlobalsStore.ComboBoxes['SendingType']
 
     this.MaintenanceRequestsTB.LoadMTable()
 
@@ -126,7 +129,7 @@ export default {
         // document.getElementById('PriceSpent').querySelector('input').value = this.selectedRowData.price_spent
 
         //this.MaintenanceType.Set(this.selectedRowData.type_description)
-        // this.MaintenanceRequestTimeTBData = this.selectedRowData.maintenance_time
+        //this.MaintenanceRequestTimeTBData = this.selectedRowData.maintenance_time
 
         this.MaintenanceRequestModal.Show()
       }.bind(this)
@@ -189,6 +192,7 @@ export default {
     SendNotificationTwilio() {
       ShowLoading()
       var Parameters = new FormData()
+      Parameters.append('SendingType', document.getElementById('SendingType').querySelector('input').value)
       Parameters.append('compounds', JSON.stringify(this.CompoundsModel.Get('MCBIName')))
       Parameters.append('template_id', document.getElementById('template_id').querySelector('input').value)
 
