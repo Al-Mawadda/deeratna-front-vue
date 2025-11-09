@@ -544,6 +544,9 @@ export default {
     document.getElementById('InformationRequestsTB').addEventListener('ViewItem', function (data) {
       Instance.selectedRowData = Instance.selectedRowData = data.detail.RowData
       Instance.Cars = data.detail.RowData['cars'].filter(e => e.action_type !== '');
+      Instance.Cars.forEach(e => {
+        e.action_type = { ADD: 'اضافة', EDIT: 'تعديل', DELETE: 'حذف' }[e.action_type] ?? e.action_type;
+      });
       Instance.RquestCarsTBData = Instance.Cars;
       Instance.InformationRequestModal.Show()
     }.bind(this))
