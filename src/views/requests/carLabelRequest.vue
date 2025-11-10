@@ -132,7 +132,7 @@
           :Disabled="!(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
           :Name="'Amal2-1Box'" :Label="'الامل 2-البوابة 1'"></MCheckBox>
         <MCheckBox
-          :Disabled="true || !(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
+          :Disabled="!(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
           :Name="'Amal2-2Box'" :Label="'الامل 2-البوابة 2'"></MCheckBox>
         <MCheckBox
           :Disabled="!(selectedRowData.request_status == 'تم الدفع' && (UserData.department_id == 1 || (UserData.department_id == 3 && selectedRowData.department_id == 3)))"
