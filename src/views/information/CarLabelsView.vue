@@ -40,9 +40,13 @@ export default {
           name: 'real_estates.address',
           label: 'العنوان',
         },
+                {
+          name: 'real_estates.relation',
+          label: 'العلاقة',
+        },
         {
-          name: 'label_code',
-          label: 'رمز الملصق',
+          name: 'real_estates.guardian_name',
+          label: 'اسم صاحب العقار',
         },
         {
           name: 'number',
@@ -55,10 +59,6 @@ export default {
         {
           name: 'label_status',
           label: 'الحالة',
-        },
-        {
-          name: 'label_expire',
-          label: 'تاريخ الانتهاء',
         },
         {
           name: 'phone',
