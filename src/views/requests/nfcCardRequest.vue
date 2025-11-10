@@ -476,7 +476,7 @@ export default {
         ndef.removeEventListener('reading', null);
         ndef.addEventListener("reading", function ({ serialNumber }) {
           if (document.getElementById('NfcCardRequestModal').classList.contains('MModalActive')) {
-            if (Instance.selectedRowData.request_status == 'قيد المراجعة' && Instance.selectedRowData.request_type == 'اضافة' && (Instance.UserData.department_id == 1 || (Instance.UserData.department_id == 3 && Instance.selectedRowData.department_id == 3))) {
+            if (Instance.selectedRowData.request_status == 'تم الدفع' && Instance.selectedRowData.request_type == 'اضافة' && (Instance.UserData.department_id == 1 || (Instance.UserData.department_id == 3 && Instance.selectedRowData.department_id == 3))) {
               document.getElementById('NFCID').querySelector('input').value = serialNumber;
             }
           }
