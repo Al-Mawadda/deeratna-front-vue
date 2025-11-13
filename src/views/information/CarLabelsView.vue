@@ -183,7 +183,7 @@ export default {
   .logo { display:flex; justify-content:center; align-items:center; }
   .logo img { width: 28mm; height: 28mm; object-fit: contain; filter: drop-shadow(0 0 1px rgba(0,0,0,.3)); }
   .meta-box { position:absolute; right: 6mm; bottom: 4mm; background: rgba(255,255,255,.92); border: 1px solid #333; border-radius: 1.5mm; padding: 1.5mm 3mm; font-weight:700; font-size: 3.5mm; }
-  .details { position:absolute; left: 8mm; right: 8mm; top: 30%; border:1px solid #ccc; border-radius: 2mm; display:grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .details { position:absolute; left: 8mm; right: 8mm; top: 35%; border:1px solid #ccc; border-radius: 2mm; display:grid; grid-template-columns: 1fr 1fr; gap: 0; }
   .col { padding: 5mm 6mm; border-inline-start: 1px solid #ddd; }
   .col:first-child { border-inline-start: none; }
   .row { display:grid; grid-template-columns: auto auto 1fr; align-items: baseline; column-gap: 4mm; margin: 4mm 0; font-size: 3.8mm; }
