@@ -2308,11 +2308,7 @@ export default {
           ufRequest('GetCardIdEx', function () {
             var serialNumber = ufResponse().CardUid
             if (typeof serialNumber != 'undefined') {
-              serialNumber = parseInt(ufResponse().CardUid)
-                .toString(16)
-                .match(/.{1,2}/g)
-                .join(':')
-                .toLowerCase()
+              serialNumber = parseInt(ufResponse().CardUid).toString(16).match(/.{1,2}/g).join(':').toLowerCase();
               if (!Instance.NFCID || Instance.NFCID == '') {
                 Instance.NFCID = serialNumber
               }
