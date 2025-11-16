@@ -1,11 +1,8 @@
 <template>
   <div class="ComponentWrapper">
     <!-- ========= InternetRequest Model======== -->
-
-    <MModal ref="InternetRequestModal" :Name="'InternetRequestModal'"
-      :Title="' طلب ' + selectedRowData.request_type + ' اشتراك انترنت ' + selectedRowData.name">
+    <MModal ref="InternetRequestModal" :Name="'InternetRequestModal'" :Title="' طلب ' + selectedRowData.request_type + ' اشتراك انترنت ' + selectedRowData.name">
       <!-- ============= details Table =============== -->
-
       <table cellpadding="0" cellspacing="0" class="RequestsMTable">
         <thead>
           <tr>
@@ -14,8 +11,6 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Shared Columns (Always Visible) -->
-
           <tr>
             <td>الاسم</td>
             <td>{{ selectedRowData.name }}</td>
@@ -24,7 +19,6 @@
             <td>المدينة</td>
             <td>{{ selectedRowData.compound }}</td>
           </tr>
-
           <tr>
             <td>العنوان</td>
             <td>{{ selectedRowData.address }}</td>
@@ -61,42 +55,39 @@
             <td>تاريخ الطلب</td>
             <td>{{ selectedRowData.created_at }}</td>
           </tr>
-          <!-- Rejection Reason -->
           <tr v-if="selectedRowData.rejection_reason != ''">
             <td>سبب الرفض</td>
             <td>{{ selectedRowData.rejection_reason }}</td>
           </tr>
         </tbody>
       </table>
+
       <div class="MField" id="SubscriberName">
         <input :Disabled="selectedRowData.request_status == 'تم'" type="text" required />
         <label>اسم المشترك</label>
         <div class="MFieldBG"></div>
       </div>
+
       <div class="MField" id="SubscriberPhone" v-OnlyNumbers>
         <input :Disabled="selectedRowData.request_status == 'تم'" type="text" required />
         <label>رقم هاتف الاشتراك</label>
         <div class="MFieldBG"></div>
       </div>
-      <MComboBox :Clearable="true" :Disabled="selectedRowData.request_status == 'تم'" ref="CompanyName"
-        :Name="'CompanyName'" :Label="' اسم الشركة *'" :Items="CompanyNamesItems" :ItemsName="'company_name'">
-      </MComboBox>
-      <MComboBox :Clearable="true" :Disabled="selectedRowData.request_status == 'تم'" ref="SubscriptionType"
-        :Name="'SubscriptionType'" :Label="' نوع الاشتراك *'" :Items="SubscriptionTypeItems"
-        :ItemsName="'subscription_type'"></MComboBox>
+
+      <MComboBox :Clearable="true" :Disabled="selectedRowData.request_status == 'تم'" ref="CompanyName" :Name="'CompanyName'" :Label="' اسم الشركة *'" :Items="CompanyNamesItems" :ItemsName="'company_name'" />
+      <MComboBox :Clearable="true" :Disabled="selectedRowData.request_status == 'تم'" ref="SubscriptionType" :Name="'SubscriptionType'" :Label="' نوع الاشتراك *'" :Items="SubscriptionTypeItems" :ItemsName="'subscription_type'" />
       <div class="MField" id="Price">
         <input type="text" required disabled />
         <label>السعر</label>
         <div class="MFieldBG"></div>
       </div>
-      <MDate v-show="selectedRowData.request_type == 'تجديد'" ref="InternetActivationDate"
-        :Name="'InternetActivationDate'" :Label="'تاريخ التفعيل'"></MDate>
-      <MDate v-show="selectedRowData.request_type == 'تجديد'" ref="InternetExpireDate" :Name="'InternetExpireDate'"
-        :Label="'تاريخ الانتهاء'"></MDate>
 
-      <!--========== The Images ==========-->
+      <!-- نستمع لحدث المكوّن + عندنا باك-أب -->
+      <MDate v-show="selectedRowData.request_type == 'تجديد'" ref="InternetActivationDate" :Name="'InternetActivationDate'" :Label="'تاريخ التفعيل'" @m-date-value-change="UpdateExpireFromActivation" @MDateValueChange="UpdateExpireFromActivation" />
+      <MDate v-show="selectedRowData.request_type == 'تجديد'" ref="InternetExpireDate" :Name="'InternetExpireDate'" :Label="'تاريخ الانتهاء'" />
+
+      <!--========== Images ==========-->
       <div v-show="selectedRowData.request_type != 'تجديد'" class="ImagesContainer">
-
         <div class="RequestImage" v-if="selectedRowData.id_image != ''">
           <div class="RequestImageTitle">بطاقة موحدة</div>
           <div class="RequestImagePreview" @click="ShowImage">
@@ -104,12 +95,14 @@
               <svg viewBox="0 0 1000 1000">
                 <path
                   d="M450.2565,36.0294c18.6849,2.9482,37.5594,5.0146,56.0247,8.9843C653.55,76.6735,769.4424,197.507,794.0276,345.7818c18.3481,110.6581-7.8676,210.2677-77.061,298.56-1.47,1.8753-2.8516,3.8192-4.6057,6.1761q38.9827,40.554,77.7513,80.8829,70.1942,72.9948,140.3751,146.0021c20.5779,21.4581,20.7684,51.8715.7262,71.1147-20.2148,19.409-50.1806,18.0733-70.9443-3.48Q753.6258,834.3367,647.148,723.4766c-2.08-2.1635-3.9735-4.5069-6.357-7.2263-7.1169,4.4964-13.6031,8.6938-20.1838,12.7375C404.2984,861.8989,117.8611,741.5022,61.5828,494.0268A374.2062,374.2062,0,0,1,279.3051,66.0859,359.6555,359.6555,0,0,1,394.45,37.5392a50.3221,50.3221,0,0,0,6.9671-1.51ZM426.2127,686.3013c152.993-.5451,276.6613-124.73,275.9217-277.0737-.7433-153.105-124.6084-276.1761-277.355-275.5773-152.2376.5968-275.5054,124.7523-275.0328,277.0133C150.22,563.0212,274.4127,686.8422,426.2127,686.3013Z"
-                  fill="white" />
+                  fill="white"
+                />
               </svg>
             </div>
             <img :src="IDImage" />
           </div>
         </div>
+
         <div class="RequestImage" v-if="selectedRowData.id_image_back != ''">
           <div class="RequestImageTitle">ضهر البطاقة الموحدة</div>
           <div class="RequestImagePreview" @click="ShowImage">
@@ -117,12 +110,14 @@
               <svg viewBox="0 0 1000 1000">
                 <path
                   d="M450.2565,36.0294c18.6849,2.9482,37.5594,5.0146,56.0247,8.9843C653.55,76.6735,769.4424,197.507,794.0276,345.7818c18.3481,110.6581-7.8676,210.2677-77.061,298.56-1.47,1.8753-2.8516,3.8192-4.6057,6.1761q38.9827,40.554,77.7513,80.8829,70.1942,72.9948,140.3751,146.0021c20.5779,21.4581,20.7684,51.8715.7262,71.1147-20.2148,19.409-50.1806,18.0733-70.9443-3.48Q753.6258,834.3367,647.148,723.4766c-2.08-2.1635-3.9735-4.5069-6.357-7.2263-7.1169,4.4964-13.6031,8.6938-20.1838,12.7375C404.2984,861.8989,117.8611,741.5022,61.5828,494.0268A374.2062,374.2062,0,0,1,279.3051,66.0859,359.6555,359.6555,0,0,1,394.45,37.5392a50.3221,50.3221,0,0,0,6.9671-1.51ZM426.2127,686.3013c152.993-.5451,276.6613-124.73,275.9217-277.0737-.7433-153.105-124.6084-276.1761-277.355-275.5773-152.2376.5968-275.5054,124.7523-275.0328,277.0133C150.22,563.0212,274.4127,686.8422,426.2127,686.3013Z"
-                  fill="white" />
+                  fill="white"
+                />
               </svg>
             </div>
             <img :src="IDImageBack" />
           </div>
         </div>
+
         <div class="RequestImage" v-if="selectedRowData.housing_image != ''">
           <div class="RequestImageTitle">بطاقة السكن</div>
           <div class="RequestImagePreview" @click="ShowImage">
@@ -130,12 +125,14 @@
               <svg viewBox="0 0 1000 1000">
                 <path
                   d="M450.2565,36.0294c18.6849,2.9482,37.5594,5.0146,56.0247,8.9843C653.55,76.6735,769.4424,197.507,794.0276,345.7818c18.3481,110.6581-7.8676,210.2677-77.061,298.56-1.47,1.8753-2.8516,3.8192-4.6057,6.1761q38.9827,40.554,77.7513,80.8829,70.1942,72.9948,140.3751,146.0021c20.5779,21.4581,20.7684,51.8715.7262,71.1147-20.2148,19.409-50.1806,18.0733-70.9443-3.48Q753.6258,834.3367,647.148,723.4766c-2.08-2.1635-3.9735-4.5069-6.357-7.2263-7.1169,4.4964-13.6031,8.6938-20.1838,12.7375C404.2984,861.8989,117.8611,741.5022,61.5828,494.0268A374.2062,374.2062,0,0,1,279.3051,66.0859,359.6555,359.6555,0,0,1,394.45,37.5392a50.3221,50.3221,0,0,0,6.9671-1.51ZM426.2127,686.3013c152.993-.5451,276.6613-124.73,275.9217-277.0737-.7433-153.105-124.6084-276.1761-277.355-275.5773-152.2376.5968-275.5054,124.7523-275.0328,277.0133C150.22,563.0212,274.4127,686.8422,426.2127,686.3013Z"
-                  fill="white" />
+                  fill="white"
+                />
               </svg>
             </div>
             <img :src="HousingImage" />
           </div>
         </div>
+
         <div class="RequestImage" v-if="selectedRowData.housing_image_back != ''">
           <div class="RequestImageTitle">ضهر بطاقة السكن</div>
           <div class="RequestImagePreview" @click="ShowImage">
@@ -143,26 +140,25 @@
               <svg viewBox="0 0 1000 1000">
                 <path
                   d="M450.2565,36.0294c18.6849,2.9482,37.5594,5.0146,56.0247,8.9843C653.55,76.6735,769.4424,197.507,794.0276,345.7818c18.3481,110.6581-7.8676,210.2677-77.061,298.56-1.47,1.8753-2.8516,3.8192-4.6057,6.1761q38.9827,40.554,77.7513,80.8829,70.1942,72.9948,140.3751,146.0021c20.5779,21.4581,20.7684,51.8715.7262,71.1147-20.2148,19.409-50.1806,18.0733-70.9443-3.48Q753.6258,834.3367,647.148,723.4766c-2.08-2.1635-3.9735-4.5069-6.357-7.2263-7.1169,4.4964-13.6031,8.6938-20.1838,12.7375C404.2984,861.8989,117.8611,741.5022,61.5828,494.0268A374.2062,374.2062,0,0,1,279.3051,66.0859,359.6555,359.6555,0,0,1,394.45,37.5392a50.3221,50.3221,0,0,0,6.9671-1.51ZM426.2127,686.3013c152.993-.5451,276.6613-124.73,275.9217-277.0737-.7433-153.105-124.6084-276.1761-277.355-275.5773-152.2376.5968-275.5054,124.7523-275.0328,277.0133C150.22,563.0212,274.4127,686.8422,426.2127,686.3013Z"
-                  fill="white" />
+                  fill="white"
+                />
               </svg>
             </div>
             <img :src="HousingImageBack" />
           </div>
         </div>
       </div>
+
       <div class="ModalButtons">
-        <div
-          v-show="(selectedRowData.request_type == 'نصب' && selectedRowData.request_status == 'قيد المراجعة') || (selectedRowData.request_type == 'تجديد' && selectedRowData.request_status != 'تم')"
-          class="MButton" id="AcceptBTN" @click="AcceptRequest()">موافق</div>
-        <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN"
-          @click="RejectRequest">رفض</div>
-        <div v-show="selectedRowData.request_type == 'نصب' || selectedRowData.request_type == 'تجديد'" class="MButton"
-          id="CloseRequestBTN" @click="CloseRequest()">تحديث وغلق الطلب</div>
+        <div v-show="(selectedRowData.request_type == 'نصب' && selectedRowData.request_status == 'قيد المراجعة') || (selectedRowData.request_type == 'تجديد' && selectedRowData.request_status != 'تم')" class="MButton" id="AcceptBTN" @click="AcceptRequest()">موافق</div>
+
+        <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN">رفض</div>
+
+        <div v-show="selectedRowData.request_type == 'نصب' || selectedRowData.request_type == 'تجديد'" class="MButton" id="CloseRequestBTN" @click="CloseRequest()">تحديث وغلق الطلب</div>
       </div>
     </MModal>
 
     <!-- ========= Reject Model======== -->
-
     <MModal ref="InternetRequestRejectModal" :Name="'InternetRequestRejectModal'" :Title="'رفض الطلب'">
       <div class="MField" id="RejectionReason">
         <input type="text" required />
@@ -175,28 +171,30 @@
     </MModal>
 
     <div class="MButton" id="GetInternetRequestsBTN">عرض البيانات</div>
+
     <div class="MGroup">
-      <MDate ref="InternetRequestsFromDate" :Name="'InternetRequestsFromDate'" :Label="'التاريخ'" :Range="true"
-        :Clearable="true"></MDate>
+      <MDate ref="InternetRequestsFromDate" :Name="'InternetRequestsFromDate'" :Label="'التاريخ'" :Range="true" :Clearable="true" />
     </div>
-    <MTable ref="InternetRequestsTB" :Name="'InternetRequestsTB'" :DataArray="InternetRequestsTBData"
-      :Columns="InternetRequestsTBColumns" :Sums="InternetRequestsTBSums" :GetDataFunction="GetInternetRequestsData"
-      :RowsCount="InternetRequestsTBRowsCount" :RowsPerPage="10">
+
+    <MTable ref="InternetRequestsTB" :Name="'InternetRequestsTB'" :DataArray="InternetRequestsTBData" :Columns="InternetRequestsTBColumns" :Sums="InternetRequestsTBSums" :GetDataFunction="GetInternetRequestsData" :RowsCount="InternetRequestsTBRowsCount" :RowsPerPage="10">
       <template v-slot:options>
-        <!-- View Videosdffhroif Option -->
         <div class="MTableOption" OptionEventName="ViewItem">
           <div class="MTableOptionIcon">
             <svg viewBox="0 0 1000 1000">
-              <path d="M500.2,249.6c124.1,1.1,233.2,42.7,328.2,122.1c39.6,33,72.3,72.7,106.8,110.6c9,9.9,8.7,25.5-0.8,36.4
+              <path
+                d="M500.2,249.6c124.1,1.1,233.2,42.7,328.2,122.1c39.6,33,72.3,72.7,106.8,110.6c9,9.9,8.7,25.5-0.8,36.4
   c-53.9,62.1-109.3,122.5-182.1,163.7c-66,37.4-136.2,60.8-212,66.4C399.6,759.2,276.4,716.6,169,626.3
   C130.9,594.3,99.2,556,66,519.3c-10-11-10.5-26-0.9-37.1c53.3-61.5,107.9-121.4,179.6-162.7c66.8-38.5,138-62.1,215.1-68.3
   C473.2,250.2,486.7,250.1,500.2,249.6z M504.7,308.1c-19.4,0.8-34.9,0.7-50.4,2.2c-61.5,6.1-119,24.8-173,54.6
   c-59.2,32.7-106.2,79.4-150.3,129.6c-4.1,4.7-3.1,8.1,0.7,12.1c21.3,22.2,40.9,45.9,63.9,66.5c86.2,77.3,186.4,118.2,302.7,118.9
   c68.3,0.4,133-14.2,194.7-43.2c70.8-33.3,126.2-85.4,176.6-143.7c4-4.6,2-7.9-1.3-11.3c-21.3-22.2-40.9-45.9-63.8-66.6
-  C718.1,349.4,617.3,308.9,504.7,308.1z" />
-              <path d="M392.3,499.7c0.2-59,49.3-108.3,108.1-107.4c60.6,0.9,107.4,47.4,107.2,108c-0.2,60.9-47.5,106.9-107.8,107.4
+  C718.1,349.4,617.3,308.9,504.7,308.1z"
+              />
+              <path
+                d="M392.3,499.7c0.2-59,49.3-108.3,108.1-107.4c60.6,0.9,107.4,47.4,107.2,108c-0.2,60.9-47.5,106.9-107.8,107.4
   C440.8,608.1,392.1,558.6,392.3,499.7z M500.2,556.5c30.5,0,56.4-25.9,56.4-56.4c0-30.6-25.7-56.5-56.2-56.6
-  c-31-0.1-56.9,25.8-56.8,56.8C443.8,530.8,469.7,556.6,500.2,556.5z" />
+  c-31-0.1-56.9,25.8-56.8,56.8C443.8,530.8,469.7,556.6,500.2,556.5z"
+              />
             </svg>
           </div>
           <div class="MTableOptionName">عرض</div>
@@ -206,9 +204,8 @@
   </div>
 </template>
 
-<!-- ======================================== -->
 <script>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { api, GetServerPath } from '../../axios'
 import { useGlobalsStore } from '../../stores/Globals.js'
 import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
@@ -216,7 +213,6 @@ import { ShowMessage, ShowLoading, HideLoading } from '@/MJS.js'
 export default {
   setup() {
     const GlobalsStore = ref(useGlobalsStore())
-
     return {
       IDImage: ref(''),
       InternetActivationDate: ref(null),
@@ -235,177 +231,163 @@ export default {
       InternetRequestsTB: ref(null),
       InternetRequestsTBData: ref([]),
       InternetRequestsTBColumns: [
-        {
-          name: 'id',
-          label: '#',
-        },
-        {
-          name: 'pid',
-          label: 'الرقم',
-        },
-        {
-          name: 'compound',
-          label: 'المدينة',
-          filter: 'combo',
-          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
-        },
-        {
-          name: 'subscriber_name',
-          label: 'اسم المشترك',
-        },
-        {
-          name: 'address',
-          label: 'العنوان',
-        },
-        {
-          name: 'subscriber_phone',
-          label: 'رقم هاتف الاشتراك',
-        },
-        {
-          name: 'company_name',
-          label: 'الشركة',
-        },
-        {
-          name: 'subscription_type',
-          label: 'نوع الاشتراك',
-        },
-        {
-          name: 'price',
-          label: 'المبلغ',
-          sum: true,
-          type: 'currency',
-        },
-        {
-          name: 'internet_activation_date',
-          label: 'تاريخ التفعيل',
-          filter: 'date',
-        },
-        {
-          name: 'internet_expire_date',
-          label: 'تاريخ الانتهاء',
-          filter: 'date',
-        },
-        {
-          name: 'request_type',
-          label: 'نوع الطلب',
-        },
-        {
-          name: 'request_status',
-          label: 'حالة الطلب',
-        },
-        {
-          name: 'created_at',
-          label: 'التاريخ',
-          filter: 'date',
-        },
+        { name: 'id', label: '#' },
+        { name: 'pid', label: 'الرقم' },
+        { name: 'compound', label: 'المدينة', filter: 'combo', filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [] },
+        { name: 'subscriber_name', label: 'اسم المشترك' },
+        { name: 'address', label: 'العنوان' },
+        { name: 'subscriber_phone', label: 'رقم هاتف الاشتراك' },
+        { name: 'company_name', label: 'الشركة' },
+        { name: 'subscription_type', label: 'نوع الاشتراك' },
+        { name: 'price', label: 'المبلغ', sum: true, type: 'currency' },
+        { name: 'internet_activation_date', label: 'تاريخ التفعيل', filter: 'date' },
+        { name: 'internet_expire_date', label: 'تاريخ الانتهاء', filter: 'date' },
+        { name: 'request_type', label: 'نوع الطلب' },
+        { name: 'request_status', label: 'حالة الطلب' },
+        { name: 'created_at', label: 'التاريخ', filter: 'date' },
       ],
       InternetRequestsTBSums: ref([]),
       InternetRequestsTBRowsCount: ref(0),
       InternetRequestsFromDate: ref(null),
       selectedRowData: ref([]),
       ServerPath: GetServerPath(),
+
+      // مراقبة قيمة التفعيل لضمان التحديث دائمًا
+      ActivationWatchTimer: ref(null),
+      LastActivationValue: ref(''),
     }
   },
+
   mounted() {
     this.InternetRequestsTB.LoadMTable()
     this.GetInternetProfilesData()
-    // display Data between two date
-    document.getElementById('GetInternetRequestsBTN').addEventListener(
-      'click',
-      function () {
-        ShowLoading()
-        this.InternetRequestsTB.ReLoadMTable()
-        HideLoading()
-      }.bind(this)
-    )
-    // View Requist
-    document.getElementById('InternetRequestsTB').addEventListener(
-      'ViewItem',
-      function (data) {
-        this.selectedRowData = this.selectedRowData = data.detail.RowData
 
-        this.InternetActivationDate.Clear()
-        this.InternetExpireDate.Clear()
-        document.getElementById('SubscriberName').querySelector('input').value = this.selectedRowData.subscriber_name
-        document.getElementById('SubscriberPhone').querySelector('input').value = this.selectedRowData.subscriber_phone
+    // زر عرض البيانات
+    document.getElementById('GetInternetRequestsBTN').addEventListener('click', () => {
+      ShowLoading()
+      this.InternetRequestsTB.ReLoadMTable()
+      HideLoading()
+    })
+
+    // فتح المودال عند اختيار صف
+    document.getElementById('InternetRequestsTB').addEventListener('ViewItem', data => {
+      this.selectedRowData = data.detail.RowData
+
+      this.InternetActivationDate.Clear()
+      this.InternetExpireDate.Clear()
+
+      document.getElementById('SubscriberName').querySelector('input').value = this.selectedRowData.subscriber_name
+      document.getElementById('SubscriberPhone').querySelector('input').value = this.selectedRowData.subscriber_phone
+
+      this.CompanyName.Set(this.selectedRowData.company_name, 'company_name')
+      this.SubscriptionType.Set(this.selectedRowData.subscription_type, 'subscription_type')
+      document.getElementById('Price').querySelector('input').value = 0
+
+      // ضبط مبدئي لتواريخ التجديد
+      if (this.selectedRowData.request_type == 'تجديد' && this.selectedRowData.request_status == 'قيد المراجعة') {
+        this.SuppressExpireSync = true
+        const now = new Date()
+        this.InternetActivationDate.Set(this.formatDateLocal(now))
+        const expire = new Date(now)
+        expire.setDate(expire.getDate() + 30)
+        this.InternetExpireDate.Set(this.formatDateLocal(expire))
+        this.SuppressExpireSync = false
+      }
+
+      if (this.selectedRowData.request_type == 'تجديد' && this.selectedRowData.request_status == 'تم') {
+        this.SuppressExpireSync = true
+        this.InternetActivationDate.Set(this.selectedRowData.internet_activation_date)
+        this.InternetExpireDate.Set(this.selectedRowData.internet_expire_date)
+        this.SuppressExpireSync = false
+      }
+
+      if (this.selectedRowData.company_name && this.selectedRowData.company_name != '') {
         this.CompanyName.Set(this.selectedRowData.company_name, 'company_name')
-        this.SubscriptionType.Set(this.selectedRowData.subscription_type, 'subscription_type')
+        setTimeout(() => {
+          this.SubscriptionType.Set(this.selectedRowData.subscription_type, 'subscription_type')
+        }, 100)
+      }
 
-        document.getElementById('Price').querySelector('input').value = 0
+      if (this.selectedRowData.request_type == 'نصب') {
+        this.IDImage = `https://www.app.deeratna.net/backend/public/storage/internet_images/id/${this.selectedRowData.id}.jpg`
+        this.IDImageBack = `https://www.app.deeratna.net/backend/public/storage/internet_images/id_back/${this.selectedRowData.id}.jpg`
+        this.HousingImage = `https://www.app.deeratna.net/backend/public/storage/internet_images/housing/${this.selectedRowData.id}.jpg`
+        this.HousingImageBack = `https://www.app.deeratna.net/backend/public/storage/internet_images/housing_back/${this.selectedRowData.id}.jpg`
+      }
 
-        if (this.selectedRowData.request_type == 'تجديد' && this.selectedRowData.request_status == 'قيد المراجعة') {
-          this.SuppressExpireSync = true
-          const now = new Date()
-          this.InternetActivationDate.Set(now.toISOString().split('T')[0])
-          const expire = new Date(now)
-          expire.setDate(expire.getDate() + 30)
-          this.InternetExpireDate.Set(expire.toISOString().split('T')[0])
-          this.SuppressExpireSync = false
-        }
+      this.InternetRequestModal.Show()
 
-        if (this.selectedRowData.request_type == 'تجديد' && this.selectedRowData.request_status == 'تم') {
-          this.SuppressExpireSync = true
-          this.InternetActivationDate.Set(this.selectedRowData.internet_activation_date)
-          this.InternetExpireDate.Set(this.selectedRowData.internet_expire_date)
-          this.SuppressExpireSync = false
-        }
+      // بعد العرض: اربط باك-أب input/change + ابدأ المراقبة الدورية
+      nextTick(() => {
+        this.bindActivationInputListener()
+        this.startActivationWatcher()
+      })
+    })
 
-        if (this.selectedRowData.company_name && this.selectedRowData.company_name != '') {
-          this.CompanyName.Set(this.selectedRowData.company_name, 'company_name')
-          setTimeout(() => {
-            this.SubscriptionType.Set(this.selectedRowData.subscription_type, 'subscription_type')
-          }, '100')
-        }
+    // فتح مودال الرفض
+    document.getElementById('RejectBTN').addEventListener('click', () => {
+      this.InternetRequestRejectModal.Show()
+    })
 
-        if (this.selectedRowData.request_type == 'نصب') {
-          this.IDImage = 'https://www.app.deeratna.net/backend/public/storage/internet_images/id/' + this.selectedRowData.id + '.jpg'
-          this.IDImageBack = 'https://www.app.deeratna.net/backend/public/storage/internet_images/id_back/' + this.selectedRowData.id + '.jpg'
-          this.HousingImage = 'https://www.app.deeratna.net/backend/public/storage/internet_images/housing/' + this.selectedRowData.id + '.jpg'
-          this.HousingImageBack = 'https://www.app.deeratna.net/backend/public/storage/internet_images/housing_back/' + this.selectedRowData.id + '.jpg'
-        }
+    // تحميل أنواع الاشتراكات عند تغيير اسم الشركة
+    document.getElementById('CompanyName').addEventListener('MCBValueChange', () => {
+      const companyname = this.CompanyName.Get()[0]['MCBIName']
+      const CompanyProfiles = this.CompanyNameItems.filter(item => item.company_name == companyname)
+      this.SubscriptionTypeItems = CompanyProfiles
+    })
 
-        this.InternetRequestModal.Show()
-      }.bind(this)
-    )
-    // RejectBTN
-    document.getElementById('RejectBTN').addEventListener(
-      'click',
-      function () {
-        this.InternetRequestRejectModal.Show()
-      }.bind(this)
-    )
-    // Auto-update expire when activation changes
-    document
-      .getElementById('InternetActivationDate')
-      .addEventListener(
-        'MDateValueChange',
-        function () {
-          this.UpdateExpireFromActivation()
-        }.bind(this)
-      )
-    //load data to SubscriptionTypeItems
-    document.getElementById('CompanyName').addEventListener(
-      'MCBValueChange',
-      function () {
-        var companyname = this.CompanyName.Get()[0]['MCBIName']
-        var CompanyProfiles = this.CompanyNameItems.filter(item => item.company_name == companyname)
-        this.SubscriptionTypeItems = CompanyProfiles
-      }.bind(this)
-    )
-    // get price
-    document.getElementById('SubscriptionType').addEventListener(
-      'MCBValueChange',
-      function () {
-        document.getElementById('Price').querySelector('input').value = this.SubscriptionType.Get()[0]['price']
-      }.bind(this)
-    )
+    // جلب السعر عند تغيير نوع الاشتراك
+    document.getElementById('SubscriptionType').addEventListener('MCBValueChange', () => {
+      document.getElementById('Price').querySelector('input').value = this.SubscriptionType.Get()[0]['price']
+    })
   },
+
+  beforeUnmount() {
+    this.stopActivationWatcher()
+  },
+
   methods: {
+    /** يربط input/change على الحقل الداخلي لمكوّن MDate (باك-أب) */
+    bindActivationInputListener() {
+      const root = this.$refs.InternetActivationDate?.$el || document.getElementById('InternetActivationDate')
+      if (!root) return
+      const input = root.querySelector('input')
+      if (!input) return
+
+      if (!input._expireBinderAttached) {
+        input.addEventListener('input', () => this.UpdateExpireFromActivation())
+        input.addEventListener('change', () => this.UpdateExpireFromActivation())
+        input.addEventListener('keyup', () => this.UpdateExpireFromActivation())
+        input._expireBinderAttached = true
+      }
+    },
+
+    /** يبدأ مراقبة دورية لقيمة تاريخ التفعيل لضمان التحديث حتى لو لم تُطلق أي أحداث */
+    startActivationWatcher() {
+      this.stopActivationWatcher()
+      // خزّن القيمة الحالية كبداية
+      this.LastActivationValue = (this.InternetActivationDate?.Get?.() || '') + ''
+      this.ActivationWatchTimer = setInterval(() => {
+        const current = (this.InternetActivationDate?.Get?.() || '') + ''
+        if (current !== this.LastActivationValue) {
+          this.LastActivationValue = current
+          this.UpdateExpireFromActivation(current) // حدّث الانتهاء
+        }
+      }, 300)
+    },
+
+    stopActivationWatcher() {
+      if (this.ActivationWatchTimer) {
+        clearInterval(this.ActivationWatchTimer)
+        this.ActivationWatchTimer = null
+      }
+    },
+
     GetInternetRequestsData(MTable) {
       api
         .get('GetInternetRequests', {
           params: {
-            MTable: MTable,
+            MTable,
             InternetRequestFrom: this.InternetRequestsFromDate.Get()[0],
             InternetRequestTo: this.InternetRequestsFromDate.Get()[1],
           },
@@ -415,52 +397,71 @@ export default {
           this.InternetRequestsTBData = response.data.data
           this.InternetRequestsTBSums = response.data.sums
         })
-        .catch(error => {
-          ShowMessage(error)
-        })
+        .catch(error => ShowMessage(error))
     },
-    //load CompanyNameItems to combo
+
     GetInternetProfilesData() {
       api
         .get('internetprofiles')
         .then(response => {
           this.CompanyNameItems = response.data.data
-          const CompanysName = response.data.data.map(item => item.company_name) // Assuming '' is the relevant field
-          this.CompanyNamesItems = [...new Set(CompanysName)] // Using Set to remove duplicates
+          const CompanysName = response.data.data.map(item => item.company_name)
+          this.CompanyNamesItems = [...new Set(CompanysName)]
         })
-        .catch(error => {
-          ShowMessage(error)
-        })
+        .catch(error => ShowMessage(error))
     },
-    UpdateExpireFromActivation() {
-      try {
-        if (this.SuppressExpireSync) return
-        if (this.selectedRowData.request_type != 'تجديد') return
-        const act = this.InternetActivationDate.Get()
-        if (!act || act === '') {
-          this.InternetExpireDate.Clear()
-          return
-        }
-        const parts = act.split('-')
-        if (parts.length !== 3) return
-        const y = parseInt(parts[0])
-        const m = parseInt(parts[1])
-        const d = parseInt(parts[2])
-        if (!y || !m || !d) return
-        const base = new Date(y, m - 1, d)
-        base.setDate(base.getDate() + 30)
-        const fy = base.getFullYear()
-        const fm = base.getMonth() + 1
-        const fd = base.getDate()
-        const formatted = `${fy}-${fm}-${fd}`
-        this.InternetExpireDate.Set(formatted)
-      } catch (e) {
-        // ignore formatting errors silently
+
+    /** تنسيق تاريخ محلي بصيغة YYYY-MM-DD */
+    formatDateLocal(d) {
+      const y = d.getFullYear()
+      const m = String(d.getMonth() + 1).padStart(2, '0')
+      const day = String(d.getDate()).padStart(2, '0')
+      return `${y}-${m}-${day}`
+    },
+
+    /** إضافة 30 يومًا بطريقة آمنة (تعامل مع التاريخ كقيمة يومية) */
+    plus30DaysString(raw) {
+      // يقبل YYYY-MM-DD أو YYYY/MM/DD
+      const parts = String(raw)
+        .trim()
+        .split(/[-/]/)
+        .map(n => parseInt(n, 10))
+      if (parts.length !== 3) return ''
+      const [y, m, d] = parts
+      if (!y || !m || !d) return ''
+
+      // نحسب بالتوقيت UTC لتفادي مشاكل تغيّر الساعة
+      const base = new Date(Date.UTC(y, m - 1, d))
+      if (isNaN(base.getTime())) return ''
+      base.setUTCDate(base.getUTCDate() + 30)
+      const fy = base.getUTCFullYear()
+      const fm = String(base.getUTCMonth() + 1).padStart(2, '0')
+      const fd = String(base.getUTCDate()).padStart(2, '0')
+      return `${fy}-${fm}-${fd}`
+    },
+
+    /** يحدّث الانتهاء تلقائيًا (+30 يوم) */
+    UpdateExpireFromActivation(rawMaybe) {
+      if (this.SuppressExpireSync) return
+      if (this.selectedRowData.request_type != 'تجديد') return
+
+      const raw = (rawMaybe ?? this.InternetActivationDate?.Get?.() ?? '') + ''
+      if (!raw || raw.trim() === '') {
+        this.InternetExpireDate.Clear()
+        return
       }
+
+      const newExpire = this.plus30DaysString(raw)
+      if (!newExpire) return
+
+      this.SuppressExpireSync = true
+      this.InternetExpireDate.Set(newExpire)
+      this.SuppressExpireSync = false
     },
+
     AcceptRequest() {
       ShowLoading()
-      var Parameters = new FormData()
+      const Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append('pid', this.selectedRowData.pid)
       Parameters.append('customer_id', this.selectedRowData.customer_id)
@@ -482,14 +483,14 @@ export default {
       Parameters.append('price', document.getElementById('Price').querySelector('input').value)
 
       api
-        .put(`internetrequests/` + this.selectedRowData.id, Parameters)
+        .put(`internetrequests/${this.selectedRowData.id}`, Parameters)
         .then(response => {
           HideLoading()
           if (response.data.success == true) {
             this.InternetRequestsTB.LoadMTable()
             this.InternetRequestModal.Hide()
+            this.stopActivationWatcher()
           } else {
-            HideLoading()
             ShowMessage(response.data.message)
           }
         })
@@ -501,9 +502,10 @@ export default {
           } else ShowMessage('حدث خطأ غير متوقع')
         })
     },
+
     CloseRequest() {
       ShowLoading()
-      var Parameters = new FormData()
+      const Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append('pid', this.selectedRowData.pid)
       Parameters.append('customer_id', this.selectedRowData.customer_id)
@@ -514,19 +516,21 @@ export default {
       Parameters.append('company_name', document.getElementById('CompanyName').querySelector('input').value)
       Parameters.append('subscription_type', document.getElementById('SubscriptionType').querySelector('input').value)
       Parameters.append('price', document.getElementById('Price').querySelector('input').value)
+
       if (this.selectedRowData.request_type == 'تجديد' && this.selectedRowData.request_status == 'تم') {
         Parameters.append('internet_activation_date', this.InternetActivationDate.Get())
         Parameters.append('internet_expire_date', this.InternetExpireDate.Get())
       }
+
       api
-        .put(`internetrequests/` + this.selectedRowData.id, Parameters)
+        .put(`internetrequests/${this.selectedRowData.id}`, Parameters)
         .then(response => {
           HideLoading()
           if (response.data.success == true) {
             this.InternetRequestsTB.LoadMTable()
             this.InternetRequestModal.Hide()
+            this.stopActivationWatcher()
           } else {
-            HideLoading()
             ShowMessage(response.data.message)
           }
         })
@@ -538,25 +542,22 @@ export default {
           } else ShowMessage('حدث خطأ غير متوقع')
         })
     },
+
     SaveRejectRequest() {
       ShowLoading()
-
-      var Parameters = new FormData()
+      const Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
       Parameters.append('Reason', document.getElementById('RejectionReason').querySelector('input').value)
 
       api
-        .post('RejectInternetRequests', Parameters, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
+        .post('RejectInternetRequests', Parameters, { headers: { 'Content-Type': 'multipart/form-data' } })
         .then(response => {
           HideLoading()
           if (response.data == 'تمت العملية بنجاح') {
             this.InternetRequestModal.Hide()
             this.InternetRequestRejectModal.Hide()
             this.InternetRequestsTB.LoadMTable()
+            this.stopActivationWatcher()
           } else {
             ShowMessage(response.data)
           }
@@ -566,22 +567,22 @@ export default {
           ShowMessage(error)
         })
     },
+
     ShowImage(e) {
-      let ImagePath = e.target.closest('.RequestImage').querySelector('img').getAttribute('src')
-      window.open(ImagePath)
+      const ImagePath = e.target.closest('.RequestImage').querySelector('img')?.getAttribute('src')
+      if (ImagePath) window.open(ImagePath)
     },
   },
 }
 </script>
+
 <style scoped>
 #InternetRequestsFromDate {
   max-width: 400px;
 }
-
 #RejectBTN {
   background-color: red;
 }
-
 #RejectBTN:hover {
   color: red;
   background-color: var(--MButtonBG);
