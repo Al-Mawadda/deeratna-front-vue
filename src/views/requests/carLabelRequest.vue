@@ -280,6 +280,10 @@ export default {
           label: 'الاسم',
         },
         {
+          name: 'relations.relation',
+          label: 'العلاقة',
+        },
+        {
           name: 'guardian_name',
           label: 'اسم الساكن',
         },

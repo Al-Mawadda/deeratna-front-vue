@@ -234,6 +234,10 @@ export default {
           label: 'الاسم',
         },
         {
+          name: 'relations.relation',
+          label: 'العلاقة',
+        },
+        {
           name: 'guardian_name',
           label: 'اسم الساكن',
         },
@@ -493,7 +497,7 @@ export default {
             if (typeof serialNumber != 'undefined') {
               serialNumber = parseInt(ufResponse().CardUid).toString(16).match(/.{1,2}/g).join(':').toLowerCase();
               if (document.getElementById('NfcCardRequestModal').classList.contains('MModalActive')) {
-                if (Instance.selectedRowData.request_status == 'قيد المراجعة' && Instance.selectedRowData.request_type == 'اضافة' && (Instance.UserData.department_id == 1 || (Instance.UserData.department_id == 3 && Instance.selectedRowData.department_id == 3))) {
+                if (Instance.selectedRowData.request_status == 'تم الدفع' && Instance.selectedRowData.request_type == 'اضافة' && (Instance.UserData.department_id == 1 || (Instance.UserData.department_id == 3 && Instance.selectedRowData.department_id == 3))) {
                   document.getElementById('NFCID').querySelector('input').value = serialNumber;
                 }
               }

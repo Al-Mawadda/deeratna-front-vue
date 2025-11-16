@@ -1,17 +1,10 @@
 <template>
   <div class="ComponentWrapper">
-<div class="MGroup">
-        <MComboBox ref='Compound' :Name="'Compound'" :Label="'المدينة'"
-          :Items="CompoundItems"></MComboBox>
-          <div class="MField" id="Address">
-          <input type="text" required>
-          <label>العنوان</label>
-          <div class="MFieldBG"></div>
-        </div>
-              <div class="MButton" id="GetSalesTenant" @click="GetSalesTenant">عرض</div>
-              <div class="SalesTenantName"></div>
+    <div class="MButton" id="ReloadTenantsBTN">اعادة تحميل البيانات</div>
+    <MTable ref="TenantsTB" :Name="'TenantsTB'" :DataArray="TenantsTBData" :Columns="TenantsTBColumns"
+      :GetDataFunction="GetTenantsData" :RowsCount="TenantsTBRowsCount" :RowsPerPage="10">
+    </MTable>
   </div>
-</div>
 </template>
 
 <!-- ======================================== -->
@@ -26,25 +19,61 @@ export default {
 
     return {
       GlobalsStore,
-Compound: ref(null),
-CompoundItems: ref([]),
+      TenantsTB: ref(null),
+      TenantsTBData: ref([]),
+      TenantsTBColumns: [
+        {
+          name: 'TenantName',
+          label: 'الاسم',
+        },
+        {
+          name: 'Compound',
+          label: 'المدينة',
+          filter: 'combo',
+          filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [],
+        },
+        {
+          name: 'houseno',
+          label: 'العنوان',
+        },
+        {
+          name: 'TenantPhone',
+          label: 'رقم الهاتف',
+        },
+        {
+          name: 'EjarFrom',
+          label: 'الايجار من',
+          filter: 'date',
+        },
+        {
+          name: 'EjarTo',
+          label: 'الايجار الى',
+          filter: 'date',
+        },
+      ],
+      TenantsTBRowsCount: ref(0),
     }
   },
   mounted() {
-this.CompoundItems = this.GlobalsStore.ComboBoxes['Compounds'];
+    this.TenantsTB.LoadMTable()
+
+    let Instance = this;
+
+    document.getElementById('ReloadTenantsBTN').addEventListener('click', function () {
+      Instance.TenantsTB.ReLoadMTable();
+    });
   },
   methods: {
-    GetSalesTenant() {
-      document.querySelector('.SalesTenantName').innerHTML = '';
+    GetTenantsData(MTable) {
       api
-        .get('GetSalesTenant', {
+        .get('GetSalesTenants', {
           params: {
-            compound: this.Compound.GetValue(),
-            address: document.getElementById('Address').querySelector('input').value,
+            MTable: MTable,
           },
         })
         .then(response => {
-          document.querySelector('.SalesTenantName').innerHTML = response.data;
+          this.TenantsTBData = response.data.data
+          this.TenantsTBRowsCount = response.data.total
         })
         .catch(error => {
           window.ShowMessage('حدث خطا', error)
@@ -58,9 +87,10 @@ this.CompoundItems = this.GlobalsStore.ComboBoxes['Compounds'];
 .MDate {
   min-width: 200px;
 }
+
 .SalesTenantName {
   display: flex;
-  width:100%;
+  width: 100%;
   justify-content: center;
   margin-top: 20px;
 }
