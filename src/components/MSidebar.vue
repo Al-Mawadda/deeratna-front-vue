@@ -201,6 +201,7 @@ export default {
           { text: 'الانترنت', route: '/internet-requests', permission: 'internet_requests' },
           { text: 'صيانة المنازل', route: '/maintenance-requests', permission: 'maintenance_requests' },
           { text: 'صيانة الانترنت', route: '/internet-maintenance-requests', permission: 'internet_maintenance_requests' },
+          { text: 'كيو ار', route: '/qr_requests', permission: 'qr_requests' },
         ],
       },
       //#endregion
@@ -285,6 +286,7 @@ export default {
           { text: 'مجاميع الدفع الالكتروني حسب المدن', route: '/reports/payments_by_compound', permission: 'payments_by_compound' },
           { text: 'الدفع حسب نوع الشركة', route: '/reports/payment_by_payment_companies', permission: 'payment_by_payment_companies' },
           { text: 'صيانة المنازل', route: '/reports/payment_maintenance_changes', permission: 'payment_maintenance_changes' },
+          { text: 'الانترنت حسب الشركات', route: '/reports/payment_internet_by_companies', permission: 'payment_internet_by_companies' },
         ],
       },
       //#endregion

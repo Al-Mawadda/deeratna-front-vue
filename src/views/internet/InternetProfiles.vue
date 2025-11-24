@@ -1,19 +1,8 @@
 <template>
   <div class="ComponentWrapper">
     <!-- =============== add subsc Model========= -->
-    <MModal
-      ref="AddProfilesModal"
-      :Name="'AddProfilesModal'"
-      :Title="'اضافة اشتراك جديد'"
-    >
-      <MComboBox
-        ref="CompanyName"
-        :Name="'CompanyName'"
-        :Label="' اسم الشركة *'"
-        :Items="CompanyNameItems"
-        :ItemsName="'company_name'"
-      >
-      </MComboBox>
+    <MModal ref="AddProfilesModal" :Name="'AddProfilesModal'" :Title="'اضافة اشتراك جديد'">
+      <MComboBox ref="CompanyName" :Name="'CompanyName'" :Label="' اسم الشركة *'" :Items="CompanyNameItems" :ItemsName="'company_name'"></MComboBox>
       <div class="MField" id="SubscriptionType">
         <input ref="SubscriptionType" type="text" required />
         <label>نوع الاشتراك</label>
@@ -30,34 +19,16 @@
         <div class="MFieldBG"></div>
       </div>
 
-      <MComboBox
-        ref="Status"
-        :Name="'Status'"
-        :Label="'حالة الاشتراك *'"
-        :Items="StatusItems"
-        :ItemsName="'status'"
-      >
-      </MComboBox>
+      <MComboBox ref="Status" :Name="'Status'" :Label="'حالة الاشتراك *'" :Items="StatusItems" :ItemsName="'status'"></MComboBox>
 
       <div class="ModalButtons">
-        <div class="MButton" id="SaveProfilesBTN" @click="SaveProfiles">
-          حفـــظ
-        </div>
+        <div class="MButton" id="SaveProfilesBTN" @click="SaveProfiles">حفـــظ</div>
       </div>
     </MModal>
 
     <div class="MButton" id="AddInternetProfilesBTN">ادخال اشتراك جديد</div>
     <div class="MButton" id="GetInternetProfilesBTN">عرض البيانات</div>
-    <MTable
-      ref="InternetProfilesTB"
-      :Name="'InternetProfilesTB'"
-      :DataArray="InternetProfilesTBData"
-      :Columns="InternetProfilesTBColumns"
-      :Sums="InternetProfilesTBSums"
-      :GetDataFunction="GetInternetProfilesData"
-      :RowsCount="InternetProfilesTBRowsCount"
-      :RowsPerPage="10"
-    >
+    <MTable ref="InternetProfilesTB" :Name="'InternetProfilesTB'" :DataArray="InternetProfilesTBData" :Columns="InternetProfilesTBColumns" :Sums="InternetProfilesTBSums" :GetDataFunction="GetInternetProfilesData" :RowsCount="InternetProfilesTBRowsCount" :RowsPerPage="10">
       <template v-slot:options>
         <!-- View Videosdffhroif Option -->
         <div class="MTableOption" OptionEventName="EditItem">
@@ -199,13 +170,9 @@ export default {
         this.Operation = 2
         this.ID = this.selectedRowData.id
         this.CompanyName.Set(this.selectedRowData.company_name, 'company_name')
-        document
-          .getElementById('SubscriptionType')
-          .querySelector('input').value = this.selectedRowData.subscription_type
-        document.getElementById('Price').querySelector('input').value =
-          this.selectedRowData.price
-        document.getElementById('PriceCompany').querySelector('input').value =
-          this.selectedRowData.price_company
+        document.getElementById('SubscriptionType').querySelector('input').value = this.selectedRowData.subscription_type
+        document.getElementById('Price').querySelector('input').value = this.selectedRowData.price
+        document.getElementById('PriceCompany').querySelector('input').value = this.selectedRowData.price_company
         this.Status.Set(this.selectedRowData.status)
         this.AddProfilesModal.Show()
       }.bind(this)
@@ -272,26 +239,11 @@ export default {
     SaveProfiles() {
       ShowLoading()
       var Parameters = new FormData()
-      Parameters.append(
-        'company_name',
-        document.getElementById('CompanyName').querySelector('input').value
-      )
-      Parameters.append(
-        'subscription_type',
-        document.getElementById('SubscriptionType').querySelector('input').value
-      )
-      Parameters.append(
-        'price',
-        document.getElementById('Price').querySelector('input').value
-      )
-      Parameters.append(
-        'price_company',
-        document.getElementById('PriceCompany').querySelector('input').value
-      )
-      Parameters.append(
-        'status',
-        document.getElementById('Status').querySelector('input').value
-      )
+      Parameters.append('company_name', document.getElementById('CompanyName').querySelector('input').value)
+      Parameters.append('subscription_type', document.getElementById('SubscriptionType').querySelector('input').value)
+      Parameters.append('price', document.getElementById('Price').querySelector('input').value)
+      Parameters.append('price_company', document.getElementById('PriceCompany').querySelector('input').value)
+      Parameters.append('status', document.getElementById('Status').querySelector('input').value)
 
       //=========post ============
       if (this.Operation == 1) {

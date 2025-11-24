@@ -60,7 +60,7 @@
           <div class="MFieldBG"></div>
         </div>
         <div class="MField" id="Price" v-OnlyNumbers>
-          <input :disabled="selectedRowData.request_status == 'تم الدفع' || selectedRowData.request_status == 'تم'" type="text" />
+          <input :disabled="selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status == 'تم الانجاز'" type="text" />
           <label>السعر</label>
           <div class="MFieldBG"></div>
         </div>
@@ -76,26 +76,10 @@
 
       <!-- ========= Btn ===============-->
       <div class="ModalButtons">
-        <!-- <div v-show="selectedRowData.type_description != 'ثابتة' && (selectedRowData.price == 0 || selectedRowData.request_status == 'دفع الكتروني')" class="MButton" id="ReceiptOfOrderPaymentKashBTN" @click="ReceiptOfOrderPaymentKash()">استلام المبلغ كاش</div> -->
-        <div v-show="selectedRowData.price == 0 || selectedRowData.request_status == 'دفع الكتروني'" class="MButton" id="ReceiptOfOrderPaymentKashBTN" @click="ReceiptOfOrderPaymentKash()">استلام المبلغ كاش</div>
+        <div v-show="selectedRowData.price == 0 || selectedRowData.request_status == 'دفع الكتروني' || selectedRowData.completion_status == 'غير منجز'" class="MButton" id="ReceiptOfOrderPaymentKashBTN" @click="ReceiptOfOrderPaymentKash()">استلام المبلغ كاش</div>
 
         <!-- ============= الثابته ==============-->
-        <!-- <div v-show="selectedRowData.type_description == 'ثابتة' && selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="AcceptConstantBTN" @click="AcceptConstantRequest()">موافق (ثابته)</div> -->
-        <!-- <div v-show="selectedRowData.type_description == 'ثابتة' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status != 'تم الانجاز'" class="MButton" id="CloseConstantRequestBTN" @click="CloseConstantRequest()">تحديث وغلق الطلب (ثابتة)</div> -->
 
-        <!-- ============== اخــرى ============= -->
-        <!-- موافق تحويل الى كشف -->
-        <!-- <div v-show="isVisable && selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptToDetectionBTN" @click="AcceptToDetectionRequest()">موافق (تحويل الى كشف)</div> -->
-        <!-- موافق تحويل الى دفع الكتروني -->
-        <!-- <div v-show="isVisable && selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد المراجعة' && selectedRowData.type_description != 'ثابتة'" class="MButton" id="AcceptToPayBTN" @click="AcceptToPayRequest()">موافق (تحويل الى دفع الكتروني)</div> -->
-
-        <!-- <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'قيد الكشف'" class="MButton" id="ConvertFromDetectionToAnjazAndPaymentRequestBTN" @click="ConvertFromDetectionToAnjazAndPaymentRequest()">تحويل من كشف الى تم الانجاز ودفع الكتروني</div>
-        <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'دفع الكتروني' && selectedRowData.completion_status == 'تم الانجاز'" class="MButton" id="CloseOtherRequestBTN" @click="CloseOtherRequest()">استلام المبلغ كاش وغلق الطلب</div> -->
-        <!-- اعادة قيد المراجعة -->
-        <!-- <div v-show="selectedRowData.type_description == 'اخرى' && (selectedRowData.request_status == 'قيد الكشف' || (selectedRowData.request_status == 'دفع الكتروني' && selectedRowData.completion_status == 'تم الانجاز'))" class="MButton" id="ReturnToUnderReviewBTN" @click="ReturnToUnderReview()">
-          {{ selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'دفع الكتروني' && selectedRowData.completion_status == 'تم الانجاز' ? 'تحديث السعر' : 'اعادة الى قيد المراجعة' }}
-        </div> -->
-        <!-- غلق الطلب  -->
         <div v-show="selectedRowData.type_description == 'اخرى' && selectedRowData.request_status == 'تم الدفع' && selectedRowData.completion_status != 'تم الانجاز' && selectedRowData.pay_type == 'الكتروني'" class="MButton" id="ConvertToAnjazAndCloseRequestBTN" @click="ConvertToAnjazAndCloseRequest()">تحويل الى انجاز وغلق الطلب</div>
 
         <!-- ================ التغييرات ==========-->
@@ -107,10 +91,6 @@
 
         <div v-show="selectedRowData.price != 0" class="MButton" id="PrintReceiptBTN" @click="PrintReceipt()">طباعة وصل قبض</div>
 
-        <!-- ================== -->
-
-        <!--  رفـــض  -->
-        <!-- <div v-show="isVisable && selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="RejectBTN" @click="RejectRequest">رفض</div> -->
         <!--  ارسال اشعار  -->
         <!-- <div v-show="selectedRowData.request_status != 'تم الدفع'" class="MButton" id="SendNotificationBTN" @click="SendNotificationRequest">ارسال اشعار الى الساكن</div> -->
       </div>
@@ -473,6 +453,7 @@ export default {
 
     // الادارةه المحلية
 
+    // استلام المبلغ كاش
     ReceiptOfOrderPaymentKash() {
       ShowLoading()
       var Parameters = new FormData()

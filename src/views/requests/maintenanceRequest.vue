@@ -285,6 +285,10 @@ export default {
           label: 'فترة الضمان',
         },
         {
+          name: 'input_name',
+          label: 'اسم المستلم',
+        },
+        {
           name: 'created_at',
           label: 'التاريخ',
           filter: 'date',

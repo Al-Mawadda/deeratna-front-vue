@@ -216,6 +216,13 @@ const router = createRouter({
       name: 'internetmaintenanceRequest',
       meta: { RequiresAuth: true, HeaderTitle: 'صيانة الانترنيت' },
     },
+    {
+      path: '/qr_requests',
+      component: () => import('../views/requests/QrRequest.vue'),
+      name: 'QrRequest',
+      meta: { RequiresAuth: true, HeaderTitle: 'طلبات الكيو ار' },
+    },
+
     //#endregion
 
     //#region Payments
@@ -477,6 +484,13 @@ const router = createRouter({
       name: 'PaymentMaintenanceChanges',
       meta: { RequiresAuth: true, HeaderTitle: 'التقارير' },
     },
+    {
+      path: '/reports/payment_internet_by_companies',
+      component: () => import('../views/reports/internetByCompanies.vue'),
+      name: 'internetByCompanies',
+      meta: { RequiresAuth: true, HeaderTitle: 'التقارير' },
+    },
+
     //#endregion Reports
   ],
 })

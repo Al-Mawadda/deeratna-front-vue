@@ -12,11 +12,11 @@
     <div class="container">
       <!-- تحكم بحجم خط رؤوس الأعمدة -->
       <div class="controls">
-        <div class="control-row">
+        <!-- <div class="control-row">
           <label>حجم خط عناوين الأعمدة:</label>
           <input type="range" min="12" max="28" v-model.number="headerFontSize" />
           <span class="val">{{ headerFontSize }}px</span>
-        </div>
+        </div> -->
       </div>
 
       <div class="buttons">
