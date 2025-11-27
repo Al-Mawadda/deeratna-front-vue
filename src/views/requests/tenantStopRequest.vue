@@ -1,58 +1,8 @@
 <template>
   <div class="ComponentWrapper">
     <!-- ========= InternetRequest Model======== -->
-    <MModal ref="InternetRequestModal" :Name="'InternetRequestModal'" :Title="' طلب ' + selectedRowData.request_type + ' اشتراك ماء ' + selectedRowData.name">
+    <MModal ref="InternetRequestModal" :Name="'InternetRequestModal'" :Title="' طلب ' + ' تعطيل حساب مؤجر ' + selectedRowData.tenant_name">
       <!-- ============= details Table =============== -->
-      <table cellpadding="0" cellspacing="0" class="RequestsMTable">
-        <thead>
-          <tr>
-            <th>الحقل</th>
-            <th>القيمة</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>الاسم</td>
-            <td>{{ selectedRowData.name }}</td>
-          </tr>
-          <tr>
-            <td>المدينة</td>
-            <td>{{ selectedRowData.compound }}</td>
-          </tr>
-          <tr>
-            <td>العنوان</td>
-            <td>{{ selectedRowData.address }}</td>
-          </tr>
-          <tr>
-            <td>الهاتف</td>
-            <td>{{ selectedRowData.phone }}</td>
-          </tr>
-          <tr>
-            <td>الكمية</td>
-            <td>{{ selectedRowData.quantity }}</td>
-          </tr>
-          <tr>
-            <td>السعر</td>
-            <td>{{ selectedRowData.price }}</td>
-          </tr>
-          <tr>
-            <td>نوع الطلب</td>
-            <td>{{ selectedRowData.request_type }}</td>
-          </tr>
-          <tr>
-            <td>حالة الطلب</td>
-            <td>{{ selectedRowData.request_status }}</td>
-          </tr>
-          <tr>
-            <td>تاريخ الطلب</td>
-            <td>{{ selectedRowData.created_at }}</td>
-          </tr>
-          <tr v-if="selectedRowData.rejection_reason != ''">
-            <td>سبب الرفض</td>
-            <td>{{ selectedRowData.rejection_reason }}</td>
-          </tr>
-        </tbody>
-      </table>
 
       <div class="ModalButtons">
         <div v-show="selectedRowData.request_status == 'قيد المراجعة'" class="MButton" id="AcceptBTN" @click="AcceptRequest()">موافق</div>
@@ -122,18 +72,15 @@ export default {
       InternetRequestsTBData: ref([]),
       InternetRequestsTBColumns: [
         { name: 'id', label: '#' },
-        { name: 'pid', label: 'الرقم' },
+        { name: 'guardian_id', label: 'كود المالك' },
         { name: 'compound', label: 'المدينة', filter: 'combo', filter_items: GlobalsStore.value.ComboBoxes?.Compounds || [] },
+        { name: 'guardian_name', label: 'اسم المالك' },
         { name: 'address', label: 'العنوان' },
-        { name: 'name', label: 'الاسم' },
-
-        {
-          name: 'phone',
-          label: 'رقم الهاتف',
-        },
-        //{ name: 'type', label: 'نوع الاشتراك' },
-        { name: 'quantity', label: 'الكمية', sum: true, type: 'currency' },
-        { name: 'price', label: 'المبلغ', sum: true, type: 'currency' },
+        { name: 'guardian_phone', label: 'هاتف المالك' },
+        { name: 'tenant_name', label: 'اسم المؤجر' },
+        { name: 'tenant_phone', label: 'هاتف المؤجر' },
+        { name: 'activation_date', label: 'تاريخ العقد' },
+        { name: 'expire_date', label: 'تاريخ الانتهاء' },
         { name: 'request_status', label: 'حالة الطلب' },
         { name: 'created_at', label: 'التاريخ', filter: 'date' },
       ],
@@ -174,7 +121,7 @@ export default {
   methods: {
     GetInternetRequestsData(MTable) {
       api
-        .get('GetWaterRequests', {
+        .get('GetTenantStopRequests', {
           params: {
             MTable,
             InternetRequestFrom: this.InternetRequestsFromDate.Get()[0],
@@ -193,15 +140,10 @@ export default {
       ShowLoading()
       const Parameters = new FormData()
       Parameters.append('RequestID', this.selectedRowData.id)
-      Parameters.append('pid', this.selectedRowData.pid)
-      Parameters.append('customer_id', this.selectedRowData.customer_id)
-      Parameters.append('name', this.selectedRowData.name)
       Parameters.append('request_type', this.selectedRowData.request_type)
-      Parameters.append('request_status', 'تم')
-      Parameters.append('price', this.selectedRowData.price)
 
       api
-        .post('AcceptWaterRequest', Parameters, {
+        .post('AcceptTenantRequest', Parameters, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

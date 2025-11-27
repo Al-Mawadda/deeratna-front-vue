@@ -240,7 +240,7 @@ export default {
         { name: 'company_name', label: 'الشركة' },
         { name: 'subscription_type', label: 'نوع الاشتراك' },
         { name: 'price', label: 'المبلغ', sum: true, type: 'currency' },
-        { name: 'old_expire_date', label: 'تاريخ الانتهاء السابق', filter: 'date' },
+        { name: 'old_expire_date', label: 'تاريخ السابق', filter: 'date' },
         { name: 'internet_activation_date', label: 'تاريخ التفعيل', filter: 'date' },
         { name: 'internet_expire_date', label: 'تاريخ الانتهاء', filter: 'date' },
         { name: 'request_type', label: 'نوع الطلب' },

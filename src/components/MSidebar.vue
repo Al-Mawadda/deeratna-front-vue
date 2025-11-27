@@ -202,6 +202,8 @@ export default {
           { text: 'صيانة المنازل', route: '/maintenance-requests', permission: 'maintenance_requests' },
           { text: 'صيانة الانترنت', route: '/internet-maintenance-requests', permission: 'internet_maintenance_requests' },
           { text: 'كيو ار', route: '/qr_requests', permission: 'qr_requests' },
+          { text: 'الماء', route: '/water_requests', permission: 'water_requests' },
+          { text: 'ايقاف مستأجر', route: '/tenant_stop_requests', permission: 'tenant_stop_requests' },
         ],
       },
       //#endregion

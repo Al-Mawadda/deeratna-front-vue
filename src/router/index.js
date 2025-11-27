@@ -222,6 +222,18 @@ const router = createRouter({
       name: 'QrRequest',
       meta: { RequiresAuth: true, HeaderTitle: 'طلبات الكيو ار' },
     },
+    {
+      path: '/water_requests',
+      component: () => import('../views/requests/waterRequest.vue'),
+      name: 'waterRequest',
+      meta: { RequiresAuth: true, HeaderTitle: 'طلبات الماء' },
+    },
+    {
+      path: '/tenant_stop_requests',
+      component: () => import('../views/requests/tenantStopRequest.vue'),
+      name: 'tenantStopRequest',
+      meta: { RequiresAuth: true, HeaderTitle: 'طلبات انهاء عقد مستأجر' },
+    },
 
     //#endregion
 
