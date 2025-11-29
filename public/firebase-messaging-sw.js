@@ -2,6 +2,85 @@
 importScripts('https://www.gstatic.com/firebasejs/12.6.0/firebase-app-compat.js')
 importScripts('https://www.gstatic.com/firebasejs/12.6.0/firebase-messaging-compat.js')
 
+const APP_CACHE = 'deeratna-cache-v1'
+const OFFLINE_URL = '/offline.html'
+const PRECACHE_URLS = [
+  '/',
+  '/index.html',
+  OFFLINE_URL,
+  '/manifest.webmanifest',
+  '/favicon.ico',
+  '/icon-192.png',
+  '/icon-512.png'
+]
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches
+      .open(APP_CACHE)
+      .then((cache) => cache.addAll(PRECACHE_URLS))
+      .catch(() => Promise.resolve())
+  )
+  self.skipWaiting()
+})
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys
+            .filter((key) => key.startsWith('deeratna-cache-') && key !== APP_CACHE)
+            .map((key) => caches.delete(key))
+        )
+      )
+      .then(() => self.clients.claim())
+  )
+})
+
+self.addEventListener('fetch', (event) => {
+  const { request } = event
+  if (request.method !== 'GET') return
+
+  const url = new URL(request.url)
+
+  // Let API calls or external resources pass through untouched
+  if (url.origin !== self.location.origin || url.pathname.startsWith('/api/')) {
+    return
+  }
+
+  // App shell caching for navigations
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          const clone = response.clone()
+          caches.open(APP_CACHE).then((cache) => cache.put(request, clone))
+          return response
+        })
+        .catch(async () => (await caches.match(request)) || caches.match(OFFLINE_URL))
+    )
+    return
+  }
+
+  // Cache-first strategy for static assets
+  event.respondWith(
+    caches.match(request).then((cachedResponse) => {
+      if (cachedResponse) return cachedResponse
+      return fetch(request)
+        .then((response) => {
+          if (response && response.status === 200 && response.type === 'basic') {
+            const clone = response.clone()
+            caches.open(APP_CACHE).then((cache) => cache.put(request, clone))
+          }
+          return response
+        })
+        .catch(() => caches.match(OFFLINE_URL))
+    })
+  )
+})
+
 // These values should match your web app Firebase config.
 // You can override them with environment-based builds if needed.
 firebase.initializeApp({
@@ -43,5 +122,3 @@ self.addEventListener('notificationclick', (event) => {
     })()
   )
 })
-
-

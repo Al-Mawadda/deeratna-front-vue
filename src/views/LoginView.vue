@@ -21,6 +21,7 @@
 import { ref } from 'vue'
 import { api } from '../axios.js';
 import { useGlobalsStore } from '../stores/Globals.js'
+import { getFcmToken } from '../firebase.js'
 export default {
   setup() {
     const GlobalsStore = ref(useGlobalsStore());
@@ -42,16 +43,29 @@ export default {
     });
   },
   methods: {
-    Login() {
+    async Login() {
       window.ShowLoading();
-      api.post('Login', {
-        username: document.getElementById('Username').querySelector('input').value,
-        password: document.getElementById('Password').querySelector('input').value,
-      }, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
+      try {
+        const Username = document.getElementById('Username').querySelector('input').value;
+        const Password = document.getElementById('Password').querySelector('input').value;
+
+        let fcmToken = '';
+        try {
+          fcmToken = (await getFcmToken()) || '';
+        } catch {
+          fcmToken = '';
         }
-      }).then(response => {
+
+        const response = await api.post('Login', {
+          username: Username,
+          password: Password,
+          fcm: fcmToken,
+        }, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          }
+        });
+
         window.HideLoading();
         if (response.data['success'] == true) {
           this.GlobalsStore.SetAuth(
@@ -62,10 +76,10 @@ export default {
         } else {
           window.ShowMessage(response.data['message']);
         }
-      }).catch(() => {
+      } catch {
         window.HideLoading();
         window.ShowMessage('حدث خطا');
-      });
+      }
     },
   },
 }

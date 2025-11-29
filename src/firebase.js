@@ -31,7 +31,15 @@ export async function getFcmToken(vapidKey) {
   if (!messaging) return null
   try {
     if ('serviceWorker' in navigator) {
-      const reg = await navigator.serviceWorker.register('/firebase-messaging-sw.js')
+      let reg = await navigator.serviceWorker.getRegistration()
+      if (!reg) {
+        reg = await navigator.serviceWorker.register('/firebase-messaging-sw.js')
+      }
+      try {
+        reg = await navigator.serviceWorker.ready
+      } catch {
+        // keep the explicit registration if ready fails
+      }
       // Request permission before token
       if (Notification.permission === 'default') {
         await Notification.requestPermission()
@@ -60,5 +68,4 @@ export async function subscribeForegroundAsync(handler) {
 }
 
 export default { ensureFirebase, getFcmToken, subscribeForegroundAsync }
-
 

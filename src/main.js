@@ -21,6 +21,14 @@ import MStepper from './components/MStepper.vue'
 import MTime from './components/MTime.vue'
 import RFIDField from "./components/RFIDField.vue";
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/firebase-messaging-sw.js')
+      .catch((error) => console.error('Service worker registration failed', error))
+  })
+}
+
 const app = createApp(App)
 
 // Adding The Tools
